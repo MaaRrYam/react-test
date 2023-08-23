@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, SafeAreaView} from 'react-native';
-import {BackButton, Button, Link, RoleCard} from '../../components';
+import {BackButton, Button, Link, RoleCard} from 'components';
 import {COLORS, FONTS, PADDING, ROLES_DATA} from '../../constants';
 
 const SelectRole = () => {

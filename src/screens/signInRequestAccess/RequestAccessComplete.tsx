@@ -7,14 +7,15 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import {BackButton} from '../../components';
+import LinearGradient from 'react-native-linear-gradient';
+import {BackButton} from 'components';
 import {PADDING} from '../../constants';
 
 const windowWidth = Dimensions.get('window').width;
 
 const RequestAccessComplete: React.FC = () => {
   return (
-    <View style={styles.gradient}>
+    <LinearGradient colors={['#EC6570', '#F7CB94']} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.backBtnContainer}>
           <BackButton
@@ -38,7 +39,7 @@ const RequestAccessComplete: React.FC = () => {
           />
         </View>
       </SafeAreaView>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    backgroundColor: '#F67B50',
   },
   logo: {},
   textContainer: {

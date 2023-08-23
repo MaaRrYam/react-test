@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
-import {BackButton, Button, Link} from '../../components';
+import {BackButton, Button, Link, Input} from 'components';
 import {COLORS, FONTS, PADDING} from '../../constants';
-import Input from '../../components/Inputs/Input';
 
 const RequestAccess = () => {
   const [name, setName] = useState('');
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONTS.heading,
     fontWeight: 'bold',
-    marginVertical: 40,
+    marginTop: 40,
   },
   footer: {
     borderTopColor: COLORS.borderGray,

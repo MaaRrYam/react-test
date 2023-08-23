@@ -5,7 +5,6 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import android.content.Intent;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -19,13 +18,6 @@ public class MainActivity extends ReactActivity {
     return "cnmobile";
   }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GoogleSignIn.DEFAULT_SIGN_IN) {
-            GoogleSignIn.getSignedInAccountFromIntent(data);
-        }
-    }
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
    * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
