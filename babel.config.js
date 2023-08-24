@@ -22,6 +22,8 @@ module.exports = function (api) {
             '@/constants': './src/constants/index',
             '@utils': './src/utils',
             '@assets': '/src/assets',
+            '@interfaces': '/src/interfaces/index.ts',
+            '@styles': '/src/styles/',
           },
         },
       ],

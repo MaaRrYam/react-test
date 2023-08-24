@@ -9,6 +9,12 @@ import {
   RequestAccess,
   RequestAccessComplete,
   GetStarted,
+  Education,
+  Industry,
+  Experience,
+  EmploymentStatus,
+  SalaryExpectations,
+  OnboardingCompleted,
 } from 'screens';
 
 const App = () => {
@@ -30,7 +36,13 @@ const App = () => {
           {/* <SelectRole /> */}
           {/* <RequestAccess /> */}
           {/* <RequestAccessComplete /> */}
-          <GetStarted />
+          {/* <GetStarted /> */}
+          {/* <Education /> */}
+          {/* <Industry /> */}
+          {/* <Experience /> */}
+          {/* <EmploymentStatus /> */}
+          {/* <SalaryExpectations /> */}
+          <OnboardingCompleted />
         </View>
       )}
     </PaperProvider>

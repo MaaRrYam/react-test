@@ -18,13 +18,16 @@ const Input = ({
   keyboardType: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   style?: any;
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
 
   const inputTheme = {
     colors: {
       text: COLORS.text,
       placeholder: COLORS.text,
-      primary: isFocused ? COLORS.primary : '#ccc',
+      primary: COLORS.text,
+      background: COLORS.white,
+      borderWidth: 1,
+      borderColor: COLORS.borderGray,
     },
   };
 

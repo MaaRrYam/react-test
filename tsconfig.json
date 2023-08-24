@@ -11,7 +11,9 @@
       "@hooks/*": ["./src/hooks/*"],
       "@/constants": ["./src/constants/index.ts"],
       "@utils/*": ["./src/utils/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@interfaces/*": ["./src/interfaces/index.ts"],
+      "@styles/*": ["./src/styles/*"]
     }
   }
 }

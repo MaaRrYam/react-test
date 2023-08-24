@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {BackButton, Button} from '../../components';
-import {COLORS, FONTS, PADDING} from '../../constants';
 import Input from '../../components/Inputs/Input';
+import {commonStyles} from 'styles/onboarding';
 
 const GetStarted = () => {
   const [username, setUsername] = useState('');
@@ -10,10 +10,10 @@ const GetStarted = () => {
   const [state, setState] = useState('');
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
+      <View style={commonStyles.container}>
         <BackButton onPress={() => console.log('Back button pressed')} />
-        <Text style={styles.title}>Let's get you started,</Text>
+        <Text style={commonStyles.title}>Let's get you started,</Text>
 
         <ScrollView>
           <Input
@@ -35,7 +35,7 @@ const GetStarted = () => {
             keyboardType="default"
           />
         </ScrollView>
-        <View style={styles.footer}>
+        <View style={commonStyles.footer}>
           <Button
             title="Continue"
             onPress={() => console.log('Next button pressed')}
@@ -45,23 +45,5 @@ const GetStarted = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: PADDING.general,
-  },
-  title: {
-    fontSize: FONTS.heading,
-    fontWeight: 'bold',
-    marginVertical: 40,
-  },
-  footer: {
-    borderTopColor: COLORS.borderGray,
-    borderTopWidth: 1,
-    paddingTop: PADDING.general,
-    width: '100%',
-  },
-});
 
 export default GetStarted;
