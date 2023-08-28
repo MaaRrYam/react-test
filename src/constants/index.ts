@@ -3,6 +3,7 @@ export const COLORS = {
   text: '#5c5c5c',
   black: '#000',
   borderGray: '#ccc',
+  inputBorder: '#e7e7e7',
   white: '#fff',
 };
 

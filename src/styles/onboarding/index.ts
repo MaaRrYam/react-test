@@ -5,6 +5,7 @@ export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: PADDING.general,
+    backgroundColor: COLORS.white,
   },
   title: {
     fontSize: FONTS.heading,

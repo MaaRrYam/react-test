@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   logo: {
     width: windowWidth - 180,

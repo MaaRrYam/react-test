@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {TextInput} from 'react-native-paper';
-import {COLORS} from '../../constants';
+import {TextInput, DefaultTheme} from 'react-native-paper';
+import {BORDER_RADIUS, COLORS} from '../../constants';
 
 const Input = ({
   placeholder,
@@ -18,17 +18,18 @@ const Input = ({
   keyboardType: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   style?: any;
 }) => {
-  const [, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const inputTheme = {
+    ...DefaultTheme,
     colors: {
+      ...DefaultTheme.colors,
       text: COLORS.text,
       placeholder: COLORS.text,
       primary: COLORS.text,
-      background: COLORS.white,
-      borderWidth: 1,
-      borderColor: COLORS.borderGray,
+      accent: COLORS.text,
     },
+    roundness: BORDER_RADIUS.general,
   };
 
   return (
@@ -43,6 +44,10 @@ const Input = ({
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       theme={inputTheme}
+      outlineColor={COLORS.inputBorder}
+      activeOutlineColor={COLORS.inputBorder}
+      placeholderTextColor={COLORS.text}
+      textColor={COLORS.text}
     />
   );
 };
@@ -50,8 +55,8 @@ const Input = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    paddingVertical: 10,
-    backgroundColor: 'white',
+    padding: 10,
+    backgroundColor: COLORS.white,
   },
 });
 
