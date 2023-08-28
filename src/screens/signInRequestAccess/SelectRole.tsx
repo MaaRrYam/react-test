@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import {BackButton, Button, Link, RoleCard} from 'components';
 import {COLORS, FONTS, PADDING, ROLES_DATA} from '../../constants';
+import {SelectRoleScreenProps} from 'types';
 
-const SelectRole = () => {
+const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
   const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].id);
 
   return (
@@ -31,11 +32,11 @@ const SelectRole = () => {
         <View style={styles.footer}>
           <Button
             title="Continue"
-            onPress={() => console.log('Next button pressed')}
+            onPress={() => navigation.navigate('RequestAccessComplete')}
           />
           <Link
             text="Already have an account? Sign In"
-            onPress={() => console.log('Sign In')}
+            onPress={() => navigation.navigate('SignIn')}
           />
         </View>
       </View>

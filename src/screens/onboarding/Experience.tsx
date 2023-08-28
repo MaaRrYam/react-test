@@ -3,8 +3,9 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import {BackButton, Button, ExperienceCard} from 'components';
 import {COLORS, tempExperience} from '../../constants';
 import {commonStyles} from 'styles/onboarding';
+import {ExperienceScreenProps} from 'types';
 
-const Experience = () => {
+const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [experience] = useState(tempExperience);
 
   return (
@@ -42,7 +43,7 @@ const Experience = () => {
           />
           <Button
             title="Continue"
-            onPress={() => console.log('Next button pressed')}
+            onPress={() => navigation.navigate('EmploymentStatus')}
           />
         </View>
       </View>

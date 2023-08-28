@@ -10,16 +10,21 @@ import {
 } from 'react-native';
 import {Input, Link, Button} from 'components';
 import {COLORS} from '../../constants';
+import {SignInScreenProps} from 'types';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
 
-const SignIn: React.FC = () => {
+const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = async () => {
-    console.log('Trying to Sign In');
+    navigation.navigate('SelectRole');
+  };
+
+  const handleRequestAccess = () => {
+    navigation.navigate('RequestAccess');
   };
 
   return (
@@ -64,14 +69,14 @@ const SignIn: React.FC = () => {
           />
           <Button
             title="Sign-In"
-            onPress={() => console.log('Sign In')}
+            onPress={handleSignIn}
             style={{marginVertical: 20}}
           />
         </View>
 
         <View style={styles.btnContainer}>
           <View style={styles.divider} />
-          <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+          <TouchableOpacity style={styles.button} onPress={handleRequestAccess}>
             <Text style={styles.buttonText}>
               New to the platform? Request Access
             </Text>

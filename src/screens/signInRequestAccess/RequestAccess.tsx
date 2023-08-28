@@ -2,14 +2,23 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import {BackButton, Button, Link, Input} from 'components';
 import {COLORS, FONTS, PADDING} from '../../constants';
+import {RequestAccessScreenProps} from 'types';
 
-const RequestAccess = () => {
+const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [linkedInUrl, setLinkedInUrl] = useState('');
   const [currentCompany, setCurrentCompany] = useState('');
   const [currentDesignation, setCurrentDesignation] = useState('');
   const [contactNo, setContactNo] = useState('');
+
+  const handleSubmit = () => {
+    navigation.navigate('RequestAccessComplete');
+  };
+
+  const handleSignInClick = () => {
+    navigation.navigate('SignIn');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,13 +65,10 @@ const RequestAccess = () => {
           />
         </ScrollView>
         <View style={styles.footer}>
-          <Button
-            title="Continue"
-            onPress={() => console.log('Next button pressed')}
-          />
+          <Button title="Continue" onPress={handleSubmit} />
           <Link
             text="Already have an account? Sign In"
-            onPress={() => console.log('Sign In')}
+            onPress={handleSignInClick}
           />
         </View>
       </View>

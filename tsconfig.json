@@ -13,7 +13,8 @@
       "@utils/*": ["./src/utils/*"],
       "@assets/*": ["./src/assets/*"],
       "@interfaces/*": ["./src/interfaces/index.ts"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@types": ["./src/types/index.ts"]
     }
   }
 }

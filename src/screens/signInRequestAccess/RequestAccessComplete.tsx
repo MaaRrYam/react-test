@@ -8,12 +8,27 @@ import {
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useFocusEffect} from '@react-navigation/native';
+
 import {BackButton} from 'components';
 import {PADDING} from '../../constants';
+import {RequestAccessCompleteScreenProps} from 'types';
 
 const windowWidth = Dimensions.get('window').width;
 
-const RequestAccessComplete: React.FC = () => {
+const RequestAccessComplete: React.FC<RequestAccessCompleteScreenProps> = ({
+  navigation,
+}) => {
+  useFocusEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.navigate('GetStarted');
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  });
+
   return (
     <LinearGradient colors={['#EC6570', '#F7CB94']} style={styles.gradient}>
       <SafeAreaView style={styles.container}>

@@ -4,8 +4,11 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import {BackButton, Button, EmploymentSelectionField} from 'components';
 import {employmentStatuses} from '../../constants';
 import {commonStyles} from 'styles/onboarding';
+import {EmploymentStatusScreenProps} from 'types';
 
-const EmploymentStatus = () => {
+const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
+  navigation,
+}) => {
   const [employment, setEmployment] = useState<string>(employmentStatuses[0]);
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -30,7 +33,7 @@ const EmploymentStatus = () => {
         <View style={commonStyles.footer}>
           <Button
             title="Continue"
-            onPress={() => console.log('Next button pressed')}
+            onPress={() => navigation.navigate('OnboardingCompleted')}
           />
         </View>
       </View>

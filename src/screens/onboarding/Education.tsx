@@ -3,8 +3,9 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import {BackButton, Button, EducationCard} from 'components';
 import {COLORS, tempEducation} from '../../constants';
 import {commonStyles} from 'styles/onboarding';
+import {EducationScreenProps} from 'types';
 
-const Education = () => {
+const Education: React.FC<EducationScreenProps> = ({navigation}) => {
   const [education] = useState(tempEducation);
 
   return (
@@ -43,7 +44,7 @@ const Education = () => {
           />
           <Button
             title="Continue"
-            onPress={() => console.log('Next button pressed')}
+            onPress={() => navigation.navigate('Industry')}
           />
         </View>
       </View>

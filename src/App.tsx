@@ -1,21 +1,8 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {PaperProvider} from 'react-native-paper';
+import AppNavigation from './AppNavigation';
 
-import {
-  Splash,
-  SignIn,
-  SelectRole,
-  RequestAccess,
-  RequestAccessComplete,
-  GetStarted,
-  Education,
-  Industry,
-  Experience,
-  EmploymentStatus,
-  SalaryExpectations,
-  OnboardingCompleted,
-} from 'screens';
+import {Splash} from 'screens';
 
 const App = () => {
   const [showSplash, setShowSplash] = React.useState(true);
@@ -27,32 +14,8 @@ const App = () => {
   }, []);
 
   return (
-    <PaperProvider>
-      {showSplash ? (
-        <Splash />
-      ) : (
-        <View style={styles.container}>
-          {/* <SignIn /> */}
-          {/* <SelectRole /> */}
-          {/* <RequestAccess /> */}
-          {/* <RequestAccessComplete /> */}
-          {/* <GetStarted /> */}
-          {/* <Education /> */}
-          {/* <Industry /> */}
-          {/* <Experience /> */}
-          {/* <EmploymentStatus /> */}
-          {/* <SalaryExpectations /> */}
-          <OnboardingCompleted />
-        </View>
-      )}
-    </PaperProvider>
+    <PaperProvider>{showSplash ? <Splash /> : <AppNavigation />}</PaperProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;

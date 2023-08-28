@@ -3,8 +3,9 @@ import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {BackButton, Button} from '../../components';
 import Input from '../../components/Inputs/Input';
 import {commonStyles} from 'styles/onboarding';
+import {GetStartedScreenProps} from 'types';
 
-const GetStarted = () => {
+const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
@@ -38,7 +39,7 @@ const GetStarted = () => {
         <View style={commonStyles.footer}>
           <Button
             title="Continue"
-            onPress={() => console.log('Next button pressed')}
+            onPress={() => navigation.navigate('Education')}
           />
         </View>
       </View>

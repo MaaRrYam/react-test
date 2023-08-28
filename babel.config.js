@@ -24,6 +24,7 @@ module.exports = function (api) {
             '@assets': '/src/assets',
             '@interfaces': '/src/interfaces/index.ts',
             '@styles': '/src/styles/',
+            '@types': '/src/types/index.ts',
           },
         },
       ],

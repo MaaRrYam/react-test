@@ -10,8 +10,9 @@ import {
 import {BackButton, Button} from 'components';
 import {commonStyles} from 'styles/onboarding';
 import {COLORS, industries} from '../../constants';
+import {ExperienceScreenProps} from 'types';
 
-const Industry = () => {
+const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
 
   const toggleIndustrySelection = (industry: string) => {
@@ -63,7 +64,7 @@ const Industry = () => {
         <View style={commonStyles.footer}>
           <Button
             title="Continue"
-            onPress={() => console.log('Next button pressed')}
+            onPress={() => navigation.navigate('Experience')}
           />
         </View>
       </View>
