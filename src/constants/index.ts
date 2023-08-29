@@ -2,8 +2,7 @@ export const COLORS = {
   primary: '#1918ff',
   text: '#5c5c5c',
   black: '#000',
-  borderGray: '#ccc',
-  inputBorder: '#e7e7e7',
+  border: '#e7e7e7',
   white: '#fff',
 };
 
@@ -17,7 +16,7 @@ export const FONTS = {
 };
 
 export const PADDING = {
-  general: 20,
+  general: 22,
 };
 
 export const ROLES_DATA = [

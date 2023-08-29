@@ -44,10 +44,11 @@ const Input = ({
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       theme={inputTheme}
-      outlineColor={COLORS.inputBorder}
-      activeOutlineColor={COLORS.inputBorder}
+      outlineColor={COLORS.border}
+      activeOutlineColor={COLORS.border}
       placeholderTextColor={COLORS.text}
       textColor={COLORS.text}
+      selectionColor={COLORS.text}
     />
   );
 };

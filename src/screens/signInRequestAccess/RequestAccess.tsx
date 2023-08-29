@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   footer: {
-    borderTopColor: COLORS.borderGray,
+    borderTopColor: COLORS.border,
     borderTopWidth: 1,
     paddingTop: PADDING.general,
     width: '100%',

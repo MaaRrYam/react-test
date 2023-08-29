@@ -45,7 +45,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
                     : COLORS.white,
                   borderColor: selectedIndustries.includes(industry)
                     ? COLORS.primary
-                    : COLORS.borderGray,
+                    : COLORS.border,
                 },
               ]}
               onPress={() => toggleIndustrySelection(industry)}>

@@ -35,11 +35,11 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
         <View style={commonStyles.footer}>
           <Button
             title="Add More"
-            onPress={() => console.log('Add More Button Pressed')}
+            onPress={() => console.log('Experience Add More Button Pressed')}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
             borderWidth={1}
-            borderColor={COLORS.borderGray}
+            borderColor={COLORS.border}
           />
           <Button
             title="Continue"

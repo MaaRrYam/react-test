@@ -21,7 +21,7 @@ const Link = ({
 const styles = StyleSheet.create({
   text: {
     color: COLORS.text,
-    borderBottomColor: COLORS.borderGray,
+    borderBottomColor: COLORS.border,
     borderBottomWidth: 1,
     fontSize: FONTS.text,
     textAlign: 'center',

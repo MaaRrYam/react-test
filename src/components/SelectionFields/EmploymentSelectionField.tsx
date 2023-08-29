@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 10,
     borderRadius: BORDER_RADIUS.general,
-    borderColor: COLORS.borderGray,
+    borderColor: COLORS.border,
     borderWidth: 1,
   },
   selectedField: {

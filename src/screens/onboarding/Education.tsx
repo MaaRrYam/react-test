@@ -40,7 +40,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
             borderWidth={1}
-            borderColor={COLORS.borderGray}
+            borderColor={COLORS.border}
           />
           <Button
             title="Continue"

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: COLORS.borderGray,
+    borderColor: COLORS.border,
   },
   selectedCard: {
     borderColor: COLORS.primary,
