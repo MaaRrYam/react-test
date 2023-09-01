@@ -29,6 +29,7 @@ export interface ButtonProps {
   borderColor?: string;
   icon?: any;
   iconPosition?: string;
+  disabled?: boolean;
 }
 
 export interface ExperienceCardProps {
@@ -44,4 +45,15 @@ export interface ExperienceCardProps {
 export interface CardWrapperProps {
   children: React.ReactNode;
   onPress?: Function;
+}
+
+export interface InputProps {
+  placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  style?: any;
+  secureTextEntry?: boolean;
+  keyboardType?: 'numeric' | 'default';
+  error?: string;
+  touched?: boolean;
 }

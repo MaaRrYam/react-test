@@ -25,6 +25,9 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
     }
   };
 
+  const handleSubmit = () => {
+    navigation.navigate('Experience');
+  };
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
@@ -64,7 +67,8 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
       <View style={commonStyles.footer}>
         <Button
           title="Continue"
-          onPress={() => navigation.navigate('Experience')}
+          onPress={handleSubmit}
+          disabled={!selectedIndustries.length}
         />
       </View>
     </SafeAreaView>

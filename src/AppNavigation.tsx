@@ -13,7 +13,8 @@ import {
   EmploymentStatus,
   SalaryExpectations,
   OnboardingCompleted,
-} from 'screens';
+  Home,
+} from './screens';
 import {StyleSheet, View} from 'react-native';
 import {COLORS} from './constants';
 
@@ -44,6 +45,8 @@ const AppNavigation = () => {
             name="OnboardingCompleted"
             component={OnboardingCompleted}
           />
+
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

@@ -10,12 +10,13 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {Button} from 'components';
 import {COLORS} from '../../constants';
+import {HomeScreenProps} from 'types';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const containerWidth = windowWidth - 50;
 
-const OnboardingCompleted: React.FC = () => {
+const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
   return (
     <LinearGradient colors={['#2356F6', '#6EF0D3']} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
@@ -39,7 +40,7 @@ const OnboardingCompleted: React.FC = () => {
         <View style={styles.btnContainer}>
           <Button
             title="Explore CareerNetwork.co"
-            onPress={() => console.log('Explore')}
+            onPress={() => navigation.navigate('Home')}
             textColor={COLORS.black}
             backgroundColor={COLORS.white}
             icon="arrow-right"

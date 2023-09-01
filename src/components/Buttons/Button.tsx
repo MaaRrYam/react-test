@@ -1,7 +1,7 @@
 import {ButtonProps} from 'interfaces';
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icon library
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icon library;
 
 const Button: React.FC<ButtonProps> = ({
   title,
@@ -13,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   borderColor = 'transparent',
   icon = null,
   iconPosition = 'left',
+  disabled = false,
 }) => {
   const renderButtonContent = () => {
     if (iconPosition === 'left') {
@@ -54,12 +55,13 @@ const Button: React.FC<ButtonProps> = ({
     <TouchableOpacity
       style={[
         styles.button,
-        {backgroundColor},
+        {backgroundColor: disabled ? 'gray' : backgroundColor},
         {borderWidth},
         {borderColor},
         style,
       ]}
-      onPress={onPress}>
+      onPress={onPress}
+      disabled={disabled}>
       {renderButtonContent()}
     </TouchableOpacity>
   );

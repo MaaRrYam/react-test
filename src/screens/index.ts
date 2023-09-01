@@ -10,3 +10,4 @@ export {default as Experience} from 'screens/onboarding/Experience';
 export {default as EmploymentStatus} from 'screens/onboarding/EmploymentStatus';
 export {default as SalaryExpectations} from 'screens/onboarding/SalaryExpectations';
 export {default as OnboardingCompleted} from 'screens/onboarding/OnboardingCompleted';
+export {default as Home} from 'screens/home';

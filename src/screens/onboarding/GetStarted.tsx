@@ -1,14 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
-import {BackButton, Button} from '../../components';
-import Input from '../../components/Inputs/Input';
+import {BackButton, Button, Input} from '../../components';
 import {commonStyles} from 'styles/onboarding';
 import {GetStartedScreenProps} from 'types';
+import {useFormik} from 'formik';
+import {getStartedSchema} from 'utils/schemas';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
-  const [username, setUsername] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
+  const initialValues = {
+    username: '',
+    city: '',
+    state: '',
+  };
+
+  const {values, touched, errors, handleChange, handleSubmit} = useFormik({
+    initialValues,
+    validationSchema: getStartedSchema,
+    onSubmit: values => {
+      console.log(values);
+      navigation.navigate('Education');
+    },
+  });
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -18,17 +30,28 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
 
         <Input
           placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
+          value={values.username}
+          onChangeText={handleChange('username')}
+          touched={touched.username}
+          error={errors.username}
         />
-        <Input placeholder="City" value={city} onChangeText={setCity} />
-        <Input placeholder="State" value={state} onChangeText={setState} />
+        <Input
+          placeholder="City"
+          value={values.city}
+          onChangeText={handleChange('city')}
+          touched={touched.city}
+          error={errors.city}
+        />
+        <Input
+          placeholder="State"
+          value={values.state}
+          onChangeText={handleChange('state')}
+          touched={touched.state}
+          error={errors.state}
+        />
       </View>
       <View style={commonStyles.footer}>
-        <Button
-          title="Continue"
-          onPress={() => navigation.navigate('Education')}
-        />
+        <Button title="Continue" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

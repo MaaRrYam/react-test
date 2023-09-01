@@ -1,21 +1,17 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Animated} from 'react-native';
-import {COLORS} from '../../constants';
+import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
+import {COLORS, FONTS} from '../../constants';
+import {InputProps} from 'interfaces';
 
-const Input = ({
+const Input: React.FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,
   style,
   secureTextEntry,
   keyboardType,
-}: {
-  placeholder: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  style?: any;
-  secureTextEntry?: boolean;
-  keyboardType?: 'numeric' | 'default';
+  error,
+  touched,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -61,18 +57,25 @@ const Input = ({
     }),
   };
 
+  const inputContainerStyle = {
+    borderColor: error ? 'red' : COLORS.border,
+  };
+
   return (
-    <View style={[styles.container, style]}>
-      <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
-      <TextInput
-        value={value}
-        onChangeText={handleTextChange}
-        style={styles.input}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        secureTextEntry={secureTextEntry}
-        keyboardType={keyboardType}
-      />
+    <View>
+      <View style={[styles.container, style, inputContainerStyle]}>
+        <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
+        <TextInput
+          value={value}
+          onChangeText={handleTextChange}
+          style={styles.input}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          secureTextEntry={secureTextEntry}
+          keyboardType={keyboardType}
+        />
+      </View>
+      {touched && error && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };
@@ -83,13 +86,18 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: COLORS.border,
     position: 'relative',
   },
   input: {
     paddingHorizontal: 12,
     paddingVertical: 8,
     fontSize: 16,
+  },
+  error: {
+    fontSize: FONTS.bodySmall,
+    color: 'red',
+    marginTop: -10,
+    marginLeft: 12,
   },
 });
 

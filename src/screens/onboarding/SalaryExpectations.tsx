@@ -1,16 +1,31 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 
 import {BackButton, Button, Input} from 'components';
 import {commonStyles} from 'styles/onboarding';
 import {SalaryExpectationsScreenProps} from 'types';
+import {salaryExpectationsSchema} from 'utils/schemas';
+import {useFormik} from 'formik';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
 }) => {
-  const [minimumSalary, setMinimumSalary] = useState<string>('');
-  const [baseSalary, setBaseSalary] = useState<string>('');
-  const [totalCompensation, setTotalCompensation] = useState<string>('');
+  const handleSubmitSalary = values => {
+    console.log(values);
+    navigation.navigate('OnboardingCompleted');
+  };
+
+  const {values, touched, handleChange, handleSubmit, errors} = useFormik({
+    initialValues: {
+      minimumSalary: '',
+      baseSalary: '',
+      totalCompensation: '',
+    },
+    validationSchema: salaryExpectationsSchema,
+    onSubmit: values => {
+      handleSubmitSalary(values);
+    },
+  });
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -23,29 +38,32 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
         <ScrollView>
           <Input
             placeholder="Minimum Salary Expectations"
-            value={minimumSalary}
-            onChangeText={setMinimumSalary}
+            value={values.minimumSalary}
+            onChangeText={handleChange('minimumSalary')}
             keyboardType="numeric"
+            touched={touched.minimumSalary}
+            error={errors.minimumSalary}
           />
           <Input
             placeholder="Base Salary"
-            value={baseSalary}
-            onChangeText={setBaseSalary}
+            value={values.baseSalary}
+            touched={touched.baseSalary}
+            error={errors.baseSalary}
+            onChangeText={handleChange('baseSalary')}
             keyboardType="numeric"
           />
           <Input
             placeholder="Total Compensation"
-            value={totalCompensation}
-            onChangeText={setTotalCompensation}
+            value={values.totalCompensation}
+            onChangeText={handleChange('totalCompensation')}
             keyboardType="numeric"
+            touched={touched.totalCompensation}
+            error={errors.totalCompensation}
           />
         </ScrollView>
       </View>
       <View style={commonStyles.footer}>
-        <Button
-          title="Continue"
-          onPress={() => navigation.navigate('OnboardingCompleted')}
-        />
+        <Button title="Continue" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Image,
@@ -11,15 +11,26 @@ import {
 import {Input, Link, Button} from 'components';
 import {COLORS} from '../../constants';
 import {SignInScreenProps} from 'types';
+import {useFormik} from 'formik';
+import {signInSchema} from 'utils/schemas';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
 
 const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const {values, touched, handleChange, handleSubmit, errors} = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: signInSchema,
+    onSubmit: values => {
+      handleSignIn(values);
+    },
+  });
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (values: {username: string; password: string}) => {
+    console.log(values);
     navigation.navigate('SelectRole');
   };
 
@@ -49,26 +60,28 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
           <View style={styles.inputContainer}>
             <Input
               placeholder="Username"
-              value={username}
-              onChangeText={setUserName}
+              value={values.username}
+              onChangeText={handleChange('username')}
+              touched={touched.username}
+              error={errors.username}
             />
             <Input
               placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
+              value={values.password}
+              onChangeText={handleChange('password')}
+              touched={touched.password}
+              error={errors.password}
               secureTextEntry
             />
           </View>
           <Link
             text="Forgot Password"
             onPress={() => console.log('ForgotPassword')}
-            style={{
-              textAlign: 'right',
-            }}
+            style={{textAlign: 'right'}}
           />
           <Button
             title="Sign-In"
-            onPress={handleSignIn}
+            onPress={handleSubmit}
             style={{marginVertical: 20}}
           />
         </View>

@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   company: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: COLORS.black,
   },
   designation: {
     fontSize: 16,
