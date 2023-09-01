@@ -1,5 +1,4 @@
 import React from 'react';
-import {PaperProvider} from 'react-native-paper';
 import AppNavigation from './AppNavigation';
 
 import {Splash} from 'screens';
@@ -13,9 +12,7 @@ const App = () => {
     }, 2000);
   }, []);
 
-  return (
-    <PaperProvider>{showSplash ? <Splash /> : <AppNavigation />}</PaperProvider>
-  );
+  return <>{showSplash ? <Splash /> : <AppNavigation />}</>;
 };
 
 export default App;

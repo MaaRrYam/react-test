@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 
-import {COLORS} from '../../constants';
+import {COLORS, FONTS} from '../../constants';
 import {EducationCardProps} from 'interfaces';
 import CardWrapper from './CardWrapper';
 
@@ -20,7 +20,7 @@ const EducationCard = ({
       <Text style={styles.instituteName}>{instituteName}</Text>
       <Text style={styles.degree}>{degree}</Text>
       <View style={styles.thirdLine}>
-        <Text style={styles.cgpa}>{cgpa || ' '}</Text>
+        <Text style={styles.cgpa}>{cgpa || ' '} CGPA</Text>
         <Text style={styles.dateRange}>
           {`${startingYear} - ${currentlyWorking ? 'Present' : endingYear}`}
         </Text>
@@ -31,10 +31,11 @@ const EducationCard = ({
 
 const styles = StyleSheet.create({
   instituteName: {
-    fontSize: 16,
+    fontSize: FONTS.bodyRegular,
+    color: COLORS.black,
   },
   degree: {
-    fontSize: 16,
+    fontSize: FONTS.bodySmall,
     color: COLORS.text,
     marginTop: 5,
   },
@@ -44,10 +45,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   cgpa: {
-    fontSize: 16,
+    fontSize: FONTS.bodySmall,
+    color: COLORS.text,
   },
   dateRange: {
-    fontSize: 16,
+    fontSize: FONTS.bodySmall,
+    color: COLORS.text,
   },
 });
 

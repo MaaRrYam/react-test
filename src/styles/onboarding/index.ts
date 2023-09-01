@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {COLORS, PADDING, FONTS} from '../../constants';
 
 export const commonStyles = StyleSheet.create({
@@ -8,14 +8,16 @@ export const commonStyles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   title: {
-    fontSize: FONTS.heading,
+    fontSize: FONTS.title,
     fontWeight: 'bold',
-    marginVertical: 40,
+    marginVertical: 30,
+    color: COLORS.black,
   },
   footer: {
     borderTopColor: COLORS.border,
     borderTopWidth: 1,
     paddingTop: PADDING.general,
     width: '100%',
+    paddingHorizontal: Platform.OS === 'ios' ? PADDING.general : 0,
   },
 });

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {BackButton, Button} from 'components';
 import {commonStyles} from 'styles/onboarding';
-import {COLORS, industries} from '../../constants';
+import {COLORS, MARGINS, industries} from '../../constants';
 import {ExperienceScreenProps} from 'types';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
@@ -60,13 +60,12 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-
-        <View style={commonStyles.footer}>
-          <Button
-            title="Continue"
-            onPress={() => navigation.navigate('Experience')}
-          />
-        </View>
+      </View>
+      <View style={commonStyles.footer}>
+        <Button
+          title="Continue"
+          onPress={() => navigation.navigate('Experience')}
+        />
       </View>
     </SafeAreaView>
   );
@@ -74,7 +73,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   industryScrollView: {
-    marginBottom: 20,
+    marginBottom: MARGINS.general,
   },
   industryList: {
     flexDirection: 'row',

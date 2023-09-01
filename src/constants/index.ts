@@ -1,9 +1,13 @@
+import {Platform} from 'react-native';
+
 export const COLORS = {
   primary: '#1918ff',
-  text: '#5c5c5c',
+  text: '#5f5f5f',
   black: '#000',
   border: '#e7e7e7',
   white: '#fff',
+  lightBackground: '#F4F4F4',
+  lightBlueBackground: '#EDF0FF',
 };
 
 export const BORDER_RADIUS = {
@@ -13,10 +17,20 @@ export const BORDER_RADIUS = {
 export const FONTS = {
   text: 16,
   heading: 32,
+  smallLabel: 12,
+  regularLabel: 14,
+  largeLabel: 16,
+  bodySmall: 12,
+  bodyRegular: 14,
+  title: 32,
+};
+
+export const MARGINS = {
+  general: 20,
 };
 
 export const PADDING = {
-  general: 22,
+  general: Platform.OS === 'ios' ? 20 : 12,
 };
 
 export const ROLES_DATA = [

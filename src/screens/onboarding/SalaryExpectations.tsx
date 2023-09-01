@@ -3,8 +3,11 @@ import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 
 import {BackButton, Button, Input} from 'components';
 import {commonStyles} from 'styles/onboarding';
+import {SalaryExpectationsScreenProps} from 'types';
 
-const SalaryExpectations = () => {
+const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
+  navigation,
+}) => {
   const [minimumSalary, setMinimumSalary] = useState<string>('');
   const [baseSalary, setBaseSalary] = useState<string>('');
   const [totalCompensation, setTotalCompensation] = useState<string>('');
@@ -37,12 +40,12 @@ const SalaryExpectations = () => {
             keyboardType="numeric"
           />
         </ScrollView>
-        <View style={commonStyles.footer}>
-          <Button
-            title="Continue"
-            onPress={() => console.log('Next button pressed')}
-          />
-        </View>
+      </View>
+      <View style={commonStyles.footer}>
+        <Button
+          title="Continue"
+          onPress={() => navigation.navigate('OnboardingCompleted')}
+        />
       </View>
     </SafeAreaView>
   );

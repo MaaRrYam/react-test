@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {BackButton, Button, Link, Input} from 'components';
-import {COLORS, FONTS, PADDING} from '../../constants';
 import {RequestAccessScreenProps} from 'types';
+import {commonStyles} from 'styles/onboarding';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
   const [name, setName] = useState('');
@@ -21,10 +21,10 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
+      <View style={commonStyles.container}>
         <BackButton onPress={() => console.log('Back button pressed')} />
-        <Text style={styles.title}>Request Access</Text>
+        <Text style={commonStyles.title}>Request Access</Text>
 
         <ScrollView>
           <Input
@@ -64,7 +64,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
             keyboardType="phone-pad"
           />
         </ScrollView>
-        <View style={styles.footer}>
+        <View style={commonStyles.footer}>
           <Button title="Continue" onPress={handleSubmit} />
           <Link
             text="Already have an account? Sign In"
@@ -75,23 +75,5 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: PADDING.general,
-  },
-  title: {
-    fontSize: FONTS.heading,
-    fontWeight: 'bold',
-    marginTop: 40,
-  },
-  footer: {
-    borderTopColor: COLORS.border,
-    borderTopWidth: 1,
-    paddingTop: PADDING.general,
-    width: '100%',
-  },
-});
 
 export default RequestAccess;

@@ -21,10 +21,11 @@ const Link = ({
 const styles = StyleSheet.create({
   text: {
     color: COLORS.text,
-    borderBottomColor: COLORS.border,
-    borderBottomWidth: 1,
     fontSize: FONTS.text,
     textAlign: 'center',
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#000',
   },
 });
 

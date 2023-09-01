@@ -1,6 +1,7 @@
 import {ButtonProps} from 'interfaces';
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icon library
 
 const Button: React.FC<ButtonProps> = ({
   title,
@@ -10,7 +11,45 @@ const Button: React.FC<ButtonProps> = ({
   textColor = 'white',
   borderWidth = 0,
   borderColor = 'transparent',
+  icon = null,
+  iconPosition = 'left',
 }) => {
+  const renderButtonContent = () => {
+    if (iconPosition === 'left') {
+      return (
+        <View style={styles.buttonContent}>
+          {icon && (
+            <FontAwesome5
+              name={icon}
+              size={20}
+              color={textColor}
+              style={styles.icon}
+            />
+          )}
+          <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
+        </View>
+      );
+    } else if (iconPosition === 'right') {
+      return (
+        <View style={styles.buttonContent}>
+          <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
+          {icon && (
+            <FontAwesome5
+              name={icon}
+              size={20}
+              color={textColor}
+              style={styles.icon}
+            />
+          )}
+        </View>
+      );
+    } else {
+      return (
+        <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
+      );
+    }
+  };
+
   return (
     <TouchableOpacity
       style={[
@@ -21,7 +60,7 @@ const Button: React.FC<ButtonProps> = ({
         style,
       ]}
       onPress={onPress}>
-      <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
+      {renderButtonContent()}
     </TouchableOpacity>
   );
 };
@@ -36,6 +75,14 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    marginHorizontal: 10,
   },
 });
 

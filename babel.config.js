@@ -4,9 +4,7 @@ module.exports = function (api) {
   return {
     presets: ['module:metro-react-native-babel-preset'],
     env: {
-      production: {
-        plugins: ['react-native-paper/babel'],
-      },
+      production: {},
     },
     plugins: [
       [

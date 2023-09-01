@@ -31,21 +31,20 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
           )}
           keyExtractor={item => item.id.toString()}
         />
-
-        <View style={commonStyles.footer}>
-          <Button
-            title="Add More"
-            onPress={() => console.log('Experience Add More Button Pressed')}
-            backgroundColor={COLORS.white}
-            textColor={COLORS.black}
-            borderWidth={1}
-            borderColor={COLORS.border}
-          />
-          <Button
-            title="Continue"
-            onPress={() => navigation.navigate('EmploymentStatus')}
-          />
-        </View>
+      </View>
+      <View style={commonStyles.footer}>
+        <Button
+          title="Add More"
+          onPress={() => console.log('Experience Add More Button Pressed')}
+          backgroundColor={COLORS.white}
+          textColor={COLORS.black}
+          borderWidth={1}
+          borderColor={COLORS.border}
+        />
+        <Button
+          title="Continue"
+          onPress={() => navigation.navigate('EmploymentStatus')}
+        />
       </View>
     </SafeAreaView>
   );

@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E7E7E7',
     width: 50,
-    borderRadius: 8,
+    borderRadius: 12,
   },
   whiteBackground: {
     backgroundColor: 'white',
   },
   icon: {
-    width: 25,
-    height: 25,
+    width: 24,
+    height: 24,
   },
 });
 

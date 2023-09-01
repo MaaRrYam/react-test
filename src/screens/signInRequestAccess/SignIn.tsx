@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
   SafeAreaView,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {Input, Link, Button} from 'components';
 import {COLORS} from '../../constants';
@@ -28,8 +28,10 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.gradient}>
-      <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <SafeAreaView style={styles.safeArea}>
         <View style={styles.imagesContainer}>
           <Image
             source={require('assets/images/logo.png')}
@@ -49,21 +51,18 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
               placeholder="Username"
               value={username}
               onChangeText={setUserName}
-              keyboardType="default"
             />
             <Input
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
-              keyboardType="default"
+              secureTextEntry
             />
           </View>
           <Link
             text="Forgot Password"
             onPress={() => console.log('ForgotPassword')}
             style={{
-              fontSize: 14,
-              color: COLORS.black,
               textAlign: 'right',
             }}
           />
@@ -76,32 +75,35 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
 
         <View style={styles.btnContainer}>
           <View style={styles.divider} />
-          <TouchableOpacity style={styles.button} onPress={handleRequestAccess}>
-            <Text style={styles.buttonText}>
-              New to the platform? Request Access
-            </Text>
-          </TouchableOpacity>
+          <Link
+            text="New to the platform? Request Access"
+            onPress={handleRequestAccess}
+          />
         </View>
       </SafeAreaView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingBottom: Platform.OS === 'ios' ? 20 : 30,
+  },
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: containerWidth,
-    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    backgroundColor: COLORS.white,
   },
   imagesContainer: {
-    height: '30%',
-    alignItems: 'center',
-  },
-  gradient: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    maxHeight: '45%',
   },
   logo: {
     width: windowWidth - 180,
@@ -131,7 +133,12 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
   },
-  divider: {},
+  divider: {
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    marginBottom: 10,
+  },
 });
 
 export default SignIn;

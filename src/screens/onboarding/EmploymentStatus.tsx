@@ -30,12 +30,12 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
           )}
           keyExtractor={item => item}
         />
-        <View style={commonStyles.footer}>
-          <Button
-            title="Continue"
-            onPress={() => navigation.navigate('OnboardingCompleted')}
-          />
-        </View>
+      </View>
+      <View style={commonStyles.footer}>
+        <Button
+          title="Continue"
+          onPress={() => navigation.navigate('SalaryExpectations')}
+        />
       </View>
     </SafeAreaView>
   );

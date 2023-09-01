@@ -38,10 +38,12 @@ const OnboardingCompleted: React.FC = () => {
 
         <View style={styles.btnContainer}>
           <Button
-            title="Explore CareerNetwork.co ->"
+            title="Explore CareerNetwork.co"
             onPress={() => console.log('Explore')}
             textColor={COLORS.black}
             backgroundColor={COLORS.white}
+            icon="arrow-right"
+            iconPosition="right"
             style={styles.button}
           />
         </View>

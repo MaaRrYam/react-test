@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-import {BORDER_RADIUS, COLORS} from '../../constants';
+import {BORDER_RADIUS, COLORS, MARGINS, PADDING} from '../../constants';
 import {CardWrapperProps} from 'interfaces';
 
 const CardWrapper: React.FC<CardWrapperProps> = ({children}) => {
@@ -11,8 +11,8 @@ const CardWrapper: React.FC<CardWrapperProps> = ({children}) => {
 const styles = StyleSheet.create({
   card: {
     borderRadius: BORDER_RADIUS.general,
-    padding: 20,
-    marginBottom: 20,
+    padding: PADDING.general,
+    marginBottom: MARGINS.general,
     borderWidth: 1,
     borderColor: COLORS.border,
   },

@@ -27,6 +27,8 @@ export interface ButtonProps {
   textColor?: string;
   borderWidth?: number;
   borderColor?: string;
+  icon?: any;
+  iconPosition?: string;
 }
 
 export interface ExperienceCardProps {
