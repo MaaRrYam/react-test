@@ -1,7 +1,7 @@
 import React from 'react';
-import AppNavigation from './AppNavigation';
-
-import {Splash} from 'screens';
+import {Splash} from './screens';
+import './config/firebase';
+import RootNavigation from './navigation';
 
 const App = () => {
   const [showSplash, setShowSplash] = React.useState(true);
@@ -12,7 +12,7 @@ const App = () => {
     }, 2000);
   }, []);
 
-  return <>{showSplash ? <Splash /> : <AppNavigation />}</>;
+  return <>{showSplash ? <Splash /> : <RootNavigation />}</>;
 };
 
 export default App;

@@ -7,7 +7,10 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+
 import {Input, Link, Button} from 'components';
 import {COLORS} from '../../constants';
 import {SignInScreenProps} from 'types';
@@ -17,10 +20,25 @@ import {signInSchema} from 'utils/schemas';
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
 
+const auth = getAuth();
+
 const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
+  const handleSignIn = async (values: {email: string; password: string}) => {
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      navigation.navigate('SelectRole');
+    } catch (error: any) {
+      if (error.message === 'Firebase: Error (auth/user-not-found).') {
+        Alert.alert('User not Found');
+      } else {
+        Alert.alert('Invalid Email or Password');
+      }
+    }
+  };
+
   const {values, touched, handleChange, handleSubmit, errors} = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
     validationSchema: signInSchema,
@@ -28,11 +46,6 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
       handleSignIn(values);
     },
   });
-
-  const handleSignIn = async (values: {username: string; password: string}) => {
-    console.log(values);
-    navigation.navigate('SelectRole');
-  };
 
   const handleRequestAccess = () => {
     navigation.navigate('RequestAccess');
@@ -59,11 +72,11 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
         <View>
           <View style={styles.inputContainer}>
             <Input
-              placeholder="Username"
-              value={values.username}
-              onChangeText={handleChange('username')}
-              touched={touched.username}
-              error={errors.username}
+              placeholder="Email"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              touched={touched.email}
+              error={errors.email}
             />
             <Input
               placeholder="Password"

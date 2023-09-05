@@ -15,7 +15,8 @@
       "@assets/*": ["./src/assets/*"],
       "@interfaces/*": ["./src/interfaces/index.ts"],
       "@styles/*": ["./src/styles/*"],
-      "@types": ["./src/types/index.ts"]
+      "@types": ["./src/types/index.ts"],
+      "@navigation/*": ["./src/navigation/*"]
     }
   }
 }

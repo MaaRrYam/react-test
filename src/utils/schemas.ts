@@ -7,7 +7,9 @@ export const getStartedSchema = Yup.object().shape({
 });
 
 export const signInSchema = Yup.object().shape({
-  username: Yup.string().required('Username is required'),
+  email: Yup.string()
+    .email('Please Enter a valid Email')
+    .required('Email is required'),
   password: Yup.string()
     .min(3, 'Password must be at least 3 characters long')
     .max(24, 'Password must be less than 24 characters')

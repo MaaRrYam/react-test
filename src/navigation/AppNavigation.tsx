@@ -14,9 +14,9 @@ import {
   SalaryExpectations,
   OnboardingCompleted,
   Home,
-} from './screens';
+} from '../screens';
 import {StyleSheet, View} from 'react-native';
-import {COLORS} from './constants';
+import {COLORS} from '../constants';
 
 const Stack = createNativeStackNavigator();
 

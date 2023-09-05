@@ -23,6 +23,7 @@ module.exports = function (api) {
             '@interfaces': '/src/interfaces/index.ts',
             '@styles': '/src/styles/',
             '@types': '/src/types/index.ts',
+            '@navigation/*': './src/navigation',
           },
         },
       ],
