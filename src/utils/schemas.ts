@@ -41,7 +41,7 @@ export const requestAccessSchema = Yup.object().shape({
     .required('Email is required'),
   currentCompany: Yup.string().required('Current Company is Required'),
   currentDesignation: Yup.string().required('Designation is Required'),
-  contactNo: Yup.string()
+  phoneNo: Yup.string()
     .required('Contact Number is required')
     .matches(
       /^(?:\+\d{1,3}\s?)?(?:\d{10}|\d{3}-\d{3}-\d{4}|\(\d{3}\)\s?\d{3}-\d{4})$/,

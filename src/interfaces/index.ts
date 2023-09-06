@@ -1,3 +1,4 @@
+import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {StyleProp, ViewStyle} from 'react-native';
 
 export interface EducationCardProps {
@@ -79,4 +80,30 @@ export interface StorageServiceProps {
   getItem<T>(key: string): Promise<T | null>;
   removeItem(key: string): Promise<void>;
   nuke(): Promise<void>;
+}
+export interface FirebaseServiceProps {
+  addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  getAllDocuments(collectionName: string): Promise<DocumentData[]>;
+  getDocumentsByQuery(
+    collectionName: string,
+    field: string,
+    operator: WhereFilterOp,
+    value: any,
+  ): Promise<DocumentData[]>;
+  checkDuplicateRequest(
+    collectionName: string,
+    fieldName: string,
+    value: any,
+  ): Promise<boolean>;
+  serverTimestamp(): Timestamp;
+  generateUniqueId(): string;
+}
+
+export interface requestAccessFormValues {
+  name: string;
+  email: string;
+  linkedInUrl: string;
+  currentCompany: string;
+  currentDesignation: string;
+  phoneNo: string;
 }

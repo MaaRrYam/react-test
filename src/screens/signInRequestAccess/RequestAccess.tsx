@@ -1,28 +1,47 @@
 import React from 'react';
-import {View, Text, SafeAreaView, ScrollView} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView, Alert} from 'react-native';
 import {useFormik} from 'formik';
 
 import {BackButton, Button, Link, Input} from '@/components';
 import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {requestAccessSchema} from '@/utils/schemas';
+import {requestAccessFormValues} from '@/interfaces';
+import {submitRequestAccess} from '@/services/onboarding';
+import {COLORS} from '@/constants';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
-  const {values, touched, handleChange, handleSubmit, errors, setFieldTouched} =
-    useFormik({
-      initialValues: {
-        name: '',
-        email: '',
-        linkedInUrl: '',
-        currentCompany: '',
-        currentDesignation: '',
-        contactNo: '',
-      },
-      validationSchema: requestAccessSchema,
-      onSubmit: formValues => {
-        console.log(formValues);
-      },
-    });
+  const {
+    values,
+    touched,
+    handleChange,
+    handleSubmit,
+    errors,
+    setFieldTouched,
+    isSubmitting,
+    setSubmitting,
+  } = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      linkedInUrl: '',
+      currentCompany: '',
+      currentDesignation: '',
+      phoneNo: '',
+    },
+    validationSchema: requestAccessSchema,
+    onSubmit: formValues => {
+      handleSubmitRequestAccess(formValues);
+    },
+  });
+
+  const handleSubmitRequestAccess = async (
+    formValues: requestAccessFormValues,
+  ) => {
+    const data = await submitRequestAccess(formValues);
+    Alert.alert(data.message);
+    setSubmitting(false);
+  };
 
   const handleSignInClick = () => {
     navigation.navigate('SignIn');
@@ -83,17 +102,22 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
           />
           <Input
             placeholder="Contact Number"
-            value={values.contactNo}
-            onChangeText={handleChange('contactNo')}
+            value={values.phoneNo}
+            onChangeText={handleChange('phoneNo')}
             keyboardType="numeric"
-            touched={touched.contactNo}
-            error={errors.contactNo}
-            name="contactNo"
+            touched={touched.phoneNo}
+            error={errors.phoneNo}
+            name="phoneNo"
             setFieldTouched={setFieldTouched}
           />
         </ScrollView>
         <View style={commonStyles.footer}>
-          <Button title="Continue" onPress={handleSubmit} />
+          <Button
+            title="Continue"
+            onPress={handleSubmit}
+            isLoading={isSubmitting}
+            activityIndicatorColor={COLORS.white}
+          />
           <Link
             text="Already have an account? Sign In"
             onPress={handleSignInClick}
