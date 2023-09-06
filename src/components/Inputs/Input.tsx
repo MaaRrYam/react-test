@@ -12,6 +12,8 @@ const Input: React.FC<InputProps> = ({
   keyboardType,
   error,
   touched,
+  name,
+  setFieldTouched,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -26,6 +28,9 @@ const Input: React.FC<InputProps> = ({
   };
 
   const handleBlur = () => {
+    if (name && setFieldTouched) {
+      setFieldTouched(name, true);
+    }
     if (!value) {
       setIsFocused(false);
       Animated.timing(animatedIsFocused, {
@@ -58,7 +63,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   const inputContainerStyle = {
-    borderColor: error ? 'red' : COLORS.border,
+    borderColor: touched && error ? 'red' : COLORS.border,
   };
 
   return (

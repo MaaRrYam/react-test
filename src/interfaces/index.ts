@@ -30,6 +30,9 @@ export interface ButtonProps {
   icon?: any;
   iconPosition?: string;
   disabled?: boolean;
+  isLoading?: boolean;
+  activityIndicatorSize?: 'small' | 'large';
+  activityIndicatorColor?: string;
 }
 
 export interface ExperienceCardProps {
@@ -56,4 +59,8 @@ export interface InputProps {
   keyboardType?: 'numeric' | 'default';
   error?: string;
   touched?: boolean;
+  onBlur?: Function;
+  name?: string;
+  setFieldTouched?: any;
+  setFieldValue?: any;
 }

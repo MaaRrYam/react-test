@@ -1,7 +1,16 @@
-import {ButtonProps} from 'interfaces';
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icon library;
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+import {COLORS} from '../../constants';
+import {ButtonProps} from 'interfaces';
 
 const Button: React.FC<ButtonProps> = ({
   title,
@@ -14,8 +23,19 @@ const Button: React.FC<ButtonProps> = ({
   icon = null,
   iconPosition = 'left',
   disabled = false,
+  isLoading = false,
+  activityIndicatorSize = 'small',
+  activityIndicatorColor = COLORS.primary,
 }) => {
   const renderButtonContent = () => {
+    if (isLoading) {
+      return (
+        <ActivityIndicator
+          size={activityIndicatorSize}
+          color={activityIndicatorColor}
+        />
+      );
+    }
     if (iconPosition === 'left') {
       return (
         <View style={styles.buttonContent}>

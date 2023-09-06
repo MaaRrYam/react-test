@@ -23,6 +23,26 @@ const containerWidth = windowWidth - 50;
 const auth = getAuth();
 
 const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
+  const {
+    values,
+    touched,
+    handleChange,
+    handleSubmit,
+    errors,
+    setFieldTouched,
+    isSubmitting,
+    setSubmitting,
+  } = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: signInSchema,
+    onSubmit: values => {
+      handleSignIn(values);
+    },
+  });
+
   const handleSignIn = async (values: {email: string; password: string}) => {
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
@@ -33,19 +53,10 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
       } else {
         Alert.alert('Invalid Email or Password');
       }
+    } finally {
+      setSubmitting(false);
     }
   };
-
-  const {values, touched, handleChange, handleSubmit, errors} = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: signInSchema,
-    onSubmit: values => {
-      handleSignIn(values);
-    },
-  });
 
   const handleRequestAccess = () => {
     navigation.navigate('RequestAccess');
@@ -77,6 +88,8 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
               onChangeText={handleChange('email')}
               touched={touched.email}
               error={errors.email}
+              name="email"
+              setFieldTouched={setFieldTouched}
             />
             <Input
               placeholder="Password"
@@ -85,6 +98,8 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
               touched={touched.password}
               error={errors.password}
               secureTextEntry
+              name="password"
+              setFieldTouched={setFieldTouched}
             />
           </View>
           <Link
@@ -96,6 +111,8 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
             title="Sign-In"
             onPress={handleSubmit}
             style={{marginVertical: 20}}
+            isLoading={isSubmitting}
+            activityIndicatorColor={COLORS.white}
           />
         </View>
 
