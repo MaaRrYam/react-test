@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {BackButton, Button} from 'components';
-import {commonStyles} from 'styles/onboarding';
-import {COLORS, MARGINS, industries} from '../../constants';
-import {ExperienceScreenProps} from 'types';
+
+import {BackButton, Button} from '@/components';
+import {commonStyles} from '@/styles/onboarding';
+import {COLORS, MARGINS, industries} from '@/constants';
+import {ExperienceScreenProps} from '@/types';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);

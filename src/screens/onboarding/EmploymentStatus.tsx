@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
-import {BackButton, Button, EmploymentSelectionField} from 'components';
-import {employmentStatuses} from '../../constants';
-import {commonStyles} from 'styles/onboarding';
-import {EmploymentStatusScreenProps} from 'types';
+import {BackButton, Button, EmploymentSelectionField} from '@/components';
+import {employmentStatuses} from '@/constants';
+import {commonStyles} from '@/styles/onboarding';
+import {EmploymentStatusScreenProps} from '@/types';
 
 const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
   navigation,

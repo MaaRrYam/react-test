@@ -1,20 +1,28 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
-import {BackButton, Button, Link, Input} from 'components';
-import {RequestAccessScreenProps} from 'types';
-import {commonStyles} from 'styles/onboarding';
+import {useFormik} from 'formik';
+
+import {BackButton, Button, Link, Input} from '@/components';
+import {RequestAccessScreenProps} from '@/types';
+import {commonStyles} from '@/styles/onboarding';
+import {requestAccessSchema} from '@/utils/schemas';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [linkedInUrl, setLinkedInUrl] = useState('');
-  const [currentCompany, setCurrentCompany] = useState('');
-  const [currentDesignation, setCurrentDesignation] = useState('');
-  const [contactNo, setContactNo] = useState('');
-
-  const handleSubmit = () => {
-    navigation.navigate('RequestAccessComplete');
-  };
+  const {values, touched, handleChange, handleSubmit, errors, setFieldTouched} =
+    useFormik({
+      initialValues: {
+        name: '',
+        email: '',
+        linkedInUrl: '',
+        currentCompany: '',
+        currentDesignation: '',
+        contactNo: '',
+      },
+      validationSchema: requestAccessSchema,
+      onSubmit: formValues => {
+        console.log(formValues);
+      },
+    });
 
   const handleSignInClick = () => {
     navigation.navigate('SignIn');
@@ -29,39 +37,59 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
         <ScrollView>
           <Input
             placeholder="Name"
-            value={name}
-            onChangeText={setName}
-            keyboardType="default"
+            value={values.name}
+            onChangeText={handleChange('name')}
+            touched={touched.name}
+            error={errors.name}
+            name="name"
+            setFieldTouched={setFieldTouched}
           />
           <Input
             placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
+            value={values.email}
+            onChangeText={handleChange('email')}
             keyboardType="email-address"
+            touched={touched.email}
+            error={errors.email}
+            name="email"
+            setFieldTouched={setFieldTouched}
           />
           <Input
             placeholder="LinkedIn URL"
-            value={linkedInUrl}
-            onChangeText={setLinkedInUrl}
-            keyboardType="default"
+            value={values.linkedInUrl}
+            onChangeText={handleChange('linkedInUrl')}
+            touched={touched.linkedInUrl}
+            error={errors.linkedInUrl}
+            name="linkedInUrl"
+            setFieldTouched={setFieldTouched}
           />
           <Input
             placeholder="Current Company"
-            value={currentCompany}
-            onChangeText={setCurrentCompany}
-            keyboardType="default"
+            value={values.currentCompany}
+            onChangeText={handleChange('currentCompany')}
+            touched={touched.currentCompany}
+            error={errors.currentCompany}
+            name="currentCompany"
+            setFieldTouched={setFieldTouched}
           />
           <Input
             placeholder="Current Designation"
-            value={currentDesignation}
-            onChangeText={setCurrentDesignation}
-            keyboardType="default"
+            value={values.currentDesignation}
+            onChangeText={handleChange('currentDesignation')}
+            touched={touched.currentDesignation}
+            error={errors.currentDesignation}
+            name="currentDesignation"
+            setFieldTouched={setFieldTouched}
           />
           <Input
-            placeholder="Contact No"
-            value={contactNo}
-            onChangeText={setContactNo}
-            keyboardType="phone-pad"
+            placeholder="Contact Number"
+            value={values.contactNo}
+            onChangeText={handleChange('contactNo')}
+            keyboardType="numeric"
+            touched={touched.contactNo}
+            error={errors.contactNo}
+            name="contactNo"
+            setFieldTouched={setFieldTouched}
           />
         </ScrollView>
         <View style={commonStyles.footer}>

@@ -1,16 +1,20 @@
 import React from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
-
-import {BackButton, Button, Input} from 'components';
-import {commonStyles} from 'styles/onboarding';
-import {SalaryExpectationsScreenProps} from 'types';
-import {salaryExpectationsSchema} from 'utils/schemas';
 import {useFormik} from 'formik';
+
+import {BackButton, Button, Input} from '@/components';
+import {commonStyles} from '@/styles/onboarding';
+import {SalaryExpectationsScreenProps} from '@/types';
+import {salaryExpectationsSchema} from '@/utils/schemas';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
 }) => {
-  const handleSubmitSalary = values => {
+  const handleSubmitSalary = (values: {
+    minimumSalary: string;
+    baseSalary: string;
+    totalCompensation: string;
+  }) => {
     console.log(values);
     navigation.navigate('OnboardingCompleted');
   };

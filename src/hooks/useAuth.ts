@@ -3,7 +3,7 @@ import {getAuth, onAuthStateChanged, User} from 'firebase/auth';
 
 const auth = getAuth();
 
-export function useAuth() {
+export default function useAuth() {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {

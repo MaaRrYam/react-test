@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
-import {BackButton, Button, Link, RoleCard} from 'components';
-import {ROLES_DATA} from '../../constants';
-import {SelectRoleScreenProps} from 'types';
-import {commonStyles} from 'styles/onboarding';
+
+import {Button, Link, RoleCard} from '@/components';
+import {ROLES_DATA} from '@/constants';
+import {SelectRoleScreenProps} from '@/types';
+import {commonStyles} from '@/styles/onboarding';
 
 const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
   const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].id);
@@ -11,7 +12,6 @@ const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
-        <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Choose Your Role</Text>
 
         {ROLES_DATA.map(item => (
@@ -28,7 +28,7 @@ const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
       <View style={commonStyles.footer}>
         <Button
           title="Continue"
-          onPress={() => navigation.navigate('RequestAccessComplete')}
+          onPress={() => navigation.navigate('RequestAccess')}
         />
         <Link
           text="Already have an account? Sign In"

@@ -1,3 +1,5 @@
+import {StyleProp, ViewStyle} from 'react-native';
+
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -56,11 +58,25 @@ export interface InputProps {
   onChangeText: (text: string) => void;
   style?: any;
   secureTextEntry?: boolean;
-  keyboardType?: 'numeric' | 'default';
+  keyboardType?: 'numeric' | 'default' | 'email-address';
   error?: string;
   touched?: boolean;
   onBlur?: Function;
   name?: string;
   setFieldTouched?: any;
   setFieldValue?: any;
+}
+
+export interface BottomSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  modalStyle?: StyleProp<ViewStyle>;
+}
+
+export interface StorageServiceProps {
+  setItem<T>(key: string, value: T): Promise<void>;
+  getItem<T>(key: string): Promise<T | null>;
+  removeItem(key: string): Promise<void>;
+  nuke(): Promise<void>;
 }

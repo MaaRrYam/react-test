@@ -1,6 +1,6 @@
 import React from 'react';
 import {Splash} from './screens';
-import './config/firebase';
+import '@/config/firebase';
 import RootNavigation from './navigation';
 
 const App = () => {

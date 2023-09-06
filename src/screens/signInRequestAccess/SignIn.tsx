@@ -9,13 +9,13 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import {useFormik} from 'formik';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
-import {Input, Link, Button} from 'components';
-import {COLORS} from '../../constants';
-import {SignInScreenProps} from 'types';
-import {useFormik} from 'formik';
-import {signInSchema} from 'utils/schemas';
+import {Input, Link, Button} from '@/components';
+import {COLORS} from '@/constants';
+import {SignInScreenProps} from '@/types';
+import {signInSchema} from '@/utils/schemas';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
@@ -59,7 +59,7 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
   };
 
   const handleRequestAccess = () => {
-    navigation.navigate('RequestAccess');
+    navigation.navigate('SelectRole');
   };
 
   return (

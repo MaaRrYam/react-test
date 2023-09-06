@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
-import {BackButton, Button, EducationCard} from 'components';
-import {COLORS, tempEducation} from '../../constants';
-import {commonStyles} from 'styles/onboarding';
-import {EducationScreenProps} from 'types';
+
+import {BackButton, Button, EducationCard} from '@/components';
+import {COLORS, tempEducation} from '@/constants';
+import {commonStyles} from '@/styles/onboarding';
+import {EducationScreenProps} from '@/types';
+import useBottomSheet from '@/hooks/useBottomSheet';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
   const [education] = useState(tempEducation);
