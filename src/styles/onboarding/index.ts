@@ -19,5 +19,6 @@ export const commonStyles = StyleSheet.create({
     paddingTop: PADDING.general,
     width: '100%',
     paddingHorizontal: Platform.OS === 'ios' ? PADDING.general : 0,
+    paddingBottom: 20,
   },
 });

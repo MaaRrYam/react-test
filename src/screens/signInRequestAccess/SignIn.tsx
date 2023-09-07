@@ -46,7 +46,7 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
   const handleSignIn = async (values: {email: string; password: string}) => {
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      navigation.navigate('SelectRole');
+      navigation.navigate('GetStarted');
     } catch (error: any) {
       if (error.message === 'Firebase: Error (auth/user-not-found).') {
         Alert.alert('User not Found');

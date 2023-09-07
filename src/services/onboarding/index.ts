@@ -17,6 +17,7 @@ export async function submitRequestAccess(
         ...requestDetails,
         time: FirebaseService.serverTimestamp(),
         id: FirebaseService.generateUniqueId(),
+        whitelisted: false,
       });
       return {success: true, message: 'Request Successfully Submitted!'};
     }

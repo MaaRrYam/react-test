@@ -5,7 +5,6 @@ import {BackButton, Button, EducationCard} from '@/components';
 import {COLORS, tempEducation} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
-import useBottomSheet from '@/hooks/useBottomSheet';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
   const [education] = useState(tempEducation);
@@ -15,7 +14,6 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
       <View style={commonStyles.container}>
         <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Your Education</Text>
-
         <FlatList
           data={education}
           renderItem={({item}) => (
@@ -38,7 +36,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
       <View style={commonStyles.footer}>
         <Button
           title="Add More"
-          onPress={() => console.log('Add More Button Pressed')}
+          onPress={() => console.log('HELLO WORLD')}
           backgroundColor={COLORS.white}
           textColor={COLORS.black}
           borderWidth={1}

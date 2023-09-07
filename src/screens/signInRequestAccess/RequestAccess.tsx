@@ -38,7 +38,8 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
   const handleSubmitRequestAccess = async (
     formValues: requestAccessFormValues,
   ) => {
-    const data = await submitRequestAccess(formValues);
+    const payload = {...formValues, email: formValues.email.toLowerCase()};
+    const data = await submitRequestAccess(payload);
     Alert.alert(data.message);
     setSubmitting(false);
   };
