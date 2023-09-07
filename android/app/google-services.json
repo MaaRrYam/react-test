@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "644352516404",
+    "project_id": "careernetwork-49577",
+    "storage_bucket": "careernetwork-49577.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644352516404:android:0850935d25e01a66dcc561",
+        "android_client_info": {
+          "package_name": "com.cnmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644352516404-497tgc40g9cvolckj1tcsfl5epe4a4vg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cnmobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "644352516404-pmu9mae4ggm7esmfsuk0nusvh1k4qbok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGYHBue28bJf_AJ6p7sG7HjBL5Yx5BA5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644352516404-7iogclm9o7i8dlrk92jhf99jbuirrp5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

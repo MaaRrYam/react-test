@@ -12,10 +12,11 @@ import {
 import {useFormik} from 'formik';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
-import {Input, Link, Button} from '@/components';
+import {Input, Link, Button, IconButton} from '@/components';
 import {COLORS} from '@/constants';
 import {SignInScreenProps} from '@/types';
 import {signInSchema} from '@/utils/schemas';
+import {_signInWithGoogle} from '@/services/auth/Google';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
@@ -60,6 +61,12 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
 
   const handleRequestAccess = () => {
     navigation.navigate('SelectRole');
+  };
+
+  const handleGoogleSign = async () => {
+    const data = await _signInWithGoogle();
+
+    console.log('FROM SIGN IN SCREEN', data);
   };
 
   return (
@@ -115,6 +122,26 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
             activityIndicatorColor={COLORS.white}
           />
         </View>
+
+        {Platform.OS === 'android' && (
+          <View style={styles.socialAuth}>
+            <IconButton
+              imageSource={require('@/assets/images/x.png')}
+              onPress={() => console.log("I'm clicked")}
+            />
+
+            <IconButton
+              imageSource={require('@/assets/images/google.png')}
+              onPress={() => handleGoogleSign()}
+              style={{marginHorizontal: 30}}
+            />
+
+            <IconButton
+              imageSource={require('@/assets/images/apple.png')}
+              onPress={() => console.log("I'm clicked")}
+            />
+          </View>
+        )}
 
         <View style={styles.btnContainer}>
           <View style={styles.divider} />
@@ -181,6 +208,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'white',
     marginBottom: 10,
+  },
+  socialAuth: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: -35,
   },
 });
 
