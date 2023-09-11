@@ -91,6 +91,7 @@ export interface FirebaseServiceProps {
   ): Promise<boolean>;
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
+  getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
 }
 
 export interface requestAccessFormValues {

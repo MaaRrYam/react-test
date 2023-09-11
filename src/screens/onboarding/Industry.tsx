@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,14 @@ import {
 
 import {BackButton, Button} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {COLORS, MARGINS, industries} from '@/constants';
+import {COLORS, MARGINS} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
+import {RoleService} from '@/services/onboarding';
+import {ActivityIndicator} from 'react-native';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [allIndustries, setAllIndustries] = useState<string[]>([]);
 
   const toggleIndustrySelection = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
@@ -26,44 +29,55 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
     }
   };
 
+  useEffect(() => {
+    RoleService.getJobRoles().then(setAllIndustries);
+  }, []);
+
   const handleSubmit = () => {
     navigation.navigate('Experience');
   };
+
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
         <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Your Function</Text>
 
-        <ScrollView
-          style={styles.industryScrollView}
-          contentContainerStyle={styles.industryList}>
-          {industries.map(industry => (
-            <TouchableOpacity
-              key={industry}
-              style={[
-                styles.industryItem,
-                {
-                  backgroundColor: selectedIndustries.includes(industry)
-                    ? COLORS.primary
-                    : COLORS.white,
-                  borderColor: selectedIndustries.includes(industry)
-                    ? COLORS.primary
-                    : COLORS.border,
-                },
-              ]}
-              onPress={() => toggleIndustrySelection(industry)}>
-              <Text
-                style={{
-                  color: selectedIndustries.includes(industry)
-                    ? COLORS.white
-                    : COLORS.black,
-                }}>
-                {industry}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        {allIndustries.length ? (
+          <ScrollView
+            style={styles.industryScrollView}
+            contentContainerStyle={styles.industryList}>
+            {allIndustries.map(industry => (
+              <TouchableOpacity
+                key={industry}
+                style={[
+                  styles.industryItem,
+                  {
+                    backgroundColor: selectedIndustries.includes(industry)
+                      ? COLORS.primary
+                      : COLORS.white,
+                    borderColor: selectedIndustries.includes(industry)
+                      ? COLORS.primary
+                      : COLORS.border,
+                  },
+                ]}
+                onPress={() => toggleIndustrySelection(industry)}>
+                <Text
+                  style={{
+                    color: selectedIndustries.includes(industry)
+                      ? COLORS.white
+                      : COLORS.black,
+                  }}>
+                  {industry}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : (
+          <SafeAreaView style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </SafeAreaView>
+        )}
       </View>
       <View style={commonStyles.footer}>
         <Button
@@ -77,6 +91,11 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   industryScrollView: {
     marginBottom: MARGINS.general,
   },

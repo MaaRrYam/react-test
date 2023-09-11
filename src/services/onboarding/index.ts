@@ -25,3 +25,19 @@ export async function submitRequestAccess(
     return {success: false, message: 'An Error Occurred'};
   }
 }
+
+export const RoleService = {
+  async getJobRoles() {
+    try {
+      const constantsDoc = await FirebaseService.getDocument(
+        'constants',
+        'jobRoles',
+      );
+      const jobRoles: string[] = constantsDoc?.jobRoles || [];
+      return jobRoles;
+    } catch (error) {
+      console.error('Error fetching job roles: ', error);
+      throw error;
+    }
+  },
+};
