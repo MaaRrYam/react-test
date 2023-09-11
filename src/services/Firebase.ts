@@ -10,6 +10,8 @@ import {
   DocumentReference,
   QueryDocumentSnapshot,
   Timestamp,
+  doc,
+  getDoc,
 } from 'firebase/firestore';
 
 const db = getFirestore();
@@ -38,6 +40,24 @@ const FirebaseService: FirebaseServiceProps = {
       return documents;
     } catch (error) {
       console.error('Error getting documents: ', error);
+      throw error;
+    }
+  },
+
+  async getDocument(collectionName, documentId) {
+    try {
+      const docRef = doc(db, collectionName, documentId);
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        return docSnapshot.data();
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(
+        `Error getting document ${documentId} from ${collectionName}:`,
+        error,
+      );
       throw error;
     }
   },
