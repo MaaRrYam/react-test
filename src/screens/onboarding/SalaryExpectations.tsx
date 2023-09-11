@@ -5,7 +5,7 @@ import {useFormik} from 'formik';
 import {BackButton, Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
-import {salaryExpectationsSchema} from '@/utils/schemas/schemas';
+import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
