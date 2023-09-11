@@ -11,9 +11,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		4667291D2C8F78110F4376D8 /* libPods-cnmobile-cnmobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D364DDC6CDCAAF6446CCDA0 /* libPods-cnmobile-cnmobileTests.a */; };
-		6C1F548B2D91ABD7BF9CAF8E /* libPods-cnmobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAFD566038AC87AEF8B52EE /* libPods-cnmobile.a */; };
+		683BFCEB63553F2B6756F7D8 /* Pods_cnmobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65A4DF6FE263983E60D2BEC /* Pods_cnmobile.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D151342423EC2934207A6AA4 /* Pods_cnmobile_cnmobileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 795524F86F607228A25B72A7 /* Pods_cnmobile_cnmobileTests.framework */; };
+		E3C990AA2AAEF1CF00437FA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3C990A92AAEF1CF00437FA0 /* GoogleService-Info.plist */; };
+		E3C990AB2AAEF1CF00437FA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3C990A92AAEF1CF00437FA0 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,13 +38,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = cnmobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = cnmobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = cnmobile/main.m; sourceTree = "<group>"; };
-		5BAFD566038AC87AEF8B52EE /* libPods-cnmobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cnmobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5D364DDC6CDCAAF6446CCDA0 /* libPods-cnmobile-cnmobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cnmobile-cnmobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6195C64194F67A16B5B180A4 /* Pods-cnmobile-cnmobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cnmobile-cnmobileTests.debug.xcconfig"; path = "Target Support Files/Pods-cnmobile-cnmobileTests/Pods-cnmobile-cnmobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+		795524F86F607228A25B72A7 /* Pods_cnmobile_cnmobileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cnmobile_cnmobileTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AE78BCC7DB2946680123297 /* Pods-cnmobile-cnmobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cnmobile-cnmobileTests.release.xcconfig"; path = "Target Support Files/Pods-cnmobile-cnmobileTests/Pods-cnmobile-cnmobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = cnmobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5133BCCB8025D30F2093EAE /* Pods-cnmobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cnmobile.debug.xcconfig"; path = "Target Support Files/Pods-cnmobile/Pods-cnmobile.debug.xcconfig"; sourceTree = "<group>"; };
+		B65A4DF6FE263983E60D2BEC /* Pods_cnmobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cnmobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67624D5877ACA29AB71BED0 /* Pods-cnmobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cnmobile.release.xcconfig"; path = "Target Support Files/Pods-cnmobile/Pods-cnmobile.release.xcconfig"; sourceTree = "<group>"; };
+		E3C990A92AAEF1CF00437FA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -51,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4667291D2C8F78110F4376D8 /* libPods-cnmobile-cnmobileTests.a in Frameworks */,
+				D151342423EC2934207A6AA4 /* Pods_cnmobile_cnmobileTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C1F548B2D91ABD7BF9CAF8E /* libPods-cnmobile.a in Frameworks */,
+				683BFCEB63553F2B6756F7D8 /* Pods_cnmobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5BAFD566038AC87AEF8B52EE /* libPods-cnmobile.a */,
-				5D364DDC6CDCAAF6446CCDA0 /* libPods-cnmobile-cnmobileTests.a */,
+				B65A4DF6FE263983E60D2BEC /* Pods_cnmobile.framework */,
+				795524F86F607228A25B72A7 /* Pods_cnmobile_cnmobileTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,6 +119,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E3C990A92AAEF1CF00437FA0 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* cnmobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* cnmobileTests */,
@@ -236,6 +240,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3C990AB2AAEF1CF00437FA0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +250,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				E3C990AA2AAEF1CF00437FA0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,6 +600,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -660,6 +674,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
