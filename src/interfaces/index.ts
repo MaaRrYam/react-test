@@ -6,8 +6,8 @@ export interface EducationCardProps {
   instituteName: string;
   degree: string;
   cgpa: string;
-  startingYear: number;
-  endingYear?: number;
+  startingYear: string;
+  endingYear?: string;
   currentlyWorking?: boolean;
   onPress: (id: number) => void;
 }
@@ -66,6 +66,7 @@ export interface InputProps {
   name?: string;
   setFieldTouched?: any;
   setFieldValue?: any;
+  disabled?: boolean;
 }
 
 export interface StorageServiceProps {
@@ -115,7 +116,19 @@ export interface EducationState {
   instituteName: string;
   degree: string;
   cgpa: string;
-  startingYear: number;
-  endingYear?: number;
+  startingYear: string;
+  endingYear?: string;
   currentlyWorking?: boolean;
+}
+
+export interface CheckboxProps {
+  onPress: (isChecked: boolean) => void;
+  size?: number;
+  color?: string;
+  style?: any;
+  text?: string;
+  fillColor?: string;
+  unfillColor?: string;
+  iconStyle?: any;
+  innerIconStyle?: any;
 }

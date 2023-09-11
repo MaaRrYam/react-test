@@ -14,6 +14,7 @@ const Input: React.FC<InputProps> = ({
   touched,
   name,
   setFieldTouched,
+  disabled,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -78,6 +79,7 @@ const Input: React.FC<InputProps> = ({
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
+          editable={!disabled}
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}

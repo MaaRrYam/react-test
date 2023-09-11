@@ -21,8 +21,19 @@ export const getStartedSchema = Yup.object().shape({
 export const addEducationSchema = Yup.object().shape({
   instituteName: Yup.string().required('Institute Name is required'),
   degree: Yup.string().required('Degree is required'),
-  cgpa: Yup.string().required('CGPA is required'),
-  startingYear: Yup.date().required('Start Year is required'),
-  endingYear: Yup.date(),
+  cgpa: Yup.string(),
+  startingYear: Yup.number()
+    .min(1950, 'Start Year should be greater than 1950')
+    .max(
+      new Date().getFullYear(),
+      'Start Year should be less than current year',
+    )
+    .required('Start Year is required'),
+  endingYear: Yup.number()
+    .min(1950, 'Ending Year should be greater than 1950')
+    .max(
+      new Date().getFullYear(),
+      'Ending Year should be equal or less than current year',
+    ),
   currentlyWorking: Yup.boolean(),
 });

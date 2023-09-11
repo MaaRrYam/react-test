@@ -5,7 +5,7 @@ import {useFormik} from 'formik';
 import {Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
-import {getStartedSchema} from '@/utils/schemas/schemas';
+import {getStartedSchema} from '@/utils/schemas/onboarding';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const initialValues = {
@@ -18,8 +18,8 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     useFormik({
       initialValues,
       validationSchema: getStartedSchema,
-      onSubmit: values => {
-        console.log(values);
+      onSubmit: formValues => {
+        console.log(formValues);
         navigation.navigate('Education');
       },
     });
