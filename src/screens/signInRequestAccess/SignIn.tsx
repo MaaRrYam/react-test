@@ -15,7 +15,7 @@ import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import {Input, Link, Button, IconButton} from '@/components';
 import {COLORS} from '@/constants';
 import {SignInScreenProps} from '@/types';
-import {signInSchema} from '@/utils/schemas';
+import {signInSchema} from '@/utils/schemas/schemas';
 import {_signInWithGoogle} from '@/services/auth/Google';
 
 const windowWidth = Dimensions.get('window').width;
@@ -39,18 +39,27 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
       password: '',
     },
     validationSchema: signInSchema,
-    onSubmit: values => {
-      handleSignIn(values);
+    onSubmit: formValues => {
+      handleSignIn(formValues);
     },
   });
 
-  const handleSignIn = async (values: {email: string; password: string}) => {
+  const handleSignIn = async (formValues: {
+    email: string;
+    password: string;
+  }) => {
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      navigation.navigate('GetStarted');
+      const response = await signInWithEmailAndPassword(
+        auth,
+        formValues.email.toLowerCase(),
+        formValues.password,
+      );
+      console.log(response);
+
+      // navigation.navigate('GetStarted');
     } catch (error: any) {
       if (error.message === 'Firebase: Error (auth/user-not-found).') {
-        Alert.alert('User not Found');
+        Alert.alert('Invalid Email or Password');
       } else {
         Alert.alert('Invalid Email or Password');
       }
@@ -123,25 +132,23 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
           />
         </View>
 
-        {Platform.OS === 'android' && (
-          <View style={styles.socialAuth}>
-            <IconButton
-              imageSource={require('@/assets/images/x.png')}
-              onPress={() => console.log("I'm clicked")}
-            />
+        <View style={styles.socialAuth}>
+          <IconButton
+            imageSource={require('@/assets/images/x.png')}
+            onPress={() => console.log("I'm clicked")}
+          />
 
-            <IconButton
-              imageSource={require('@/assets/images/google.png')}
-              onPress={() => handleGoogleSign()}
-              style={{marginHorizontal: 30}}
-            />
+          <IconButton
+            imageSource={require('@/assets/images/google.png')}
+            onPress={() => handleGoogleSign()}
+            style={{marginHorizontal: 30}}
+          />
 
-            <IconButton
-              imageSource={require('@/assets/images/apple.png')}
-              onPress={() => console.log("I'm clicked")}
-            />
-          </View>
-        )}
+          <IconButton
+            imageSource={require('@/assets/images/apple.png')}
+            onPress={() => console.log("I'm clicked")}
+          />
+        </View>
 
         <View style={styles.btnContainer}>
           <View style={styles.divider} />
@@ -213,7 +220,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    marginTop: -35,
   },
 });
 

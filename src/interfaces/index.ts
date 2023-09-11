@@ -1,5 +1,5 @@
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
-import {StyleProp, ViewStyle} from 'react-native';
+import {ReactNode} from 'react';
 
 export interface EducationCardProps {
   id: number;
@@ -68,13 +68,6 @@ export interface InputProps {
   setFieldValue?: any;
 }
 
-export interface BottomSheetProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  modalStyle?: StyleProp<ViewStyle>;
-}
-
 export interface StorageServiceProps {
   setItem<T>(key: string, value: T): Promise<void>;
   getItem<T>(key: string): Promise<T | null>;
@@ -106,4 +99,23 @@ export interface requestAccessFormValues {
   currentCompany: string;
   currentDesignation: string;
   phoneNo: string;
+}
+
+export interface BottomSheetProps {
+  isVisible: boolean;
+  onClose: () => void;
+  snapPoints?: string[];
+  children: ReactNode;
+  containerStyle?: object;
+  contentContainerStyle?: object;
+}
+
+export interface EducationState {
+  id: number;
+  instituteName: string;
+  degree: string;
+  cgpa: string;
+  startingYear: number;
+  endingYear?: number;
+  currentlyWorking?: boolean;
 }

@@ -5,12 +5,17 @@ import {useFormik} from 'formik';
 import {BackButton, Button, Link, Input} from '@/components';
 import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
-import {requestAccessSchema} from '@/utils/schemas';
+import {requestAccessSchema} from '@/utils/schemas/schemas';
 import {requestAccessFormValues} from '@/interfaces';
 import {submitRequestAccess} from '@/services/onboarding';
 import {COLORS} from '@/constants';
 
-const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
+const RequestAccess: React.FC<RequestAccessScreenProps> = ({
+  route,
+  navigation,
+}) => {
+  const {role} = route.params;
+
   const {
     values,
     touched,
@@ -38,10 +43,17 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
   const handleSubmitRequestAccess = async (
     formValues: requestAccessFormValues,
   ) => {
-    const payload = {...formValues, email: formValues.email.toLowerCase()};
+    const payload = {
+      ...formValues,
+      email: formValues.email.toLowerCase(),
+      selectedRole: role,
+    };
     const data = await submitRequestAccess(payload);
     Alert.alert(data.message);
     setSubmitting(false);
+    if (data.success) {
+      navigation.navigate('SignIn');
+    }
   };
 
   const handleSignInClick = () => {
@@ -102,10 +114,9 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
           <Input
-            placeholder="Contact Number"
+            placeholder="Contact Number(+923012121231)"
             value={values.phoneNo}
             onChangeText={handleChange('phoneNo')}
-            keyboardType="numeric"
             touched={touched.phoneNo}
             error={errors.phoneNo}
             name="phoneNo"

@@ -3,11 +3,23 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {BackButton, Button, Link, RoleCard} from '@/components';
 import {ROLES_DATA} from '@/constants';
-import {SelectRoleScreenProps} from '@/types';
+import {RootStackParamList, SelectRoleScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
-  const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].id);
+const SelectRole: React.FC<SelectRoleScreenProps> = () => {
+  const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].value);
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const handleContinue = () => {
+    navigation.navigate('RequestAccess', {role: selectedRole});
+  };
+
+  const handleSignIn = () => {
+    navigation.navigate('SignIn');
+  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -23,22 +35,17 @@ const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
               id={item.id}
               title={item.title}
               description={item.description}
-              selected={item.id === selectedRole}
-              onPress={(newRoleId: number) => setSelectedRole(newRoleId)}
+              selected={item.value === selectedRole}
+              value={item.value}
+              onPress={(newRole: string) => setSelectedRole(newRole)}
             />
           )}
           keyExtractor={item => item.id.toString()}
         />
       </View>
       <View style={commonStyles.footer}>
-        <Button
-          title="Continue"
-          onPress={() => navigation.navigate('RequestAccess')}
-        />
-        <Link
-          text="Already have an account? Sign In"
-          onPress={() => navigation.navigate('SignIn')}
-        />
+        <Button title="Continue" onPress={handleContinue} />
+        <Link text="Already have an account? Sign In" onPress={handleSignIn} />
       </View>
     </SafeAreaView>
   );

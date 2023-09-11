@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     fontSize: 16,
+    color: COLORS.black,
   },
   error: {
     fontSize: FONTS.bodySmall,

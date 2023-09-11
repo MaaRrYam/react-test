@@ -1,18 +1,24 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
-import {BackButton, Button, EducationCard} from '@/components';
-import {COLORS, tempEducation} from '@/constants';
+import {BackButton, Button, EducationCard, BottomSheet} from '@/components';
+import {COLORS} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
+import {EducationState} from '@/interfaces';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
-  const [education] = useState(tempEducation);
+  const [education] = useState<EducationState[]>([]);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+
+  const handleContinue = () => {
+    navigation.navigate('Industry');
+  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
-        <BackButton onPress={() => console.log('Back button pressed')} />
+        <BackButton />
         <Text style={commonStyles.title}>Your Education</Text>
         <FlatList
           data={education}
@@ -36,17 +42,27 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
       <View style={commonStyles.footer}>
         <Button
           title="Add More"
-          onPress={() => console.log('HELLO WORLD')}
+          onPress={() => setIsBottomSheetVisible(true)}
           backgroundColor={COLORS.white}
           textColor={COLORS.black}
           borderWidth={1}
           borderColor={COLORS.border}
+          disabled={education.length === 3}
         />
         <Button
-          title="Continue"
-          onPress={() => navigation.navigate('Industry')}
+          title={education.length ? 'Continue' : 'Skip'}
+          onPress={handleContinue}
         />
       </View>
+      {isBottomSheetVisible && (
+        <BottomSheet
+          isVisible={isBottomSheetVisible}
+          onClose={() => setIsBottomSheetVisible(false)}>
+          <View>
+            <Text>Your Bottom Sheet Content</Text>
+          </View>
+        </BottomSheet>
+      )}
     </SafeAreaView>
   );
 };

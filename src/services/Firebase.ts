@@ -70,7 +70,6 @@ const FirebaseService: FirebaseServiceProps = {
       const q = query(colRef, where(fieldName, '==', value));
       const querySnapshot = await getDocs(q);
 
-      console.log(querySnapshot, 'QUERY SNAPSHOT');
       return querySnapshot.docs.length > 0;
     } catch (error) {
       console.error(

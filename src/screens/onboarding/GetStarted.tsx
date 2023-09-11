@@ -5,7 +5,7 @@ import {useFormik} from 'formik';
 import {Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
-import {getStartedSchema} from '@/utils/schemas';
+import {getStartedSchema} from '@/utils/schemas/schemas';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const initialValues = {
