@@ -85,14 +85,9 @@ export const industries = [
   'Healthcare',
   'Retail & E-Commerce',
   'Education',
-  'Construction',
-  'Manufacturing',
   'Media',
-  'Transportation',
   'Logistics',
-  'Government',
-  'Agriculture',
-  'Real Estate',
+  'Consultant',
   'Other',
 ];
 
