@@ -1,10 +1,13 @@
+import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
+import {ReactNode} from 'react';
+
 export interface EducationCardProps {
   id: number;
   instituteName: string;
   degree: string;
   cgpa: string;
-  startingYear: number;
-  endingYear?: number;
+  startingYear: string;
+  endingYear?: string;
   currentlyWorking?: boolean;
   onPress: (id: number) => void;
 }
@@ -30,6 +33,9 @@ export interface ButtonProps {
   icon?: any;
   iconPosition?: string;
   disabled?: boolean;
+  isLoading?: boolean;
+  activityIndicatorSize?: 'small' | 'large';
+  activityIndicatorColor?: string;
 }
 
 export interface ExperienceCardProps {
@@ -53,7 +59,76 @@ export interface InputProps {
   onChangeText: (text: string) => void;
   style?: any;
   secureTextEntry?: boolean;
-  keyboardType?: 'numeric' | 'default';
+  keyboardType?: 'numeric' | 'default' | 'email-address';
   error?: string;
   touched?: boolean;
+  onBlur?: Function;
+  name?: string;
+  setFieldTouched?: any;
+  setFieldValue?: any;
+  disabled?: boolean;
+}
+
+export interface StorageServiceProps {
+  setItem<T>(key: string, value: T): Promise<void>;
+  getItem<T>(key: string): Promise<T | null>;
+  removeItem(key: string): Promise<void>;
+  nuke(): Promise<void>;
+}
+export interface FirebaseServiceProps {
+  addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  getAllDocuments(collectionName: string): Promise<DocumentData[]>;
+  getDocumentsByQuery(
+    collectionName: string,
+    field: string,
+    operator: WhereFilterOp,
+    value: any,
+  ): Promise<DocumentData[]>;
+  checkDuplicateRequest(
+    collectionName: string,
+    fieldName: string,
+    value: any,
+  ): Promise<boolean>;
+  serverTimestamp(): Timestamp;
+  generateUniqueId(): string;
+}
+
+export interface requestAccessFormValues {
+  name: string;
+  email: string;
+  linkedInUrl: string;
+  currentCompany: string;
+  currentDesignation: string;
+  phoneNo: string;
+}
+
+export interface BottomSheetProps {
+  isVisible: boolean;
+  onClose: () => void;
+  snapPoints?: string[];
+  children: ReactNode;
+  containerStyle?: object;
+  contentContainerStyle?: object;
+}
+
+export interface EducationState {
+  id: number;
+  instituteName: string;
+  degree: string;
+  cgpa: string;
+  startingYear: string;
+  endingYear?: string;
+  currentlyWorking?: boolean;
+}
+
+export interface CheckboxProps {
+  onPress: (isChecked: boolean) => void;
+  size?: number;
+  color?: string;
+  style?: any;
+  text?: string;
+  fillColor?: string;
+  unfillColor?: string;
+  iconStyle?: any;
+  innerIconStyle?: any;
 }

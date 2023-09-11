@@ -39,18 +39,21 @@ export const ROLES_DATA = [
     title: 'Job Seeker',
     description:
       "Your profile's content would be tailored to assist you in finding a job, given that you are actively looking for opportunities.",
+    value: 'Seeker',
   },
   {
     id: 2,
     title: 'Recruiter',
     description:
       "If you're a recruiter, your profile would be personalized to aid you in identifying the suitable candidate for the job you're advertising.",
+    value: 'Recruiter',
   },
   {
     id: 3,
     title: 'Helper',
     description:
       "If you're a helper, you'd provide your perspectives on the platform that are applicable to both recruiters and job seekers.",
+    value: 'Helper',
   },
 ];
 
@@ -85,14 +88,9 @@ export const industries = [
   'Healthcare',
   'Retail & E-Commerce',
   'Education',
-  'Construction',
-  'Manufacturing',
   'Media',
-  'Transportation',
   'Logistics',
-  'Government',
-  'Agriculture',
-  'Real Estate',
+  'Consultant',
   'Other',
 ];
 

@@ -7,35 +7,75 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
-import {Input, Link, Button} from 'components';
-import {COLORS} from '../../constants';
-import {SignInScreenProps} from 'types';
 import {useFormik} from 'formik';
-import {signInSchema} from 'utils/schemas';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+
+import {Input, Link, Button, IconButton} from '@/components';
+import {COLORS} from '@/constants';
+import {SignInScreenProps} from '@/types';
+import {signInSchema} from '@/utils/schemas/schemas';
+import {_signInWithGoogle} from '@/services/auth/Google';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
 
+const auth = getAuth();
+
 const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
-  const {values, touched, handleChange, handleSubmit, errors} = useFormik({
+  const {
+    values,
+    touched,
+    handleChange,
+    handleSubmit,
+    errors,
+    setFieldTouched,
+    isSubmitting,
+    setSubmitting,
+  } = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
     validationSchema: signInSchema,
-    onSubmit: values => {
-      handleSignIn(values);
+    onSubmit: formValues => {
+      handleSignIn(formValues);
     },
   });
 
-  const handleSignIn = async (values: {username: string; password: string}) => {
-    console.log(values);
-    navigation.navigate('SelectRole');
+  const handleSignIn = async (formValues: {
+    email: string;
+    password: string;
+  }) => {
+    try {
+      const response = await signInWithEmailAndPassword(
+        auth,
+        formValues.email.toLowerCase(),
+        formValues.password,
+      );
+      console.log(response);
+
+      // navigation.navigate('GetStarted');
+    } catch (error: any) {
+      if (error.message === 'Firebase: Error (auth/user-not-found).') {
+        Alert.alert('Invalid Email or Password');
+      } else {
+        Alert.alert('Invalid Email or Password');
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleRequestAccess = () => {
-    navigation.navigate('RequestAccess');
+    navigation.navigate('SelectRole');
+  };
+
+  const handleGoogleSign = async () => {
+    const data = await _signInWithGoogle();
+
+    console.log('FROM SIGN IN SCREEN', data);
   };
 
   return (
@@ -59,11 +99,13 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
         <View>
           <View style={styles.inputContainer}>
             <Input
-              placeholder="Username"
-              value={values.username}
-              onChangeText={handleChange('username')}
-              touched={touched.username}
-              error={errors.username}
+              placeholder="Email"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              touched={touched.email}
+              error={errors.email}
+              name="email"
+              setFieldTouched={setFieldTouched}
             />
             <Input
               placeholder="Password"
@@ -72,6 +114,8 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
               touched={touched.password}
               error={errors.password}
               secureTextEntry
+              name="password"
+              setFieldTouched={setFieldTouched}
             />
           </View>
           <Link
@@ -83,6 +127,26 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
             title="Sign-In"
             onPress={handleSubmit}
             style={{marginVertical: 20}}
+            isLoading={isSubmitting}
+            activityIndicatorColor={COLORS.white}
+          />
+        </View>
+
+        <View style={styles.socialAuth}>
+          <IconButton
+            imageSource={require('@/assets/images/x.png')}
+            onPress={() => console.log("I'm clicked")}
+          />
+
+          <IconButton
+            imageSource={require('@/assets/images/google.png')}
+            onPress={() => handleGoogleSign()}
+            style={{marginHorizontal: 30}}
+          />
+
+          <IconButton
+            imageSource={require('@/assets/images/apple.png')}
+            onPress={() => console.log("I'm clicked")}
           />
         </View>
 
@@ -151,6 +215,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'white',
     marginBottom: 10,
+  },
+  socialAuth: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-import {BORDER_RADIUS, COLORS} from '../../constants';
+import {BORDER_RADIUS, COLORS} from '@/constants';
 
 const EmploymentSelectionField = ({
   text,

@@ -7,18 +7,19 @@ const RoleCard = ({
   selected,
   onPress,
   description,
-  id,
+  value,
 }: {
   id: number;
   title: string;
   selected: boolean;
-  onPress: (newRole: number) => void;
+  onPress: (newRole: string) => void;
   description: string;
+  value: string;
 }) => {
   return (
     <TouchableOpacity
       style={[styles.card, selected ? styles.selectedCard : null]}
-      onPress={() => onPress(id)}>
+      onPress={() => onPress(value)}>
       <Text style={[styles.title]}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
     </TouchableOpacity>

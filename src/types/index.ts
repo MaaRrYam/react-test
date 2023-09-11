@@ -1,9 +1,12 @@
+import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
   SignIn: undefined;
   SelectRole: undefined;
-  RequestAccess: undefined;
+  RequestAccess: {
+    role: string;
+  };
   RequestAccessComplete: undefined;
   GetStarted: undefined;
   Education: undefined;
@@ -25,6 +28,7 @@ export type SelectRoleScreenProps = {
 
 export type RequestAccessScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'RequestAccess'>;
+  route: RouteProp<RootStackParamList, 'RequestAccess'>;
 };
 
 export type RequestAccessCompleteScreenProps = {

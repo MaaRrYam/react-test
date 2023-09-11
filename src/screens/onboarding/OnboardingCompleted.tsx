@@ -8,9 +8,10 @@ import {
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Button} from 'components';
-import {COLORS} from '../../constants';
-import {HomeScreenProps} from 'types';
+
+import {Button} from '@/components';
+import {COLORS} from '@/constants';
+import {HomeScreenProps} from '@/types';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

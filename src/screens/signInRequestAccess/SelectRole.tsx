@@ -1,12 +1,25 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import {BackButton, Button, Link, RoleCard} from 'components';
-import {ROLES_DATA} from '../../constants';
-import {SelectRoleScreenProps} from 'types';
-import {commonStyles} from 'styles/onboarding';
+import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
-const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
-  const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].id);
+import {BackButton, Button, Link, RoleCard} from '@/components';
+import {ROLES_DATA} from '@/constants';
+import {RootStackParamList, SelectRoleScreenProps} from '@/types';
+import {commonStyles} from '@/styles/onboarding';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+const SelectRole: React.FC<SelectRoleScreenProps> = () => {
+  const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].value);
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const handleContinue = () => {
+    navigation.navigate('RequestAccess', {role: selectedRole});
+  };
+
+  const handleSignIn = () => {
+    navigation.navigate('SignIn');
+  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -14,26 +27,25 @@ const SelectRole: React.FC<SelectRoleScreenProps> = ({navigation}) => {
         <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Choose Your Role</Text>
 
-        {ROLES_DATA.map(item => (
-          <RoleCard
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            selected={item.id === selectedRole}
-            onPress={(newRole: number) => setSelectedRole(newRole)}
-          />
-        ))}
+        <FlatList
+          data={ROLES_DATA}
+          renderItem={({item}) => (
+            <RoleCard
+              key={item.id.toString()}
+              id={item.id}
+              title={item.title}
+              description={item.description}
+              selected={item.value === selectedRole}
+              value={item.value}
+              onPress={(newRole: string) => setSelectedRole(newRole)}
+            />
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
       </View>
       <View style={commonStyles.footer}>
-        <Button
-          title="Continue"
-          onPress={() => navigation.navigate('RequestAccessComplete')}
-        />
-        <Link
-          text="Already have an account? Sign In"
-          onPress={() => navigation.navigate('SignIn')}
-        />
+        <Button title="Continue" onPress={handleContinue} />
+        <Link text="Already have an account? Sign In" onPress={handleSignIn} />
       </View>
     </SafeAreaView>
   );

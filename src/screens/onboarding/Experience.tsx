@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
-import {BackButton, Button, ExperienceCard} from 'components';
-import {COLORS, tempExperience} from '../../constants';
-import {commonStyles} from 'styles/onboarding';
-import {ExperienceScreenProps} from 'types';
+
+import {BackButton, Button, ExperienceCard} from '@/components';
+import {COLORS, tempExperience} from '@/constants';
+import {commonStyles} from '@/styles/onboarding';
+import {ExperienceScreenProps} from '@/types';
 
 const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [experience] = useState(tempExperience);

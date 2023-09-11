@@ -12,6 +12,9 @@ const Input: React.FC<InputProps> = ({
   keyboardType,
   error,
   touched,
+  name,
+  setFieldTouched,
+  disabled,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -26,6 +29,9 @@ const Input: React.FC<InputProps> = ({
   };
 
   const handleBlur = () => {
+    if (name && setFieldTouched) {
+      setFieldTouched(name, true);
+    }
     if (!value) {
       setIsFocused(false);
       Animated.timing(animatedIsFocused, {
@@ -58,7 +64,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   const inputContainerStyle = {
-    borderColor: error ? 'red' : COLORS.border,
+    borderColor: touched && error ? 'red' : COLORS.border,
   };
 
   return (
@@ -73,6 +79,7 @@ const Input: React.FC<InputProps> = ({
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
+          editable={!disabled}
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}
@@ -92,6 +99,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     fontSize: 16,
+    color: COLORS.black,
   },
   error: {
     fontSize: FONTS.bodySmall,
