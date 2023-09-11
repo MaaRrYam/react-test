@@ -4,7 +4,7 @@ import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
-import {default as EducationForm} from '@/components/Forms/EducationForm';
+import {EducationForm, ExperienceForm} from '@/components/Forms';
 
 export {
   BackButton,
@@ -19,5 +19,6 @@ export {
   BottomSheet,
   YearPicker,
   EducationForm,
+  ExperienceForm,
   Checkbox,
 };
