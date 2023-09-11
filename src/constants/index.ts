@@ -57,60 +57,6 @@ export const ROLES_DATA = [
   },
 ];
 
-export const tempEducation = [
-  {
-    id: 1,
-    instituteName: 'COMSATS University Lahore',
-    degree: 'Bachelors in Computer Science',
-    cgpa: '3.0',
-    startingYear: 2018,
-    endingYear: 2022,
-  },
-  {
-    id: 2,
-    instituteName: 'COMSATS University Lahore',
-    degree: 'Bachelors in Computer Science',
-    cgpa: '3.0',
-    startingYear: 2018,
-    currentlyWorking: true,
-  },
-];
-
-export const industries = [
-  'Engineering',
-  'Information Technology',
-  'Finance',
-  'Marketing',
-  'Sales',
-  'Human Resources',
-  'Legal',
-  'Accounting',
-  'Healthcare',
-  'Retail & E-Commerce',
-  'Education',
-  'Media',
-  'Logistics',
-  'Consultant',
-  'Other',
-];
-
-export const tempExperience = [
-  {
-    id: 1,
-    currentCompany: 'CareerNetwork.co',
-    designation: 'UI/UX Designer',
-    startingYear: 2018,
-    endingYear: 2019,
-  },
-  {
-    id: 2,
-    currentCompany: 'Microsoft',
-    designation: 'Janitor',
-    startingYear: 2018,
-    currentlyWorking: true,
-  },
-];
-
 export const employmentStatuses = [
   'Full Time',
   'Part Time',

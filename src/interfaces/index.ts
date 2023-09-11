@@ -133,3 +133,12 @@ export interface CheckboxProps {
   iconStyle?: any;
   innerIconStyle?: any;
 }
+
+export interface ExperienceState {
+  id: number;
+  currentCompany: string;
+  designation: string;
+  startingYear: number;
+  endingYear?: number;
+  currentlyWorking?: boolean;
+}
