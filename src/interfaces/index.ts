@@ -142,3 +142,44 @@ export interface ExperienceState {
   endingYear?: number;
   currentlyWorking?: boolean;
 }
+
+export interface UserInterface {
+  [key: string]: any;
+  id: string;
+  name?: string;
+  email?: string;
+  country?: string;
+  countryDetails?: string;
+  city?: string;
+  cityDetails?: Object;
+  state?: string;
+  stateDetails?: Object;
+  username?: string;
+  selectedRole?: string;
+  previousRole?: string;
+  onboarded?: boolean;
+  photoUrl?: string;
+  department?: string;
+  currentCVC?: number;
+  dailyCVC?: number;
+  refferalCode?: string;
+  lastDailyCVCUpdate?: string;
+  totalEarnedCVC?: number;
+  purchasedGifts?: Array<string>;
+  time?: Timestamp;
+  educationList?: Array<EducationState>;
+  employmentList?: Array<ExperienceState>;
+  admin?: boolean;
+  adminKey?: string;
+  dailyCVCStreakPoints?: number;
+  dailyCVCStreakCount?: number;
+  tagline?: string;
+  description?: string;
+  jobTags?: string[];
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  currentStatus?: string;
+  minimumSalary?: string;
+  readNotifications?: number;
+  redeems?: Array<string>;
+}

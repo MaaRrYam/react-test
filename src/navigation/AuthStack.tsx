@@ -6,6 +6,7 @@ import {StyleSheet, View} from 'react-native';
 import {SignIn, RequestAccess} from '@/screens';
 import {COLORS} from '@/constants';
 import {SelectRole, RequestAccessComplete} from '@/screens';
+import {GetStarted, Home} from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,8 @@ const AppNavigation = () => {
             name="RequestAccessComplete"
             component={RequestAccessComplete}
           />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="GetStarted" component={GetStarted} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Image,
@@ -9,21 +9,23 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import {useFormik} from 'formik';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import { useFormik } from 'formik';
+import { UserCredential, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import {Input, Link, Button, IconButton} from '@/components';
-import {COLORS} from '@/constants';
-import {SignInScreenProps} from '@/types';
-import {signInSchema} from '@/utils/schemas/schemas';
-import {_signInWithGoogle} from '@/services/auth/Google';
+import { Input, Link, Button, IconButton } from '@/components';
+import { COLORS } from '@/constants';
+import { SignInScreenProps } from '@/types';
+import { signInSchema } from '@/utils/schemas/schemas';
+import { _signInWithGoogle } from '@/services/auth/Google';
+import checkIfUserIsWhitelisted from '@/hooks/useCheckIfUserIsWhitelisted';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
 
 const auth = getAuth();
 
-const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
+const SignIn: React.FC<SignInScreenProps> = ({ navigation }) => {
+  const [user, setUser] = useState<UserCredential>();
   const {
     values,
     touched,
@@ -73,9 +75,15 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
   };
 
   const handleGoogleSign = async () => {
-    const data = await _signInWithGoogle();
-
-    console.log('FROM SIGN IN SCREEN', data);
+    const data = await _signInWithGoogle(setUser);
+    console.log('user', user);
+    try {
+      await checkIfUserIsWhitelisted(user, navigation); // Pass the 'navigation' object here
+      // Continue with your logic after the user is whitelisted.
+    } catch (error) {
+      console.log(error);
+    }
+    // console.log('FROM SIGN IN SCREEN', data);
   };
 
   return (
@@ -121,12 +129,12 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
           <Link
             text="Forgot Password"
             onPress={() => console.log('ForgotPassword')}
-            style={{textAlign: 'right'}}
+            style={{ textAlign: 'right' }}
           />
           <Button
             title="Sign-In"
             onPress={handleSubmit}
-            style={{marginVertical: 20}}
+            style={{ marginVertical: 20 }}
             isLoading={isSubmitting}
             activityIndicatorColor={COLORS.white}
           />
@@ -141,7 +149,7 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
           <IconButton
             imageSource={require('@/assets/images/google.png')}
             onPress={() => handleGoogleSign()}
-            style={{marginHorizontal: 30}}
+            style={{ marginHorizontal: 30 }}
           />
 
           <IconButton
