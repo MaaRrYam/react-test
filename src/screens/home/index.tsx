@@ -1,13 +1,14 @@
-import {Link} from 'components';
-import {COLORS, MARGINS} from '../../constants';
+import {Link, IconButton} from 'components';
+import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
 import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
+  FlatList,
+  Image,
+  TextInput,
 } from 'react-native';
 import {HomeScreenProps} from 'types';
 
@@ -17,41 +18,111 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       id: '1',
       title: 'Post 1',
       content: 'This is the content of the first post.',
+      author: {
+        name: 'John Doe',
+        tagline: 'UX Designer',
+        avatar: require('@/assets/images/user.png'),
+      },
+      media: require('@/assets/images/post.png'),
+      time: '2 hours ago',
+      likes: 20,
+      comments: 2,
     },
     {
-      id: '2',
-      title: 'Post 2',
-      content: 'This is the content of the second post.',
+      id: '12',
+      title: 'Post 1',
+      content: 'This is the content of the first post.',
+      author: {
+        name: 'John Doe',
+        tagline: 'UX Designer',
+        avatar: require('@/assets/images/user.png'),
+      },
+      media: require('@/assets/images/post.png'),
+      time: '2 hours ago',
+      likes: 20,
+      comments: 2,
     },
     {
-      id: '3',
-      title: 'Post 3',
-      content: 'This is the content of the third post.',
+      id: '21',
+      title: 'Post 1',
+      content: 'This is the content of the first post.',
+      author: {
+        name: 'John Doe',
+        tagline: 'UX Designer',
+        avatar: require('@/assets/images/user.png'),
+      },
+      time: '2 hours ago',
+      likes: 20,
+      comments: 2,
+    },
+    {
+      id: '112',
+      title: 'Post 1',
+      content: 'This is the content of the first post.',
+      author: {
+        name: 'John Doe',
+        tagline: 'UX Designer',
+        avatar: require('@/assets/images/user.png'),
+      },
+      time: '2 hours ago',
+      likes: 20,
+      comments: 2,
     },
   ];
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View>
         <View style={styles.header}>
-          <Text style={styles.heading}>Welcome to the Home Screen</Text>
+          <Image
+            source={require('@/assets/images/apple.png')}
+            style={styles.logo}
+          />
+          <View style={styles.headerIcons}>
+            <IconButton
+              imageSource={require('@/assets/images/searchIcon.png')}
+              onPress={() => console.log('Search Icon Pressed')}
+              style={{marginLeft: 20, backgroundColor: '#F4F4F4'}}
+            />
+            <IconButton
+              imageSource={require('@/assets/images/messages.png')}
+              onPress={() => console.log('Search Icon Pressed')}
+              style={{marginLeft: 20, backgroundColor: '#F4F4F4'}}
+            />
+          </View>
         </View>
+        <View style={styles.subheader}>
+          <Image
+            source={require('@/assets/images/user.png')}
+            style={styles.userImage}
+          />
 
-        <View style={styles.feed}>
-          {feedData.map(item => (
-            <TouchableOpacity
-              key={item.id}
-              style={styles.feedItem}
-              onPress={() =>
-                // navigation.navigate('PostDetail', {postId: item.id})
-                console.log('hello')
-              }>
-              <Text style={styles.feedTitle}>{item.title}</Text>
-              <Text style={styles.feedContent}>{item.content}</Text>
-            </TouchableOpacity>
-          ))}
+          <TextInput style={styles.searchBar} placeholder="Start a Post" />
         </View>
-      </ScrollView>
+      </View>
+
+      <View style={styles.feedContainer}>
+        <FlatList
+          data={feedData}
+          renderItem={({item}) => (
+            <View style={styles.feedItem}>
+              <View style={styles.authorInfo}>
+                <Image source={item.author.avatar} style={styles.userImage} />
+                <View style={{marginLeft: 10}}>
+                  <Text style={styles.authorName}>{item.author.name}</Text>
+                  <Text style={styles.authorTagline}>
+                    {item.author.tagline}
+                  </Text>
+                  <Text style={styles.authorTagline}>{item.time}</Text>
+                </View>
+              </View>
+              <Text style={styles.feedContent}>{item.content}</Text>
+              {item.media && <Image source={item.media} style={styles.media} />}
+            </View>
+          )}
+          keyExtractor={item => item.id}
+        />
+      </View>
 
       <Link
         text={'Back to Start'}
@@ -64,30 +135,59 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
   },
-  scrollContainer: {
-    flexGrow: 1,
-  },
+
   header: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: 20,
+    backgroundColor: COLORS.white,
+    padding: PADDING.general,
     alignItems: 'center',
-    marginBottom: MARGINS.general,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+  logo: {
+    width: 40,
+    height: 40,
   },
-  feed: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+  headerIcons: {
+    flexDirection: 'row',
+  },
+  icon: {
+    marginRight: 20,
+  },
+  subheader: {
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    padding: PADDING.general,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+    maxHeight: 100,
+  },
+  searchBar: {
+    flex: 1,
+    borderRadius: BORDER_RADIUS.general * 2,
+    backgroundColor: COLORS.lightBackground,
+    paddingHorizontal: 10,
+    paddingVertical: PADDING.general - 6,
+    marginLeft: 10,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  userImage: {
+    width: 43,
+    height: 43,
+    borderRadius: 15,
+  },
+  feedContainer: {
+    flex: 1,
+    backgroundColor: COLORS.lightBlueBackground,
+    paddingTop: PADDING.general,
   },
   feedItem: {
     backgroundColor: 'white',
     borderRadius: 8,
-    padding: 16,
+    padding: 10,
     marginBottom: 16,
     elevation: 2,
   },
@@ -97,7 +197,61 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   feedContent: {
-    fontSize: 16,
+    fontSize: 13,
+    color: COLORS.black,
+    marginTop: 10,
+  },
+  media: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+    marginVertical: 8,
+  },
+  authorInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  authorAvatar: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 8,
+  },
+  authorText: {
+    flex: 1,
+  },
+  authorName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.black,
+  },
+  authorTagline: {
+    fontSize: 14,
+    color: 'gray',
+  },
+  postTime: {
+    fontSize: 14,
+    color: 'gray',
+    marginBottom: 8,
+  },
+  moreIcon: {
+    alignSelf: 'flex-end',
+  },
+  bottomActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
+  actionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  actionText: {
+    marginLeft: 5,
     color: 'gray',
   },
 });
