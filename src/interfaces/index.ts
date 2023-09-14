@@ -142,3 +142,9 @@ export interface ExperienceState {
   endingYear?: number;
   currentlyWorking?: boolean;
 }
+
+export interface RoundedButtonProps {
+  onPress: () => void;
+  text: string;
+  style?: object;
+}

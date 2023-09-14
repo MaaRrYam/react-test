@@ -1,9 +1,15 @@
-import {BackButton, Button, IconButton} from '@/components/Buttons';
+import {
+  BackButton,
+  Button,
+  IconButton,
+  RoundedButton,
+} from '@/components/Buttons';
 import {
   RoleCard,
   EducationCard,
   ExperienceCard,
   ChatItem,
+  NetworkItem,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
@@ -29,4 +35,6 @@ export {
   Checkbox,
   Header,
   ChatItem,
+  NetworkItem,
+  RoundedButton,
 };
