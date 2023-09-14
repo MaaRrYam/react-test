@@ -18,6 +18,10 @@ export type RootStackParamList = {
   Home: undefined;
   Chats: undefined;
   Network: undefined;
+  ChatDetails: {
+    id: string;
+    name?: string;
+  };
 };
 
 export type SignInScreenProps = {
@@ -75,4 +79,9 @@ export type ChatsScreenProps = {
 
 export type NetworkScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Network'>;
+};
+
+export type ChatDetailsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'ChatDetails'>;
+  route: RouteProp<RootStackParamList, 'ChatDetails'>;
 };

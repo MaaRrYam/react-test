@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {FONTS, COLORS} from '@/constants';
+import {RootStackParamList} from '@/types';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 interface Chat {
   id: string;
@@ -11,9 +13,21 @@ interface Chat {
   lastMessage: string;
 }
 
-const ChatItem = ({item}: {item: Chat}) => {
+const ChatItem = ({
+  item,
+  navigation,
+}: {
+  item: Chat;
+  navigation: StackNavigationProp<RootStackParamList, 'Chats'>;
+}) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('ChatDetails', {
+          id: item.id,
+          name: item.name,
+        })
+      }>
       <View style={styles.chatItem}>
         <View style={styles.chatItemImage}>
           <Image
