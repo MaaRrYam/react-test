@@ -33,7 +33,9 @@ const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
         <FlatList
           data={CHATS}
           keyExtractor={item => item.id}
-          renderItem={({item}) => <ChatItem item={item} />}
+          renderItem={({item}) => (
+            <ChatItem item={item} navigation={navigation} />
+          )}
         />
       </SafeAreaView>
     </View>
