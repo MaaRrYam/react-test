@@ -1,5 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
-import {COLORS, PADDING, FONTS} from '../../constants';
+import {COLORS, PADDING, FONTS} from '@/constants';
 
 export const commonStyles = StyleSheet.create({
   container: {

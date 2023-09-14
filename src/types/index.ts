@@ -16,6 +16,13 @@ export type RootStackParamList = {
   SalaryExpectations: undefined;
   OnboardingCompleted: undefined;
   Home: undefined;
+  Chats: undefined;
+  Network: undefined;
+  ChatDetails: {
+    id: string;
+    name?: string;
+  };
+  Notifications: undefined;
 };
 
 export type SignInScreenProps = {
@@ -65,4 +72,21 @@ export type OnboardingCompletedScreenProps = {
 
 export type HomeScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
+};
+
+export type ChatsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Chats'>;
+};
+
+export type NetworkScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Network'>;
+};
+
+export type ChatDetailsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'ChatDetails'>;
+  route: RouteProp<RootStackParamList, 'ChatDetails'>;
+};
+
+export type NotificationsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };

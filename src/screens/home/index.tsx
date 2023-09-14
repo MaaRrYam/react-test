@@ -1,4 +1,4 @@
-import {Link, IconButton} from 'components';
+import {Header} from 'components';
 import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
 import React from 'react';
 import {
@@ -8,9 +8,10 @@ import {
   SafeAreaView,
   FlatList,
   Image,
-  TextInput,
 } from 'react-native';
 import {HomeScreenProps} from 'types';
+import {homeStyles} from '@/styles/home';
+import {TextInput} from 'react-native';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const feedData = [
@@ -71,89 +72,85 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <View style={styles.header}>
-          <Image
-            source={require('@/assets/images/apple.png')}
-            style={styles.logo}
-          />
-          <View style={styles.headerIcons}>
-            <IconButton
-              imageSource={require('@/assets/images/searchIcon.png')}
-              onPress={() => console.log('Search Icon Pressed')}
-              style={{marginLeft: 20, backgroundColor: '#F4F4F4'}}
+    <View style={homeStyles.outerContainer}>
+      <SafeAreaView style={homeStyles.container}>
+        <View>
+          <Header navigation={navigation} />
+          <View style={homeStyles.subheader}>
+            <Image
+              source={require('@/assets/images/user.png')}
+              style={styles.userImage}
             />
-            <IconButton
-              imageSource={require('@/assets/images/messages.png')}
-              onPress={() => console.log('Search Icon Pressed')}
-              style={{marginLeft: 20, backgroundColor: '#F4F4F4'}}
-            />
+
+            <TextInput style={styles.searchBar} placeholder="Start a Post" />
           </View>
         </View>
-        <View style={styles.subheader}>
-          <Image
-            source={require('@/assets/images/user.png')}
-            style={styles.userImage}
-          />
 
-          <TextInput style={styles.searchBar} placeholder="Start a Post" />
-        </View>
-      </View>
+        <View style={styles.feedContainer}>
+          <FlatList
+            data={feedData}
+            renderItem={({item}) => (
+              <View style={styles.feedItem}>
+                <View style={styles.authorInfo}>
+                  <Image source={item.author.avatar} style={styles.userImage} />
+                  <View style={{marginLeft: 10}}>
+                    <Text style={styles.authorName}>{item.author.name}</Text>
+                    <Text style={styles.authorTagline}>
+                      {item.author.tagline}
+                    </Text>
+                    <Text style={styles.authorTagline}>{item.time}</Text>
+                  </View>
+                </View>
+                <Text style={styles.feedContent}>{item.content}</Text>
+                {item.media && (
+                  <Image source={item.media} style={styles.media} />
+                )}
+                <View style={styles.postReactions}>
+                  <View style={styles.reactionButton}>
+                    <Image source={require('@/assets/icons/like.png')} />
+                  </View>
+                  <Text style={styles.like}>{item.likes}</Text>
+                  <View style={styles.reactionButton}>
+                    <Image source={require('@/assets/icons/dislike.png')} />
+                  </View>
 
-      <View style={styles.feedContainer}>
-        <FlatList
-          data={feedData}
-          renderItem={({item}) => (
-            <View style={styles.feedItem}>
-              <View style={styles.authorInfo}>
-                <Image source={item.author.avatar} style={styles.userImage} />
-                <View style={{marginLeft: 10}}>
-                  <Text style={styles.authorName}>{item.author.name}</Text>
-                  <Text style={styles.authorTagline}>
-                    {item.author.tagline}
-                  </Text>
-                  <Text style={styles.authorTagline}>{item.time}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flex: 3 / 4,
+                      marginLeft: 15,
+                    }}>
+                    <Image source={require('@/assets/icons/comment.png')} />
+                    <Image source={require('@/assets/icons/share.png')} />
+                    <Image source={require('@/assets/icons/report.png')} />
+                  </View>
                 </View>
               </View>
-              <Text style={styles.feedContent}>{item.content}</Text>
-              {item.media && <Image source={item.media} style={styles.media} />}
-            </View>
-          )}
-          keyExtractor={item => item.id}
-        />
-      </View>
-
-      <Link
-        text={'Back to Start'}
-        onPress={() => navigation.navigate('SignIn')}
-      />
-    </SafeAreaView>
+            )}
+            keyExtractor={item => item.id}
+          />
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-
-  header: {
-    backgroundColor: COLORS.white,
-    padding: PADDING.general,
-    alignItems: 'center',
+  postReactions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingHorizontal: 10,
   },
-  logo: {
-    width: 40,
-    height: 40,
+  reactionButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    backgroundColor: '#F4F4F4',
+    borderRadius: BORDER_RADIUS.general * 2,
   },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  icon: {
-    marginRight: 20,
+  like: {
+    paddingTop: 7,
+    marginHorizontal: 8,
   },
   subheader: {
     backgroundColor: COLORS.white,

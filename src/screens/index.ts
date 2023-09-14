@@ -11,3 +11,7 @@ export {default as EmploymentStatus} from '@/screens/onboarding/EmploymentStatus
 export {default as SalaryExpectations} from '@/screens/onboarding/SalaryExpectations';
 export {default as OnboardingCompleted} from '@/screens/onboarding/OnboardingCompleted';
 export {default as Home} from '@/screens/home';
+export {default as Chats} from '@/screens/chat/Chats';
+export {default as ChatDetails} from '@/screens/chat/ChatDetails';
+export {default as Network} from '@/screens/network';
+export {default as Notifications} from '@/screens/notifications';
