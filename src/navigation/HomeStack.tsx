@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 
 import {COLORS} from '@/constants';
 import MyTabs from '@/components/Drawer';
-import {Chats} from '@/screens';
+import {Chats, Network} from '@/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +14,7 @@ const AppNavigation = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="MyTabs" component={MyTabs} />
         <Stack.Screen name="Chats" component={Chats} />
+        <Stack.Screen name="Network" component={Network} />
       </Stack.Navigator>
     </View>
   );

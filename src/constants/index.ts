@@ -8,6 +8,7 @@ export const COLORS = {
   white: '#fff',
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
+  lightGrayBackground: '#F4F4F4',
 };
 
 export const BORDER_RADIUS = {
@@ -64,4 +65,27 @@ export const employmentStatuses = [
   'Contract',
   'Temporary',
   'UnEmployed',
+];
+
+export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
+
+export const NETWORK_REQUESTS = [
+  {
+    id: 1,
+    name: 'Abdullah Sarfraz',
+    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    tagline: 'Full Stack Developer',
+  },
+  {
+    id: 2,
+    name: 'Abdullah Akhtar',
+    image: 'https://randomuser.me/api/portraits/men/2.jpg',
+    tagline: 'Full Stack Developer',
+  },
+  {
+    id: 3,
+    name: 'Definitely Someone',
+    image: 'https://randomuser.me/api/portraits/men/3.jpg',
+    tagline: 'Full Stack Developer',
+  },
 ];

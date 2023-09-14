@@ -12,17 +12,20 @@ export const homeStyles = StyleSheet.create({
   },
   header: {
     backgroundColor: COLORS.white,
-    padding: PADDING.general,
+    paddingHorizontal: PADDING.general,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    borderBottomColor: COLORS.border,
+    borderBottomWidth: 1,
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   },
   headerIcons: {
     flexDirection: 'row',
+    padding: 10,
   },
   icon: {
     marginRight: 20,

@@ -17,6 +17,7 @@ export type RootStackParamList = {
   OnboardingCompleted: undefined;
   Home: undefined;
   Chats: undefined;
+  Network: undefined;
 };
 
 export type SignInScreenProps = {
@@ -70,4 +71,8 @@ export type HomeScreenProps = {
 
 export type ChatsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Chats'>;
+};
+
+export type NetworkScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Network'>;
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {Home, Chats} from '@/screens';
+import {Home, Network} from '@/screens';
 import {COLORS} from '@/constants';
 import {getIcon} from '@/utils';
 
@@ -77,7 +77,7 @@ const Tabs = () => {
       screenOptions={{headerShown: false}}
       tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Network" component={SettingsScreen} />
+      <Tab.Screen name="Network" component={Network} />
       <Tab.Screen name="Notifications" component={SettingsScreen} />
       <Tab.Screen name="Jobs" component={SettingsScreen} />
       <Tab.Screen name="Profile" component={SettingsScreen} />
