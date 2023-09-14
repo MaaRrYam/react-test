@@ -1,4 +1,4 @@
-import {IconButton} from 'components';
+import {Header} from 'components';
 import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
 import React from 'react';
 import {
@@ -8,11 +8,12 @@ import {
   SafeAreaView,
   FlatList,
   Image,
-  TextInput,
 } from 'react-native';
 import {HomeScreenProps} from 'types';
+import {homeStyles} from '@/styles/home';
+import {TextInput} from 'react-native';
 
-const HomeScreen: React.FC<HomeScreenProps> = () => {
+const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const feedData = [
     {
       id: '1',
@@ -71,28 +72,11 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   ];
 
   return (
-    <View style={styles.outerContainer}>
-      <SafeAreaView style={styles.container}>
+    <View style={homeStyles.outerContainer}>
+      <SafeAreaView style={homeStyles.container}>
         <View>
-          <View style={styles.header}>
-            <Image
-              source={require('@/assets/images/apple.png')}
-              style={styles.logo}
-            />
-            <View style={styles.headerIcons}>
-              <IconButton
-                imageSource={require('@/assets/images/searchIcon.png')}
-                onPress={() => console.log('Search Icon Pressed')}
-                style={{marginLeft: 20, backgroundColor: '#F4F4F4'}}
-              />
-              <IconButton
-                imageSource={require('@/assets/images/messages.png')}
-                onPress={() => console.log('Search Icon Pressed')}
-                style={{marginLeft: 20, backgroundColor: '#F4F4F4'}}
-              />
-            </View>
-          </View>
-          <View style={styles.subheader}>
+          <Header navigation={navigation} />
+          <View style={homeStyles.subheader}>
             <Image
               source={require('@/assets/images/user.png')}
               style={styles.userImage}
@@ -154,14 +138,6 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    backgroundColor: COLORS.lightBackground,
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
   postReactions: {
     flexDirection: 'row',
     paddingHorizontal: 10,
@@ -175,23 +151,6 @@ const styles = StyleSheet.create({
   like: {
     paddingTop: 7,
     marginHorizontal: 8,
-  },
-  header: {
-    backgroundColor: COLORS.white,
-    padding: PADDING.general,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  logo: {
-    width: 40,
-    height: 40,
-  },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  icon: {
-    marginRight: 20,
   },
   subheader: {
     backgroundColor: COLORS.white,

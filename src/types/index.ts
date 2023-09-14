@@ -16,6 +16,7 @@ export type RootStackParamList = {
   SalaryExpectations: undefined;
   OnboardingCompleted: undefined;
   Home: undefined;
+  Chats: undefined;
 };
 
 export type SignInScreenProps = {
@@ -65,4 +66,8 @@ export type OnboardingCompletedScreenProps = {
 
 export type HomeScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
+};
+
+export type ChatsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Chats'>;
 };
