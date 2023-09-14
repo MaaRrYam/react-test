@@ -138,3 +138,35 @@ export const CHAT_DETAILS = [
     ],
   },
 ];
+
+export const NOTIFICATIONS = [
+  {
+    id: 1,
+    description: 'Abdullah Akhtar wants to connect with you',
+    isConnectionRequest: true,
+    date: 'Thursday 24, July',
+    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    isUnRead: true,
+  },
+  {
+    id: 2,
+    description: 'You have a new message from Abdullah',
+    date: 'Thursday 24, July',
+    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    isUnRead: true,
+  },
+  {
+    id: 3,
+    description: 'You have a new message from Abdullah',
+    date: 'Thursday 24, July',
+    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    isUnRead: false,
+  },
+  {
+    id: 4,
+    description: 'You have a new message from Abdullah',
+    date: 'Thursday 24, July',
+    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    isUnRead: false,
+  },
+];

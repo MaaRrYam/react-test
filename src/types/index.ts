@@ -22,6 +22,7 @@ export type RootStackParamList = {
     id: string;
     name?: string;
   };
+  Notifications: undefined;
 };
 
 export type SignInScreenProps = {
@@ -84,4 +85,8 @@ export type NetworkScreenProps = {
 export type ChatDetailsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ChatDetails'>;
   route: RouteProp<RootStackParamList, 'ChatDetails'>;
+};
+
+export type NotificationsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };

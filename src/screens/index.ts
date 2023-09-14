@@ -14,3 +14,4 @@ export {default as Home} from '@/screens/home';
 export {default as Chats} from '@/screens/chat/Chats';
 export {default as ChatDetails} from '@/screens/chat/ChatDetails';
 export {default as Network} from '@/screens/network';
+export {default as Notifications} from '@/screens/notifications';

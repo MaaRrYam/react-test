@@ -10,6 +10,7 @@ import {
   ExperienceCard,
   ChatItem,
   NetworkItem,
+  NotificationItem,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
@@ -37,4 +38,5 @@ export {
   ChatItem,
   NetworkItem,
   RoundedButton,
+  NotificationItem,
 };
