@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {Home} from '@/screens';
+import {Home, Chats} from '@/screens';
 import {COLORS} from '@/constants';
 import {getIcon} from '@/utils';
 
