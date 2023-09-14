@@ -48,17 +48,25 @@ const checkIfUserIsWhitelisted = async (
           selectedRole: userWhiteListDoc.selectedRole,
           time: Timestamp.now(),
         };
-
         await setDoc(newDocRef, userDetails, {merge: true});
+        ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
+        navigation.navigate('GetStarted');
+      } else {
+        if (!userDataSnapshot.data()?.onboarded) {
+          ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
+          navigation.navigate('GetStarted');
+        } else {
+          ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
+          navigation.navigate('Home');
+        }
       }
-      ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
-      navigation.navigate('Home'); // Replace 'Home' with the appropriate screen name
     } else if (docSnapshot.docs.length === 0) {
       await auth.signOut();
       ToastAndroid.show(
         'Please submit an access request to start using the platform.',
         ToastAndroid.LONG,
       );
+      navigation.navigate('SelectRole');
     } else if (
       docSnapshot.docs.length > 0 &&
       docSnapshot.docs[0].data().whitelisted === false
@@ -68,7 +76,6 @@ const checkIfUserIsWhitelisted = async (
         'Your access request is still pending approval.',
         ToastAndroid.LONG,
       );
-      navigation.navigate('GetStarted');
     } else {
       await auth.signOut();
       ToastAndroid.show('An unknown error occurred code:64', ToastAndroid.LONG);
