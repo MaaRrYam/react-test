@@ -5,9 +5,11 @@ import {TouchableOpacity, Image, StyleSheet} from 'react-native';
 const BackButton = ({
   onPress,
   isBgWhite,
+  style,
 }: {
   onPress?: () => void;
   isBgWhite?: boolean;
+  style?: object;
 }) => {
   const navigation = useNavigation();
 
@@ -20,7 +22,7 @@ const BackButton = ({
 
   return (
     <TouchableOpacity
-      style={[styles.button, isBgWhite && styles.whiteBackground]}
+      style={[styles.button, isBgWhite && styles.whiteBackground, style]}
       onPress={handleNavigation}>
       <Image
         source={require('../../assets/images/back.png')}

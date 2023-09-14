@@ -182,4 +182,8 @@ export interface UserInterface {
   minimumSalary?: string;
   readNotifications?: number;
   redeems?: Array<string>;
+export interface RoundedButtonProps {
+  onPress: () => void;
+  text: string;
+  style?: object;
 }

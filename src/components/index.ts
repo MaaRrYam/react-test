@@ -1,10 +1,23 @@
-import {BackButton, Button, IconButton} from '@/components/Buttons';
-import {RoleCard, EducationCard, ExperienceCard} from '@/components/Cards';
+import {
+  BackButton,
+  Button,
+  IconButton,
+  RoundedButton,
+} from '@/components/Buttons';
+import {
+  RoleCard,
+  EducationCard,
+  ExperienceCard,
+  ChatItem,
+  NetworkItem,
+  NotificationItem,
+} from '@/components/Cards';
 import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
 import {EducationForm, ExperienceForm} from '@/components/Forms';
+import Header from '@/components/Header';
 
 export {
   BackButton,
@@ -21,4 +34,9 @@ export {
   EducationForm,
   ExperienceForm,
   Checkbox,
+  Header,
+  ChatItem,
+  NetworkItem,
+  RoundedButton,
+  NotificationItem,
 };
