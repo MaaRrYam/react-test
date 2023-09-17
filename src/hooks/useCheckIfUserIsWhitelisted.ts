@@ -54,10 +54,12 @@ const checkIfUserIsWhitelisted = async (
       } else {
         if (!userDataSnapshot.data()?.onboarded) {
           ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
-          navigation.navigate('GetStarted');
+          navigation.navigate('Onboarding');
+          console.log(userDataSnapshot.data()?.onboarded);
         } else {
           ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
-          navigation.navigate('Home');
+          navigation.navigate('MyTabs');
+          console.log(userDataSnapshot.data()?.onboarded);
         }
       }
     } else if (docSnapshot.docs.length === 0) {
@@ -66,7 +68,7 @@ const checkIfUserIsWhitelisted = async (
         'Please submit an access request to start using the platform.',
         ToastAndroid.LONG,
       );
-      navigation.navigate('SelectRole');
+      navigation.navigate('RequestAccess');
     } else if (
       docSnapshot.docs.length > 0 &&
       docSnapshot.docs[0].data().whitelisted === false
