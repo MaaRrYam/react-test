@@ -11,6 +11,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import {COLORS} from '../../constants';
 import {ButtonProps} from 'interfaces';
+import {ForwardArrow} from '@/assets/icons';
 
 const Button: React.FC<ButtonProps> = ({
   title,
@@ -54,7 +55,9 @@ const Button: React.FC<ButtonProps> = ({
       return (
         <View style={styles.buttonContent}>
           <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
-          {icon && (
+          {icon && icon === 'arrow-right' ? (
+            <ForwardArrow style={{marginLeft: 5}} />
+          ) : (
             <FontAwesome5
               name={icon}
               size={20}
