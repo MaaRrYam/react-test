@@ -16,7 +16,8 @@
       "@/styles/*": ["styles/*"],
       "@/types/*": ["types/*"],
       "@/navigation/*": ["navigation/*"],
-      "@/services/*": ["services/*"]
+      "@/services/*": ["services/*"],
+      "@/store/*": ["store/*"]
     }
   }
 }
