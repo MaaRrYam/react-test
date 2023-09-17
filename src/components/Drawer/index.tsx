@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS} from '@/constants';
-import {getIcon} from '@/utils';
+import {getIcon} from '@/utils/IconsHelper';
 
 const Tab = createBottomTabNavigator();
 
@@ -59,11 +59,7 @@ function MyTabBar({state, descriptors, navigation}) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={styles.tab}>
-            <Image
-              source={getIcon(label, isFocused)}
-              style={styles.icon}
-              resizeMode="contain"
-            />
+            {getIcon(label, isFocused)}
           </TouchableOpacity>
         );
       })}
