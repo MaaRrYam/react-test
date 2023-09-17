@@ -20,6 +20,7 @@ module.exports = function (api) {
             '@constants': './src/constants',
             '@utils': './src/utils',
             '@assets': './src/assets',
+            '@icons': './src/assets/icons',
             '@interfaces': './src/interfaces',
             '@styles': './src/styles',
             '@types': './src/types',
