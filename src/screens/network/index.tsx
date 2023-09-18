@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   selectedButtonStyles: {
     paddingHorizontal: 15,
     backgroundColor: COLORS.lightBlueBackground,
+    color: COLORS.black,
     paddingVertical: 10,
   },
 });

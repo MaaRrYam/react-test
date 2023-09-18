@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Splash} from './screens';
+import {Provider} from 'react-redux';
 import '@/config/firebase';
-import RootNavigation from './navigation';
 import 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+
+import store from '@/store';
+import {Splash} from './screens';
+import RootNavigation from './navigation';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -16,7 +19,9 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      {showSplash ? <Splash /> : <RootNavigation />}
+      <Provider store={store}>
+        {showSplash ? <Splash /> : <RootNavigation />}
+      </Provider>
     </GestureHandlerRootView>
   );
 };

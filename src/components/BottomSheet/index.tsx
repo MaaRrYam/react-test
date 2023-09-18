@@ -20,6 +20,7 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
       ref={bottomSheetRef}
       index={isVisible ? 1 : 0}
       snapPoints={snapPoints}
+      style={styles.sheetStyles}
       onChange={index => {
         if (index === 0) {
           onClose();

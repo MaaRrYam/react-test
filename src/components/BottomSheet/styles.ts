@@ -1,4 +1,4 @@
-import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
+import {BORDER_RADIUS, COLORS} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -18,5 +18,16 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+  },
+  sheetStyles: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 });
