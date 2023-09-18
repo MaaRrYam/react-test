@@ -72,7 +72,7 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={'Signin'}
+        initialRouteName={'Main'}
         screenOptions={{headerShown: false}}>
         <MainStack.Screen name="Main" component={Main} />
         <MainStack.Screen name="Signin" component={SigninNavigator} />

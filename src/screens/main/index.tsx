@@ -76,6 +76,10 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
     }
   };
 
+  const handleSigninWithEmailNavigation = () => {
+    navigation.navigate('Signin');
+  };
+
   
 
   const handleGoogleSign = async () => {
@@ -172,7 +176,7 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
         <View>
           <Button
             title="Sign In"
-            onPress={handleSubmit}
+            onPress={handleSigninWithEmailNavigation}
             style={[
               styles.socialsButtonContainer,
               {marginVertical: 20, fontWeight: 300},
