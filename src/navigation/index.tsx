@@ -18,6 +18,7 @@ import {
   SignIn,
 } from '@/screens';
 import MyTabs from '@/components/Drawer';
+import {useEffect} from 'react';
 const RequestAccessStack = createStackNavigator();
 const RequestAccessNavigator = () => (
   <RequestAccessStack.Navigator>
@@ -54,11 +55,14 @@ const OnboardingNavigator = () => (
 
 const RootNavigation = () => {
   const {user} = useAuth();
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   const MainStack = createStackNavigator();
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={'MyTabs'}
+        initialRouteName={'SignIn'}
         screenOptions={{headerShown: false}}>
         <MainStack.Screen name="SignIn" component={SignIn} />
         <MainStack.Screen

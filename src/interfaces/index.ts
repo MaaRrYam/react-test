@@ -1,3 +1,4 @@
+import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
 
@@ -93,7 +94,12 @@ export interface FirebaseServiceProps {
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
 }
-
+export interface SigninServiceProps {
+  checkIfUserIsWhitelisted(
+    loggedInUser: UserCredential,
+    navigation: any,
+  ): Promise<void>;
+}
 export interface requestAccessFormValues {
   name: string;
   email: string;
@@ -182,6 +188,7 @@ export interface UserInterface {
   minimumSalary?: string;
   readNotifications?: number;
   redeems?: Array<string>;
+}
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;

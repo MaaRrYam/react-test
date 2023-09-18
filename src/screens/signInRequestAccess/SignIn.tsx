@@ -21,7 +21,7 @@ import {COLORS} from '@/constants';
 import {SignInScreenProps} from '@/types';
 import {signInSchema} from '@/utils/schemas/schemas';
 import {_signInWithGoogle} from '@/services/auth/Google';
-import checkIfUserIsWhitelisted from '@/hooks/useCheckIfUserIsWhitelisted';
+import SigninService from '@/services/signin';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
@@ -82,12 +82,13 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
     await _signInWithGoogle(setUser);
     console.log('user', user);
     try {
-      await checkIfUserIsWhitelisted(user as UserCredential, navigation); // Pass the 'navigation' object here
-      // Continue with your logic after the user is whitelisted.
+      await SigninService.checkIfUserIsWhitelisted(
+        user as UserCredential,
+        navigation,
+      );
     } catch (error) {
       console.log(error);
     }
-    // console.log('FROM SIGN IN SCREEN', data);
   };
 
   return (
