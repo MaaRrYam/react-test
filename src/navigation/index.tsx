@@ -18,10 +18,20 @@ import {
   Main,
   SigninScreen,
   SigninWithEmail,
+  SignupScreen,
+  SignupWithEmail,
 } from '@/screens';
 import MyTabs from '@/components/Drawer';
 import {useEffect} from 'react';
 // import SigninScreen from '@/screens/signin/SigninScreen';
+
+const SignupStack = createStackNavigator();
+const SignupNavigator = () => (
+  <SignupStack.Navigator screenOptions={{headerShown: false}}>
+    <SignupStack.Screen name="SignupOptions" component={SignupScreen} />
+    <SignupStack.Screen name="SignupWithEmail" component={SignupWithEmail} />
+  </SignupStack.Navigator>
+)
 
 const SigninStack = createStackNavigator();
 const SigninNavigator = () => (
@@ -78,6 +88,7 @@ const RootNavigation = () => {
         screenOptions={{headerShown: false}}>
         <MainStack.Screen name="Main" component={Main} />
         <MainStack.Screen name="Signin" component={SigninNavigator} />
+        <MainStack.Screen name="Signup" component={SignupNavigator} />
         <MainStack.Screen
           name="RequestAccess"
           component={RequestAccessNavigator}

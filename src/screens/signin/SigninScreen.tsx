@@ -40,13 +40,13 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
         <SocialLoginButton
           logoSource={require('@/assets/images/google.png')}
           onPress={handleGoogleSign}
-          text="Sign up with Google"
+          text="Sign in with Google"
           marginTop={50}
         />
         <SocialLoginButton
           logoSource={require('@/assets/images/x.png')}
           onPress={() => {}}
-          text="Sign up with Twitter"
+          text="Sign in with X"
           marginTop={14.61}
         />
       </View>
@@ -61,7 +61,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
           style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
           <Text style={{color: 'black'}}>.</Text>
         </View>
-        <View style={{marginHorizontal: 6}}>
+        <View style={{marginLeft: 8, marginRight: 8 }}>
           <Text style={{color: 'black', marginBottom: 3}}>or</Text>
         </View>
         <View
@@ -72,7 +72,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
 
       <View>
         <Button
-          onPress={() => {}}
+          onPress={() => navigation.navigate('SigninWithEmail')}
           title="Sign in with email"
           textColor="white"
           style={{marginTop: 46}}
@@ -99,10 +99,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: windowWidth - 180,
-    height: '30%',
+    height: '20%',
     marginTop: 20,
-    borderWidth: 2,
-    borderColor: "black"
   },
   headingTitle: {
     fontSize: FONTS.heading,

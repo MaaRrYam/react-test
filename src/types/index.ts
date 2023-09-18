@@ -97,6 +97,10 @@ export type SignInScreenProps = {
 export type SigninWithEmailProps = {
   navigation: StackNavigationProp<RootStackParamList, 'SigninWithEmail'>;
 };
-export type SignupScreenProps {
+export type SignupScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Signup'>;
-}
+};
+
+export type SignupWithEmailProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SignupWithEmail'>;
+};

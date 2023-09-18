@@ -10,6 +10,20 @@ export const signInSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
+export const signUpSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Please enter a valid Email')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(3, 'Password must be at least 3 characters long')
+    .max(24, 'Password must be less than 24 characters')
+    .required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Confirm Password is required'),
+});
+
+
 export const requestAccessSchema = Yup.object().shape({
   name: Yup.string().required('Name is Required'),
   linkedInUrl: Yup.string()

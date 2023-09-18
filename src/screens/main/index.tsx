@@ -7,21 +7,16 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   Text,
-  TouchableOpacity,
 } from 'react-native';
-import { useFormik } from 'formik';
 import {
   UserCredential,
   getAuth,
-  signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-import { Input, Link, Button, IconButton, SocialLoginButton } from '@/components';
+import {Button, SocialLoginButton } from '@/components';
 import { COLORS } from '@/constants';
 import { SignInScreenProps } from '@/types';
-import { signInSchema } from '@/utils/schemas/schemas';
 import { _signInWithGoogle } from '@/services/auth/Google';
 import SigninService from '@/services/signin';
 
@@ -31,54 +26,9 @@ const containerWidth = windowWidth - 50;
 const auth = getAuth();
 const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [user, setUser] = useState<UserCredential>();
-  const {
-    values,
-    touched,
-    handleChange,
-    handleSubmit,
-    errors,
-    setFieldTouched,
-    isSubmitting,
-    setSubmitting,
-  } = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: signInSchema,
-    onSubmit: formValues => {
-      handleSignIn(formValues);
-    },
-  });
   const handleSignButtonClick = () => {
     navigation.navigate('Signin')
   }
-
-  const handleSignIn = async (formValues: {
-    email: string;
-    password: string;
-  }) => {
-    try {
-      const response = await signInWithEmailAndPassword(
-        auth,
-        formValues.email.toLowerCase(),
-        formValues.password,
-      );
-      console.log(response);
-
-      // navigation.navigate('GetStarted');
-    } catch (error: any) {
-      if (error.message === 'Firebase: Error (auth/user-not-found).') {
-        Alert.alert('Invalid Email or Password');
-      } else {
-        Alert.alert('Invalid Email or Password');
-      }
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-
 
   const handleGoogleSign = async () => {
     await _signInWithGoogle(setUser);
@@ -88,11 +38,8 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
         user as UserCredential,
         navigation,
       );
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) { console.log(error); }
   };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -137,7 +84,7 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
             style={{ width: 151.803, height: 1, backgroundColor: COLORS.border }}>
             <Text style={{ color: 'black' }}>.</Text>
           </View>
-          <View style={{ marginLeft: 4, marginRight: 4 }}>
+          <View style={{ marginLeft: 6, marginRight: 6 }}>
             <Text style={{ color: 'black', marginBottom: 3 }}>or</Text>
           </View>
           <View
@@ -149,7 +96,7 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
         <View>
           <Button
             title="Create Account"
-            onPress={() => { }}
+            onPress={() => navigation.navigate('Signup')}
             style={{}}
             activityIndicatorColor={COLORS.white}
           />

@@ -1,7 +1,7 @@
-import {signInSchema} from '@/utils/schemas/schemas';
-import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
+import {signUpSchema} from '@/utils/schemas/schemas';
+import {createUserWithEmailAndPassword, getAuth} from '@firebase/auth';
 import {useFormik} from 'formik';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {
   View,
   Text,
@@ -14,16 +14,13 @@ import {
 } from 'react-native';
 import {Input, Button} from '@/components';
 import {COLORS, FONTS} from '@/constants';
-import {SigninWithEmailProps} from '@/types';
+import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
 
-const auth = getAuth();
-
-{
-}
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
-const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
+const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
+  const auth = getAuth();
   const {
     values,
     touched,
@@ -37,8 +34,9 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     initialValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
-    validationSchema: signInSchema,
+    validationSchema: signUpSchema,
     onSubmit: formValues => {
       handleSignIn(formValues);
     },
@@ -46,22 +44,21 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
   const handleSignIn = async (formValues: {
     email: string;
     password: string;
+    confirmPassword: string;
   }) => {
     try {
-      const response = await signInWithEmailAndPassword(
+      const response = await createUserWithEmailAndPassword(
         auth,
-        formValues.email.toLowerCase(),
+        formValues.email,
         formValues.password,
-      )
-        .then(async userCredential => {
-          await SigninService.checkIfEmailUserIsWhitelisted(
-            userCredential,
-            navigation,
-          );
-        })
-        .catch(error => {
+      ).then(async userCredentials => {
+        await SigninService.checkIfEmailUserIsWhitelisted(
+          userCredentials,
+          navigation,
+        ).catch(error => {
           console.log(error);
         });
+      });
       console.log(response);
     } catch (error: any) {
       if (error.message === 'Firebase: Error (auth/user-not-found).') {
@@ -83,7 +80,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
         />
 
         <View>
-          <Text style={styles.headingTitle}>Sign in</Text>
+          <Text style={styles.headingTitle}>Create Account</Text>
         </View>
 
         <View style={[styles.inputContainer, {marginTop: 20}]}>
@@ -106,9 +103,19 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
             name="password"
             setFieldTouched={setFieldTouched}
           />
+          <Input
+            placeholder="Confirm Password"
+            value={values.confirmPassword}
+            onChangeText={handleChange('confirmPassword')}
+            touched={touched.confirmPassword}
+            error={errors.confirmPassword}
+            secureTextEntry
+            name="confirmPassword"
+            setFieldTouched={setFieldTouched}
+          />
         </View>
         <Button
-          title="Sign in"
+          title="Sign up"
           onPress={handleSubmit}
           style={[
             styles.signinButtonContainer,
@@ -139,8 +146,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: windowWidth - 180,
-    height: '25%',
-    marginTop: 50,
+    height: '20%',
+    marginTop: 20,
   },
   headingTitle: {
     fontSize: FONTS.heading,
@@ -163,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SigninWithEmail;
+export default SignupWithEmail;
