@@ -92,5 +92,11 @@ export type NotificationsScreenProps = {
 };
 
 export type SignInScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Signin'>;
 };
+export type SigninWithEmailProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SigninWithEmail'>;
+};
+export type SignupScreenProps {
+  navigation: StackNavigationProp<RootStackParamList, 'Signup'>;
+}

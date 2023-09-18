@@ -1,14 +1,12 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/react-in-jsx-scope */
 import {Button, SocialLoginButton} from '@/components';
 import {COLORS, FONTS} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import SigninService from '@/services/signin';
 import {SignInScreenProps} from '@/types';
 import {UserCredential} from '@firebase/auth';
-import {FC, useState} from 'react';
-import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
-
+import  React, {FC, useState} from 'react';
+import {View, StyleSheet, Text, Image, Dimensions,Platform, SafeAreaView} from 'react-native';
+import {Input} from '@/components'
 const windowWidth = Dimensions.get('window').width;
 // const containerWidth = windowWidth - 50;
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
@@ -26,7 +24,8 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
     }
   };
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.safeArea}>
+        <View style={styles.mainContainer}>
       <Image
         source={require('assets/images/logo.png')}
         style={styles.logo}
@@ -80,10 +79,16 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
         />
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        justifyContent: 'space-between',
+        paddingBottom: Platform.OS === 'ios' ? 20 : 30,
+      },
   mainContainer: {
     color: 'black',
     paddingLeft: 25,
@@ -95,7 +100,9 @@ const styles = StyleSheet.create({
   logo: {
     width: windowWidth - 180,
     height: '30%',
-    marginTop: 50,
+    marginTop: 20,
+    borderWidth: 2,
+    borderColor: "black"
   },
   headingTitle: {
     fontSize: FONTS.heading,

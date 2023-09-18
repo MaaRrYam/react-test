@@ -29,7 +29,6 @@ const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
 
 const auth = getAuth();
-
 const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [user, setUser] = useState<UserCredential>();
   const {
@@ -51,6 +50,9 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
       handleSignIn(formValues);
     },
   });
+  const handleSignButtonClick = () => {
+    navigation.navigate('Signin')
+  }
 
   const handleSignIn = async (formValues: {
     email: string;
@@ -75,8 +77,6 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
       setSubmitting(false);
     }
   };
-
-  const handleSigninWithEmailNavigation = () => { navigation.navigate('Signin'); };
 
 
 
@@ -149,9 +149,8 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
         <View>
           <Button
             title="Create Account"
-            onPress={handleSubmit}
+            onPress={() => { }}
             style={{}}
-            isLoading={isSubmitting}
             activityIndicatorColor={COLORS.white}
           />
         </View>
@@ -174,13 +173,11 @@ const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
         <View>
           <Button
             title="Sign In"
-            onPress={handleSigninWithEmailNavigation}
+            onPress={handleSignButtonClick}
             style={[
               styles.socialsButtonContainer,
               { marginVertical: 20, fontWeight: 300 },
             ]}
-            isLoading={isSubmitting}
-            activityIndicatorColor={COLORS.white}
             textColor={COLORS.primary}
           />
         </View>

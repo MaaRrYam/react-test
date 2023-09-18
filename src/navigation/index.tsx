@@ -17,6 +17,7 @@ import {
   SelectRole,
   Main,
   SigninScreen,
+  SigninWithEmail,
 } from '@/screens';
 import MyTabs from '@/components/Drawer';
 import {useEffect} from 'react';
@@ -26,6 +27,7 @@ const SigninStack = createStackNavigator();
 const SigninNavigator = () => (
   <SigninStack.Navigator screenOptions={{headerShown: false}}>
     <SigninStack.Screen name="SigninOptionsScreen" component={SigninScreen} />
+    <SigninStack.Screen name="SigninWithEmail" component={SigninWithEmail} />
   </SigninStack.Navigator>
 );
 
