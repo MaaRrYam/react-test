@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
 import {useFormik} from 'formik';
 import {
@@ -16,7 +18,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-import {Input, Link, Button, IconButton} from '@/components';
+import {Input, Link, Button, IconButton, SocialLoginButton} from '@/components';
 import {COLORS} from '@/constants';
 import {SignInScreenProps} from '@/types';
 import {signInSchema} from '@/utils/schemas/schemas';
@@ -28,7 +30,7 @@ const containerWidth = windowWidth - 50;
 
 const auth = getAuth();
 
-const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
+const Main: React.FC<SignInScreenProps> = ({navigation}) => {
   const [user, setUser] = useState<UserCredential>();
   const {
     values,
@@ -74,9 +76,7 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
     }
   };
 
-  const handleRequestAccess = () => {
-    navigation.navigate('SelectRole');
-  };
+  
 
   const handleGoogleSign = async () => {
     await _signInWithGoogle(setUser);
@@ -110,64 +110,76 @@ const SignIn: React.FC<SignInScreenProps> = ({navigation}) => {
         </View>
 
         <View>
-          <View style={styles.inputContainer}>
-            <Input
-              placeholder="Email"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              touched={touched.email}
-              error={errors.email}
-              name="email"
-              setFieldTouched={setFieldTouched}
-            />
-            <Input
-              placeholder="Password"
-              value={values.password}
-              onChangeText={handleChange('password')}
-              touched={touched.password}
-              error={errors.password}
-              secureTextEntry
-              name="password"
-              setFieldTouched={setFieldTouched}
-            />
-          </View>
-          <Link
-            text="Forgot Password"
-            onPress={() => console.log('ForgotPassword')}
-            style={{textAlign: 'right'}}
+          <SocialLoginButton
+            logoSource={require('../../assets/images/google.png')}
+            onPress={handleGoogleSign}
+            text="Sign up with Google"
+            marginTop={0}
           />
+          <SocialLoginButton
+            logoSource={require('../../assets/images/x.png')}
+            onPress={() => {}}
+            text="Sign up with Twitter"
+            marginTop={14.61}
+          />
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            alignContent: 'center',
+            marginVertical: 20,
+          }}>
+          <View
+            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
+            <Text style={{color: 'black'}}>.</Text>
+          </View>
+          <View style={{marginLeft: 4, marginRight: 4}}>
+            <Text style={{color: 'black', marginBottom: 3}}>or</Text>
+          </View>
+          <View
+            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
+            <Text style={{color: 'black'}}>.</Text>
+          </View>
+        </View>
+
+        <View>
           <Button
-            title="Sign-In"
+            title="Create Account"
             onPress={handleSubmit}
-            style={{marginVertical: 20}}
+            style={{}}
             isLoading={isSubmitting}
             activityIndicatorColor={COLORS.white}
           />
         </View>
 
-        <View style={styles.socialAuth}>
-          <IconButton
-            imageSource={require('@/assets/images/x.png')}
-            onPress={() => console.log("I'm clicked")}
-          />
-
-          <IconButton
-            imageSource={require('@/assets/images/google.png')}
-            onPress={() => handleGoogleSign()}
-            style={{marginHorizontal: 30}}
-          />
-
-          <IconButton
-            imageSource={require('@/assets/images/apple.png')}
-            onPress={() => console.log("I'm clicked")}
-          />
+        <View>
+          <Text
+            style={{
+              color: 'black',
+              flexDirection: 'row',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignContent: 'center',
+              marginLeft: '27%',
+            }}>
+            Already have an Account?{' '}
+          </Text>
         </View>
 
-        <View style={styles.btnContainer}>
-          <View style={styles.divider} />
-          <Link
-            text="New to the platform? Request Access"
-            onPress={handleRequestAccess}
+        <View>
+          <Button
+            title="Sign In"
+            onPress={handleSubmit}
+            style={[
+              styles.socialsButtonContainer,
+              {marginVertical: 20, fontWeight: 300},
+            ]}
+            isLoading={isSubmitting}
+            activityIndicatorColor={COLORS.white}
+            textColor={COLORS.primary}
           />
         </View>
       </SafeAreaView>
@@ -229,11 +241,30 @@ const styles = StyleSheet.create({
     borderBottomColor: 'white',
     marginBottom: 10,
   },
-  socialAuth: {
+  socialsButtonContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: 'transparent', // Google Blue
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    color: 'black',
+    fontWeight: '400',
+  },
+  iconContainer: {
+    marginRight: 10,
+  },
+  signinButtonText: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  icon: {
+    width: 30,
+    height: 30,
   },
 });
 
-export default SignIn;
+export default Main;

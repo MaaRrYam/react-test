@@ -18,7 +18,7 @@ import {default as EmploymentSelectionField} from '@/components/SelectionFields/
 import {default as BottomSheet} from '@/components/BottomSheet';
 import {EducationForm, ExperienceForm} from '@/components/Forms';
 import Header from '@/components/Header';
-
+import {default as SocialLoginButton} from '@/components/SocialLoginButton'
 export {
   BackButton,
   Button,
@@ -39,4 +39,5 @@ export {
   NetworkItem,
   RoundedButton,
   NotificationItem,
+  SocialLoginButton,
 };

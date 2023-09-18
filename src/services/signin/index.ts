@@ -1,11 +1,13 @@
-import {ToastAndroid} from 'react-native';
 import FirebaseService from '@/services/Firebase'; // Import your Firebase service here
 import {auth} from '@/config/firebase';
 import {UserCredential} from 'firebase/auth';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
-
+import {Alert} from 'react-native';
 const SigninService: SigninServiceProps = {
-  async checkIfUserIsWhitelisted(loggedInUser: UserCredential, navigation: any) {
+  async checkIfUserIsWhitelisted(
+    loggedInUser: UserCredential,
+    navigation: any,
+  ) {
     try {
       const user = loggedInUser.user;
       const whiteListedUsers = await FirebaseService.getDocumentsByQuery(
@@ -38,24 +40,23 @@ const SigninService: SigninServiceProps = {
             time: FirebaseService.serverTimestamp(),
           };
           await FirebaseService.addDocument('users', userDetails);
-          ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
+          Alert.alert('Successfully signed in');
           navigation.navigate('GetStarted');
         } else {
           if (!userData.onboarded) {
-            ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
+            Alert.alert('Successfully signed in');
             navigation.navigate('Onboarding');
             console.log(userData.onboarded);
           } else {
-            ToastAndroid.show('Successfully signed in', ToastAndroid.SHORT);
+            Alert.alert('Successfully signed in');
             navigation.navigate('MyTabs');
             console.log(userData.onboarded);
           }
         }
       } else if (whiteListedUsers.length === 0) {
         await auth.signOut();
-        ToastAndroid.show(
+        Alert.alert(
           'Please submit an access request to start using the platform.',
-          ToastAndroid.LONG,
         );
         navigation.navigate('RequestAccess');
       } else if (
@@ -63,16 +64,10 @@ const SigninService: SigninServiceProps = {
         whiteListedUsers[0].whitelisted === false
       ) {
         await auth.signOut();
-        ToastAndroid.show(
-          'Your access request is still pending approval.',
-          ToastAndroid.LONG,
-        );
+        Alert.alert('Your access request is still pending approval.');
       } else {
         await auth.signOut();
-        ToastAndroid.show(
-          'An unknown error occurred code:64',
-          ToastAndroid.LONG,
-        );
+        Alert.alert('An unknown error occurred code:64');
       }
     } catch (error) {
       throw error;

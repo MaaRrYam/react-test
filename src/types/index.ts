@@ -25,8 +25,8 @@ export type RootStackParamList = {
   Notifications: undefined;
 };
 
-export type SignInScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
+export type MainScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Main'>;
 };
 
 export type SelectRoleScreenProps = {
@@ -89,4 +89,8 @@ export type ChatDetailsScreenProps = {
 
 export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
+};
+
+export type SignInScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
 };

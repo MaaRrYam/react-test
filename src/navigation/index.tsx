@@ -15,13 +15,23 @@ import {
   RequestAccessComplete,
   SalaryExpectations,
   SelectRole,
-  SignIn,
+  Main,
+  SigninScreen,
 } from '@/screens';
 import MyTabs from '@/components/Drawer';
 import {useEffect} from 'react';
+// import SigninScreen from '@/screens/signin/SigninScreen';
+
+const SigninStack = createStackNavigator();
+const SigninNavigator = () => (
+  <SigninStack.Navigator screenOptions={{headerShown: false}}>
+    <SigninStack.Screen name="SigninOptionsScreen" component={SigninScreen} />
+  </SigninStack.Navigator>
+);
+
 const RequestAccessStack = createStackNavigator();
 const RequestAccessNavigator = () => (
-  <RequestAccessStack.Navigator>
+  <RequestAccessStack.Navigator screenOptions={{headerShown: false}}>
     <RequestAccessStack.Screen name="SelectRole" component={SelectRole} />
     <RequestAccessStack.Screen
       name="RequestAccessComplete"
@@ -33,7 +43,7 @@ const RequestAccessNavigator = () => (
 
 const OnboardingStack = createStackNavigator();
 const OnboardingNavigator = () => (
-  <OnboardingStack.Navigator>
+  <OnboardingStack.Navigator screenOptions={{headerShown: false}}>
     <OnboardingStack.Screen name="GetStarted" component={GetStarted} />
     <OnboardingStack.Screen name="Education" component={Education} />
     <OnboardingStack.Screen name="Industry" component={Industry} />
@@ -62,9 +72,10 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={'SignIn'}
+        initialRouteName={'Signin'}
         screenOptions={{headerShown: false}}>
-        <MainStack.Screen name="SignIn" component={SignIn} />
+        <MainStack.Screen name="Main" component={Main} />
+        <MainStack.Screen name="Signin" component={SigninNavigator} />
         <MainStack.Screen
           name="RequestAccess"
           component={RequestAccessNavigator}
