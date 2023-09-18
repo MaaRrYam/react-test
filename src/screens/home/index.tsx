@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
   like: {
     paddingTop: 7,
     marginHorizontal: 8,
+    color: COLORS.black,
   },
   subheader: {
     backgroundColor: COLORS.white,
@@ -176,6 +177,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: PADDING.general - 6,
     marginLeft: 10,
+    color: COLORS.black,
   },
   searchIcon: {
     marginRight: 10,
