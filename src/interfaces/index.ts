@@ -153,3 +153,54 @@ export interface RoundedButtonProps {
 export interface IconProps extends SvgProps {
   isFocused?: boolean;
 }
+
+export interface UserInterface {
+  [key: string]: any;
+  id: string;
+  name: string;
+  email: string;
+  country?: string;
+  countryDetails?: string;
+  city?: string;
+  cityDetails?: Object;
+  state?: string;
+  stateDetails?: Object;
+  username: string;
+  selectedRole: string;
+  previousRole?: string;
+  onboarded: boolean;
+  photoUrl: string;
+  department?: string;
+  currentCVC?: number;
+  dailyCVC?: number;
+  refferalCode?: string;
+  lastDailyCVCUpdate?: string;
+  totalEarnedCVC?: number;
+  purchasedGifts?: Array<string>;
+  educationList?: any[];
+  employmentList?: any[];
+  admin?: boolean;
+  adminKey?: string;
+  dailyCVCStreakPoints?: number;
+  dailyCVCStreakCount?: number;
+  tagline?: string;
+  description?: string;
+  jobTags?: string[];
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  currentStatus?: string;
+  minimumSalary?: string;
+  readNotifications?: number;
+  redeems?: Array<string>;
+}
+
+export interface NetworkResponse extends UserInterface {
+  time: string;
+}
+
+export interface LoadingProps {
+  size?: 'small' | 'large';
+  color?: string;
+  containerStyles?: object;
+  indicatorStyles?: object;
+}
