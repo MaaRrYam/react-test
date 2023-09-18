@@ -16,3 +16,4 @@ export {default as Network} from '@/screens/network';
 export {default as Notifications} from '@/screens/notifications';
 export {default as Main} from '@/screens/main';
 export {default as SigninScreen} from '@/screens/signin/SigninScreen';
+export {default as SigninWithEmail} from '@/screens/signin/SigninWithEmail';

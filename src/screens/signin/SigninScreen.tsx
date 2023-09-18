@@ -74,7 +74,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
       <View>
         <Button
           onPress={() => {}}
-          title="Sign in With Email"
+          title="Sign in with email"
           textColor="white"
           style={{marginTop: 46}}
         />

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Image,
@@ -11,18 +11,18 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 import {
   UserCredential,
   getAuth,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-import {Input, Link, Button, IconButton, SocialLoginButton} from '@/components';
-import {COLORS} from '@/constants';
-import {SignInScreenProps} from '@/types';
-import {signInSchema} from '@/utils/schemas/schemas';
-import {_signInWithGoogle} from '@/services/auth/Google';
+import { Input, Link, Button, IconButton, SocialLoginButton } from '@/components';
+import { COLORS } from '@/constants';
+import { SignInScreenProps } from '@/types';
+import { signInSchema } from '@/utils/schemas/schemas';
+import { _signInWithGoogle } from '@/services/auth/Google';
 import SigninService from '@/services/signin';
 
 const windowWidth = Dimensions.get('window').width;
@@ -30,7 +30,7 @@ const containerWidth = windowWidth - 50;
 
 const auth = getAuth();
 
-const Main: React.FC<SignInScreenProps> = ({navigation}) => {
+const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [user, setUser] = useState<UserCredential>();
   const {
     values,
@@ -76,11 +76,9 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
     }
   };
 
-  const handleSigninWithEmailNavigation = () => {
-    navigation.navigate('Signin');
-  };
+  const handleSigninWithEmailNavigation = () => { navigation.navigate('Signin'); };
 
-  
+
 
   const handleGoogleSign = async () => {
     await _signInWithGoogle(setUser);
@@ -122,7 +120,7 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
           />
           <SocialLoginButton
             logoSource={require('../../assets/images/x.png')}
-            onPress={() => {}}
+            onPress={() => { }}
             text="Sign up with Twitter"
             marginTop={14.61}
           />
@@ -136,15 +134,15 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
             marginVertical: 20,
           }}>
           <View
-            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
-            <Text style={{color: 'black'}}>.</Text>
+            style={{ width: 151.803, height: 1, backgroundColor: COLORS.border }}>
+            <Text style={{ color: 'black' }}>.</Text>
           </View>
-          <View style={{marginLeft: 4, marginRight: 4}}>
-            <Text style={{color: 'black', marginBottom: 3}}>or</Text>
+          <View style={{ marginLeft: 4, marginRight: 4 }}>
+            <Text style={{ color: 'black', marginBottom: 3 }}>or</Text>
           </View>
           <View
-            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
-            <Text style={{color: 'black'}}>.</Text>
+            style={{ width: 151.803, height: 1, backgroundColor: COLORS.border }}>
+            <Text style={{ color: 'black' }}>.</Text>
           </View>
         </View>
 
@@ -179,7 +177,7 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
             onPress={handleSigninWithEmailNavigation}
             style={[
               styles.socialsButtonContainer,
-              {marginVertical: 20, fontWeight: 300},
+              { marginVertical: 20, fontWeight: 300 },
             ]}
             isLoading={isSubmitting}
             activityIndicatorColor={COLORS.white}
