@@ -65,15 +65,6 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const markFieldsAsTouched = () => {
-      if (initialValues.baseSalary) {
-        touched.baseSalary = true;
-      }
-    };
-    markFieldsAsTouched();
-  }, [initialValues]);
-
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
