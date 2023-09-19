@@ -61,17 +61,17 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       },
     });
 
-  // useLayoutEffect(() => {
-  //   if (userData.onboardingStep === 1) {
-  //     navigation.navigate('Education');
-  //   } else if (userData.onboardingStep === 2) {
-  //     navigation.navigate('Industry');
-  //   } else if (userData.onboardingStep === 3) {
-  //     navigation.navigate('Experience');
-  //   } else if (userData.onboardingStep === 4) {
-  //     navigation.navigate('EmploymentStatus');
-  //   }
-  // }, [userData]);
+  useLayoutEffect(() => {
+    if (userData.onboardingStep === 1) {
+      navigation.navigate('Education');
+    } else if (userData.onboardingStep === 2) {
+      navigation.navigate('Industry');
+    } else if (userData.onboardingStep === 3) {
+      navigation.navigate('Experience');
+    } else if (userData.onboardingStep === 4) {
+      navigation.navigate('EmploymentStatus');
+    }
+  }, [userData]);
 
   return (
     <SafeAreaView style={commonStyles.container}>

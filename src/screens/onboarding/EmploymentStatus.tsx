@@ -26,6 +26,8 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
     (async () => {
       const item = await StorageService.getItem('uid');
       setUserId(item);
+      const data = await FirebaseService.getDocument('users', item);
+      setEmployment(data.currentStatus);
     })();
   }, []);
 

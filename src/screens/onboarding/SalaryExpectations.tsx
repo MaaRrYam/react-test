@@ -13,6 +13,11 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
 }) => {
   const [userId, setUserId] = useState('');
+  const [initialValues, setInitialValues] = useState({
+    minimumSalary: '',
+    baseSalary: '',
+    totalCompensation: '',
+  });
 
   const handleSubmitSalary = (values: {
     minimumSalary: string;
@@ -30,11 +35,8 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   };
 
   const {values, touched, handleChange, handleSubmit, errors} = useFormik({
-    initialValues: {
-      minimumSalary: '',
-      baseSalary: '',
-      totalCompensation: '',
-    },
+    initialValues,
+    enableReinitialize: true, // Enable reinitialization when initialValues change
     validationSchema: salaryExpectationsSchema,
     onSubmit: values => {
       handleSubmitSalary(values);
@@ -42,11 +44,35 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   });
 
   useEffect(() => {
-    (async () => {
-      const item = await StorageService.getItem('uid');
-      setUserId(item);
-    })();
+    const fetchData = async () => {
+      try {
+        const item = await StorageService.getItem('uid');
+        setUserId(item);
+        const data = await FirebaseService.getDocument('users', item);
+
+        if (data) {
+          setInitialValues({
+            minimumSalary: data.minimumSalary.toString() || '',
+            baseSalary: data.baseSalary.toString() || '',
+            totalCompensation: data.totalCompensation.toString() || '',
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching data from Firebase:', error);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    const markFieldsAsTouched = () => {
+      if (initialValues.baseSalary) {
+        touched.baseSalary = true;
+      }
+    };
+    markFieldsAsTouched();
+  }, [initialValues]);
 
   return (
     <SafeAreaView style={commonStyles.container}>

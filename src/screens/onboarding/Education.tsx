@@ -11,7 +11,7 @@ import {
 import {COLORS} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
-import {EducationState} from '@/interfaces';
+import {EducationState, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import StorageService from '@/services/Storage';
 
@@ -37,6 +37,8 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
     (async () => {
       const item = await StorageService.getItem('uid');
       setUserId(item);
+      const data = await FirebaseService.getDocument('users', item);
+      setEducation(data.educationList);
     })();
   }, []);
 

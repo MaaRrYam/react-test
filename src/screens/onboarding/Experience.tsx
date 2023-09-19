@@ -37,6 +37,8 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
     (async () => {
       const item = await StorageService.getItem('uid');
       setUserId(item);
+      const data = await FirebaseService.getDocument('users', item);
+      setExperience(data.employmentList);
     })();
   }, []);
 
