@@ -10,7 +10,11 @@ const NetworkItem = ({item}: {item: NetworkResponse}) => {
       <View style={styles.networkItem}>
         <View style={styles.networkItemImage}>
           <Image
-            source={require('@/assets/images/user.png')}
+            source={
+              item.photoUrl
+                ? {uri: item.photoUrl}
+                : require('@/assets/images/user.png')
+            }
             style={styles.networkItemImage}
           />
         </View>
