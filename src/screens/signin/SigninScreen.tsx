@@ -87,7 +87,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
           />
         </View>
 
-        <View style={{marginTop: 140, marginLeft: 8, flexDirection: 'row'}}>
+        <View style={{marginTop:120, marginLeft: 8, flexDirection: 'row'}}>
           <Text style={{color: 'black'}}>Don't have an Account? </Text>
           <Text style={{color: COLORS.primary}} onPress={() => navigation.navigate('Signup')}>Sign up</Text>
         </View>
@@ -98,6 +98,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   safeArea: {
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'space-between',
     paddingBottom: Platform.OS === 'ios' ? 20 : 30,
@@ -114,13 +115,13 @@ const styles = StyleSheet.create({
     width: windowWidth - 180,
     height: 97,
     marginTop: 60,
-    marginBottom: 60,
+    marginBottom: 30,
   },
   headingTitle: {
     fontSize: FONTS.heading,
     color: 'black',
     fontWeight: 'bold',
-    marginTop: 30,
+    marginBottom: 30,
   },
 });
 

@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '../services/Storage';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import navigationConfig from './NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';
-import {Text} from 'react-native';
-import {LoadingScreen} from '@/screens';
+// import {Text} from 'react-native';
+import {Loading} from '@/components';
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
@@ -33,13 +33,13 @@ const RootNavigation = () => {
   // Conditional rendering based on initialScreen
   if (initialScreen === '') {
     // Display a loading indicator or splash screen while initializing
-    return <LoadingScreen />;
+    return <Loading />;
   }
 
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={initialScreen}
+        initialRouteName={'Main'}
         screenOptions={{headerShown: false}}>
         {navigationConfig.map(({name, component}: NavigationConfigProps) => (
           <MainStack.Screen key={name} name={name} component={component} />

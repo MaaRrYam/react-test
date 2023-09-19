@@ -149,7 +149,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
-        <View style={{marginTop: 125, marginLeft: 8, flexDirection: 'row'}}>
+        <View style={{marginTop: 120, marginLeft: 8, flexDirection: 'row'}}>
           <Text style={{color: 'black'}}>Already have an Account? </Text>
           <Text
             style={{color: COLORS.primary}}
@@ -179,12 +179,14 @@ const styles = StyleSheet.create({
   logo: {
     width: windowWidth - 180,
     height: 97,
-    marginTop: 80,
+    marginTop: 60,
+    marginBottom: 30,
   },
   headingTitle: {
     fontSize: FONTS.heading,
     color: 'black',
     fontWeight: 'bold',
+    marginBottom: 0,
   },
   inputContainer: {
     width: containerWidth,
