@@ -14,11 +14,11 @@ const SelectRole: React.FC<SelectRoleScreenProps> = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleContinue = () => {
-    navigation.navigate('RequestAccess', {role: selectedRole});
+    navigation.navigate('RequestAccessForm', {role: selectedRole});
   };
 
   const handleSignIn = () => {
-    navigation.navigate('SignIn');
+    navigation.navigate('Signin');
   };
 
   return (

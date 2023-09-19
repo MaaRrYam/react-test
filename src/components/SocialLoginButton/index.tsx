@@ -1,4 +1,4 @@
-import {COLORS} from '@/constants';
+import {BORDER_RADIUS, COLORS} from '@/constants';
 import {SocialLoginButtonProps} from '@/interfaces';
 import React from 'react';
 import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     borderColor: COLORS.border,
     color: 'black',

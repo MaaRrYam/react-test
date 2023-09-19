@@ -11,7 +11,10 @@ const RequestAccessNavigator = () => (
       name="RequestAccessComplete"
       component={RequestAccessComplete}
     />
-    <RequestAccessStack.Screen name="RequestAccess" component={RequestAccess} />
+    <RequestAccessStack.Screen
+      name="RequestAccessForm"
+      component={RequestAccess}
+    />
   </RequestAccessStack.Navigator>
 );
 

@@ -1,4 +1,4 @@
-import {COLORS, FONTS, containerWidth, windowWidth} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS, containerWidth, windowWidth} from '@/constants';
 import {Platform} from 'react-native';
 import {StyleSheet} from 'react-native';
 
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     borderColor: COLORS.border,
     color: 'black',

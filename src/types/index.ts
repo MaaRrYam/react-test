@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  SignIn: undefined;
+  Signin: undefined;
   SelectRole: undefined;
   RequestAccess: {
     role: string;
@@ -23,6 +23,10 @@ export type RootStackParamList = {
     name?: string;
   };
   Notifications: undefined;
+  Main: undefined;
+  SigninWithEmail: undefined;
+  Signup: undefined;
+  SignupWithEmail: undefined;
 };
 
 export type MainScreenProps = {

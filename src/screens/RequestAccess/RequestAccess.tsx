@@ -52,12 +52,12 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
     Alert.alert(data.message);
     setSubmitting(false);
     if (data.success) {
-      navigation.navigate('SignIn');
+      navigation.navigate('Signin');
     }
   };
 
   const handleSignInClick = () => {
-    navigation.navigate('SignIn');
+    navigation.navigate('Signin');
   };
 
   return (
