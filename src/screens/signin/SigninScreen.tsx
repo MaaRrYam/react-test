@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     width: windowWidth - 180,
     height: 97,
     marginTop: 60,
+    marginBottom: 60,
   },
   headingTitle: {
     fontSize: FONTS.heading,
