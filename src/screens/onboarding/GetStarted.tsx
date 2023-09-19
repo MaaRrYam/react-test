@@ -8,10 +8,11 @@ import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
 import FirebaseService from '@/services/Firebase';
 import {UserInterface} from '@/interfaces';
+import StorageService from '@/services/Storage';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
-  const uid = 'RG3OIhPdY0VG937IN3R40ud0Dml1';
   const [userData, setUserData] = useState<UserInterface>({});
+  const [userId, setUserId] = useState('');
 
   const initialValues = {
     username: '',
@@ -19,15 +20,13 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     state: '',
   };
 
-  const handleSubmitUserData = formValues => {
-    console.warn(userData);
-    // console.log(formValues);
-    setUserData(prevState => ({
-      ...prevState,
-      ...formValues,
-    }));
-
-    // FirebaseService.updateDocument('users', uid, userData);
+  const handleSubmitUserData = async formValues => {
+    const newData = {
+      ...userData,
+      ...{...formValues, onboardingStep: 1},
+    };
+    setUserData(newData);
+    FirebaseService.updateDocument('users', userId, newData);
   };
 
   const {values, touched, errors, handleChange, handleSubmit, setFieldTouched} =
@@ -36,19 +35,18 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       validationSchema: getStartedSchema,
       onSubmit: formValues => {
         handleSubmitUserData(formValues);
-        // navigation.navigate('Education');
+        navigation.navigate('Education');
       },
     });
 
   useEffect(() => {
-    const data = FirebaseService.getDocument('users', uid);
-    console.log(data);
-    setUserData(data);
+    (async () => {
+      const item = await StorageService.getItem('uid');
+      setUserId(item);
+      const data = await FirebaseService.getDocument('users', item);
+      setUserData(data);
+    })();
   }, []);
-
-  // useEffect(() => {
-  //   console.warn(userData);
-  // }, [userData]);
 
   return (
     <SafeAreaView style={commonStyles.container}>

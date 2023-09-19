@@ -33,8 +33,6 @@ const FirebaseService: FirebaseServiceProps = {
   async updateDocument(collectionName, documentId, data) {
     try {
       const updateDocRef = doc(db, collectionName, documentId);
-      console.log(updateDocRef);
-      console.log(data);
       await updateDoc(updateDocRef, data);
     } catch (error) {
       console.error('Error adding document: ', error);
