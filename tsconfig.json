@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/utils/IconsHelper.tsx"],
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
@@ -15,7 +15,8 @@
       "@/styles/*": ["styles/*"],
       "@/types/*": ["types/*"],
       "@/navigation/*": ["navigation/*"],
-      "@/services/*": ["services/*"]
+      "@/services/*": ["services/*"],
+      "@/store/*": ["store/*"]
     }
   }
 }

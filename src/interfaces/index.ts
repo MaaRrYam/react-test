@@ -1,6 +1,7 @@
 import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
+import {SvgProps} from 'react-native-svg';
 
 export interface EducationCardProps {
   id: number;
@@ -200,3 +201,6 @@ export interface NavigationConfigProps {
   component: React.ComponentType<any>;
 }
 
+export interface IconProps extends SvgProps {
+  isFocused?: boolean;
+}

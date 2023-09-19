@@ -8,10 +8,12 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {HomeScreenProps} from 'types';
 import {homeStyles} from '@/styles/home';
 import {TextInput} from 'react-native';
+import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const feedData = [
@@ -107,24 +109,23 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
                 )}
                 <View style={styles.postReactions}>
                   <View style={styles.reactionButton}>
-                    <Image source={require('@/assets/icons/like.png')} />
+                    <Like />
                   </View>
                   <Text style={styles.like}>{item.likes}</Text>
                   <View style={styles.reactionButton}>
-                    <Image source={require('@/assets/icons/dislike.png')} />
+                    <Dislike />
                   </View>
 
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      flex: 3 / 4,
-                      marginLeft: 15,
-                    }}>
-                    <Image source={require('@/assets/icons/comment.png')} />
-                    <Image source={require('@/assets/icons/share.png')} />
-                    <Image source={require('@/assets/icons/report.png')} />
+                  <View style={styles.iconsContainer}>
+                    <TouchableOpacity>
+                      <Comment />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Share />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Report />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -141,6 +142,14 @@ const styles = StyleSheet.create({
   postReactions: {
     flexDirection: 'row',
     paddingHorizontal: 10,
+    marginTop: 15,
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 3 / 4,
+    marginLeft: 15,
   },
   reactionButton: {
     paddingHorizontal: 20,
@@ -151,6 +160,7 @@ const styles = StyleSheet.create({
   like: {
     paddingTop: 7,
     marginHorizontal: 8,
+    color: COLORS.black,
   },
   subheader: {
     backgroundColor: COLORS.white,
@@ -167,6 +177,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: PADDING.general - 6,
     marginLeft: 10,
+    color: COLORS.black,
   },
   searchIcon: {
     marginRight: 10,
