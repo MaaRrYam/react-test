@@ -4,7 +4,7 @@ import {FONTS, COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NetworkItemProps} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import NetworkService from '@/services/network/Network';
+import NetworkService from '@/services/network';
 import {
   connectWithSomeone,
   removeConnection,
