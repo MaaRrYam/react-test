@@ -87,7 +87,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
           />
         </View>
 
-        <View style={{marginTop: 170, marginLeft: 8, flexDirection: 'row'}}>
+        <View style={{marginTop: 140, marginLeft: 8, flexDirection: 'row'}}>
           <Text style={{color: 'black'}}>Don't have an Account? </Text>
           <Text style={{color: COLORS.primary}} onPress={() => navigation.navigate('Signup')}>Sign up</Text>
         </View>
@@ -113,12 +113,13 @@ const styles = StyleSheet.create({
   logo: {
     width: windowWidth - 180,
     height: 97,
-    marginTop: 80,
+    marginTop: 60,
   },
   headingTitle: {
     fontSize: FONTS.heading,
     color: 'black',
     fontWeight: 'bold',
+    marginTop: 30,
   },
 });
 
