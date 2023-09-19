@@ -2,21 +2,19 @@ import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {FONTS, COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
+import {NetworkResponse} from '@/interfaces';
 
-interface Network {
-  id: number;
-  name: string;
-  image: string;
-  tagline: string;
-}
-
-const NetworkItem = ({item}: {item: Network}) => {
+const NetworkItem = ({item}: {item: NetworkResponse}) => {
   return (
     <TouchableOpacity>
       <View style={styles.networkItem}>
         <View style={styles.networkItemImage}>
           <Image
-            source={require('@/assets/images/user.png')}
+            source={
+              item.photoUrl
+                ? {uri: item.photoUrl}
+                : require('@/assets/images/user.png')
+            }
             style={styles.networkItemImage}
           />
         </View>
@@ -55,6 +53,7 @@ const styles = StyleSheet.create({
 
   networkItemHeader: {
     flex: 1,
+    justifyContent: 'center',
   },
   networkItemName: {
     fontSize: FONTS.bodyRegular,

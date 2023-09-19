@@ -1,4 +1,7 @@
+import {API_GET} from '@/config/api/apiRequests';
+import {NetworkResponse, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
+import {formatFirebaseTimestamp} from '@/utils';
 
 const UID = 'ucCUjQtHVnZ8lblVtFHqAYMigot1';
 
@@ -9,16 +12,16 @@ const NetworkService = {
         `users/${UID}/connections`,
       );
 
-      const result = await Promise.all(
+      const result: NetworkResponse[] = await Promise.all(
         response.map(async item => {
-          const connection = await FirebaseService.getDocument(
+          const connection = (await FirebaseService.getDocument(
             'users',
             item.id,
-          );
+          )) as UserInterface;
 
           return {
             ...connection,
-            time: item.time,
+            requestTime: formatFirebaseTimestamp(item.time, 'date'),
           };
         }),
       );
@@ -35,13 +38,16 @@ const NetworkService = {
         `users/${UID}/followers`,
       );
 
-      const result = await Promise.all(
+      const result: NetworkResponse[] = await Promise.all(
         response.map(async item => {
-          const follower = await FirebaseService.getDocument('users', item.id);
+          const follower = (await FirebaseService.getDocument(
+            'users',
+            item.id,
+          )) as UserInterface;
 
           return {
             ...follower,
-            time: item.time,
+            requestTime: formatFirebaseTimestamp(item.time, 'date'),
           };
         }),
       );
@@ -52,20 +58,22 @@ const NetworkService = {
       throw error;
     }
   },
-
   async getAllFollowings() {
     try {
       const response = await FirebaseService.getAllDocuments(
         `users/${UID}/following`,
       );
 
-      const result = await Promise.all(
+      const result: NetworkResponse[] = await Promise.all(
         response.map(async item => {
-          const following = await FirebaseService.getDocument('users', item.id);
+          const following = (await FirebaseService.getDocument(
+            'users',
+            item.id,
+          )) as UserInterface;
 
           return {
             ...following,
-            time: item.time,
+            requestTime: formatFirebaseTimestamp(item.time, 'date'),
           };
         }),
       );
@@ -73,6 +81,19 @@ const NetworkService = {
       return result;
     } catch (error) {
       console.error('Error fetching followings:', error);
+      throw error;
+    }
+  },
+  async getRecommendedConnections() {
+    try {
+      const {status, message, data} = await API_GET('/recommendConnection');
+      if (status) {
+        return data as NetworkResponse[];
+      } else {
+        throw new Error(message);
+      }
+    } catch (error) {
+      console.error('Error fetching followers:', error);
       throw error;
     }
   },

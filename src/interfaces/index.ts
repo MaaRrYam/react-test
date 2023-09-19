@@ -153,3 +153,75 @@ export interface RoundedButtonProps {
 export interface IconProps extends SvgProps {
   isFocused?: boolean;
 }
+
+export interface EducationProps {
+  id: number;
+  instituteName: string;
+  degree: string;
+  startYear: string;
+  endYear?: string;
+  currentlyStudying?: boolean;
+  cgpa?: string;
+  educationLevel?: string;
+}
+
+export interface EmploymentProps {
+  id: number;
+  companyName: string;
+  role: string;
+  startYear: string;
+  endYear?: string;
+  currentlyWorking?: boolean;
+  workEmail?: string;
+}
+
+export interface UserInterface {
+  id: string;
+  name: string;
+  email: string;
+  country: string;
+  countryDetails: string;
+  city: string;
+  cityDetails: Object;
+  state: string;
+  stateDetails: Object;
+  username: string;
+  selectedRole: string;
+  previousRole?: string;
+  onboarded: boolean;
+  photoUrl?: string;
+  department?: string;
+  currentCVC?: number;
+  dailyCVC?: number;
+  refferalCode?: string;
+  lastDailyCVCUpdate?: string;
+  totalEarnedCVC?: number;
+  purchasedGifts?: Array<string>;
+  time: Timestamp;
+  educationList?: Array<EducationProps>;
+  employmentList?: Array<EmploymentProps>;
+  admin?: boolean;
+  adminKey?: string;
+  dailyCVCStreakPoints?: number;
+  dailyCVCStreakCount?: number;
+  tagline?: string;
+  description?: string;
+  jobTags: string[];
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  currentStatus?: string;
+  minimumSalary?: string;
+  readNotifications?: number;
+  redeems?: Array<string>;
+}
+
+export interface NetworkResponse extends UserInterface {
+  requestTime: string;
+}
+
+export interface LoadingProps {
+  size?: 'small' | 'large';
+  color?: string;
+  containerStyles?: object;
+  indicatorStyles?: object;
+}
