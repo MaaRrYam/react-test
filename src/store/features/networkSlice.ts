@@ -1,5 +1,5 @@
 import {NetworkResponse} from '@/interfaces';
-import NetworkService from '@/services/network/Network';
+import NetworkService from '@/services/network';
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 const initialState = {
