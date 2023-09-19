@@ -90,3 +90,5 @@ export type ChatDetailsScreenProps = {
 export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };
+
+export type DateFormatOption = 'date' | 'dateTime';
