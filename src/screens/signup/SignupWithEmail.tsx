@@ -17,6 +17,7 @@ import {COLORS, FONTS} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
 import { styles } from '@/styles/signupWithEmail';
+import { getErrorMessageByCode } from '@/utils/functions';
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
@@ -57,30 +58,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           userCredentials,
           navigation,
         ).catch(error => {
-          let errorMessage = 'An unknown error occurred. Please try again.';
-
-          switch (error.code) {
-            case 'auth/email-already-in-use':
-              errorMessage =
-                'Email address is already in use. Please use a different email.';
-              break;
-            case 'auth/invalid-email':
-              errorMessage =
-                'Invalid email address. Please check your email format.';
-              break;
-            case 'auth/weak-password':
-              errorMessage = 'Weak password. Password should be stronger.';
-              break;
-            case 'auth/network-request-failed':
-              errorMessage =
-                'Network request failed. Please check your internet connection.';
-              break;
-            // Add more cases for other Firebase authentication errors during sign-up as needed
-
-            default:
-              break;
-          }
-
+          const errorMessage = getErrorMessageByCode(error.code);
           Alert.alert('Sign-Up Error', errorMessage);
         });
       });

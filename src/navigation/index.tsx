@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import StorageService from '../services/Storage';
+import StorageService from '@/services/Storage';
 import navigationConfig from './NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';;
 import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
+import {Splash} from '@/screens'
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
@@ -35,13 +36,13 @@ const RootNavigation = () => {
   }, []);
 
   if (initialScreen === '') {
-    return <Loading />;
+    return <Splash />;
   }
 
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={initialScreen}
+        initialRouteName={'Main'}
         screenOptions={{headerShown: false}}>
         {navigationConfig.map(({name, component}: NavigationConfigProps) => (
           <MainStack.Screen key={name} name={name} component={component} />

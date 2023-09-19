@@ -60,13 +60,13 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
             logoSource={require('../../assets/images/google.png')}
             onPress={handleGoogleSign}
             text="Sign up with Google"
-            marginTop={0}
+            style={{marginTop: 44}}
           />
           <SocialLoginButton
             logoSource={require('../../assets/images/x.png')}
             onPress={() => {}}
             text="Sign up with Twitter"
-            marginTop={14.61}
+            style={{marginTop: 14.61}}
           />
         </View>
 
@@ -101,7 +101,7 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
 
         <View>
           <Text style={styles.alreadyHaveAnAccount}>
-            Already have an Account?{' '}
+            Already have an account?{' '}
           </Text>
         </View>
 
