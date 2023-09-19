@@ -3,6 +3,7 @@ import {auth} from '@/config/firebase';
 import {UserCredential} from 'firebase/auth';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
 import {Alert} from 'react-native';
+import StorageService from '@/services/Storage';
 
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
@@ -51,7 +52,7 @@ const SigninService: SigninServiceProps = {
           };
           await FirebaseService.addDocument('users', userDetails);
         }
-
+        await StorageService.setItem<string>('uid', user.uid.toString());
         Alert.alert('Successfully signed in');
         navigation.navigate(userData?.onboarded ? 'MyTabs' : 'Onboarding');
       }
