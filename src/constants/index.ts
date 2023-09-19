@@ -1,5 +1,12 @@
 import {Dimensions, Platform} from 'react-native';
 
+export const baseURL: string =
+  process.env.REACT_APP_API_BASE_URL ||
+  'https://career-network-firebase-dev.herokuapp.com/api';
+export const isInDevelopment: boolean = process.env.NODE_ENV !== 'production';
+export const UNAUTHORIZED = 401;
+export const UNAUTHENTICATED = 403;
+
 export const COLORS = {
   primary: '#1918ff',
   text: '#5f5f5f',

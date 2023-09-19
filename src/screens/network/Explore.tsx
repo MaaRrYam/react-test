@@ -1,53 +1,45 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
 import {Empty} from '@/components';
-import {
-  getConnections,
-  refetchConnections,
-} from '@/store/features/networkSlice';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {refetchRecommendations} from '@/store/features/networkSlice';
 
-const Connections = () => {
-  const {connections, isConnectionsFetched, isConnectionsFirstRequest} =
-    useAppSelector(state => state.network);
+const Explore = () => {
+  const {
+    recommendations,
+    isRecommendationsFetched,
+    isRecommendationsFirstRequest,
+  } = useAppSelector(state => state.network);
   const dispatch = useAppDispatch();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const fetchData = useCallback(() => {
-    if (!isConnectionsFetched) {
-      dispatch(getConnections());
-    }
-  }, [dispatch, isConnectionsFetched]);
-
   const handleRefresh = () => {
+    dispatch(refetchRecommendations());
     setIsRefreshing(true);
-    dispatch(refetchConnections());
   };
 
   useEffect(() => {
-    fetchData();
-
-    if (isConnectionsFetched) {
+    if (isRecommendationsFetched) {
       setIsRefreshing(false);
     }
-  }, [fetchData, isConnectionsFetched]);
+  }, [isRecommendationsFetched]);
 
-  if (isConnectionsFirstRequest) {
+  if (isRecommendationsFirstRequest) {
     return <Loading />;
   }
 
   return (
     <>
-      {connections.length ? (
+      {recommendations.length ? (
         <FlatList
-          data={connections}
-          keyExtractor={item => item.id?.toString()}
+          data={recommendations}
+          keyExtractor={item => item.id.toString()}
           renderItem={({item}) => (
-            <NetworkItem item={item} isConnection={true} />
+            <NetworkItem item={item} isExploring={true} />
           )}
           refreshControl={
             <RefreshControl
@@ -63,4 +55,4 @@ const Connections = () => {
   );
 };
 
-export default Connections;
+export default Explore;

@@ -1,12 +1,26 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import {COLORS} from '@/constants';
 import {RoundedButtonProps} from '@/interfaces';
 
-const RoundedButton = ({onPress, text, style}: RoundedButtonProps) => {
+const RoundedButton = ({
+  onPress,
+  text,
+  style,
+  isLoading,
+}: RoundedButtonProps) => {
   return (
     <TouchableOpacity style={[styles.buttonStyles, style]} onPress={onPress}>
-      <Text>{text}</Text>
+      {isLoading ? (
+        <ActivityIndicator size="small" color={COLORS.primary} />
+      ) : (
+        <Text>{text}</Text>
+      )}
     </TouchableOpacity>
   );
 };

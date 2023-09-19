@@ -7,16 +7,17 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   text,
   logoSource,
   onPress,
-  marginTop = 0,
+  style,
+  textStyle,
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.socialsButtonContainer, {marginTop}]}>
+      style={[styles.socialsButtonContainer, style]}>
       <View style={styles.iconContainer}>
         <Image source={logoSource} style={styles.icon} />
       </View>
-      <Text style={styles.signinButtonText}>{text}</Text>
+      <Text style={[styles.signinButtonText, textStyle]}>{text}</Text>
     </TouchableOpacity>
   );
 };

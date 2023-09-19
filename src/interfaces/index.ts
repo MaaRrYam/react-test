@@ -1,9 +1,11 @@
 import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
-import {ImageSourcePropType} from 'react-native';
+import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {NavigationProp} from '@react-navigation/native';
+import { StyleProp } from 'react-native';
+import { ViewStyle } from 'react-native';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -80,6 +82,12 @@ export interface StorageServiceProps {
 }
 export interface FirebaseServiceProps {
   addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  deleteDocument(collectionName: string, id: string): Promise<void>;
+  updateDocument(
+    collectionName: string,
+    id: string,
+    data: DocumentData,
+  ): Promise<void>;
   getAllDocuments(collectionName: string): Promise<DocumentData[]>;
   getDocumentsByQuery(
     collectionName: string,
@@ -151,50 +159,11 @@ export interface ExperienceState {
   currentlyWorking?: boolean;
 }
 
-export interface UserInterface {
-  [key: string]: any;
-  id: string;
-  name?: string;
-  email?: string;
-  country?: string;
-  countryDetails?: string;
-  city?: string;
-  cityDetails?: Object;
-  state?: string;
-  stateDetails?: Object;
-  username?: string;
-  selectedRole?: string;
-  previousRole?: string;
-  onboarded?: boolean;
-  photoUrl?: string;
-  department?: string;
-  currentCVC?: number;
-  dailyCVC?: number;
-  refferalCode?: string;
-  lastDailyCVCUpdate?: string;
-  totalEarnedCVC?: number;
-  purchasedGifts?: Array<string>;
-  time?: Timestamp;
-  educationList?: Array<EducationState>;
-  employmentList?: Array<ExperienceState>;
-  admin?: boolean;
-  adminKey?: string;
-  dailyCVCStreakPoints?: number;
-  dailyCVCStreakCount?: number;
-  tagline?: string;
-  description?: string;
-  jobTags?: string[];
-  dateOfBirth?: string;
-  phoneNumber?: string;
-  currentStatus?: string;
-  minimumSalary?: string;
-  readNotifications?: number;
-  redeems?: Array<string>;
-}
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
   style?: object;
+  isLoading?: boolean;
 }
 
 export interface NavigationConfigProps {
@@ -206,22 +175,42 @@ export interface IconProps extends SvgProps {
   isFocused?: boolean;
 }
 
+export interface EducationProps {
+  id: number;
+  instituteName: string;
+  degree: string;
+  startYear: string;
+  endYear?: string;
+  currentlyStudying?: boolean;
+  cgpa?: string;
+  educationLevel?: string;
+}
+
+export interface EmploymentProps {
+  id: number;
+  companyName: string;
+  role: string;
+  startYear: string;
+  endYear?: string;
+  currentlyWorking?: boolean;
+  workEmail?: string;
+}
+
 export interface UserInterface {
-  [key: string]: any;
   id: string;
   name: string;
   email: string;
-  country?: string;
-  countryDetails?: string;
-  city?: string;
-  cityDetails?: Object;
-  state?: string;
-  stateDetails?: Object;
+  country: string;
+  countryDetails: string;
+  city: string;
+  cityDetails: Object;
+  state: string;
+  stateDetails: Object;
   username: string;
   selectedRole: string;
   previousRole?: string;
   onboarded: boolean;
-  photoUrl: string;
+  photoUrl?: string;
   department?: string;
   currentCVC?: number;
   dailyCVC?: number;
@@ -229,15 +218,16 @@ export interface UserInterface {
   lastDailyCVCUpdate?: string;
   totalEarnedCVC?: number;
   purchasedGifts?: Array<string>;
-  educationList?: any[];
-  employmentList?: any[];
+  time: Timestamp;
+  educationList?: Array<EducationProps>;
+  employmentList?: Array<EmploymentProps>;
   admin?: boolean;
   adminKey?: string;
   dailyCVCStreakPoints?: number;
   dailyCVCStreakCount?: number;
   tagline?: string;
   description?: string;
-  jobTags?: string[];
+  jobTags: string[];
   dateOfBirth?: string;
   phoneNumber?: string;
   currentStatus?: string;
@@ -247,7 +237,7 @@ export interface UserInterface {
 }
 
 export interface NetworkResponse extends UserInterface {
-  time: string;
+  requestTime: string;
 }
 
 export interface LoadingProps {
@@ -261,5 +251,12 @@ export interface SocialLoginButtonProps {
   text: string;
   logoSource: ImageSourcePropType;
   onPress: () => void;
-  marginTop?: number;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+}
+export interface NetworkItemProps {
+  item: NetworkResponse;
+  isExploring?: boolean;
+  isConnection?: boolean;
+  isFollowing?: boolean;
 }

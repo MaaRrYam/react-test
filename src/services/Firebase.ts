@@ -12,6 +12,8 @@ import {
   Timestamp,
   doc,
   getDoc,
+  deleteDoc,
+  updateDoc,
 } from 'firebase/firestore';
 
 const db = getFirestore();
@@ -26,6 +28,24 @@ const FirebaseService: FirebaseServiceProps = {
       return docRef.id;
     } catch (error) {
       console.error('Error adding document: ', error);
+      throw error;
+    }
+  },
+  async deleteDocument(collectionName, documentId) {
+    try {
+      const docRef = doc(db, collectionName, documentId);
+      await deleteDoc(docRef);
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+      throw error;
+    }
+  },
+  async updateDocument(collectionName, documentId, data) {
+    try {
+      const docRef = doc(db, collectionName, documentId);
+      await updateDoc(docRef, data);
+    } catch (error) {
+      console.error('Error updating document: ', error);
       throw error;
     }
   },
@@ -49,7 +69,8 @@ const FirebaseService: FirebaseServiceProps = {
       const docRef = doc(db, collectionName, documentId);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        return docSnapshot.data();
+        const document = {id: docSnapshot.id, ...docSnapshot.data()};
+        return document;
       } else {
         return null;
       }

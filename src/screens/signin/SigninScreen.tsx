@@ -40,13 +40,13 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
             logoSource={require('@/assets/images/google.png')}
             onPress={handleGoogleSign}
             text="Sign in with Google"
-            marginTop={44}
+            style={{marginTop: 44}}
           />
           <SocialLoginButton
             logoSource={require('@/assets/images/x.png')}
             onPress={() => {}}
             text="Sign in with X"
-            marginTop={14.61}
+            style={{marginTop: 14.61}}
           />
         </View>
         <View
