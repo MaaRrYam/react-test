@@ -1,7 +1,7 @@
-import {signInSchema} from '@/utils/schemas/schemas';
-import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
-import {useFormik} from 'formik';
-import React, {FC} from 'react';
+import { signInSchema } from '@/utils/schemas/schemas';
+import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
+import { useFormik } from 'formik';
+import React, { FC } from 'react';
 import {
   View,
   Text,
@@ -12,18 +12,16 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import {Input, Button} from '@/components';
-import {COLORS, FONTS} from '@/constants';
-import {SigninWithEmailProps} from '@/types';
+import { Input, Button } from '@/components';
+import { COLORS, FONTS } from '@/constants';
+import { SigninWithEmailProps } from '@/types';
 import SigninService from '@/services/signin';
+import { KeyboardAvoidingView } from 'react-native';
 
 const auth = getAuth();
-
-{
-}
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth - 50;
-const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
+const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
   const {
     values,
     touched,
@@ -54,13 +52,59 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
         formValues.password,
       )
         .then(async userCredential => {
-          await SigninService.checkIfEmailUserIsWhitelisted(
+          await SigninService.checkIfUserIsWhitelisted(
             userCredential,
             navigation,
           );
         })
         .catch(error => {
-          console.log(error);
+          let errorMessage = 'An unknown error occurred. Please try again.';
+
+          switch (error.code) {
+            case 'auth/user-not-found':
+              errorMessage =
+                'User not found. Please check your email or sign up.';
+              break;
+            case 'auth/wrong-password':
+              errorMessage = 'Incorrect password. Please try again.';
+              break;
+            case 'auth/too-many-requests':
+              errorMessage =
+                'Too many sign-in attempts. Please try again later.';
+              break;
+            case 'auth/invalid-email':
+              errorMessage =
+                'Invalid email address. Please check your email format.';
+              break;
+            case 'auth/network-request-failed':
+              errorMessage =
+                'Network request failed. Please check your internet connection.';
+              break;
+            case 'auth/weak-password':
+              errorMessage = 'Weak password. Password should be stronger.';
+              break;
+            case 'auth/user-disabled':
+              errorMessage = 'This user account has been disabled.';
+              break;
+            case 'auth/operation-not-allowed':
+              errorMessage =
+                'Email and password sign-in is not allowed for this app.';
+              break;
+            case 'auth/missing-verification-code':
+              errorMessage =
+                'Email verification is required. Please check your email for a verification link.';
+              break;
+            case 'auth/invalid-verification-code':
+              errorMessage =
+                'Invalid email verification code. Please check the code.';
+              break;
+            // Add more cases for other Firebase authentication errors as needed
+
+            default:
+              break;
+          }
+
+          Alert.alert('Authentication Error', errorMessage);
         });
       console.log(response);
     } catch (error: any) {
@@ -74,8 +118,11 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     }
   };
   return (
-    <SafeAreaView>
-      <View style={styles.mainContainer}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.mainContainer}>
+      <SafeAreaView>
+
         <Image
           source={require('assets/images/logo.png')}
           style={styles.logo}
@@ -86,7 +133,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
           <Text style={styles.headingTitle}>Sign in</Text>
         </View>
 
-        <View style={[styles.inputContainer, {marginTop: 20}]}>
+        <View style={[styles.inputContainer, { marginTop: 35 }]}>
           <Input
             placeholder="Email"
             value={values.email}
@@ -112,14 +159,24 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
           onPress={handleSubmit}
           style={[
             styles.signinButtonContainer,
-            {marginVertical: 20, fontWeight: 300},
+            { marginVertical: 20, fontWeight: 300 },
           ]}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
-      </View>
-    </SafeAreaView>
+
+        <View style={{ marginTop: 210, marginLeft: 8, flexDirection: 'row' }}>
+          <Text style={{ color: 'black' }}>Don't have an Account? </Text>
+          <Text
+            style={{ color: COLORS.primary }}
+            onPress={() => navigation.navigate('Signup')}>
+            Sign up
+          </Text>
+        </View>
+
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -130,7 +187,7 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 20 : 30,
   },
   mainContainer: {
-    color: 'black',
+    flex: 1,
     paddingLeft: 25,
     paddingRight: 20,
   },
@@ -139,8 +196,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: windowWidth - 180,
-    height: '25%',
-    marginTop: 50,
+    height: 97,
+    marginTop: 80,
   },
   headingTitle: {
     fontSize: FONTS.heading,

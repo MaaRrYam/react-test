@@ -52,11 +52,35 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         formValues.email,
         formValues.password,
       ).then(async userCredentials => {
-        await SigninService.checkIfEmailUserIsWhitelisted(
+        await SigninService.checkIfUserIsWhitelisted(
           userCredentials,
           navigation,
         ).catch(error => {
-          console.log(error);
+          let errorMessage = 'An unknown error occurred. Please try again.';
+
+          switch (error.code) {
+            case 'auth/email-already-in-use':
+              errorMessage =
+                'Email address is already in use. Please use a different email.';
+              break;
+            case 'auth/invalid-email':
+              errorMessage =
+                'Invalid email address. Please check your email format.';
+              break;
+            case 'auth/weak-password':
+              errorMessage = 'Weak password. Password should be stronger.';
+              break;
+            case 'auth/network-request-failed':
+              errorMessage =
+                'Network request failed. Please check your internet connection.';
+              break;
+            // Add more cases for other Firebase authentication errors during sign-up as needed
+
+            default:
+              break;
+          }
+
+          Alert.alert('Sign-Up Error', errorMessage);
         });
       });
       console.log(response);
@@ -83,7 +107,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           <Text style={styles.headingTitle}>Create Account</Text>
         </View>
 
-        <View style={[styles.inputContainer, {marginTop: 20}]}>
+        <View style={[styles.inputContainer, {marginTop: 44}]}>
           <Input
             placeholder="Email"
             value={values.email}
@@ -125,6 +149,14 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
+        <View style={{marginTop: 125, marginLeft: 8, flexDirection: 'row'}}>
+          <Text style={{color: 'black'}}>Already have an Account? </Text>
+          <Text
+            style={{color: COLORS.primary}}
+            onPress={() => navigation.navigate('Signin')}>
+            Sign in
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -146,8 +178,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: windowWidth - 180,
-    height: '20%',
-    marginTop: 20,
+    height: 97,
+    marginTop: 80,
   },
   headingTitle: {
     fontSize: FONTS.heading,

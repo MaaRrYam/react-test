@@ -99,11 +99,7 @@ export interface SigninServiceProps {
     loggedInUser: UserCredential,
     navigation: any,
   ): Promise<void>;
-  checkIfEmailUserIsWhitelisted(
-    loggedInUser: UserCredential,
-    navigation: any,
-  ): Promise<void>;
-}
+ }
 export interface requestAccessFormValues {
   name: string;
   email: string;
@@ -198,3 +194,9 @@ export interface RoundedButtonProps {
   text: string;
   style?: object;
 }
+
+export interface NavigationConfigProps {
+  name: string;
+  component: React.ComponentType<any>;
+}
+

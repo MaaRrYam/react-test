@@ -1,10 +1,10 @@
-import {Button, SocialLoginButton} from '@/components';
-import {COLORS, FONTS} from '@/constants';
-import {_signInWithGoogle} from '@/services/auth/Google';
+import { Button, SocialLoginButton } from '@/components';
+import { COLORS, FONTS } from '@/constants';
+import { _signInWithGoogle } from '@/services/auth/Google';
 import SigninService from '@/services/signin';
-import {SignupScreenProps} from '@/types';
-import {UserCredential} from '@firebase/auth';
-import React, {FC, useState} from 'react';
+import { SignupScreenProps } from '@/types';
+import { UserCredential } from '@firebase/auth';
+import React, { FC, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 // const containerWidth = windowWidth - 50;
-const SignupScreen: FC<SignupScreenProps> = ({navigation}) => {
+const SignupScreen: FC<SignupScreenProps> = ({ navigation }) => {
   const [user, setUser] = useState<any>();
   const handleGoogleSign = async () => {
     await _signInWithGoogle(setUser);
@@ -52,7 +52,7 @@ const SignupScreen: FC<SignupScreenProps> = ({navigation}) => {
           />
           <SocialLoginButton
             logoSource={require('@/assets/images/x.png')}
-            onPress={() => {}}
+            onPress={() => { }}
             text="Sign up with X"
             marginTop={14.61}
           />
@@ -62,18 +62,18 @@ const SignupScreen: FC<SignupScreenProps> = ({navigation}) => {
             flexDirection: 'row',
             alignItems: 'center',
             alignContent: 'center',
-            marginTop: 46,
+            marginTop: 38,
           }}>
           <View
-            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
-            <Text style={{color: 'black'}}>.</Text>
+            style={{ width: 151.803, height: 1, backgroundColor: COLORS.border }}>
+            <Text style={{ color: 'black' }}>.</Text>
           </View>
-          <View style={{marginLeft: 8, marginLeft: 8}}>
-            <Text style={{color: 'black', marginBottom: 3}}>or</Text>
+          <View style={{ marginLeft: 8, marginRight: 8 }}>
+            <Text style={{ color: 'black', marginBottom: 3 }}>or</Text>
           </View>
           <View
-            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
-            <Text style={{color: 'black'}}>.</Text>
+            style={{ width: 151.803, height: 1, backgroundColor: COLORS.border }}>
+            <Text style={{ color: 'black' }}>.</Text>
           </View>
         </View>
 
@@ -82,8 +82,13 @@ const SignupScreen: FC<SignupScreenProps> = ({navigation}) => {
             onPress={() => navigation.navigate('SignupWithEmail')}
             title="Sign up with email"
             textColor="white"
-            style={{marginTop: 46}}
+            style={{ marginTop: 46 }}
           />
+        </View>
+
+        <View style={{ marginTop: 170, marginLeft: 8, flexDirection: 'row' }}>
+          <Text style={{ color: 'black' }}>Already have an Account? </Text>
+          <Text style={{ color: COLORS.primary }} onPress={() => navigation.navigate('Signin')}>Sign in</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -106,8 +111,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: windowWidth - 180,
-    height: '20%',
-    marginTop: 20,
+    height: 97,
+    marginTop: 80,
   },
   headingTitle: {
     fontSize: FONTS.heading,
