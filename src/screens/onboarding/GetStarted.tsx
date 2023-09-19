@@ -13,25 +13,47 @@ import StorageService from '@/services/Storage';
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const [userData, setUserData] = useState<UserInterface>({});
   const [userId, setUserId] = useState('');
-
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     username: '',
     city: '',
     state: '',
-  };
+  });
 
   const handleSubmitUserData = formValues => {
     const newData = {
-      ...userData,
       ...{...formValues, onboardingStep: 0},
     };
     setUserData(newData);
     FirebaseService.updateDocument('users', userId, newData);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const item = await StorageService.getItem('uid');
+        setUserId(item);
+        const data = await FirebaseService.getDocument('users', item);
+
+        if (data) {
+          setUserData(data);
+          setInitialValues({
+            username: data.username || '',
+            city: data.city || '',
+            state: data.state || '',
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching data from Firebase:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const {values, touched, errors, handleChange, handleSubmit, setFieldTouched} =
     useFormik({
       initialValues,
+      enableReinitialize: true, // Enable reinitialization when initialValues change
       validationSchema: getStartedSchema,
       onSubmit: formValues => {
         handleSubmitUserData(formValues);
@@ -39,26 +61,17 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       },
     });
 
-  useEffect(() => {
-    (async () => {
-      const item = await StorageService.getItem('uid');
-      setUserId(item);
-      const data = await FirebaseService.getDocument('users', item);
-      setUserData(data);
-    })();
-  }, []);
-
-  useLayoutEffect(() => {
-    if (userData.onboardingStep === 1) {
-      navigation.navigate('Education');
-    } else if (userData.onboardingStep === 2) {
-      navigation.navigate('Industry');
-    } else if (userData.onboardingStep === 3) {
-      navigation.navigate('Experience');
-    } else if (userData.onboardingStep === 4) {
-      navigation.navigate('EmploymentStatus');
-    }
-  }, [userData]);
+  // useLayoutEffect(() => {
+  //   if (userData.onboardingStep === 1) {
+  //     navigation.navigate('Education');
+  //   } else if (userData.onboardingStep === 2) {
+  //     navigation.navigate('Industry');
+  //   } else if (userData.onboardingStep === 3) {
+  //     navigation.navigate('Experience');
+  //   } else if (userData.onboardingStep === 4) {
+  //     navigation.navigate('EmploymentStatus');
+  //   }
+  // }, [userData]);
 
   return (
     <SafeAreaView style={commonStyles.container}>
