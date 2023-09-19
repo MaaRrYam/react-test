@@ -73,18 +73,6 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     }
   }, [userData]);
 
-  // useEffect(() => {
-  //   if (initialValues.username) {
-  //     setFieldTouched('username', true);
-  //   }
-  //   if (initialValues.state) {
-  //     setFieldTouched('state', true);
-  //   }
-  //   if (initialValues.city) {
-  //     setFieldTouched('city', true);
-  //   }
-  // }, [initialValues]);
-
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
@@ -98,9 +86,6 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
           error={errors.username}
           name="username"
           setFieldTouched={setFieldTouched}
-          onBlur={() => {
-            setFieldTouched('username', true);
-          }}
         />
         <Input
           placeholder="City"
@@ -110,9 +95,6 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
           error={errors.city}
           name="city"
           setFieldTouched={setFieldTouched}
-          onBlur={() => {
-            setFieldTouched('city', true);
-          }}
         />
         <Input
           placeholder="State"
@@ -122,9 +104,6 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
           error={errors.state}
           name="state"
           setFieldTouched={setFieldTouched}
-          onBlur={() => {
-            setFieldTouched('state', true);
-          }}
         />
       </View>
       <View style={commonStyles.footer}>
