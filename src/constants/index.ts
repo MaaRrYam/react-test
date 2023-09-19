@@ -9,7 +9,6 @@ export const COLORS = {
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
   lightGrayBackground: '#F4F4F4',
-  borderRadius: '#E9E9E9',
 };
 
 export const BORDER_RADIUS = {

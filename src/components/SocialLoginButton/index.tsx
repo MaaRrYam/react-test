@@ -1,20 +1,7 @@
-import { COLORS } from '@/constants';
+import {COLORS} from '@/constants';
+import {SocialLoginButtonProps} from '@/interfaces';
 import React from 'react';
-import {
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  ImageSourcePropType,
-} from 'react-native';
-
-interface SocialLoginButtonProps {
-  text: string;
-  logoSource: ImageSourcePropType;
-  onPress: () => void;
-  marginTop?: number;
-}
+import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
 
 const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   text,
@@ -39,13 +26,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent', // Customize the button background color
+    backgroundColor: 'transparent',
     padding: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: COLORS.border, // Customize the button border color
-    color: 'black', // Customize the text color
-    fontWeight: '400', // Customize the text font weight
+    borderColor: COLORS.border,
+    color: 'black',
+    fontWeight: '400',
   },
   iconContainer: {
     marginRight: 10,

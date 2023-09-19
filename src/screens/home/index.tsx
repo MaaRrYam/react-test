@@ -1,6 +1,6 @@
 import {Header} from 'components';
 import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -14,14 +14,8 @@ import {HomeScreenProps} from 'types';
 import {homeStyles} from '@/styles/home';
 import {TextInput} from 'react-native';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
-import StorageService from '@/services/Storage';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
-
-  useEffect(() => {
-    console.log(StorageService.getItem('uid') as unknown as boolean);
-  }, []);
-
   const feedData = [
     {
       id: '1',

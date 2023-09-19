@@ -1,4 +1,3 @@
-// RequestAccessNavigator.tsx
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SelectRole, RequestAccessComplete, RequestAccess} from '@/screens';

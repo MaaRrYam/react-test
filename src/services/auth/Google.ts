@@ -1,8 +1,10 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-// import {UserCredential} from 'firebase/auth';
+import {UserCredential} from 'firebase/auth';
 
-export const _signInWithGoogle = async (setUser: (value: any) => void) => {
+export const _signInWithGoogle = async (
+  setUser: (value: UserCredential) => void,
+) => {
   try {
     GoogleSignin.configure({
       offlineAccess: false,
@@ -21,7 +23,6 @@ export const _signInWithGoogle = async (setUser: (value: any) => void) => {
         await setUser(userCredential);
       });
 
-    // console.log(userInfo);
     return {success: true, message: 'Successfully Signed In', data: userInfo};
   } catch (error: any) {
     console.log(error);

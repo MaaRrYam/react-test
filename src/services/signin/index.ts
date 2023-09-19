@@ -43,7 +43,7 @@ const SigninService: SigninServiceProps = {
             name: user.displayName!,
             id: user.uid!,
             email: email!,
-            photoUrl: photoUrl, // Assign the photoUrl here
+            photoUrl: photoUrl,
             onboarded: false,
             currentCVC: 0,
             totalEarnedCVC: 0,
@@ -60,6 +60,7 @@ const SigninService: SigninServiceProps = {
       throw error;
     }
   },
+  
 };
 
 export default SigninService;

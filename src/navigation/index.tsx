@@ -14,25 +14,19 @@ const RootNavigation = () => {
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
-        // Fetch the 'uid' from AsyncStorage
         const item = await StorageService.getItem('uid');
-        console.log(item);
-        // Determine the initial screen based on the presence of 'uid'
         const screen = item !== undefined ? 'MyTabs' : 'Main';
         setInitialScreen(screen);
       } catch (error) {
-        // Handle errors here if needed
         console.error('Error fetching data:', error);
-        setInitialScreen('Main'); // Default to 'Main' screen on error
+        setInitialScreen('Main');
       }
     };
 
     fetchInitialScreen();
   }, []);
 
-  // Conditional rendering based on initialScreen
   if (initialScreen === '') {
-    // Display a loading indicator or splash screen while initializing
     return <Loading />;
   }
 

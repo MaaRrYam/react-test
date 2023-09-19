@@ -14,14 +14,12 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
-import {Input} from '@/components';
+
 const windowWidth = Dimensions.get('window').width;
-// const containerWidth = windowWidth - 50;
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
   const [user, setUser] = useState<any>();
   const handleGoogleSign = async () => {
     await _signInWithGoogle(setUser);
-    console.log('user', user);
     try {
       await SigninService.checkIfUserIsWhitelisted(
         user as UserCredential,
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     color: 'black',
     paddingLeft: 25,
-    paddingRight: 20,
+    paddingRight: 25,
   },
   mainText: {
     color: 'black',

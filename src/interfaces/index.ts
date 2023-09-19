@@ -1,8 +1,9 @@
 import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
+import {ImageSourcePropType} from 'react-native';
 import {SvgProps} from 'react-native-svg';
-
+import {NavigationProp} from '@react-navigation/native';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -100,7 +101,7 @@ export interface SigninServiceProps {
     loggedInUser: UserCredential,
     navigation: any,
   ): Promise<void>;
- }
+}
 export interface requestAccessFormValues {
   name: string;
   email: string;
@@ -254,4 +255,11 @@ export interface LoadingProps {
   color?: string;
   containerStyles?: object;
   indicatorStyles?: object;
+}
+
+export interface SocialLoginButtonProps {
+  text: string;
+  logoSource: ImageSourcePropType;
+  onPress: () => void;
+  marginTop?: number;
 }
