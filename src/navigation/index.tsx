@@ -39,7 +39,7 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={initialScreen}
+        initialRouteName={'initialScreen'}
         screenOptions={{headerShown: false}}>
         {navigationConfig.map(({name, component}: NavigationConfigProps) => (
           <MainStack.Screen key={name} name={name} component={component} />

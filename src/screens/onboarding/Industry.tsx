@@ -12,7 +12,7 @@ import {BackButton, Button} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {COLORS, MARGINS} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
-import {RoleService} from '@/services/onboarding';
+import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {

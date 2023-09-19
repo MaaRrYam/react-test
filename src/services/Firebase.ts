@@ -12,6 +12,7 @@ import {
   Timestamp,
   doc,
   getDoc,
+  updateDoc,
 } from 'firebase/firestore';
 
 const db = getFirestore();
@@ -24,6 +25,17 @@ const FirebaseService: FirebaseServiceProps = {
         data,
       );
       return docRef.id;
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      throw error;
+    }
+  },
+  async updateDocument(collectionName, documentId, data) {
+    try {
+      const updateDocRef = doc(db, collectionName, documentId);
+      console.log(updateDocRef);
+      console.log(data);
+      await updateDoc(updateDocRef, data);
     } catch (error) {
       console.error('Error adding document: ', error);
       throw error;

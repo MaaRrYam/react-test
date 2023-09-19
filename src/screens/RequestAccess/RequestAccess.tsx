@@ -7,7 +7,7 @@ import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {requestAccessSchema} from '@/utils/schemas/schemas';
 import {requestAccessFormValues} from '@/interfaces';
-import {submitRequestAccess} from '@/services/onboarding';
+import {submitRequestAccess} from '@/services/requestAccess';
 import {COLORS} from '@/constants';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({

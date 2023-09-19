@@ -79,6 +79,11 @@ export interface StorageServiceProps {
 }
 export interface FirebaseServiceProps {
   addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  updateDocument(
+    collectionName: string,
+    documentName: string,
+    data: DocumentData,
+  ): void;
   getAllDocuments(collectionName: string): Promise<DocumentData[]>;
   getDocumentsByQuery(
     collectionName: string,
@@ -100,7 +105,7 @@ export interface SigninServiceProps {
     loggedInUser: UserCredential,
     navigation: any,
   ): Promise<void>;
- }
+}
 export interface requestAccessFormValues {
   name: string;
   email: string;
@@ -165,6 +170,7 @@ export interface UserInterface {
   selectedRole?: string;
   previousRole?: string;
   onboarded?: boolean;
+  onboardingStep: number;
   photoUrl?: string;
   department?: string;
   currentCVC?: number;
