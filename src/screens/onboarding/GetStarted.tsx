@@ -20,10 +20,10 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     state: '',
   };
 
-  const handleSubmitUserData = async formValues => {
+  const handleSubmitUserData = formValues => {
     const newData = {
       ...userData,
-      ...{...formValues, onboardingStep: 1},
+      ...{...formValues, onboardingStep: 0},
     };
     setUserData(newData);
     FirebaseService.updateDocument('users', userId, newData);

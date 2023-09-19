@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
@@ -12,12 +12,19 @@ import {COLORS} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
+import FirebaseService from '@/services/Firebase';
+import StorageService from '@/services/Storage';
 
 const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [experience, setExperience] = useState<ExperienceState[]>([]);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [userId, setUserId] = useState('');
 
   const handleContinue = () => {
+    FirebaseService.updateDocument('users', userId, {
+      employmentList: experience,
+      onboardingStep: 3,
+    });
     navigation.navigate('EmploymentStatus');
   };
 
@@ -25,6 +32,13 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
     setExperience(prev => [...prev, newExperience]);
     setIsBottomSheetVisible(false);
   };
+
+  useEffect(() => {
+    (async () => {
+      const item = await StorageService.getItem('uid');
+      setUserId(item);
+    })();
+  }, []);
 
   return (
     <>
@@ -53,7 +67,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
         </View>
         <View style={commonStyles.footer}>
           <Button
-            title="Add More"
+            title={experience.length ? 'Add More' : 'Add Experience'}
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}

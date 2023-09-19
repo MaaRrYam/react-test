@@ -14,10 +14,13 @@ import {COLORS, MARGINS} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
 import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
+import StorageService from '@/services/Storage';
+import FirebaseService from '@/services/Firebase';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [allIndustries, setAllIndustries] = useState<string[]>([]);
+  const [userId, setUserId] = useState('');
 
   const toggleIndustrySelection = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
@@ -28,14 +31,24 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
       setSelectedIndustries([...selectedIndustries, industry]);
     }
   };
+  const handleSubmit = () => {
+    FirebaseService.updateDocument('users', userId, {
+      jobTags: selectedIndustries,
+      onboardingStep: 2,
+    });
+    navigation.navigate('Experience');
+  };
 
   useEffect(() => {
     RoleService.getJobRoles().then(setAllIndustries);
   }, []);
 
-  const handleSubmit = () => {
-    navigation.navigate('Experience');
-  };
+  useEffect(() => {
+    (async () => {
+      const item = await StorageService.getItem('uid');
+      setUserId(item);
+    })();
+  }, []);
 
   return (
     <SafeAreaView style={commonStyles.container}>

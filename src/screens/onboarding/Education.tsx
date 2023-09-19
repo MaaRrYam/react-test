@@ -23,7 +23,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
   const handleContinue = () => {
     FirebaseService.updateDocument('users', userId, {
       educationList: education,
-      onboardingStep: 2,
+      onboardingStep: 1,
     });
     navigation.navigate('Industry');
   };

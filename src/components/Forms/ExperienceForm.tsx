@@ -106,7 +106,7 @@ const ExperienceForm = ({
           onPress={(newValue: boolean) =>
             setFieldValue('currentlyStudying', newValue)
           }
-          text="Currently Studying"
+          text="Currently Working"
           fillColor={COLORS.primary}
           style={{marginBottom: 20}}
         />

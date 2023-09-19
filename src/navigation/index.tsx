@@ -16,7 +16,6 @@ const RootNavigation = () => {
       try {
         // Fetch the 'uid' from AsyncStorage
         const item = await StorageService.getItem('uid');
-        console.log(item);
         // Determine the initial screen based on the presence of 'uid'
         const screen = item !== undefined ? 'MyTabs' : 'Main';
         setInitialScreen(screen);
