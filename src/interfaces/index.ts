@@ -1,3 +1,4 @@
+import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
 import {SvgProps} from 'react-native-svg';
@@ -94,7 +95,12 @@ export interface FirebaseServiceProps {
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
 }
-
+export interface SigninServiceProps {
+  checkIfUserIsWhitelisted(
+    loggedInUser: UserCredential,
+    navigation: any,
+  ): Promise<void>;
+ }
 export interface requestAccessFormValues {
   name: string;
   email: string;
@@ -144,10 +150,55 @@ export interface ExperienceState {
   currentlyWorking?: boolean;
 }
 
+export interface UserInterface {
+  [key: string]: any;
+  id: string;
+  name?: string;
+  email?: string;
+  country?: string;
+  countryDetails?: string;
+  city?: string;
+  cityDetails?: Object;
+  state?: string;
+  stateDetails?: Object;
+  username?: string;
+  selectedRole?: string;
+  previousRole?: string;
+  onboarded?: boolean;
+  photoUrl?: string;
+  department?: string;
+  currentCVC?: number;
+  dailyCVC?: number;
+  refferalCode?: string;
+  lastDailyCVCUpdate?: string;
+  totalEarnedCVC?: number;
+  purchasedGifts?: Array<string>;
+  time?: Timestamp;
+  educationList?: Array<EducationState>;
+  employmentList?: Array<ExperienceState>;
+  admin?: boolean;
+  adminKey?: string;
+  dailyCVCStreakPoints?: number;
+  dailyCVCStreakCount?: number;
+  tagline?: string;
+  description?: string;
+  jobTags?: string[];
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  currentStatus?: string;
+  minimumSalary?: string;
+  readNotifications?: number;
+  redeems?: Array<string>;
+}
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
   style?: object;
+}
+
+export interface NavigationConfigProps {
+  name: string;
+  component: React.ComponentType<any>;
 }
 
 export interface IconProps extends SvgProps {

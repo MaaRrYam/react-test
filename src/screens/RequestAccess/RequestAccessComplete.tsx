@@ -43,7 +43,7 @@ const RequestAccessComplete: React.FC<RequestAccessCompleteScreenProps> = ({
 
         <View style={styles.imgContainer}>
           <Image
-            source={require('../../assets/images/requestSuccess.png')}
+            source={require('@/assets/images/requestSuccess.png')}
             style={styles.logo}
             resizeMode="contain"
           />

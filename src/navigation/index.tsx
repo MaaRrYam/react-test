@@ -1,16 +1,26 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import useAuth from '@/hooks/useAuth';
-import AuthStack from '@navigation/AuthStack';
-import AppStack from '@/navigation/OnboardingStack';
-import HomeStack from '@/navigation/HomeStack';
+import {createStackNavigator} from '@react-navigation/stack';
+import {useEffect} from 'react';
 
+import navigationConfig from './NavigationConfig';
+import {NavigationConfigProps} from '@/interfaces';
 const RootNavigation = () => {
-  const {user} = useAuth();
+  const MainStack = createStackNavigator();
+
+  useEffect(() => {
+    // Add any user-related logic here if needed
+  }, []);
 
   return (
     <NavigationContainer>
-      {user ? <HomeStack /> : <AuthStack />}
+      <MainStack.Navigator
+        initialRouteName={'Main'}
+        screenOptions={{headerShown: false}}>
+        {navigationConfig.map(({name, component}: NavigationConfigProps) => (
+          <MainStack.Screen key={name} name={name} component={component} />
+        ))}
+      </MainStack.Navigator>
     </NavigationContainer>
   );
 };
