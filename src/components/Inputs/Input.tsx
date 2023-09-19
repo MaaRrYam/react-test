@@ -28,12 +28,6 @@ const Input: React.FC<InputProps> = ({
     }).start();
   };
 
-  useEffect(() => {
-    if (value) {
-      handleFocus();
-    }
-  });
-
   const handleBlur = () => {
     if (name && setFieldTouched) {
       setFieldTouched(name, true);
@@ -72,6 +66,12 @@ const Input: React.FC<InputProps> = ({
   const inputContainerStyle = {
     borderColor: touched && error ? 'red' : COLORS.border,
   };
+
+  useEffect(() => {
+    if (value) {
+      handleFocus();
+    }
+  });
 
   return (
     <View>
