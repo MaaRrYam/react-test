@@ -3,7 +3,7 @@ import {NetworkResponse, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
 
-const UID = 'ucCUjQtHVnZ8lblVtFHqAYMigot1';
+const UID = 'CHhXrCEyVvRaPTrPqkKzYjN1Rj02';
 
 const NetworkService = {
   async getAllConnections() {
@@ -95,6 +95,112 @@ const NetworkService = {
     } catch (error) {
       console.error('Error fetching followers:', error);
       throw error;
+    }
+  },
+  async acceptConnectionRequest(userId: string) {
+    try {
+      const addCurrentUserConnection = FirebaseService.addDocument(
+        `users/${UID}/connections/${userId}`,
+        {
+          id: userId,
+          time: FirebaseService.serverTimestamp(),
+        },
+      );
+      const addTargetUserConnection = FirebaseService.addDocument(
+        `users/${userId}/connections/${UID}`,
+        {
+          id: userId,
+          time: FirebaseService.serverTimestamp(),
+        },
+      );
+      const deleteRequest = FirebaseService.deleteDocument(
+        `users/${UID}/requests`,
+        userId,
+      );
+
+      await Promise.allSettled([
+        addCurrentUserConnection,
+        addTargetUserConnection,
+        deleteRequest,
+      ]);
+
+      return true;
+    } catch (error) {
+      console.error('Error accepting connection:', error);
+      return false;
+    }
+  },
+  async rejectConnectionRequest(userId: string) {
+    try {
+      await FirebaseService.deleteDocument(`users/${UID}/requests`, userId);
+
+      return true;
+    } catch (error) {
+      console.error('Error accepting connection:', error);
+      return false;
+    }
+  },
+  async removeConnection(userId: string) {
+    try {
+      const deleteCurrentUserConnection = FirebaseService.deleteDocument(
+        `users/${UID}/connections`,
+        userId,
+      );
+      const deleteTargetUserConnection = FirebaseService.deleteDocument(
+        `users/${userId}/connections`,
+        UID,
+      );
+
+      await Promise.allSettled([
+        deleteCurrentUserConnection,
+        deleteTargetUserConnection,
+      ]);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async getPendingConnectionRequests() {
+    const response = await FirebaseService.getAllDocuments(
+      `users/${UID}/requests`,
+    );
+
+    const result: NetworkResponse[] = await Promise.all(
+      response.map(async item => {
+        const request = (await FirebaseService.getDocument(
+          'users',
+          item.id,
+        )) as UserInterface;
+
+        return {
+          ...request,
+          requestTime: formatFirebaseTimestamp(item.time, 'date'),
+        };
+      }),
+    );
+
+    return result;
+  },
+  async removeFollowing(userId: string) {
+    try {
+      await FirebaseService.deleteDocument(`users/${UID}/following`, userId);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async connectWithSomeone(userId: string) {
+    try {
+      await FirebaseService.addDocument(`users/${userId}/requests`, {
+        id: UID,
+        time: FirebaseService.serverTimestamp(),
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   },
 };
