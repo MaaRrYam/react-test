@@ -1,14 +1,36 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {Button, Header, NetworkItem} from '@/components';
+import {Button, Header} from '@/components';
 import {NetworkScreenProps} from '@/types';
-import {COLORS, NETWORK_TABS, NETWORK_REQUESTS} from '@/constants';
-import {FlatList} from 'react-native';
+import {COLORS, NETWORK_TABS} from '@/constants';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {getConnections, getFollowing} from '@/store/features/networkSlice';
+import Connections from '@/screens/network/Connections';
+import Followings from '@/screens/network/Followings';
 
 const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
   const [selectedTab, setSelectedTab] = React.useState<string>(NETWORK_TABS[0]);
+  const {isConnectionsFetched, isFollowingFetched} = useAppSelector(
+    state => state.network,
+  );
+
+  const dispatch = useAppDispatch();
+
+  const fetchData = useCallback(() => {
+    if (!isConnectionsFetched) {
+      dispatch(getConnections());
+    }
+    if (!isFollowingFetched) {
+      dispatch(getFollowing());
+    }
+  }, [dispatch, isConnectionsFetched, isFollowingFetched]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <View style={homeStyles.outerContainer}>
@@ -51,11 +73,11 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
           />
         </View>
 
-        <FlatList
-          data={NETWORK_REQUESTS}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <NetworkItem item={item} />}
-        />
+        {selectedTab === NETWORK_TABS[0] || selectedTab === NETWORK_TABS[1] ? (
+          <Connections />
+        ) : (
+          <Followings />
+        )}
       </SafeAreaView>
     </View>
   );

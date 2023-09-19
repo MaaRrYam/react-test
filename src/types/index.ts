@@ -104,3 +104,4 @@ export type SignupScreenProps = {
 export type SignupWithEmailProps = {
   navigation: StackNavigationProp<RootStackParamList, 'SignupWithEmail'>;
 };
+export type DateFormatOption = 'date' | 'dateTime';
