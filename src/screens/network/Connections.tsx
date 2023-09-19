@@ -1,17 +1,21 @@
-import React, {useCallback, useEffect} from 'react';
-import {FlatList} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FlatList, RefreshControl} from 'react-native';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
 import {Empty} from '@/components';
-import {getConnections} from '@/store/features/networkSlice';
+import {
+  getConnections,
+  refetchConnections,
+} from '@/store/features/networkSlice';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const Connections = () => {
-  const {connections, isConnectionsFetched} = useAppSelector(
-    state => state.network,
-  );
+  const {connections, isConnectionsFetched, isConnectionsFirstRequest} =
+    useAppSelector(state => state.network);
   const dispatch = useAppDispatch();
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchData = useCallback(() => {
     if (!isConnectionsFetched) {
@@ -19,11 +23,20 @@ const Connections = () => {
     }
   }, [dispatch, isConnectionsFetched]);
 
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    dispatch(refetchConnections());
+  };
+
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
 
-  if (!isConnectionsFetched) {
+    if (isConnectionsFetched) {
+      setIsRefreshing(false);
+    }
+  }, [fetchData, isConnectionsFetched]);
+
+  if (isConnectionsFirstRequest) {
     return <Loading />;
   }
 
@@ -32,8 +45,16 @@ const Connections = () => {
       {connections.length ? (
         <FlatList
           data={connections}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <NetworkItem item={item} />}
+          keyExtractor={item => item.id?.toString()}
+          renderItem={({item}) => (
+            <NetworkItem item={item} isConnection={true} />
+          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
         />
       ) : (
         <Empty />
