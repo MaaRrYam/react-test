@@ -7,26 +7,22 @@ import {NetworkScreenProps} from '@/types';
 import {COLORS, NETWORK_TABS} from '@/constants';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {getConnections, getFollowing} from '@/store/features/networkSlice';
+import {getRecommendedConnections} from '@/store/features/networkSlice';
 import Connections from '@/screens/network/Connections';
 import Followings from '@/screens/network/Followings';
+import Explore from '@/screens/network/Explore';
 
 const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
   const [selectedTab, setSelectedTab] = React.useState<string>(NETWORK_TABS[0]);
-  const {isConnectionsFetched, isFollowingFetched} = useAppSelector(
-    state => state.network,
-  );
+  const {isRecommendationsFetched} = useAppSelector(state => state.network);
 
   const dispatch = useAppDispatch();
 
   const fetchData = useCallback(() => {
-    if (!isConnectionsFetched) {
-      dispatch(getConnections());
+    if (!isRecommendationsFetched) {
+      dispatch(getRecommendedConnections());
     }
-    if (!isFollowingFetched) {
-      dispatch(getFollowing());
-    }
-  }, [dispatch, isConnectionsFetched, isFollowingFetched]);
+  }, [dispatch, isRecommendationsFetched]);
 
   useEffect(() => {
     fetchData();
@@ -73,7 +69,9 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
           />
         </View>
 
-        {selectedTab === NETWORK_TABS[0] || selectedTab === NETWORK_TABS[1] ? (
+        {selectedTab === NETWORK_TABS[0] ? (
+          <Explore />
+        ) : selectedTab === NETWORK_TABS[1] ? (
           <Connections />
         ) : (
           <Followings />

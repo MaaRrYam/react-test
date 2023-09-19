@@ -1,3 +1,4 @@
+import {API_GET} from '@/config/api/apiRequests';
 import {NetworkResponse, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
@@ -20,7 +21,7 @@ const NetworkService = {
 
           return {
             ...connection,
-            time: formatFirebaseTimestamp(item.time, 'date'),
+            requestTime: formatFirebaseTimestamp(item.time, 'date'),
           };
         }),
       );
@@ -46,7 +47,7 @@ const NetworkService = {
 
           return {
             ...follower,
-            time: formatFirebaseTimestamp(item.time, 'date'),
+            requestTime: formatFirebaseTimestamp(item.time, 'date'),
           };
         }),
       );
@@ -57,7 +58,6 @@ const NetworkService = {
       throw error;
     }
   },
-
   async getAllFollowings() {
     try {
       const response = await FirebaseService.getAllDocuments(
@@ -73,7 +73,7 @@ const NetworkService = {
 
           return {
             ...following,
-            time: formatFirebaseTimestamp(item.time, 'date'),
+            requestTime: formatFirebaseTimestamp(item.time, 'date'),
           };
         }),
       );
@@ -81,6 +81,19 @@ const NetworkService = {
       return result;
     } catch (error) {
       console.error('Error fetching followings:', error);
+      throw error;
+    }
+  },
+  async getRecommendedConnections() {
+    try {
+      const {status, message, data} = await API_GET('/recommendConnection');
+      if (status) {
+        return data as NetworkResponse[];
+      } else {
+        throw new Error(message);
+      }
+    } catch (error) {
+      console.error('Error fetching followers:', error);
       throw error;
     }
   },

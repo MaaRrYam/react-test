@@ -6,6 +6,8 @@ const initialState = {
   connections: [] as NetworkResponse[],
   followers: [] as NetworkResponse[],
   following: [] as NetworkResponse[],
+  recommendations: [] as NetworkResponse[],
+  isRecommendationsFetched: false,
   isConnectionsFetched: false,
   isFollowersFetched: false,
   isFollowingFetched: false,
@@ -35,6 +37,14 @@ export const getFollowing = createAsyncThunk(
   },
 );
 
+export const getRecommendedConnections = createAsyncThunk(
+  'network/getRecommendedConnections',
+  async () => {
+    const result = await NetworkService.getRecommendedConnections();
+    return result;
+  },
+);
+
 export const networkSlice = createSlice({
   name: 'network',
   initialState,
@@ -51,6 +61,10 @@ export const networkSlice = createSlice({
     builder.addCase(getFollowing.fulfilled, (state, {payload}) => {
       state.following = payload;
       state.isFollowingFetched = true;
+    });
+    builder.addCase(getRecommendedConnections.fulfilled, (state, {payload}) => {
+      state.recommendations = payload;
+      state.isRecommendationsFetched = true;
     });
   },
 });
