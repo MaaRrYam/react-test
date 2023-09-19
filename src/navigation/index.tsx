@@ -2,11 +2,10 @@ import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '../services/Storage';
-// import {useNavigation} from '@react-navigation/native';
 import navigationConfig from './NavigationConfig';
-import {NavigationConfigProps} from '@/interfaces';
-// import {Text} from 'react-native';
+import {NavigationConfigProps} from '@/interfaces';;
 import {Loading} from '@/components';
+import FirebaseService from '@/services/Firebase';
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
@@ -14,9 +13,18 @@ const RootNavigation = () => {
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
-        const item = await StorageService.getItem('uid');
-        const screen = item !== undefined ? 'MyTabs' : 'Main';
-        setInitialScreen(screen);
+        const uid = await StorageService.getItem('uid');
+        if (uid !== undefined) {
+          // If uid is in storage, check the user's onboarded status
+          const userDoc = await FirebaseService.getDocument('users', uid);
+          if (userDoc && userDoc.onboarded === false) {
+            setInitialScreen('Onboarding');
+          } else {
+            setInitialScreen('MyTabs');
+          }
+        } else {
+          setInitialScreen('Main');
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
         setInitialScreen('Main');
@@ -33,7 +41,7 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={'Main'}
+        initialRouteName={initialScreen}
         screenOptions={{headerShown: false}}>
         {navigationConfig.map(({name, component}: NavigationConfigProps) => (
           <MainStack.Screen key={name} name={name} component={component} />

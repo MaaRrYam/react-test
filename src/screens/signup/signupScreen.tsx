@@ -2,6 +2,7 @@ import { Button, SocialLoginButton } from '@/components';
 import { COLORS, FONTS } from '@/constants';
 import { _signInWithGoogle } from '@/services/auth/Google';
 import SigninService from '@/services/signin';
+import { styles } from '@/styles/signup';
 import { SignupScreenProps } from '@/types';
 import { UserCredential } from '@firebase/auth';
 import React, { FC, useState } from 'react';
@@ -14,8 +15,7 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
-const windowWidth = Dimensions.get('window').width;
-// const containerWidth = windowWidth - 50;
+
 const SignupScreen: FC<SignupScreenProps> = ({ navigation }) => {
   const [user, setUser] = useState<any>();
   const handleGoogleSign = async () => {
@@ -52,7 +52,7 @@ const SignupScreen: FC<SignupScreenProps> = ({ navigation }) => {
           />
           <SocialLoginButton
             logoSource={require('@/assets/images/x.png')}
-            onPress={() => { }}
+            onPress={() => {}}
             text="Sign up with X"
             marginTop={14.61}
           />
@@ -95,32 +95,6 @@ const SignupScreen: FC<SignupScreenProps> = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 30,
-  },
-  mainContainer: {
-    color: 'black',
-    paddingLeft: 25,
-    paddingRight: 20,
-  },
-  mainText: {
-    color: 'black',
-  },
-  logo: {
-    width: windowWidth - 180,
-    height: 97,
-    marginTop: 60,
-    marginBottom: 30,
-  },
-  headingTitle: {
-    fontSize: FONTS.heading,
-    color: 'black',
-    fontWeight: 'bold',
-    marginBottom: 30,
-  },
-});
+
 
 export default SignupScreen;

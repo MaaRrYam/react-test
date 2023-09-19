@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 
 export const COLORS = {
   primary: '#1918ff',
@@ -170,3 +170,6 @@ export const NOTIFICATIONS = [
     isUnRead: false,
   },
 ];
+
+export const windowWidth = Dimensions.get('window').width;
+export const containerWidth = windowWidth - 50;

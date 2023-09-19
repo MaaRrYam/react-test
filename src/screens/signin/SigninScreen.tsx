@@ -5,17 +5,10 @@ import SigninService from '@/services/signin';
 import {SignInScreenProps} from '@/types';
 import {UserCredential} from '@firebase/auth';
 import React, {FC, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Dimensions,
-  Platform,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, Image, SafeAreaView} from 'react-native';
 
-const windowWidth = Dimensions.get('window').width;
+import {styles} from '@/styles/signinScreen';
+
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
   const [user, setUser] = useState<any>();
   const handleGoogleSign = async () => {
@@ -85,42 +78,17 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
           />
         </View>
 
-        <View style={{marginTop:120, marginLeft: 8, flexDirection: 'row'}}>
+        <View style={{marginTop: 120, marginLeft: 8, flexDirection: 'row'}}>
           <Text style={{color: 'black'}}>Don't have an Account? </Text>
-          <Text style={{color: COLORS.primary}} onPress={() => navigation.navigate('Signup')}>Sign up</Text>
+          <Text
+            style={{color: COLORS.primary}}
+            onPress={() => navigation.navigate('Signup')}>
+            Sign up
+          </Text>
         </View>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: 'white',
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 30,
-  },
-  mainContainer: {
-    color: 'black',
-    paddingLeft: 25,
-    paddingRight: 25,
-  },
-  mainText: {
-    color: 'black',
-  },
-  logo: {
-    width: windowWidth - 180,
-    height: 97,
-    marginTop: 60,
-    marginBottom: 30,
-  },
-  headingTitle: {
-    fontSize: FONTS.heading,
-    color: 'black',
-    fontWeight: 'bold',
-    marginBottom: 30,
-  },
-});
 
 export default SigninScreen;

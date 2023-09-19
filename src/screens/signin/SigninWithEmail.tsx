@@ -17,6 +17,8 @@ import { COLORS, FONTS } from '@/constants';
 import { SigninWithEmailProps } from '@/types';
 import SigninService from '@/services/signin';
 import { KeyboardAvoidingView } from 'react-native';
+import { styles } from '@/styles/signinWithEmail';
+import { getErrorMessageByCode } from '@/utils/functions';
 
 const auth = getAuth();
 const windowWidth = Dimensions.get('window').width;
@@ -58,52 +60,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
           );
         })
         .catch(error => {
-          let errorMessage = 'An unknown error occurred. Please try again.';
-
-          switch (error.code) {
-            case 'auth/user-not-found':
-              errorMessage =
-                'User not found. Please check your email or sign up.';
-              break;
-            case 'auth/wrong-password':
-              errorMessage = 'Incorrect password. Please try again.';
-              break;
-            case 'auth/too-many-requests':
-              errorMessage =
-                'Too many sign-in attempts. Please try again later.';
-              break;
-            case 'auth/invalid-email':
-              errorMessage =
-                'Invalid email address. Please check your email format.';
-              break;
-            case 'auth/network-request-failed':
-              errorMessage =
-                'Network request failed. Please check your internet connection.';
-              break;
-            case 'auth/weak-password':
-              errorMessage = 'Weak password. Password should be stronger.';
-              break;
-            case 'auth/user-disabled':
-              errorMessage = 'This user account has been disabled.';
-              break;
-            case 'auth/operation-not-allowed':
-              errorMessage =
-                'Email and password sign-in is not allowed for this app.';
-              break;
-            case 'auth/missing-verification-code':
-              errorMessage =
-                'Email verification is required. Please check your email for a verification link.';
-              break;
-            case 'auth/invalid-verification-code':
-              errorMessage =
-                'Invalid email verification code. Please check the code.';
-              break;
-            // Add more cases for other Firebase authentication errors as needed
-
-            default:
-              break;
-          }
-
+          const errorMessage = getErrorMessageByCode(error.code);
           Alert.alert('Authentication Error', errorMessage);
         });
       console.log(response);
@@ -180,47 +137,6 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: 'white',
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 30,
-  },
-  mainContainer: {
-    flex: 1,
-    paddingLeft: 25,
-    paddingRight: 20,
-  },
-  mainText: {
-    color: 'black',
-  },
-  logo: {
-    width: windowWidth - 180,
-    height: 97,
-    marginTop: 60,
-    marginBottom: 30,
-  },
-  headingTitle: {
-    fontSize: FONTS.heading,
-    color: 'black',
-    fontWeight: 'bold',
-    marginBottom: 13,
-  },
-  inputContainer: {
-    width: containerWidth,
-  },
-  signinButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    color: 'black',
-    fontWeight: '400',
-  },
-});
+
 
 export default SigninWithEmail;
