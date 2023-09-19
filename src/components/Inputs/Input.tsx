@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
 import {COLORS, FONTS} from '../../constants';
 import {InputProps} from 'interfaces';
@@ -27,6 +27,12 @@ const Input: React.FC<InputProps> = ({
       useNativeDriver: false,
     }).start();
   };
+
+  useEffect(() => {
+    if (value) {
+      handleFocus();
+    }
+  });
 
   const handleBlur = () => {
     if (name && setFieldTouched) {
