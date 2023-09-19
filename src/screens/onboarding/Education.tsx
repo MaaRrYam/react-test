@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
@@ -12,12 +12,19 @@ import {COLORS} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
 import {EducationState} from '@/interfaces';
+import FirebaseService from '@/services/Firebase';
+import StorageService from '@/services/Storage';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
   const [education, setEducation] = useState<EducationState[]>([]);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [userId, setUserId] = useState('');
 
   const handleContinue = () => {
+    FirebaseService.updateDocument('users', userId, {
+      educationList: education,
+      onboardingStep: 2,
+    });
     navigation.navigate('Industry');
   };
 
@@ -25,6 +32,13 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
     setEducation(prev => [...prev, newEducation]);
     setIsBottomSheetVisible(false);
   };
+
+  useEffect(() => {
+    (async () => {
+      const item = await StorageService.getItem('uid');
+      setUserId(item);
+    })();
+  }, []);
 
   return (
     <>
@@ -53,7 +67,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
         </View>
         <View style={commonStyles.footer}>
           <Button
-            title="Add More"
+            title={education.length ? 'Add More' : 'Add Education'}
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
