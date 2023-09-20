@@ -14,7 +14,6 @@ import {HomeScreenProps} from 'types';
 import {homeStyles} from '@/styles/home';
 import {TextInput} from 'react-native';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
-
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const feedData = [
     {

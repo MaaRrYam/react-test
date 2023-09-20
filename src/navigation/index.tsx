@@ -6,16 +6,16 @@ import navigationConfig from './NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';;
 import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
-import {Splash} from '@/screens'
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
         const uid = await StorageService.getItem('uid');
-        if (uid !== undefined) {
+        if (uid !== null) {
           // If uid is in storage, check the user's onboarded status
           const userDoc = await FirebaseService.getDocument('users', uid);
           if (userDoc && userDoc.onboarded === false) {
@@ -36,13 +36,13 @@ const RootNavigation = () => {
   }, []);
 
   if (initialScreen === '') {
-    return <Splash />;
+    return <Loading />;
   }
 
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={'Main'}
+        initialRouteName={initialScreen}
         screenOptions={{headerShown: false}}>
         {navigationConfig.map(({name, component}: NavigationConfigProps) => (
           <MainStack.Screen key={name} name={name} component={component} />
