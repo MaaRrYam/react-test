@@ -55,13 +55,13 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
 
         <View>
           <SocialLoginButton
-            logoSource={require('../../assets/images/google.png')}
+            logoSource={require('@/assets/images/google.png')}
             onPress={handleGoogleSign}
             text="Sign up with Google"
             style={{marginTop: 44}}
           />
           <SocialLoginButton
-            logoSource={require('../../assets/images/x.png')}
+            logoSource={require('@/assets/images/x.png')}
             onPress={() => {}}
             text="Sign up with Twitter"
             style={{marginTop: 14.61}}

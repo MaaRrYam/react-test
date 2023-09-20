@@ -16,7 +16,7 @@ const RootNavigation = () => {
         if (uid !== null) {
           // If uid is in storage, check the user's onboarded status
           const userDoc = await FirebaseService.getDocument('users', uid);
-          if (userDoc && userDoc.onboarded === false) {
+          if (userDoc && !userDoc.onboarded) {
             setInitialScreen('Onboarding');
           } else {
             setInitialScreen('MyTabs');
