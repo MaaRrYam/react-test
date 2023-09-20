@@ -4,7 +4,10 @@ import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
 import StorageService from '@/services/Storage';
 
-const UID = StorageService.getItem('uid');
+let UID: string;
+StorageService.getItem('uid').then(item => {
+  UID = item as string;
+});
 
 const NetworkService = {
   async getAllConnections() {

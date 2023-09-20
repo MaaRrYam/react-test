@@ -57,9 +57,6 @@ const SigninService: SigninServiceProps = {
           'accessToken',
           (await user.getIdToken()).toString(),
         );
-        await StorageService.getItem('accessToken').then(item => {
-          console.log(item);
-        });
         Alert.alert('Successfully signed in');
         navigation.navigate(userData?.onboarded ? 'MyTabs' : 'Onboarding');
       }

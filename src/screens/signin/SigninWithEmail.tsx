@@ -123,7 +123,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
           textColor={COLORS.white}
         />
 
-        <View style={{ marginTop: 185, marginLeft: 8, flexDirection: 'row' }}>
+        <View style={{ marginTop: 205, marginLeft: 8, flexDirection: 'row' }}>
           <Text style={{ color: 'black' }}>Don't have an Account? </Text>
           <Text
             style={{ color: COLORS.primary }}

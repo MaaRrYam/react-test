@@ -128,7 +128,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
-        <View style={{marginTop: 120, marginLeft: 8, flexDirection: 'row'}}>
+        <View style={{marginTop: 130, marginLeft: 8, flexDirection: 'row'}}>
           <Text style={{color: 'black'}}>Already have an Account? </Text>
           <Text
             style={{color: COLORS.primary}}

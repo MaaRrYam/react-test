@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Image,
@@ -9,17 +9,17 @@ import {
   Platform,
   Text,
 } from 'react-native';
-import {UserCredential, getAuth} from 'firebase/auth';
+import { UserCredential, getAuth } from 'firebase/auth';
 
-import {Button, SocialLoginButton} from '@/components';
-import {COLORS} from '@/constants';
-import {SignInScreenProps} from '@/types';
-import {_signInWithGoogle} from '@/services/auth/Google';
+import { Button, SocialLoginButton } from '@/components';
+import { COLORS } from '@/constants';
+import { SignInScreenProps } from '@/types';
+import { _signInWithGoogle } from '@/services/auth/Google';
 import SigninService from '@/services/signin';
-import {styles} from '@/styles/main';
+import { styles } from '@/styles/main';
 
 // const auth = getAuth();
-const Main: React.FC<SignInScreenProps> = ({navigation}) => {
+const Main: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [user, setUser] = useState<UserCredential>();
   const handleSignButtonClick = () => {
     navigation.navigate('Signin');
@@ -60,13 +60,13 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
             logoSource={require('../../assets/images/google.png')}
             onPress={handleGoogleSign}
             text="Sign up with Google"
-            style={{marginTop: 44}}
+            style={{ marginTop: 44 }}
           />
           <SocialLoginButton
             logoSource={require('../../assets/images/x.png')}
-            onPress={() => {}}
+            onPress={() => { }}
             text="Sign up with Twitter"
-            style={{marginTop: 14.61}}
+            style={{ marginTop: 14.61 }}
           />
         </View>
 
@@ -74,20 +74,27 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            alignContent: 'center',
+            justifyContent: 'center', // Center horizontally
             marginVertical: 20,
-          }}>
+          }}
+        >
           <View
-            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
-            <Text style={{color: 'black'}}>.</Text>
-          </View>
-          <View style={{marginLeft: 6, marginRight: 6}}>
-            <Text style={{color: 'black', marginBottom: 3}}>or</Text>
+            style={{
+              flex: 1, // This view will take up as much space as available between dividers
+              height: 1,
+              backgroundColor: COLORS.border,
+            }}
+          />
+          <View style={{ marginHorizontal: 10 }}>
+            <Text style={{ color: 'black' }}>or</Text>
           </View>
           <View
-            style={{width: 151.803, height: 1, backgroundColor: COLORS.border}}>
-            <Text style={{color: 'black'}}>.</Text>
-          </View>
+            style={{
+              flex: 1, // This view will take up as much space as available between dividers
+              height: 1,
+              backgroundColor: COLORS.border,
+            }}
+          />
         </View>
 
         <View>
@@ -111,7 +118,7 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
             onPress={handleSignButtonClick}
             style={[
               styles.socialsButtonContainer,
-              {marginVertical: 20, fontWeight: 300},
+              { marginVertical: 20, fontWeight: 300 },
             ]}
             textColor={COLORS.primary}
           />
