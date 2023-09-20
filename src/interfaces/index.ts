@@ -258,3 +258,7 @@ export interface NetworkItemProps {
   isConnection?: boolean;
   isFollowing?: boolean;
 }
+export interface ScreenDimensions {
+  width: number;
+  height: number;
+}

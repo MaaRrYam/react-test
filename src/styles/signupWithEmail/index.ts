@@ -1,6 +1,7 @@
-import {BORDER_RADIUS, COLORS, FONTS, containerWidth, windowWidth} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS, containerWidth} from '@/constants';
+import {getScreenDimensions} from '@/utils/functions';
 import {Platform, StyleSheet} from 'react-native';
-
+const {width} = getScreenDimensions();
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -8,15 +9,15 @@ export const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 20 : 30,
   },
   mainContainer: {
-    color: 'black',
+    color: COLORS.black,
     paddingLeft: 25,
     paddingRight: 20,
   },
   mainText: {
-    color: 'black',
+    color: COLORS.black,
   },
   logo: {
-    width: windowWidth - 180,
+    width: width - 180,
     height: 97,
     marginTop: 60,
     marginBottom: 30,
@@ -25,7 +26,6 @@ export const styles = StyleSheet.create({
     fontSize: FONTS.heading,
     color: 'black',
     fontWeight: 'bold',
-    marginBottom: 0,
   },
   inputContainer: {
     width: containerWidth,
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     borderColor: COLORS.border,
-    color: 'black',
+    color: COLORS.black,
     fontWeight: '400',
   },
 });

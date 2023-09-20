@@ -1,13 +1,9 @@
-import {
-  BORDER_RADIUS,
-  COLORS,
-  FONTS,
-  containerWidth,
-  windowWidth,
-} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS, containerWidth} from '@/constants';
+import {getScreenDimensions} from '@/utils/functions';
 import {Platform} from 'react-native';
 import {StyleSheet} from 'react-native';
 
+const {width} = getScreenDimensions();
 export const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
@@ -24,7 +20,7 @@ export const styles = StyleSheet.create({
     color: 'black',
   },
   logo: {
-    width: windowWidth - 180,
+    width: width - 180,
     height: 97,
     marginTop: 60,
     marginBottom: 30,

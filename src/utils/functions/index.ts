@@ -1,3 +1,10 @@
+import {ScreenDimensions} from '@/interfaces';
+import {Dimensions} from 'react-native';
+
+export const getScreenDimensions = (): ScreenDimensions => {
+  const {width, height} = Dimensions.get('window');
+  return {width, height};
+};
 export const getErrorMessageByCode = (errorCode: string): string => {
   switch (errorCode) {
     case 'auth/user-not-found':

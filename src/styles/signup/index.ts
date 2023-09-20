@@ -1,6 +1,7 @@
-import {FONTS, windowWidth} from '@/constants';
+import {FONTS} from '@/constants';
+import {getScreenDimensions} from '@/utils/functions';
 import {Platform, StyleSheet} from 'react-native';
-
+const {width} = getScreenDimensions();
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -16,7 +17,7 @@ export const styles = StyleSheet.create({
     color: 'black',
   },
   logo: {
-    width: windowWidth - 180,
+    width: width - 180,
     height: 97,
     marginTop: 60,
     marginBottom: 30,
