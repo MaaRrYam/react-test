@@ -1,26 +1,15 @@
 import {signUpSchema} from '@/utils/schemas/schemas';
 import {createUserWithEmailAndPassword, getAuth} from '@firebase/auth';
 import {useFormik} from 'formik';
-import React, {FC, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  SafeAreaView,
-  Image,
-  Alert,
-  Platform,
-} from 'react-native';
+import React, {FC} from 'react';
+import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {Input, Button} from '@/components';
-import {COLORS, FONTS} from '@/constants';
+import {COLORS} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
-import { styles } from '@/styles/signupWithEmail';
-import { getErrorMessageByCode } from '@/utils/functions';
+import {styles} from '@/styles/signupWithEmail';
+import {getErrorMessageByCode} from '@/utils/functions';
 
-const windowWidth = Dimensions.get('window').width;
-const containerWidth = windowWidth - 50;
 const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   const auth = getAuth();
   const {

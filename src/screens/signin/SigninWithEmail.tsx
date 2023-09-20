@@ -1,29 +1,18 @@
-import { signInSchema } from '@/utils/schemas/schemas';
-import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
-import { useFormik } from 'formik';
-import React, { FC } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  SafeAreaView,
-  Image,
-  Alert,
-  Platform,
-} from 'react-native';
-import { Input, Button } from '@/components';
-import { COLORS, FONTS } from '@/constants';
-import { SigninWithEmailProps } from '@/types';
+import {signInSchema} from '@/utils/schemas/schemas';
+import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
+import {useFormik} from 'formik';
+import React, {FC} from 'react';
+import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
+import {Input, Button} from '@/components';
+import {COLORS} from '@/constants';
+import {SigninWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
-import { KeyboardAvoidingView } from 'react-native';
-import { styles } from '@/styles/signinWithEmail';
-import { getErrorMessageByCode } from '@/utils/functions';
+import {KeyboardAvoidingView} from 'react-native';
+import {styles} from '@/styles/signinWithEmail';
+import {getErrorMessageByCode} from '@/utils/functions';
 
 const auth = getAuth();
-const windowWidth = Dimensions.get('window').width;
-const containerWidth = windowWidth - 50;
-const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
+const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
   const {
     values,
     touched,
@@ -79,7 +68,6 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.mainContainer}>
       <SafeAreaView>
-
         <Image
           source={require('assets/images/logo.png')}
           style={styles.logo}
@@ -90,7 +78,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
           <Text style={styles.headingTitle}>Sign in</Text>
         </View>
 
-        <View style={[styles.inputContainer, { marginTop: 35 }]}>
+        <View style={[styles.inputContainer, {marginTop: 35}]}>
           <Input
             placeholder="Email"
             value={values.email}
@@ -116,27 +104,24 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({ navigation }) => {
           onPress={handleSubmit}
           style={[
             styles.signinButtonContainer,
-            { marginVertical: 20, fontWeight: 300 },
+            {marginVertical: 20, fontWeight: 300},
           ]}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
 
-        <View style={{ marginTop: 205, marginLeft: 8, flexDirection: 'row' }}>
-          <Text style={{ color: 'black' }}>Don't have an Account? </Text>
+        <View style={{marginTop: 205, marginLeft: 8, flexDirection: 'row'}}>
+          <Text style={{color: 'black'}}>Don't have an Account? </Text>
           <Text
-            style={{ color: COLORS.primary }}
+            style={{color: COLORS.primary}}
             onPress={() => navigation.navigate('Signup')}>
             Sign up
           </Text>
         </View>
-
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };
-
-
 
 export default SigninWithEmail;

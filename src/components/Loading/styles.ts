@@ -7,17 +7,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  innerContainer: {
-    alignItems: 'center',
-  },
   loader: {
     width: 100,
     height: 100,
-    // Add any other styles you need for the loader image
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
   },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 20,
+  image: {
+    width: 100,
+    height: 100,
   },
 });

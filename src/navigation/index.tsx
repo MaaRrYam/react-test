@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '@/services/Storage';
@@ -9,8 +9,6 @@ import FirebaseService from '@/services/Firebase';
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
