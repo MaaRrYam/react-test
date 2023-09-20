@@ -53,6 +53,13 @@ const SigninService: SigninServiceProps = {
           await FirebaseService.addDocument('users', userDetails);
         }
         await StorageService.setItem<string>('uid', user.uid.toString());
+        await StorageService.setItem<string>(
+          'accessToken',
+          (await user.getIdToken()).toString(),
+        );
+        await StorageService.getItem('accessToken').then(item => {
+          console.log(item);
+        });
         Alert.alert('Successfully signed in');
         navigation.navigate(userData?.onboarded ? 'MyTabs' : 'Onboarding');
       }
@@ -60,7 +67,6 @@ const SigninService: SigninServiceProps = {
       throw error;
     }
   },
-  
 };
 
 export default SigninService;
