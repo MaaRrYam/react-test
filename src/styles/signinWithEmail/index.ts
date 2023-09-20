@@ -1,4 +1,10 @@
-import {BORDER_RADIUS, COLORS, FONTS, containerWidth, windowWidth} from '@/constants';
+import {
+  BORDER_RADIUS,
+  COLORS,
+  FONTS,
+  containerWidth,
+  windowWidth,
+} from '@/constants';
 import {Platform} from 'react-native';
 import {StyleSheet} from 'react-native';
 
@@ -25,7 +31,7 @@ export const styles = StyleSheet.create({
   },
   headingTitle: {
     fontSize: FONTS.heading,
-    color: 'black',
+    color: COLORS.black,
     fontWeight: 'bold',
     marginBottom: 13,
   },
@@ -40,7 +46,7 @@ export const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     borderColor: COLORS.border,
-    color: 'black',
+    color: COLORS.black,
     fontWeight: '400',
   },
 });

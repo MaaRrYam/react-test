@@ -1,4 +1,4 @@
-import {FONTS, windowWidth} from '@/constants';
+import {COLORS, FONTS, windowWidth} from '@/constants';
 import {Platform, StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     paddingRight: 25,
   },
   mainText: {
-    color: 'black',
+    color: COLORS.black,
   },
   logo: {
     width: windowWidth - 180,
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   headingTitle: {
     fontSize: FONTS.heading,
-    color: 'black',
+    color: COLORS.black,
     fontWeight: 'bold',
     marginBottom: 30,
   },

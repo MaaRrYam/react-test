@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: 'transparent',
     borderBottomWidth: 1,
-    borderBottomColor: 'white',
+    borderBottomColor: COLORS.white,
     borderRadius: 5,
     marginBottom: 10,
   },
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   divider: {
     width: '100%',
     borderBottomWidth: 1,
-    borderBottomColor: 'white',
+    borderBottomColor: COLORS.white,
     marginBottom: 10,
   },
   socialsButtonContainer: {
@@ -64,14 +64,14 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: COLORS.border,
-    color: 'black',
+    color: COLORS.black,
     fontWeight: '400',
   },
   iconContainer: {
     marginRight: 10,
   },
   signinButtonText: {
-    color: '#000',
+    color: COLORS.black,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     height: 30,
   },
   alreadyHaveAnAccount: {
-    color: 'black',
+    color: COLORS.black,
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',

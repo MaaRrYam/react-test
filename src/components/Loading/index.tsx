@@ -18,7 +18,7 @@ export default function LoadingScreen() {
 
   useEffect(() => {
     startRotation();
-  });
+  }, []);
 
   const startRotation = () => {
     rotation.value = withRepeat(
