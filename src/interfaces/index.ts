@@ -4,6 +4,8 @@ import {ReactNode} from 'react';
 import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -105,7 +107,7 @@ export interface FirebaseServiceProps {
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
-    navigation: any,
+    navigation: NavigationProp<RootStackParamList>,
   ): Promise<void>;
 }
 export interface requestAccessFormValues {
@@ -233,18 +235,15 @@ export interface UserInterface {
   readNotifications?: number;
   redeems?: Array<string>;
 }
-
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
 }
-
 export interface LoadingProps {
   size?: 'small' | 'large';
   color?: string;
   containerStyles?: object;
   indicatorStyles?: object;
 }
-
 export interface SocialLoginButtonProps {
   text: string;
   logoSource: ImageSourcePropType;

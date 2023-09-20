@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Image,
@@ -7,33 +7,22 @@ import {
   Platform,
   Text,
 } from 'react-native';
-import {UserCredential} from 'firebase/auth';
 
 import {Button, SocialLoginButton} from '@/components';
 import {COLORS} from '@/constants';
 import {SignInScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
-import SigninService from '@/services/signin';
 import {styles} from '@/styles/main';
 
-// const auth = getAuth();
 const Main: React.FC<SignInScreenProps> = ({navigation}) => {
-  const [user, setUser] = useState<UserCredential>();
   const handleSignButtonClick = () => {
     navigation.navigate('Signin');
   };
 
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(setUser);
-    console.log('user', user);
-    try {
-      await SigninService.checkIfUserIsWhitelisted(
-        user as UserCredential,
-        navigation,
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    await _signInWithGoogle(navigation).catch(error => {
+      console.log(error.message);
+    });
   };
   return (
     <KeyboardAvoidingView

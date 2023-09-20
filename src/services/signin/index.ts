@@ -22,7 +22,7 @@ const SigninService: SigninServiceProps = {
         email,
       );
 
-      if (whiteListedUsers.length === 0) {
+      if (!whiteListedUsers) {
         await auth.signOut();
         Alert.alert(
           'Please submit an access request to start using the platform.',
