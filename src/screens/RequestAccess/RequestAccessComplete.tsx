@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {PADDING} from '@/constants';
+import {PADDING, SCREEN_NAMES} from '@/constants';
 import {RequestAccessCompleteScreenProps} from '@/types';
 
 const windowWidth = Dimensions.get('window').width;
@@ -20,7 +20,7 @@ const RequestAccessComplete: React.FC<RequestAccessCompleteScreenProps> = ({
 }) => {
   useFocusEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('GetStarted');
+      navigation.navigate(SCREEN_NAMES.GetStarted);
     }, 2000);
 
     return () => {

@@ -4,6 +4,7 @@ import {UserCredential} from 'firebase/auth';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
 import {Alert} from 'react-native';
 import StorageService from '@/services/Storage';
+import {SCREEN_NAMES} from '@/constants';
 
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
@@ -22,12 +23,12 @@ const SigninService: SigninServiceProps = {
         email,
       );
 
-      if (!whiteListedUsers) {
-        await auth.signOut();
+      if (!whiteListedUsers.length) {
+        // await auth.signOut();
         Alert.alert(
           'Please submit an access request to start using the platform.',
         );
-        navigation.navigate('RequestAccess');
+        navigation.navigate(SCREEN_NAMES.RequestAccess);
       } else if (whiteListedUsers[0].whitelisted === false) {
         await auth.signOut();
         Alert.alert('Your access request is still pending approval.');
@@ -58,7 +59,9 @@ const SigninService: SigninServiceProps = {
           (await user.getIdToken()).toString(),
         );
         Alert.alert('Successfully signed in');
-        navigation.navigate(userData?.onboarded ? 'MyTabs' : 'Onboarding');
+        navigation.navigate(
+          userData?.onboarded ? SCREEN_NAMES.MyTabs : SCREEN_NAMES.Onboarding,
+        );
       }
     } catch (error) {
       throw error;

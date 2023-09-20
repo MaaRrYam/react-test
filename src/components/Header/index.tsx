@@ -4,6 +4,7 @@ import {View, Image, TouchableOpacity} from 'react-native';
 import {homeStyles} from '@/styles/home';
 import {Search, Chats} from '@/assets/icons';
 import StorageService from '@/services/Storage';
+import {SCREEN_NAMES} from '@/constants';
 
 const Header = ({navigation}: {navigation: any}) => {
   return (
@@ -11,7 +12,7 @@ const Header = ({navigation}: {navigation: any}) => {
       <TouchableOpacity
         onPress={async () => {
           await StorageService.removeItem('uid');
-          navigation.navigate('Main');
+          navigation.navigate(SCREEN_NAMES.Main);
         }}>
         <Image
           source={require('@/assets/images/logo.png')}

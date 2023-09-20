@@ -1,4 +1,5 @@
-import {Dimensions, Platform} from 'react-native';
+import {getScreenDimensions} from '@/utils/functions';
+import {Platform} from 'react-native';
 
 export const baseURL: string =
   process.env.REACT_APP_API_BASE_URL ||
@@ -177,6 +178,34 @@ export const NOTIFICATIONS = [
     isUnRead: false,
   },
 ];
+const {width} = getScreenDimensions();
+export const containerWidth = width - 50;
 
-export const windowWidth = Dimensions.get('window').width;
-export const containerWidth = windowWidth - 50;
+export const SCREEN_NAMES = {
+  Main: 'Main',
+  Signin: 'Signin',
+  Signup: 'Signup',
+  RequestAccess: 'RequestAccess',
+  Onboarding: 'Onboarding',
+  MyTabs: 'MyTabs',
+  Chats: 'Chats',
+  ChatDetails: 'ChatDetails',
+  GetStarted: 'GetStarted',
+  Education: 'Education',
+  Industry: 'Industry',
+  Experience: 'Experience',
+  SalaryExpectations: 'SalaryExpectations',
+  EmploymentStatus: 'EmploymentStatus',
+  OnboardingCompleted: 'OnboardingCompleted',
+  SelectRole: 'SelectRole',
+  RequestAccessForm: 'RequestAccessForm',
+  RequestAccessComplete: 'RequestAccessComplete',
+  SigninOptions: 'SigninOptions',
+  SigninWithEmail: 'SigninWithEmail',
+  SignupWithEmail: 'SignupWithEmail',
+  Home: 'Home',
+  Network: 'Network',
+  Notifications: 'Notifications',
+  Jobs: 'Jobs',
+  Profile: 'Profile',
+};

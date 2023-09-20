@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {Home, Network, Notifications} from '@/screens';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 
 const Tab = createBottomTabNavigator();
@@ -72,11 +72,11 @@ const Tabs = () => {
     <Tab.Navigator
       screenOptions={{headerShown: false}}
       tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Network" component={Network} />
-      <Tab.Screen name="Notifications" component={Notifications} />
-      <Tab.Screen name="Jobs" component={SettingsScreen} />
-      <Tab.Screen name="Profile" component={SettingsScreen} />
+      <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
+      <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
+      <Tab.Screen name={SCREEN_NAMES.Notifications} component={Notifications} />
+      <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
+      <Tab.Screen name={SCREEN_NAMES.Profile} component={SettingsScreen} />
     </Tab.Navigator>
   );
 };
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderTopColor: COLORS.border,
     height: 60,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.1,
     shadowRadius: 5,

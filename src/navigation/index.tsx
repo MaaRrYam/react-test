@@ -3,10 +3,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '@/services/Storage';
 import navigationConfig from './NavigationConfig';
-import {NavigationConfigProps} from '@/interfaces';;
+import {NavigationConfigProps} from '@/interfaces';
 import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
+import {SCREEN_NAMES} from '../constants'
 const RootNavigation = () => {
+
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
   useEffect(() => {
@@ -17,16 +19,16 @@ const RootNavigation = () => {
           // If uid is in storage, check the user's onboarded status
           const userDoc = await FirebaseService.getDocument('users', uid);
           if (userDoc && !userDoc.onboarded) {
-            setInitialScreen('Onboarding');
+            setInitialScreen(SCREEN_NAMES.Onboarding);
           } else {
-            setInitialScreen('MyTabs');
+            setInitialScreen(SCREEN_NAMES.MyTabs);
           }
         } else {
-          setInitialScreen('Main');
+          setInitialScreen(SCREEN_NAMES.Main);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        setInitialScreen('Main');
+        setInitialScreen(SCREEN_NAMES.Main);
       }
     };
 

@@ -1,4 +1,4 @@
-import {COLORS, containerWidth} from '@/constants';
+import {BORDER_RADIUS, COLORS, containerWidth} from '@/constants';
 import {getScreenDimensions} from '@/utils/functions';
 import {Platform, StyleSheet} from 'react-native';
 const {width} = getScreenDimensions();
@@ -88,5 +88,36 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     marginLeft: '27%',
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  orDivider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: COLORS.border,
+  },
+  text: {
+    color: COLORS.black,
+  },
+  dividerMargin: {
+    marginHorizontal: 10,
+  },
+  signInButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent', // Google Blue
+    padding: 10,
+    borderRadius: BORDER_RADIUS.general,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    color: COLORS.black,
+    marginVertical: 20,
+    fontWeight: '300',
   },
 });

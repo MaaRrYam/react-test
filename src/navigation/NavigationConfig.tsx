@@ -5,25 +5,17 @@ import OnboardingNavigator from './OnboardingNavigator';
 import MyTabs from '@/components/Drawer';
 import {Main, Chats, ChatDetails} from '@/screens';
 import {NavigationConfigProps} from '@/interfaces';
-import {
-  MainScreenName,
-  SigninScreenName,
-  SignupScreenName,
-  RequestAccessScreenName,
-  OnboardingScreenName,
-  MyTabsScreenName,
-  ChatsScreenName,
-  ChatDetailsScreenName,
-} from '@/utils/ScreenNames';
+import {SCREEN_NAMES} from '@/constants';
+
 const navigationConfig: NavigationConfigProps[] = [
-  {name: MainScreenName, component: Main},
-  {name: SigninScreenName, component: SigninNavigator},
-  {name: SignupScreenName, component: SignupNavigator},
-  {name: RequestAccessScreenName, component: RequestAccessNavigator},
-  {name: OnboardingScreenName, component: OnboardingNavigator},
-  {name: MyTabsScreenName, component: MyTabs},
-  {name: ChatsScreenName, component: Chats},
-  {name: ChatDetailsScreenName, component: ChatDetails},
+  {name: SCREEN_NAMES.Main, component: Main},
+  {name: SCREEN_NAMES.Signin, component: SigninNavigator},
+  {name: SCREEN_NAMES.Signup, component: SignupNavigator},
+  {name: SCREEN_NAMES.RequestAccess, component: RequestAccessNavigator},
+  {name: SCREEN_NAMES.Onboarding, component: OnboardingNavigator},
+  {name: SCREEN_NAMES.MyTabs, component: MyTabs},
+  {name: SCREEN_NAMES.Chats, component: Chats},
+  {name: SCREEN_NAMES.ChatDetails, component: ChatDetails},
 ];
 
 export default navigationConfig;

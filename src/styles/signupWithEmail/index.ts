@@ -24,13 +24,14 @@ export const styles = StyleSheet.create({
   },
   headingTitle: {
     fontSize: FONTS.heading,
-    color: 'black',
+    color: COLORS.black,
     fontWeight: 'bold',
   },
   inputContainer: {
     width: containerWidth,
+    marginTop: 44,
   },
-  signinButtonContainer: {
+  signUpButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -39,6 +40,15 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     color: COLORS.black,
-    fontWeight: '400',
+    marginVertical: 20,
+    fontWeight: 300,
+  },
+  dontHaveAccount: {
+    marginTop: 130,
+    marginLeft: 8,
+    flexDirection: 'row',
+  },
+  signInText: {
+    color: COLORS.primary,
   },
 });

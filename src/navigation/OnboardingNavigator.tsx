@@ -9,25 +9,34 @@ import {
   SalaryExpectations,
   OnboardingCompleted,
 } from '@/screens';
-
+import {SCREEN_NAMES} from '@/constants';
 const OnboardingStack = createStackNavigator();
 
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator screenOptions={{headerShown: false}}>
-    <OnboardingStack.Screen name="GetStarted" component={GetStarted} />
-    <OnboardingStack.Screen name="Education" component={Education} />
-    <OnboardingStack.Screen name="Industry" component={Industry} />
-    <OnboardingStack.Screen name="Experience" component={Experience} />
     <OnboardingStack.Screen
-      name="EmploymentStatus"
+      name={SCREEN_NAMES.GetStarted}
+      component={GetStarted}
+    />
+    <OnboardingStack.Screen
+      name={SCREEN_NAMES.Education}
+      component={Education}
+    />
+    <OnboardingStack.Screen name={SCREEN_NAMES.Industry} component={Industry} />
+    <OnboardingStack.Screen
+      name={SCREEN_NAMES.Experience}
+      component={Experience}
+    />
+    <OnboardingStack.Screen
+      name={SCREEN_NAMES.EmploymentStatus}
       component={EmploymentStatus}
     />
     <OnboardingStack.Screen
-      name="SalaryExpectations"
+      name={SCREEN_NAMES.SalaryExpectations}
       component={SalaryExpectations}
     />
     <OnboardingStack.Screen
-      name="OnboardingCompleted"
+      name={SCREEN_NAMES.OnboardingCompleted}
       component={OnboardingCompleted}
     />
   </OnboardingStack.Navigator>

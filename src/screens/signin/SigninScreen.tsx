@@ -1,5 +1,5 @@
 import {Button, SocialLoginButton} from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import SigninService from '@/services/signin';
 import {SignInScreenProps} from '@/types';
@@ -26,7 +26,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainContainer}>
         <Image
-          source={require('assets/images/logo.png')}
+          source={require('@/assets/images/logo.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -49,46 +49,28 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
             style={{marginTop: 14.61}}
           />
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center', // Center horizontally
-            marginTop: 57,
-          }}>
-          <View
-            style={{
-              flex: 1, // This view will take up as much space as available between dividers
-              height: 1,
-              backgroundColor: COLORS.border,
-            }}
-          />
-          <View style={{marginHorizontal: 10}}>
-            <Text style={{color: 'black'}}>or</Text>
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <View style={styles.dividerMargin}>
+            <Text style={styles.text}>or</Text>
           </View>
-          <View
-            style={{
-              flex: 1, // This view will take up as much space as available between dividers
-              height: 1,
-              backgroundColor: COLORS.border,
-            }}
-          />
+          <View style={styles.divider} />
         </View>
 
         <View>
           <Button
-            onPress={() => navigation.navigate('SigninWithEmail')}
+            onPress={() => navigation.navigate(SCREEN_NAMES.SigninWithEmail)}
             title="Sign in with email"
             textColor="white"
-            style={{marginTop: 30}}
+            style={styles.signInWithEmailButton}
           />
         </View>
 
-        <View style={{marginTop: 150, marginLeft: 8, flexDirection: 'row'}}>
-          <Text style={{color: 'black'}}>Don't have an Account? </Text>
+        <View style={styles.alreadyHaveAnAccount}>
+          <Text style={styles.text}>Don't have an Account? </Text>
           <Text
-            style={{color: COLORS.primary}}
-            onPress={() => navigation.navigate('Signup')}>
+            style={styles.signUpText}
+            onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}>
             Sign up
           </Text>
         </View>

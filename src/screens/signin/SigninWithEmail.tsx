@@ -4,7 +4,7 @@ import {useFormik} from 'formik';
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
 import {Input, Button} from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
 import {KeyboardAvoidingView} from 'react-native';
@@ -37,28 +37,22 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     password: string;
   }) => {
     try {
-      const response = await signInWithEmailAndPassword(
+      const userCredential: UserCredential = await signInWithEmailAndPassword(
         auth,
         formValues.email.toLowerCase(),
         formValues.password,
-      )
-        .then(async userCredential => {
-          await SigninService.checkIfUserIsWhitelisted(
-            userCredential,
-            navigation,
-          );
-        })
-        .catch(error => {
-          const errorMessage = getErrorMessageByCode(error.code);
-          Alert.alert('Authentication Error', errorMessage);
-        });
-      console.log(response);
+      );
+
+      await SigninService.checkIfUserIsWhitelisted(userCredential, navigation);
+
+      console.log('Sign-in successful');
     } catch (error: any) {
-      if (error.message === 'Firebase: Error (auth/user-not-found).') {
-        Alert.alert('Invalid Email or Password');
-      } else {
-        Alert.alert('Invalid Email or Password');
-      }
+      const errorMessage =
+        error.code && getErrorMessageByCode(error.code)
+          ? getErrorMessageByCode(error.code)
+          : 'An error occurred during sign-in.';
+
+      Alert.alert('Authentication Error', errorMessage);
     } finally {
       setSubmitting(false);
     }
@@ -69,7 +63,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
       style={styles.mainContainer}>
       <SafeAreaView>
         <Image
-          source={require('assets/images/logo.png')}
+          source={require('@/assets/images/logo.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -102,20 +96,17 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
         <Button
           title="Sign in"
           onPress={handleSubmit}
-          style={[
-            styles.signinButtonContainer,
-            {marginVertical: 20, fontWeight: 300},
-          ]}
+          style={styles.signinButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
 
-        <View style={{marginTop: 205, marginLeft: 8, flexDirection: 'row'}}>
-          <Text style={{color: 'black'}}>Don't have an Account? </Text>
+        <View style={styles.dontHaveAnAccount}>
+          <Text style={styles.mainText}>Don't have an Account? </Text>
           <Text
-            style={{color: COLORS.primary}}
-            onPress={() => navigation.navigate('Signup')}>
+            style={styles.signUpText}
+            onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}>
             Sign up
           </Text>
         </View>

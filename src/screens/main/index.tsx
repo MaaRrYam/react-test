@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 
 import {Button, SocialLoginButton} from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SignInScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {styles} from '@/styles/main';
 
 const Main: React.FC<SignInScreenProps> = ({navigation}) => {
   const handleSignButtonClick = () => {
-    navigation.navigate('Signin');
+    navigation.navigate(SCREEN_NAMES.Signin);
   };
 
   const handleGoogleSign = async () => {
@@ -57,36 +57,18 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
           />
         </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center', // Center horizontally
-            marginVertical: 20,
-          }}>
-          <View
-            style={{
-              flex: 1, // This view will take up as much space as available between dividers
-              height: 1,
-              backgroundColor: COLORS.border,
-            }}
-          />
-          <View style={{marginHorizontal: 10}}>
-            <Text style={{color: 'black'}}>or</Text>
+        <View style={styles.dividerContainer}>
+          <View style={styles.orDivider} />
+          <View style={styles.dividerMargin}>
+            <Text style={styles.text}>or</Text>
           </View>
-          <View
-            style={{
-              flex: 1, // This view will take up as much space as available between dividers
-              height: 1,
-              backgroundColor: COLORS.border,
-            }}
-          />
+          <View style={styles.orDivider} />
         </View>
 
         <View>
           <Button
             title="Create Account"
-            onPress={() => navigation.navigate('Signup')}
+            onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}
             style={{}}
             activityIndicatorColor={COLORS.white}
           />
@@ -102,10 +84,7 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
           <Button
             title="Sign In"
             onPress={handleSignButtonClick}
-            style={[
-              styles.socialsButtonContainer,
-              {marginVertical: 20, fontWeight: 300},
-            ]}
+            style={styles.signInButton}
             textColor={COLORS.primary}
           />
         </View>

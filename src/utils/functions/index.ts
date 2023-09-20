@@ -1,5 +1,6 @@
 import {ScreenDimensions} from '@/interfaces';
 import {Dimensions} from 'react-native';
+import StorageService from '@/services/Storage'; // Import your StorageService
 
 export const getScreenDimensions = (): ScreenDimensions => {
   const {width, height} = Dimensions.get('window');
@@ -33,3 +34,16 @@ export const getErrorMessageByCode = (errorCode: string): string => {
       return 'An unknown error occurred. Please try again.';
   }
 };
+
+export async function getUID() {
+  try {
+    StorageService.getItem('uid').then(item => {
+      return item as string;
+    });
+  } catch (error) {
+    console.error('Error fetching UID from StorageService:', error);
+    return null;
+  }
+}
+
+export default getUID;

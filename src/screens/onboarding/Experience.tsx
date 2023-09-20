@@ -8,7 +8,7 @@ import {
   BottomSheet,
   ExperienceForm,
 } from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
@@ -18,7 +18,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const handleContinue = () => {
-    navigation.navigate('EmploymentStatus');
+    navigation.navigate(SCREEN_NAMES.EmploymentStatus);
   };
 
   const handleAddNewExperience = (newExperience: ExperienceState) => {

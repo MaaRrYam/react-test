@@ -43,6 +43,15 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     color: COLORS.black,
-    fontWeight: '400',
+    marginVertical: 20,
+    fontWeight: '300',
   },
+  dontHaveAnAccount: {
+    marginTop: 205,
+    marginLeft: 8,
+    flexDirection: 'row',
+  },
+  signUpText: {
+    color: COLORS.primary,
+  }
 });
