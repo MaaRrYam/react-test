@@ -3,9 +3,7 @@ import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
 import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
-import {NavigationProp} from '@react-navigation/native';
-import { StyleProp } from 'react-native';
-import { ViewStyle } from 'react-native';
+import {StyleProp, ViewStyle} from 'react-native';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
