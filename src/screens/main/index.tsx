@@ -42,12 +42,12 @@ const Main: React.FC<SignInScreenProps> = ({navigation}) => {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.imagesContainer}>
           <Image
-            source={require('assets/images/logo.png')}
+            source={require('@/assets/images/logo.png')}
             style={styles.logo}
             resizeMode="contain"
           />
           <Image
-            source={require('assets/images/people.png')}
+            source={require('@/assets/images/people.png')}
             style={styles.peopleImage}
             resizeMode="contain"
           />
