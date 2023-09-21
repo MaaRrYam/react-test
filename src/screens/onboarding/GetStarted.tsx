@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
 import {useFormik} from 'formik';
 
