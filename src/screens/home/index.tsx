@@ -78,7 +78,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <View>
           <Header navigation={navigation} />
           <View style={homeStyles.subheader}>
-            <Image source={{uri: user.photoUrl}} style={styles.userImage} />
+            <Image
+              source={require('@/assets/images/user.png')}
+              style={styles.userImage}
+            />
 
             <TextInput style={styles.searchBar} placeholder="Start a Post" />
           </View>
