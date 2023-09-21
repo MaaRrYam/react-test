@@ -2,12 +2,13 @@ import {API_GET} from '@/config/api/apiRequests';
 import {NetworkResponse, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
-import StorageService from '@/services/Storage';
+import {getUID} from '@/utils/functions';
 
 let UID: string;
-StorageService.getItem('uid').then(item => {
-  UID = item as string;
-});
+(async () => {
+  UID = await getUID();
+  console.log(UID);
+})();
 
 const NetworkService = {
   async getAllConnections() {

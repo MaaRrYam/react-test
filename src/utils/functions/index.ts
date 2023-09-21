@@ -37,13 +37,14 @@ export const getErrorMessageByCode = (errorCode: string): string => {
 
 export async function getUID() {
   try {
-    StorageService.getItem('uid').then(item => {
-      return item as string;
-    });
+    const item = await StorageService.getItem('uid');
+    if (typeof item === 'string') {
+      return item;
+    } else {
+      throw new Error('UID is not a string.');
+    }
   } catch (error) {
-    console.error('Error fetching UID from StorageService:', error);
-    return null;
+    console.error('Error getting UID:', error);
+    return '';
   }
 }
-
-export default getUID;
