@@ -11,7 +11,7 @@ import StorageService from '@/services/Storage';
 const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
   navigation,
 }) => {
-  const [employment, setEmployment] = useState<string>(employmentStatuses[0]);
+  const [employment, setEmployment] = useState<string>('');
   const [userId, setUserId] = useState('');
 
   const handleEmploymentStatus = () => {

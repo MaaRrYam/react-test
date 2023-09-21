@@ -10,6 +10,11 @@ import FirebaseService from '@/services/Firebase';
 import {UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {RootState} from '@/store';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {setLoading, setLoadingFinished} from '@/store/features/loadingSlice';
+import LoadingScreen from '@/components/Loading';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const [userData, setUserData] = useState<UserInterface>({});
@@ -19,6 +24,8 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     city: '',
     state: '',
   });
+  const {isLoading} = useAppSelector((state: RootState) => state.loading);
+  const dispatch = useAppDispatch();
 
   const handleSubmitUserData = formValues => {
     const newData = {
@@ -62,8 +69,11 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       },
     });
 
-  useLayoutEffect(() => {
-    if (userData.onboardingStep === 1) {
+  useEffect(() => {
+    dispatch(setLoading());
+    if (userData.onboardingStep === 0) {
+      dispatch(setLoadingFinished());
+    } else if (userData.onboardingStep === 1) {
       navigation.navigate('Education');
     } else if (userData.onboardingStep === 2) {
       navigation.navigate('Industry');
@@ -72,9 +82,14 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     } else if (userData.onboardingStep === 4) {
       navigation.navigate('EmploymentStatus');
     }
-  }, [userData]);
+  }, [userData, dispatch]);
 
-  return (
+  // useEffect(() => {
+  // }, [dispatch]);
+
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
         <Text style={commonStyles.title}>Let's get you started,</Text>
