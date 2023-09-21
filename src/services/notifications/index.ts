@@ -1,29 +1,44 @@
-import {NotificationInterface} from '@/interfaces';
+import {NotificationInterface, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
+import {formatFirebaseTimestamp} from '@/utils';
 
 const UID = 'ucCUjQtHVnZ8lblVtFHqAYMigot1';
 
 const NotificationService = {
   async getAllNotifications() {
     try {
-      const response = await FirebaseService.getDocumentsByQuery(
+      const response = await FirebaseService.getAllDocuments(
         `users/${UID}/notifications`,
-        'timestamp',
-        '>',
-        0,
       );
 
-      const result: any = await Promise.all(
+      const result: NotificationInterface[] = await Promise.all(
         response.map(async item => {
           const notification = (await FirebaseService.getDocument(
             `users/${UID}/notifications`,
             item.id,
           )) as NotificationInterface;
 
-          return notification;
+          const author = (await FirebaseService.getDocument(
+            'users',
+            item.senderId,
+          )) as UserInterface;
+
+          return {
+            ...notification,
+            timestamp: formatFirebaseTimestamp(
+              notification.timestamp,
+              'dateTime',
+            ),
+            sender: author,
+          };
         }),
       );
-      return result;
+
+      const sortedNotifications = result.sort(
+        (a, b) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+      );
+      return sortedNotifications;
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
