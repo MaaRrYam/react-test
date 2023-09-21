@@ -12,7 +12,7 @@ const Header = ({navigation}: {navigation: any}) => {
       <TouchableOpacity
         onPress={async () => {
           await StorageService.removeItem('uid');
-          navigation.navigate(SCREEN_NAMES.Main);
+          navigation.navigate(SCREEN_NAMES.Launch);
         }}>
         <Image
           source={require('@/assets/images/logo.png')}

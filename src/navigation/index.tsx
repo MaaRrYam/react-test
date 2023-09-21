@@ -24,11 +24,11 @@ const RootNavigation = () => {
             setInitialScreen(SCREEN_NAMES.BottomNavigator);
           }
         } else {
-          setInitialScreen(SCREEN_NAMES.Main);
+          setInitialScreen(SCREEN_NAMES.Launch);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        setInitialScreen(SCREEN_NAMES.Main);
+        setInitialScreen(SCREEN_NAMES.Launch);
       }
     };
 

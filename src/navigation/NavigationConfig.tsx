@@ -8,7 +8,7 @@ import {NavigationConfigProps} from '@/interfaces';
 import {SCREEN_NAMES} from '@/constants';
 
 const navigationConfig: NavigationConfigProps[] = [
-  {name: SCREEN_NAMES.Main, component: Main},
+  {name: SCREEN_NAMES.Launch, component: Main},
   {name: SCREEN_NAMES.Signin, component: SigninNavigator},
   {name: SCREEN_NAMES.Signup, component: SignupNavigator},
   {name: SCREEN_NAMES.RequestAccess, component: RequestAccessNavigator},

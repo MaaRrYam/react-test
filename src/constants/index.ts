@@ -182,7 +182,7 @@ const {width} = getScreenDimensions();
 export const containerWidth = width - 50;
 
 export const SCREEN_NAMES = {
-  Main: 'Main',
+  Launch: 'Launch',
   Signin: 'Signin',
   Signup: 'Signup',
   RequestAccess: 'RequestAccess',
