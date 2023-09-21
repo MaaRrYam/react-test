@@ -1,7 +1,14 @@
 import {BORDER_RADIUS, COLORS} from '@/constants';
 import {SocialLoginButtonProps} from '@/interfaces';
-import React from 'react';
-import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 
 const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   text,
@@ -10,14 +17,38 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   style,
   textStyle,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePress = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await onPress();
+      setIsLoading(false);
+    } catch (error) {
+      // Handle errors here and stop loading
+      setIsLoading(false);
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={handlePress}
       style={[styles.socialsButtonContainer, style]}>
       <View style={styles.iconContainer}>
-        <Image source={logoSource} style={styles.icon} />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={COLORS.black} />
+        ) : (
+          <Image source={logoSource} style={styles.icon} />
+        )}
       </View>
-      <Text style={[styles.signinButtonText, textStyle]}>{text}</Text>
+      <Text style={[styles.signinButtonText, textStyle]}>
+        {isLoading ? '' : text}
+      </Text>
     </TouchableOpacity>
   );
 };
