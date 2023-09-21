@@ -1,6 +1,6 @@
 import {Header} from 'components';
 import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
-import React, {useCallback, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
