@@ -251,6 +251,18 @@ export interface SocialLoginButtonProps {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
 }
+
+export interface NotificationInterface {
+  id: string;
+  title: string;
+  description: string;
+  link: string | null;
+  senderId: string;
+  timestamp: any;
+  sender: UserInterface;
+  isUnRead?: boolean;
+}
+
 export interface NetworkItemProps {
   item: NetworkResponse;
   isExploring?: boolean;
