@@ -233,6 +233,15 @@ export interface LoadingProps {
   indicatorStyles?: object;
 }
 
+export interface NotificationInterface {
+  id: string;
+  title: string;
+  description: string;
+  link: string | null;
+  senderId: string;
+  timestamp: any;
+}
+
 export interface NetworkItemProps {
   item: NetworkResponse;
   isExploring?: boolean;
