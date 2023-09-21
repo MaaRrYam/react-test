@@ -13,8 +13,7 @@ const SigninService: SigninServiceProps = {
   ) {
     const user = loggedInUser.user;
     const email = user.email?.toString();
-    const photoUrl = user.photoURL?.toString() || ''; // Set photoUrl to null if undefined
-
+    const photoUrl = user.photoURL?.toString() || '';
     try {
       const whiteListedUsers = await FirebaseService.getDocumentsByQuery(
         'whitelist',
