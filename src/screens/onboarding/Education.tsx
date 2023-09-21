@@ -8,7 +8,7 @@ import {
   BottomSheet,
   EducationForm,
 } from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
 import {EducationState, UserInterface} from '@/interfaces';
@@ -25,7 +25,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
       educationList: education,
       onboardingStep: 1,
     });
-    navigation.navigate('Industry');
+    navigation.navigate(SCREEN_NAMES.Industry);
   };
 
   const handleAddNewEducation = (newEducation: EducationState) => {

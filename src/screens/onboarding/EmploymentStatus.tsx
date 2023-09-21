@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {BackButton, Button, EmploymentSelectionField} from '@/components';
-import {employmentStatuses} from '@/constants';
+import {SCREEN_NAMES, employmentStatuses} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EmploymentStatusScreenProps} from '@/types';
 import FirebaseService from '@/services/Firebase';
@@ -19,7 +19,7 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
       currentStatus: employment,
       onboardingStep: 4,
     });
-    navigation.navigate('SalaryExpectations');
+    navigation.navigate(SCREEN_NAMES.SalaryExpectations);
   };
 
   useEffect(() => {

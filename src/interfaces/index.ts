@@ -1,8 +1,11 @@
 import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
+import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
-
+import {StyleProp, ViewStyle} from 'react-native';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -79,6 +82,12 @@ export interface StorageServiceProps {
 }
 export interface FirebaseServiceProps {
   addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  deleteDocument(collectionName: string, id: string): Promise<void>;
+  updateDocument(
+    collectionName: string,
+    id: string,
+    data: DocumentData,
+  ): Promise<void>;
   updateDocument(
     collectionName: string,
     documentName: string,
@@ -103,7 +112,7 @@ export interface FirebaseServiceProps {
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
-    navigation: any,
+    navigation: NavigationProp<RootStackParamList>,
   ): Promise<void>;
 }
 export interface requestAccessFormValues {
@@ -155,51 +164,11 @@ export interface ExperienceState {
   currentlyWorking?: boolean;
 }
 
-export interface UserInterface {
-  [key: string]: any;
-  id: string;
-  name?: string;
-  email?: string;
-  country?: string;
-  countryDetails?: string;
-  city?: string;
-  cityDetails?: Object;
-  state?: string;
-  stateDetails?: Object;
-  username?: string;
-  selectedRole?: string;
-  previousRole?: string;
-  onboarded?: boolean;
-  onboardingStep: number;
-  photoUrl?: string;
-  department?: string;
-  currentCVC?: number;
-  dailyCVC?: number;
-  refferalCode?: string;
-  lastDailyCVCUpdate?: string;
-  totalEarnedCVC?: number;
-  purchasedGifts?: Array<string>;
-  time?: Timestamp;
-  educationList?: Array<EducationState>;
-  employmentList?: Array<ExperienceState>;
-  admin?: boolean;
-  adminKey?: string;
-  dailyCVCStreakPoints?: number;
-  dailyCVCStreakCount?: number;
-  tagline?: string;
-  description?: string;
-  jobTags?: string[];
-  dateOfBirth?: string;
-  phoneNumber?: string;
-  currentStatus?: string;
-  minimumSalary?: string;
-  readNotifications?: number;
-  redeems?: Array<string>;
-}
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
   style?: object;
+  isLoading?: boolean;
 }
 
 export interface NavigationConfigProps {
@@ -209,4 +178,104 @@ export interface NavigationConfigProps {
 
 export interface IconProps extends SvgProps {
   isFocused?: boolean;
+}
+
+export interface EducationProps {
+  id: number;
+  instituteName: string;
+  degree: string;
+  startYear: string;
+  endYear?: string;
+  currentlyStudying?: boolean;
+  cgpa?: string;
+  educationLevel?: string;
+}
+
+export interface EmploymentProps {
+  id: number;
+  companyName: string;
+  role: string;
+  startYear: string;
+  endYear?: string;
+  currentlyWorking?: boolean;
+  workEmail?: string;
+}
+
+export interface UserInterface {
+  id: string;
+  name: string;
+  email: string;
+  country: string;
+  countryDetails: string;
+  city: string;
+  cityDetails: Object;
+  state: string;
+  stateDetails: Object;
+  username: string;
+  selectedRole: string;
+  previousRole?: string;
+  onboarded: boolean;
+  onboardingStep: number;
+  photoUrl?: string;
+  department?: string;
+  currentCVC?: number;
+  dailyCVC?: number;
+  refferalCode?: string;
+  lastDailyCVCUpdate?: string;
+  totalEarnedCVC?: number;
+  purchasedGifts?: Array<string>;
+  time: Timestamp;
+  educationList?: Array<EducationProps>;
+  employmentList?: Array<EmploymentProps>;
+  admin?: boolean;
+  adminKey?: string;
+  dailyCVCStreakPoints?: number;
+  dailyCVCStreakCount?: number;
+  tagline?: string;
+  description?: string;
+  jobTags: string[];
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  currentStatus?: string;
+  minimumSalary?: string;
+  readNotifications?: number;
+  redeems?: Array<string>;
+}
+export interface NetworkResponse extends UserInterface {
+  requestTime: string;
+}
+export interface LoadingProps {
+  size?: 'small' | 'large';
+  color?: string;
+  containerStyles?: object;
+  indicatorStyles?: object;
+}
+export interface SocialLoginButtonProps {
+  text: string;
+  logoSource: ImageSourcePropType;
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+}
+
+export interface NotificationInterface {
+  id: string;
+  title: string;
+  description: string;
+  link: string | null;
+  senderId: string;
+  timestamp: any;
+  sender: UserInterface;
+  isUnRead?: boolean;
+}
+
+export interface NetworkItemProps {
+  item: NetworkResponse;
+  isExploring?: boolean;
+  isConnection?: boolean;
+  isFollowing?: boolean;
+}
+export interface ScreenDimensions {
+  width: number;
+  height: number;
 }

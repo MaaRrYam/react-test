@@ -1,24 +1,19 @@
 import {signUpSchema} from '@/utils/schemas/schemas';
-import {createUserWithEmailAndPassword, getAuth} from '@firebase/auth';
-import {useFormik} from 'formik';
-import React, {FC, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  SafeAreaView,
-  Image,
-  Alert,
-  Platform,
-} from 'react-native';
+  createUserWithEmailAndPassword,
+  getAuth,
+  UserCredential,
+} from '@firebase/auth';
+import {useFormik} from 'formik';
+import React, {FC} from 'react';
+import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {Input, Button} from '@/components';
-import {COLORS, FONTS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
+import {styles} from '@/styles/signupWithEmail';
+import {getErrorMessageByCode} from '@/utils/functions';
 
-const windowWidth = Dimensions.get('window').width;
-const containerWidth = windowWidth - 50;
 const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   const auth = getAuth();
   const {
@@ -47,49 +42,23 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
     confirmPassword: string;
   }) => {
     try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        formValues.email,
-        formValues.password,
-      ).then(async userCredentials => {
-        await SigninService.checkIfUserIsWhitelisted(
-          userCredentials,
-          navigation,
-        ).catch(error => {
-          let errorMessage = 'An unknown error occurred. Please try again.';
+      const userCredentials: UserCredential =
+        await createUserWithEmailAndPassword(
+          auth,
+          formValues.email,
+          formValues.password,
+        );
 
-          switch (error.code) {
-            case 'auth/email-already-in-use':
-              errorMessage =
-                'Email address is already in use. Please use a different email.';
-              break;
-            case 'auth/invalid-email':
-              errorMessage =
-                'Invalid email address. Please check your email format.';
-              break;
-            case 'auth/weak-password':
-              errorMessage = 'Weak password. Password should be stronger.';
-              break;
-            case 'auth/network-request-failed':
-              errorMessage =
-                'Network request failed. Please check your internet connection.';
-              break;
-            // Add more cases for other Firebase authentication errors during sign-up as needed
+      await SigninService.checkIfUserIsWhitelisted(userCredentials, navigation);
 
-            default:
-              break;
-          }
-
-          Alert.alert('Sign-Up Error', errorMessage);
-        });
-      });
-      console.log(response);
+      // If everything is successful, you can log or perform additional actions here
+      console.log('Sign-in successful');
     } catch (error: any) {
-      if (error.message === 'Firebase: Error (auth/user-not-found).') {
-        Alert.alert('Invalid Email or Password');
-      } else {
-        Alert.alert('Invalid Email or Password');
-      }
+      const errorMessage =
+        getErrorMessageByCode(error.code) ||
+        'An error occurred during sign-in.';
+
+      Alert.alert('Authentication Error', errorMessage);
     } finally {
       setSubmitting(false);
     }
@@ -98,7 +67,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
     <SafeAreaView>
       <View style={styles.mainContainer}>
         <Image
-          source={require('assets/images/logo.png')}
+          source={require('@/assets/images/logo.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -107,7 +76,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           <Text style={styles.headingTitle}>Create Account</Text>
         </View>
 
-        <View style={[styles.inputContainer, {marginTop: 44}]}>
+        <View style={styles.inputContainer}>
           <Input
             placeholder="Email"
             value={values.email}
@@ -141,19 +110,16 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         <Button
           title="Sign up"
           onPress={handleSubmit}
-          style={[
-            styles.signinButtonContainer,
-            {marginVertical: 20, fontWeight: 300},
-          ]}
+          style={styles.signUpButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
         />
-        <View style={{marginTop: 125, marginLeft: 8, flexDirection: 'row'}}>
-          <Text style={{color: 'black'}}>Already have an Account? </Text>
+        <View style={styles.dontHaveAccount}>
+          <Text style={styles.mainText}>Already have an Account? </Text>
           <Text
-            style={{color: COLORS.primary}}
-            onPress={() => navigation.navigate('Signin')}>
+            style={styles.signInText}
+            onPress={() => navigation.navigate(SCREEN_NAMES.Signin)}>
             Sign in
           </Text>
         </View>
@@ -161,45 +127,5 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 30,
-  },
-  mainContainer: {
-    color: 'black',
-    paddingLeft: 25,
-    paddingRight: 20,
-  },
-  mainText: {
-    color: 'black',
-  },
-  logo: {
-    width: windowWidth - 180,
-    height: 97,
-    marginTop: 80,
-  },
-  headingTitle: {
-    fontSize: FONTS.heading,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  inputContainer: {
-    width: containerWidth,
-  },
-  signinButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    color: 'black',
-    fontWeight: '400',
-  },
-});
 
 export default SignupWithEmail;

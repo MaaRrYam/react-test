@@ -2,21 +2,13 @@ import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
-
-interface Network {
-  id: number;
-  description: string;
-  isConnectionRequest?: boolean;
-  date: string;
-  image: string;
-  isUnRead: boolean;
-}
+import {NotificationInterface} from '@/interfaces';
 
 const NotificationItem = ({
   item,
   onPress,
 }: {
-  item: Network;
+  item: NotificationInterface;
   onPress?: () => void;
 }) => {
   return (
@@ -24,11 +16,15 @@ const NotificationItem = ({
       <View
         style={[
           styles.notificationItem,
-          item.isUnRead && styles.unReadNotificationItem,
+          item?.isUnRead && styles.unReadNotificationItem,
         ]}>
         <View style={styles.notificationItemImage}>
           <Image
-            source={require('@/assets/images/user.png')}
+            source={
+              item.sender && item.sender.photoUrl
+                ? {uri: item.sender?.photoUrl}
+                : require('@/assets/images/user.png')
+            }
             style={styles.notificationItemImage}
           />
         </View>
@@ -38,7 +34,7 @@ const NotificationItem = ({
               {item.description}
             </Text>
           </View>
-          {item.isUnRead && (
+          {item?.isUnRead && (
             <View style={styles.notificationItemMessage}>
               <RoundedButton
                 text="Connect"

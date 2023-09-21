@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {FONTS, COLORS} from '@/constants';
+import {FONTS, COLORS, SCREEN_NAMES} from '@/constants';
 import {RootStackParamList} from '@/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -23,7 +23,7 @@ const ChatItem = ({
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('ChatDetails', {
+        navigation.navigate(SCREEN_NAMES.ChatDetails, {
           id: item.id,
           name: item.name,
         })

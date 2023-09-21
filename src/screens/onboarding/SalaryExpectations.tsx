@@ -8,6 +8,7 @@ import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
+import {SCREEN_NAMES} from '@/constants';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
@@ -31,7 +32,7 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
       onboardingStep: 4,
     };
     FirebaseService.updateDocument('users', userId, newData);
-    navigation.navigate('OnboardingCompleted');
+    navigation.navigate(SCREEN_NAMES.OnboardingCompleted);
   };
 
   const {values, touched, handleChange, handleSubmit, errors} = useFormik({

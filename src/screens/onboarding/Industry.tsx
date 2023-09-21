@@ -10,7 +10,7 @@ import {
 
 import {BackButton, Button} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {COLORS, MARGINS} from '@/constants';
+import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
 import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
@@ -31,12 +31,12 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
       setSelectedIndustries([...selectedIndustries, industry]);
     }
   };
-  const handleSubmit = () => {
-    FirebaseService.updateDocument('users', userId, {
+  const handleSubmit = async () => {
+    await FirebaseService.updateDocument('users', userId, {
       jobTags: selectedIndustries,
       onboardingStep: 2,
     });
-    navigation.navigate('Experience');
+    navigation.navigate(SCREEN_NAMES.Experience);
   };
 
   useEffect(() => {

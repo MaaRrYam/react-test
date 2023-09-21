@@ -5,7 +5,7 @@ export const signInSchema = Yup.object().shape({
     .email('Please Enter a valid Email')
     .required('Email is required'),
   password: Yup.string()
-    .min(3, 'Password must be at least 3 characters long')
+    .min(8, 'Password must be at least 8 characters long')
     .max(24, 'Password must be less than 24 characters')
     .required('Password is required'),
 });
@@ -15,7 +15,7 @@ export const signUpSchema = Yup.object().shape({
     .email('Please enter a valid Email')
     .required('Email is required'),
   password: Yup.string()
-    .min(3, 'Password must be at least 3 characters long')
+    .min(8, 'Password must be at least 8 characters long')
     .max(24, 'Password must be less than 24 characters')
     .required('Password is required'),
   confirmPassword: Yup.string()

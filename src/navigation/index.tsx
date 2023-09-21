@@ -1,38 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import StorageService from '../services/Storage';
-import {useNavigation} from '@react-navigation/native';
+import StorageService from '@/services/Storage';
 import navigationConfig from './NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';
-import {Text} from 'react-native';
-import {LoadingScreen} from '@/screens';
+import {Loading} from '@/components';
+import FirebaseService from '@/services/Firebase';
+import {SCREEN_NAMES} from '../constants';
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
-
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
-        // Fetch the 'uid' from AsyncStorage
-        const item = await StorageService.getItem('uid');
-        // Determine the initial screen based on the presence of 'uid'
-        const screen = item !== undefined ? 'MyTabs' : 'Main';
-        setInitialScreen(screen);
+        const uid = await StorageService.getItem('uid');
+        if (uid !== null) {
+          // If uid is in storage, check the user's onboarded status
+          const userDoc = await FirebaseService.getDocument('users', uid);
+          if (userDoc && !userDoc.onboarded) {
+            setInitialScreen(SCREEN_NAMES.Onboarding);
+          } else {
+            setInitialScreen(SCREEN_NAMES.MyTabs);
+          }
+        } else {
+          setInitialScreen(SCREEN_NAMES.Main);
+        }
       } catch (error) {
-        // Handle errors here if needed
         console.error('Error fetching data:', error);
-        setInitialScreen('Main'); // Default to 'Main' screen on error
+        setInitialScreen(SCREEN_NAMES.Main);
       }
     };
 
     fetchInitialScreen();
   }, []);
 
-  // Conditional rendering based on initialScreen
   if (initialScreen === '') {
-    // Display a loading indicator or splash screen while initializing
-    return <LoadingScreen />;
+    return <Loading />;
   }
 
   return (

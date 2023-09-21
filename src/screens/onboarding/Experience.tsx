@@ -8,7 +8,7 @@ import {
   BottomSheet,
   ExperienceForm,
 } from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
@@ -20,12 +20,12 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [userId, setUserId] = useState('');
 
-  const handleContinue = () => {
-    FirebaseService.updateDocument('users', userId, {
+  const handleContinue = async () => {
+    await FirebaseService.updateDocument('users', userId, {
       employmentList: experience,
       onboardingStep: 3,
     });
-    navigation.navigate('EmploymentStatus');
+    navigation.navigate(SCREEN_NAMES.EmploymentStatus);
   };
 
   const handleAddNewExperience = (newExperience: ExperienceState) => {

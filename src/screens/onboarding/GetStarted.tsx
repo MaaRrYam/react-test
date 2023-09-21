@@ -9,6 +9,7 @@ import {getStartedSchema} from '@/utils/schemas/onboarding';
 import FirebaseService from '@/services/Firebase';
 import {UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
+import {SCREEN_NAMES} from '@/constants';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const [userData, setUserData] = useState<UserInterface>({});
@@ -57,7 +58,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       validationSchema: getStartedSchema,
       onSubmit: formValues => {
         handleSubmitUserData(formValues);
-        navigation.navigate('Education');
+        navigation.navigate(SCREEN_NAMES.Education);
       },
     });
 

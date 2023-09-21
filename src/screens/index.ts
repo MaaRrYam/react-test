@@ -17,6 +17,4 @@ export {default as Notifications} from '@/screens/notifications';
 export {default as Main} from '@/screens/main';
 export {default as SigninScreen} from '@/screens/signin/SigninScreen';
 export {default as SigninWithEmail} from '@/screens/signin/SigninWithEmail';
-export {default as SignupScreen} from '@/screens/signup/signupScreen';
 export {default as SignupWithEmail} from '@/screens/signup/SignupWithEmail';
-export {default as LoadingScreen} from '@/screens/loading';

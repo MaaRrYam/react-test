@@ -1,4 +1,12 @@
+import {getScreenDimensions} from '@/utils/functions';
 import {Platform} from 'react-native';
+
+export const baseURL: string =
+  process.env.REACT_APP_API_BASE_URL ||
+  'https://career-network-firebase-dev.herokuapp.com/api';
+export const isInDevelopment: boolean = process.env.NODE_ENV !== 'production';
+export const UNAUTHORIZED = 401;
+export const UNAUTHENTICATED = 403;
 
 export const COLORS = {
   primary: '#1918ff',
@@ -9,7 +17,6 @@ export const COLORS = {
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
   lightGrayBackground: '#F4F4F4',
-  borderRadius: '#E9E9E9',
 };
 
 export const BORDER_RADIUS = {
@@ -171,3 +178,34 @@ export const NOTIFICATIONS = [
     isUnRead: false,
   },
 ];
+const {width} = getScreenDimensions();
+export const containerWidth = width - 50;
+
+export const SCREEN_NAMES = {
+  Main: 'Main',
+  Signin: 'Signin',
+  Signup: 'Signup',
+  RequestAccess: 'RequestAccess',
+  Onboarding: 'Onboarding',
+  MyTabs: 'MyTabs',
+  Chats: 'Chats',
+  ChatDetails: 'ChatDetails',
+  GetStarted: 'GetStarted',
+  Education: 'Education',
+  Industry: 'Industry',
+  Experience: 'Experience',
+  SalaryExpectations: 'SalaryExpectations',
+  EmploymentStatus: 'EmploymentStatus',
+  OnboardingCompleted: 'OnboardingCompleted',
+  SelectRole: 'SelectRole',
+  RequestAccessForm: 'RequestAccessForm',
+  RequestAccessComplete: 'RequestAccessComplete',
+  SigninOptions: 'SigninOptions',
+  SigninWithEmail: 'SigninWithEmail',
+  SignupWithEmail: 'SignupWithEmail',
+  Home: 'Home',
+  Network: 'Network',
+  Notifications: 'Notifications',
+  Jobs: 'Jobs',
+  Profile: 'Profile',
+};

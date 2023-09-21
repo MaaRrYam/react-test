@@ -1,14 +1,15 @@
-// SignupNavigator.tsx
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {SignupScreen, SignupWithEmail} from '@/screens';
-
+import {SignupWithEmail} from '@/screens';
+import {SCREEN_NAMES} from '@/constants';
 const SignupStack = createStackNavigator();
 
 const SignupNavigator = () => (
   <SignupStack.Navigator screenOptions={{headerShown: false}}>
-    <SignupStack.Screen name="SignupOptions" component={SignupScreen} />
-    <SignupStack.Screen name="SignupWithEmail" component={SignupWithEmail} />
+    <SignupStack.Screen
+      name={SCREEN_NAMES.SignupWithEmail}
+      component={SignupWithEmail}
+    />
   </SignupStack.Navigator>
 );
 

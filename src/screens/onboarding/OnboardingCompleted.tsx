@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 import {Button} from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
@@ -22,11 +22,11 @@ const containerWidth = windowWidth - 50;
 const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
   const [userId, setUserId] = useState('');
 
-  const handleOnboardingCompleted = () => {
-    FirebaseService.updateDocument('users', userId, {
+  const handleOnboardingCompleted = async () => {
+    await FirebaseService.updateDocument('users', userId, {
       onboarded: true,
     });
-    navigation.navigate('MyTabs');
+    navigation.navigate(SCREEN_NAMES.MyTabs);
   };
 
   useEffect(() => {

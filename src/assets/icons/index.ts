@@ -14,6 +14,7 @@ import Report from './Report';
 import Search from './Search';
 import Share from './Share';
 import ThreeDots from './ThreeDots';
+import Empty from './Empty';
 
 export {
   BackArrow,
@@ -32,4 +33,5 @@ export {
   Search,
   Share,
   ThreeDots,
+  Empty,
 };
