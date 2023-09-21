@@ -21,7 +21,7 @@ const RootNavigation = () => {
           if (userDoc && !userDoc.onboarded) {
             setInitialScreen(SCREEN_NAMES.Onboarding);
           } else {
-            setInitialScreen(SCREEN_NAMES.MyTabs);
+            setInitialScreen(SCREEN_NAMES.BottomNavigator);
           }
         } else {
           setInitialScreen(SCREEN_NAMES.Main);

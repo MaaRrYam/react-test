@@ -13,7 +13,7 @@ const navigationConfig: NavigationConfigProps[] = [
   {name: SCREEN_NAMES.Signup, component: SignupNavigator},
   {name: SCREEN_NAMES.RequestAccess, component: RequestAccessNavigator},
   {name: SCREEN_NAMES.Onboarding, component: OnboardingNavigator},
-  {name: SCREEN_NAMES.MyTabs, component: MyTabs},
+  {name: SCREEN_NAMES.BottomNavigator, component: MyTabs},
   {name: SCREEN_NAMES.Chats, component: Chats},
   {name: SCREEN_NAMES.ChatDetails, component: ChatDetails},
 ];

@@ -41,7 +41,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
         <View style={styles.btnContainer}>
           <Button
             title="Explore CareerNetwork.co"
-            onPress={() => navigation.navigate(SCREEN_NAMES.MyTabs)}
+            onPress={() => navigation.navigate(SCREEN_NAMES.BottomNavigator)}
             textColor={COLORS.black}
             backgroundColor={COLORS.white}
             icon="arrow-right"

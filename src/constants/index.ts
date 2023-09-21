@@ -187,7 +187,7 @@ export const SCREEN_NAMES = {
   Signup: 'Signup',
   RequestAccess: 'RequestAccess',
   Onboarding: 'Onboarding',
-  MyTabs: 'MyTabs',
+  BottomNavigator: 'BottomNavigator',
   Chats: 'Chats',
   ChatDetails: 'ChatDetails',
   GetStarted: 'GetStarted',

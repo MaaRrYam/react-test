@@ -59,7 +59,7 @@ const SigninService: SigninServiceProps = {
         );
         Alert.alert('Successfully signed in');
         navigation.navigate(
-          userData?.onboarded ? SCREEN_NAMES.MyTabs : SCREEN_NAMES.Onboarding,
+          userData?.onboarded ? SCREEN_NAMES.BottomNavigator : SCREEN_NAMES.Onboarding,
         );
       }
     } catch (error) {
