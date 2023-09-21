@@ -240,6 +240,8 @@ export interface NotificationInterface {
   link: string | null;
   senderId: string;
   timestamp: any;
+  sender: UserInterface;
+  isUnRead?: boolean;
 }
 
 export interface NetworkItemProps {
