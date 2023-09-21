@@ -9,8 +9,8 @@ const initialState = {
 };
 
 export const getUser = createAsyncThunk('auth/getUser', async () => {
-  const localStateUser = (await StorageService.getItem('user')) as User;
-  const user = await FirebaseService.getDocument('users', localStateUser.uid);
+  const UID = (await StorageService.getItem('uid')) as string;
+  const user = await FirebaseService.getDocument('users', UID);
   if (user) {
     console.log(user);
     return user;
