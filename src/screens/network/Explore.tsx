@@ -1,16 +1,34 @@
-import React from 'react';
-import {FlatList} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {FlatList, RefreshControl} from 'react-native';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
 import {Empty} from '@/components';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {refetchRecommendations} from '@/store/features/networkSlice';
 
 const Explore = () => {
-  const {recommendations, isRecommendationsFetched} = useAppSelector(
-    state => state.network,
-  );
+  const {
+    recommendations,
+    isRecommendationsFetched,
+    isRecommendationsFirstRequest,
+  } = useAppSelector(state => state.network);
+  const dispatch = useAppDispatch();
 
-  if (!isRecommendationsFetched) {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    dispatch(refetchRecommendations());
+    setIsRefreshing(true);
+  };
+
+  useEffect(() => {
+    if (isRecommendationsFetched) {
+      setIsRefreshing(false);
+    }
+  }, [isRecommendationsFetched]);
+
+  if (isRecommendationsFirstRequest) {
     return <Loading />;
   }
 
@@ -20,7 +38,15 @@ const Explore = () => {
         <FlatList
           data={recommendations}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <NetworkItem item={item} />}
+          renderItem={({item}) => (
+            <NetworkItem item={item} isExploring={true} />
+          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
         />
       ) : (
         <Empty />

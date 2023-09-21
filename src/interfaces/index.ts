@@ -78,6 +78,12 @@ export interface StorageServiceProps {
 }
 export interface FirebaseServiceProps {
   addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  deleteDocument(collectionName: string, id: string): Promise<void>;
+  updateDocument(
+    collectionName: string,
+    id: string,
+    data: DocumentData,
+  ): Promise<void>;
   getAllDocuments(collectionName: string): Promise<DocumentData[]>;
   getDocumentsByQuery(
     collectionName: string,
@@ -148,6 +154,7 @@ export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
   style?: object;
+  isLoading?: boolean;
 }
 
 export interface IconProps extends SvgProps {
@@ -233,4 +240,11 @@ export interface NotificationInterface {
   link: string | null;
   senderId: string;
   timestamp: any;
+}
+
+export interface NetworkItemProps {
+  item: NetworkResponse;
+  isExploring?: boolean;
+  isConnection?: boolean;
+  isFollowing?: boolean;
 }
