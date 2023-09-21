@@ -225,3 +225,12 @@ export interface LoadingProps {
   containerStyles?: object;
   indicatorStyles?: object;
 }
+
+export interface NotificationInterface {
+  id: string;
+  title: string;
+  description: string;
+  link: string | null;
+  senderId: string;
+  timestamp: any;
+}
