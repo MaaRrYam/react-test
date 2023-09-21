@@ -84,9 +84,6 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     }
   }, [userData, dispatch]);
 
-  // useEffect(() => {
-  // }, [dispatch]);
-
   return isLoading ? (
     <LoadingScreen />
   ) : (
