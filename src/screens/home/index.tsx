@@ -1,6 +1,6 @@
 import {Header} from 'components';
 import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -78,10 +78,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <View>
           <Header navigation={navigation} />
           <View style={homeStyles.subheader}>
-            <Image
-              source={require('@/assets/images/user.png')}
-              style={styles.userImage}
-            />
+            <Image source={{uri: user.photoUrl}} style={styles.userImage} />
 
             <TextInput style={styles.searchBar} placeholder="Start a Post" />
           </View>
