@@ -1,7 +1,8 @@
+import {UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import StorageService from '@/services/Storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {User} from 'firebase/auth';
+// import {User} from 'firebase/auth';
 
 const initialState = {
   user: {},
@@ -13,7 +14,7 @@ export const getUser = createAsyncThunk('auth/getUser', async () => {
   const user = await FirebaseService.getDocument('users', UID);
   if (user) {
     console.log(user);
-    return user;
+    return user as UserInterface;
   }
 });
 

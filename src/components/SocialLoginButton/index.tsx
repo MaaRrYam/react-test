@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   signinButtonText: {
-    color: '#000',
+    color: COLORS.black,
     fontSize: 16,
     fontWeight: 'bold',
   },
