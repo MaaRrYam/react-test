@@ -19,18 +19,31 @@ import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
 import {getUser} from '@/store/features/authSlice';
 import StorageService from '@/services/Storage';
+import {UserInterface} from '@/interfaces';
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
-  const {user} = useAppSelector((state: RootState) => state.auth);
+  const user = useAppSelector((state: RootState) => state.auth.user);
 
-  const fetchUser = useCallback(async () => {
+  const storeUserInStorage = useCallback(async (userData: UserInterface) => {
+    try {
+      // Check if the userData exists and is not an empty object
+      if (userData && Object.keys(userData).length > 0) {
+        // Store the user data in AsyncStorage using your StorageService
+        await StorageService.setItem('user', userData);
+      }
+    } catch (error) {
+      // Handle the error here
+      console.error('Error storing user data:', error);
+    }
+  }, []);
+
+  useEffect(() => {
     dispatch(getUser());
-    await StorageService.setItem('user', user);
   }, [dispatch]);
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    storeUserInStorage(user);
+  }, [user, storeUserInStorage]);
 
   const feedData = [
     {
@@ -96,7 +109,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <Header navigation={navigation} />
           <View style={homeStyles.subheader}>
             <Image
-              source={require('@/assets/images/user.png')}
+              source={
+                user.photoUrl
+                  ? {uri: user.photoUrl}
+                  : require('@/assets/images/user.png')
+              }
               style={styles.userImage}
             />
 
