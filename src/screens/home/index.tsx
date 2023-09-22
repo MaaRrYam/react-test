@@ -1,6 +1,6 @@
 import {Header} from 'components';
 import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,14 +14,31 @@ import {HomeScreenProps} from 'types';
 import {homeStyles} from '@/styles/home';
 import {TextInput} from 'react-native';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {RootState} from '@/store';
+import {getUser} from '@/store/features/authSlice';
+import StorageService from '@/services/Storage';
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
+  const {user} = useAppSelector((state: RootState) => state.auth);
+
+  const fetchUser = useCallback(async () => {
+    dispatch(getUser());
+    await StorageService.setItem('user', user);
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   const feedData = [
     {
       id: '1',
       title: 'Post 1',
       content: 'This is the content of the first post.',
       author: {
-        name: 'John Doe',
+        name: user.name,
         tagline: 'UX Designer',
         avatar: require('@/assets/images/user.png'),
       },

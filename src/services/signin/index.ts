@@ -6,6 +6,7 @@ import {Alert} from 'react-native';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
 
+
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
