@@ -1,6 +1,6 @@
-import {Header} from 'components';
-import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
-import React, {useCallback, useEffect} from 'react';
+import {Header, Loading} from '@/components';
+import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -17,22 +17,24 @@ import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
-import {getUser} from '@/store/features/authSlice';
+import {addUser, getUser} from '@/store/features/authSlice';
 import StorageService from '@/services/Storage';
 import {UserInterface} from '@/interfaces';
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: RootState) => state.auth.user);
-
+  const addUserToRedux = useCallback(
+    (token: any, userData: any) => {
+      dispatch(addUser({token, user: userData}));
+    },
+    [dispatch],
+  );
   const storeUserInStorage = useCallback(async (userData: UserInterface) => {
     try {
-      // Check if the userData exists and is not an empty object
       if (userData && Object.keys(userData).length > 0) {
-        // Store the user data in AsyncStorage using your StorageService
         await StorageService.setItem('user', userData);
       }
     } catch (error) {
-      // Handle the error here
       console.error('Error storing user data:', error);
     }
   }, []);
@@ -44,6 +46,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   useEffect(() => {
     storeUserInStorage(user);
   }, [user, storeUserInStorage]);
+
+  useEffect(() => {
+    const addToRedux = async () => {
+      const accessToken = await StorageService.getItem('accessToken');
+      addUserToRedux(accessToken, user);
+    };
+
+    addToRedux();
+  }, []);
 
   const feedData = [
     {
