@@ -10,11 +10,11 @@ import {
 
 import {Button, SocialLoginButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
-import {SignInScreenProps} from '@/types';
+import {LaunchScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {styles} from '@/styles/main';
 
-const Main: React.FC<SignInScreenProps> = ({navigation}) => {
+const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
   const handleSignButtonClick = () => {
     navigation.navigate(SCREEN_NAMES.Signin);
   };

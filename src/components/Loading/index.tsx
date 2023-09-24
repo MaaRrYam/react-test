@@ -8,7 +8,6 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-
 import {styles} from '@/components/Loading/styles';
 
 const emblemImage = require('@/assets/images/emblem.png');

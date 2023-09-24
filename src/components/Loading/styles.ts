@@ -1,9 +1,10 @@
+import {BORDER_RADIUS, COLORS} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS.general,
   },
   image: {
     width: 100,

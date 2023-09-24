@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SigninScreen, SigninWithEmail} from '@/screens';
 import {SCREEN_NAMES} from '@/constants';
+
 const SigninStack = createStackNavigator();
 
 const SigninNavigator = () => (

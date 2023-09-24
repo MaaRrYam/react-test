@@ -1,11 +1,10 @@
+import {Alert} from 'react-native';
+import {UserCredential} from 'firebase/auth';
 import FirebaseService from '@/services/Firebase';
 import {auth} from '@/config/firebase';
-import {UserCredential} from 'firebase/auth';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
-import {Alert} from 'react-native';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
-
 
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
@@ -24,12 +23,11 @@ const SigninService: SigninServiceProps = {
       );
 
       if (!whiteListedUsers.length) {
-        // await auth.signOut();
         Alert.alert(
           'Please submit an access request to start using the platform.',
         );
         navigation.navigate(SCREEN_NAMES.RequestAccess);
-      } else if (whiteListedUsers[0].whitelisted === false) {
+      } else if (!whiteListedUsers[0].whitelisted) {
         await auth.signOut();
         Alert.alert('Your access request is still pending approval.');
       } else {

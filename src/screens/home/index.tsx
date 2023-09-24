@@ -1,5 +1,3 @@
-import {Header, Loading} from '@/components';
-import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
@@ -10,59 +8,23 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {Header} from '@/components';
+import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import {HomeScreenProps} from 'types';
 import {homeStyles} from '@/styles/home';
 import {TextInput} from 'react-native';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {RootState} from '@/store';
-import {addUser, getUser} from '@/store/features/authSlice';
-import StorageService from '@/services/Storage';
-import {UserInterface} from '@/interfaces';
+import useUserManagement from '@/hooks/useUserManagement';
+
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.auth.user);
-  const addUserToRedux = useCallback(
-    (token: any, userData: any) => {
-      dispatch(addUser({token, user: userData}));
-    },
-    [dispatch],
-  );
-  const storeUserInStorage = useCallback(async (userData: UserInterface) => {
-    try {
-      if (userData && Object.keys(userData).length > 0) {
-        await StorageService.setItem('user', userData);
-      }
-    } catch (error) {
-      console.error('Error storing user data:', error);
-    }
-  }, []);
-
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
-
-  useEffect(() => {
-    storeUserInStorage(user);
-  }, [user, storeUserInStorage]);
-
-  useEffect(() => {
-    const addToRedux = async () => {
-      const accessToken = await StorageService.getItem('accessToken');
-      addUserToRedux(accessToken, user);
-    };
-
-    addToRedux();
-  }, []);
-
+  const {user} = useUserManagement();
   const feedData = [
     {
       id: '1',
       title: 'Post 1',
       content: 'This is the content of the first post.',
       author: {
-        name: user.name,
+        name: user?.name,
         tagline: 'UX Designer',
         avatar: require('@/assets/images/user.png'),
       },
@@ -121,7 +83,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <View style={homeStyles.subheader}>
             <Image
               source={
-                user.photoUrl
+                user?.photoUrl
                   ? {uri: user.photoUrl}
                   : require('@/assets/images/user.png')
               }

@@ -273,3 +273,7 @@ export interface ScreenDimensions {
   width: number;
   height: number;
 }
+
+export interface UserManagement {
+  user: UserInterface | null;
+}

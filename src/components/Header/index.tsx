@@ -5,20 +5,12 @@ import {homeStyles} from '@/styles/home';
 import {Search, Chats} from '@/assets/icons';
 import {SCREEN_NAMES} from '@/constants';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {addUser, logOut} from '@/store/features/authSlice';
+import {logOut} from '@/store/features/authSlice';
+import {HeaderProps} from '@/types';
 
-const Header = ({navigation}: {navigation: any}) => {
+const Header = ({navigation}: HeaderProps) => {
   const dispatch = useAppDispatch();
-  // const user = useAppSelector((state: RootState) => state.auth.user);
-  const addUserToRedux = useCallback(
-    (token: any, userData: any) => {
-      dispatch(addUser({token, user: userData}));
-    },
-    [dispatch],
-  );
-
   const handleLogout = () => {
-    addUserToRedux(null, {});
     dispatch(logOut());
     navigation.navigate(SCREEN_NAMES.Launch);
   };

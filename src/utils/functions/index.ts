@@ -1,6 +1,6 @@
-import {ScreenDimensions} from '@/interfaces';
 import {Dimensions} from 'react-native';
-import StorageService from '@/services/Storage'; // Import your StorageService
+import {ScreenDimensions} from '@/interfaces';
+import StorageService from '@/services/Storage'; 
 
 export const getScreenDimensions = (): ScreenDimensions => {
   const {width, height} = Dimensions.get('window');

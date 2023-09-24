@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SelectRole, RequestAccessComplete, RequestAccess} from '@/screens';
 import {SCREEN_NAMES} from '@/constants';
+
 const RequestAccessStack = createStackNavigator();
 
 const RequestAccessNavigator = () => (

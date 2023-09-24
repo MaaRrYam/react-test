@@ -1,14 +1,14 @@
-import {BORDER_RADIUS, COLORS} from '@/constants';
-import {SocialLoginButtonProps} from '@/interfaces';
 import React, {useState} from 'react';
 import {
   TouchableOpacity,
   View,
   Image,
   Text,
-  StyleSheet,
   ActivityIndicator,
 } from 'react-native';
+import {COLORS} from '@/constants';
+import {SocialLoginButtonProps} from '@/interfaces';
+import {styles} from './styles';
 
 const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   text,
@@ -28,7 +28,6 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
       await onPress();
       setIsLoading(false);
     } catch (error) {
-      // Handle errors here and stop loading
       setIsLoading(false);
       console.error('Error:', error);
     }
@@ -46,37 +45,10 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
         )}
       </View>
       <Text style={[styles.signinButtonText, textStyle]}>
-        {isLoading ? '' : text}
+        {!isLoading && text}
       </Text>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  socialsButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    padding: 10,
-    borderRadius: BORDER_RADIUS.general,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    color: COLORS.black,
-    fontWeight: '400',
-  },
-  iconContainer: {
-    marginRight: 10,
-  },
-  signinButtonText: {
-    color: COLORS.black,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  icon: {
-    width: 30,
-    height: 30,
-  },
-});
 
 export default SocialLoginButton;

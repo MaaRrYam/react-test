@@ -1,8 +1,8 @@
+import React, {FC} from 'react';
+import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
 import {signInSchema} from '@/utils/schemas/schemas';
 import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
 import {useFormik} from 'formik';
-import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
 import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';

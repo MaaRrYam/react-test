@@ -15,8 +15,7 @@ const RootNavigation = () => {
     const fetchInitialScreen = async () => {
       try {
         const uid = await StorageService.getItem('uid');
-        if (uid !== null) {
-          // If uid is in storage, check the user's onboarded status
+        if (uid) {
           const userDoc = await FirebaseService.getDocument('users', uid);
           if (userDoc && !userDoc.onboarded) {
             setInitialScreen(SCREEN_NAMES.Onboarding);
