@@ -4,7 +4,6 @@ import {SelectRole, RequestAccessComplete, RequestAccess} from '@/screens';
 import {SCREEN_NAMES} from '@/constants';
 
 const RequestAccessStack = createStackNavigator();
-
 const RequestAccessNavigator = () => (
   <RequestAccessStack.Navigator screenOptions={{headerShown: false}}>
     <RequestAccessStack.Screen

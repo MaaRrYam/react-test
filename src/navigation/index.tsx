@@ -4,11 +4,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '@/services/Storage';
 import navigationConfig from './NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';
-import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
-import {SCREEN_NAMES} from '../constants'
+import {SCREEN_NAMES} from '@/constants';
+import {Loading} from '@/components';
 const RootNavigation = () => {
-
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState('');
   useEffect(() => {

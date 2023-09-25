@@ -1,8 +1,13 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
-import {signInSchema} from '@/utils/schemas/schemas';
-import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
+import {View, Text, SafeAreaView, Image, Platform} from 'react-native';
 import {useFormik} from 'formik';
+import Toast from 'react-native-simple-toast';
+import {signInSchema} from '@/utils/schemas/schemas';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  UserCredential,
+} from '@firebase/auth';
 import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
@@ -52,7 +57,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
           ? getErrorMessageByCode(error.code)
           : 'An error occurred during sign-in.';
 
-      Alert.alert('Authentication Error', errorMessage);
+      Toast.show(errorMessage, Toast.LONG);
     } finally {
       setSubmitting(false);
     }
