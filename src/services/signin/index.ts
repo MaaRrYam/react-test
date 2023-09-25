@@ -5,6 +5,7 @@ import {auth} from '@/config/firebase';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
+import ToastService from '../toast';
 
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
@@ -23,13 +24,15 @@ const SigninService: SigninServiceProps = {
       );
 
       if (!whiteListedUsers.length) {
-        Alert.alert(
+        await ToastService.showError(
           'Please submit an access request to start using the platform.',
         );
         navigation.navigate(SCREEN_NAMES.RequestAccess);
       } else if (!whiteListedUsers[0].whitelisted) {
         await auth.signOut();
-        Alert.alert('Your access request is still pending approval.');
+        await ToastService.showError(
+          'Your access request is still pending approval.',
+        );
       } else {
         const loggedInUserId: string = user.uid;
         const userData = await FirebaseService.getDocument(
@@ -56,9 +59,11 @@ const SigninService: SigninServiceProps = {
           'accessToken',
           (await user.getIdToken()).toString(),
         );
-        Alert.alert('Successfully signed in');
+        await ToastService.showSuccess('Successfully signed in');
         navigation.navigate(
-          userData?.onboarded ? SCREEN_NAMES.BottomNavigator : SCREEN_NAMES.Onboarding,
+          userData?.onboarded
+            ? SCREEN_NAMES.BottomNavigator
+            : SCREEN_NAMES.Onboarding,
         );
       }
     } catch (error) {

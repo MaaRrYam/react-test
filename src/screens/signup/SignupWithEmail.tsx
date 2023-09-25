@@ -14,6 +14,7 @@ import SigninService from '@/services/signin';
 import {styles} from '@/styles/signupWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
 import {signUpSchema} from '@/utils/schemas/schemas';
+import ToastService from '@/services/toast';
 
 const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   const auth = getAuth();
@@ -57,7 +58,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         getErrorMessageByCode(error.code) ||
         'An error occurred during sign-in.';
 
-      Alert.alert('Authentication Error', errorMessage);
+      await ToastService.showError(errorMessage);
     } finally {
       setSubmitting(false);
     }
