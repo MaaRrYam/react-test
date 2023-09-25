@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, SafeAreaView, ScrollView} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView, Alert} from 'react-native';
 import {useFormik} from 'formik';
-import Toast from 'react-native-simple-toast';
+
 import {BackButton, Button, Link, Input} from '@/components';
 import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
@@ -49,7 +49,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
       selectedRole: role,
     };
     const data = await submitRequestAccess(payload);
-    Toast.show(data.message, Toast.LONG);
+    Alert.alert(data.message);
     setSubmitting(false);
     if (data.success) {
       navigation.navigate(SCREEN_NAMES.Signin);

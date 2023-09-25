@@ -12,7 +12,7 @@ import {styles} from '@/components/Loading/styles';
 
 const emblemImage = require('@/assets/images/emblem.png');
 
-export default function Loading() {
+export default function LoadingScreen() {
   const rotation = useSharedValue(0);
 
   useEffect(() => {

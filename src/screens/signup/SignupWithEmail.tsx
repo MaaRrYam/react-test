@@ -2,7 +2,6 @@
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {useFormik} from 'formik';
-import Toast from 'react-native-simple-toast';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -58,7 +57,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         getErrorMessageByCode(error.code) ||
         'An error occurred during sign-in.';
 
-      Toast.show(errorMessage, Toast.LONG);
+      Alert.alert('Authentication Error', errorMessage);
     } finally {
       setSubmitting(false);
     }

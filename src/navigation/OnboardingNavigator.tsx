@@ -12,6 +12,7 @@ import {
 import {SCREEN_NAMES} from '@/constants';
 
 const OnboardingStack = createStackNavigator();
+
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator screenOptions={{headerShown: false}}>
     <OnboardingStack.Screen

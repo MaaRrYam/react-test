@@ -1,5 +1,5 @@
+import {Alert} from 'react-native';
 import {UserCredential} from 'firebase/auth';
-import Toast from 'react-native-simple-toast';
 import FirebaseService from '@/services/Firebase';
 import {auth} from '@/config/firebase';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
@@ -23,17 +23,13 @@ const SigninService: SigninServiceProps = {
       );
 
       if (!whiteListedUsers.length) {
-        Toast.show(
+        Alert.alert(
           'Please submit an access request to start using the platform.',
-          Toast.LONG,
         );
         navigation.navigate(SCREEN_NAMES.RequestAccess);
       } else if (!whiteListedUsers[0].whitelisted) {
         await auth.signOut();
-        Toast.show(
-          'Your access request is still pending approval.',
-          Toast.LONG,
-        );
+        Alert.alert('Your access request is still pending approval.');
       } else {
         const loggedInUserId: string = user.uid;
         const userData = await FirebaseService.getDocument(
@@ -60,11 +56,9 @@ const SigninService: SigninServiceProps = {
           'accessToken',
           (await user.getIdToken()).toString(),
         );
-        Toast.show('Successfully signed in', Toast.LONG);
+        Alert.alert('Successfully signed in');
         navigation.navigate(
-          userData?.onboarded
-            ? SCREEN_NAMES.BottomNavigator
-            : SCREEN_NAMES.Onboarding,
+          userData?.onboarded ? SCREEN_NAMES.BottomNavigator : SCREEN_NAMES.Onboarding,
         );
       }
     } catch (error) {

@@ -4,6 +4,7 @@ import {SigninScreen, SigninWithEmail} from '@/screens';
 import {SCREEN_NAMES} from '@/constants';
 
 const SigninStack = createStackNavigator();
+
 const SigninNavigator = () => (
   <SigninStack.Navigator screenOptions={{headerShown: false}}>
     <SigninStack.Screen
