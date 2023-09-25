@@ -20,6 +20,7 @@ import {EducationForm, ExperienceForm} from '@/components/Forms';
 import Loading from '@/components/Loading';
 import Header from '@/components/Header';
 import Empty from '@/components/NoResults/Empty';
+import Feed from '@/components/Feed/Feed';
 
 export {
   BackButton,
@@ -43,4 +44,5 @@ export {
   NotificationItem,
   Loading,
   Empty,
+  Feed,
 };

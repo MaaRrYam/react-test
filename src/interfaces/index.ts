@@ -250,3 +250,34 @@ export interface NetworkItemProps {
   isConnection?: boolean;
   isFollowing?: boolean;
 }
+
+export interface FeedItem {
+  id: string;
+  creationTime: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  hashtag: string;
+  type: string;
+  text?: string;
+  authorId: string;
+  media?: string;
+  mediaType?: string;
+  editedTime?: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  edited: boolean;
+  _id: string;
+  feedType: string;
+  postLikes: number;
+  tags?: string[];
+  title?: string;
+  content?: string;
+  views?: number;
+  coverImage?: string;
+  timestamp?: {
+    seconds: number;
+    nanoseconds: number;
+  };
+}
