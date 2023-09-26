@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, Image, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import RenderHtml from 'react-native-render-html';
 
 import {FeedItem} from '@/interfaces';
@@ -7,7 +13,7 @@ import {styles} from '@/screens/home/styles';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import {formatFirebaseTimestamp} from '@/utils';
 
-const renderPost = (item: FeedItem) => (
+const RenderPost = ({item}: {item: FeedItem}) => (
   <>
     <Text style={styles.feedContent}>{item.text}</Text>
     {item.media && <Image source={{uri: item.media}} style={styles.media} />}
@@ -39,6 +45,7 @@ const renderPost = (item: FeedItem) => (
 
 const RenderArticle = ({item}: {item: FeedItem}) => {
   const [showFullContent, setShowFullContent] = useState(false);
+  const {width} = useWindowDimensions();
 
   const toggleContent = () => {
     setShowFullContent(prev => !prev);
@@ -46,19 +53,12 @@ const RenderArticle = ({item}: {item: FeedItem}) => {
 
   const source = {
     html: `
-<p style='text-align:center;'>
-  Hello World!
-</p>`,
+${showFullContent ? item.content : item.content!.substring(0, 200) + '....'}`,
   };
 
   return (
     <View style={styles.articleContainer}>
-      <Text style={styles.feedContent}>
-        {showFullContent
-          ? item.content
-          : item.content!.substring(0, 200) + '...'}
-      </Text>
-      <RenderHtml source={source} />
+      <RenderHtml contentWidth={width} source={source} />
       {item.content!.length > 200 && (
         <TouchableOpacity onPress={toggleContent}>
           <Text style={styles.showMoreText}>
@@ -66,6 +66,7 @@ const RenderArticle = ({item}: {item: FeedItem}) => {
           </Text>
         </TouchableOpacity>
       )}
+      <Image source={{uri: item.coverImage}} style={styles.media} />
     </View>
   );
 };
@@ -89,7 +90,7 @@ const FeedItemComponent = ({item}: {item: FeedItem}) => {
         </View>
       </View>
       {item.feedType === 'post' ? (
-        renderPost(item)
+        <RenderPost item={item} />
       ) : (
         <RenderArticle item={item} />
       )}

@@ -77,6 +77,7 @@ export const styles = StyleSheet.create({
     height: 200,
     borderRadius: 8,
     marginVertical: 8,
+    objectFit: 'cover',
   },
   authorInfo: {
     flexDirection: 'row',
