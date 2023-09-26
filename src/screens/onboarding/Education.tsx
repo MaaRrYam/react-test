@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
@@ -11,20 +11,19 @@ import {
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
-import {EducationState, UserInterface} from '@/interfaces';
-import FirebaseService from '@/services/Firebase';
-import StorageService from '@/services/Storage';
+import {EducationState} from '@/interfaces';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
-  const [education, setEducation] = useState<EducationState[]>([]);
+  const {user} = useUserManagement();
+  const [education, setEducation] = useState<EducationState[]>(
+    user?.educationList,
+  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [userId, setUserId] = useState('');
 
   const handleContinue = () => {
-    FirebaseService.updateDocument('users', userId, {
-      educationList: education,
-      onboardingStep: 1,
-    });
+    OnboardingService.education(education);
     navigation.navigate(SCREEN_NAMES.Industry);
   };
 
@@ -32,15 +31,6 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
     setEducation(prev => [...prev, newEducation]);
     setIsBottomSheetVisible(false);
   };
-
-  useEffect(() => {
-    (async () => {
-      const item = await StorageService.getItem('uid');
-      setUserId(item);
-      const data = await FirebaseService.getDocument('users', item);
-      setEducation(data.educationList);
-    })();
-  }, []);
 
   return (
     <>
@@ -55,7 +45,6 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
                 id={item.id}
                 instituteName={item.instituteName}
                 degree={item.degree}
-                cgpa={item.cgpa}
                 startingYear={item.startingYear}
                 endingYear={item.endingYear}
                 currentlyWorking={item.currentlyWorking}

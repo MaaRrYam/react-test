@@ -10,7 +10,6 @@ export interface EducationCardProps {
   id: number;
   instituteName: string;
   degree: string;
-  cgpa: string;
   startingYear: string;
   endingYear?: string;
   currentlyWorking?: boolean;
@@ -137,7 +136,6 @@ export interface EducationState {
   id: number;
   instituteName: string;
   degree: string;
-  cgpa: string;
   startingYear: string;
   endingYear?: string;
   currentlyWorking?: boolean;
@@ -187,7 +185,6 @@ export interface EducationProps {
   startYear: string;
   endYear?: string;
   currentlyStudying?: boolean;
-  cgpa?: string;
   educationLevel?: string;
 }
 
@@ -200,7 +197,6 @@ export interface EmploymentProps {
   currentlyWorking?: boolean;
   workEmail?: string;
 }
-
 export interface UserInterface {
   id: string;
   name: string;
@@ -237,7 +233,9 @@ export interface UserInterface {
   dateOfBirth?: string;
   phoneNumber?: string;
   currentStatus?: string;
-  minimumSalary?: string;
+  minimumSalary: string;
+  baseSalary: number;
+  totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
 }

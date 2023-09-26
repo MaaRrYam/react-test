@@ -71,7 +71,7 @@ const Input: React.FC<InputProps> = ({
     if (value) {
       handleFocus();
     }
-  });
+  }, [value]);
 
   return (
     <View>

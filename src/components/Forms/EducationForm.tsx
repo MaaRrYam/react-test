@@ -27,7 +27,6 @@ const EducationForm = ({
     initialValues: {
       instituteName: '',
       degree: '',
-      cgpa: '',
       startingYear: `${new Date().getFullYear()}`,
       endingYear: `${new Date().getFullYear()}`,
       currentlyStudying: false,
@@ -41,7 +40,6 @@ const EducationForm = ({
         values: {
           instituteName: '',
           degree: '',
-          cgpa: '',
           startingYear: `${new Date().getFullYear()}`,
           endingYear: `${new Date().getFullYear()}`,
           currentlyStudying: false,
@@ -72,17 +70,6 @@ const EducationForm = ({
           error={errors.degree}
           name="degree"
           setFieldTouched={setFieldTouched}
-        />
-        <Input
-          placeholder="CGPA (Optional)"
-          value={values.cgpa}
-          onChangeText={handleChange('cgpa')}
-          onBlur={handleBlur('cgpa')}
-          error={errors.cgpa}
-          touched={touched.cgpa}
-          name="cgpa"
-          setFieldTouched={setFieldTouched}
-          keyboardType="numeric"
         />
 
         <Input

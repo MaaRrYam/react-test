@@ -29,7 +29,7 @@ const ExperienceForm = ({
       designation: '',
       startingYear: `${new Date().getFullYear()}`,
       endingYear: `${new Date().getFullYear()}`,
-      currentlyStudying: false,
+      currentlyWorking: false,
     },
     validationSchema: addExperienceSchema,
     onSubmit: formValues => {
@@ -47,7 +47,7 @@ const ExperienceForm = ({
           designation: '',
           startingYear: `${new Date().getFullYear()}`,
           endingYear: `${new Date().getFullYear()}`,
-          currentlyStudying: false,
+          currentlyWorking: false,
         },
       });
     },
@@ -99,12 +99,12 @@ const ExperienceForm = ({
           name="endingYear"
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
-          disabled={values.currentlyStudying}
+          disabled={values.currentlyWorking}
         />
 
         <Checkbox
           onPress={(newValue: boolean) =>
-            setFieldValue('currentlyStudying', newValue)
+            setFieldValue('currentlyWorking', newValue)
           }
           text="Currently Working"
           fillColor={COLORS.primary}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
@@ -12,19 +12,18 @@ import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
-import FirebaseService from '@/services/Firebase';
-import StorageService from '@/services/Storage';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
-  const [experience, setExperience] = useState<ExperienceState[]>([]);
+  const {user} = useUserManagement();
+  const [experience, setExperience] = useState<ExperienceState[]>(
+    user?.employmentList,
+  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [userId, setUserId] = useState('');
 
   const handleContinue = async () => {
-    await FirebaseService.updateDocument('users', userId, {
-      employmentList: experience,
-      onboardingStep: 3,
-    });
+    OnboardingService.experience(experience);
     navigation.navigate(SCREEN_NAMES.EmploymentStatus);
   };
 
@@ -32,15 +31,6 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
     setExperience(prev => [...prev, newExperience]);
     setIsBottomSheetVisible(false);
   };
-
-  useEffect(() => {
-    (async () => {
-      const item = await StorageService.getItem('uid');
-      setUserId(item);
-      const data = await FirebaseService.getDocument('users', item);
-      setExperience(data.employmentList);
-    })();
-  }, []);
 
   return (
     <>

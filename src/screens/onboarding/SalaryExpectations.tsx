@@ -6,14 +6,14 @@ import {BackButton, Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
-import StorageService from '@/services/Storage';
-import FirebaseService from '@/services/Firebase';
 import {SCREEN_NAMES} from '@/constants';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
 }) => {
-  const [userId, setUserId] = useState('');
+  const {user} = useUserManagement();
   const [initialValues, setInitialValues] = useState({
     minimumSalary: '',
     baseSalary: '',
@@ -31,13 +31,13 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
       totalCompensation: parseInt(values.totalCompensation),
       onboardingStep: 4,
     };
-    FirebaseService.updateDocument('users', userId, newData);
+    OnboardingService.SalaryExpectation(newData);
     navigation.navigate(SCREEN_NAMES.OnboardingCompleted);
   };
 
   const {values, touched, handleChange, handleSubmit, errors} = useFormik({
     initialValues,
-    enableReinitialize: true, // Enable reinitialization when initialValues change
+    enableReinitialize: true,
     validationSchema: salaryExpectationsSchema,
     onSubmit: values => {
       handleSubmitSalary(values);
@@ -45,26 +45,12 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const item = await StorageService.getItem('uid');
-        setUserId(item);
-        const data = await FirebaseService.getDocument('users', item);
-
-        if (data) {
-          setInitialValues({
-            minimumSalary: data.minimumSalary.toString() || '',
-            baseSalary: data.baseSalary.toString() || '',
-            totalCompensation: data.totalCompensation.toString() || '',
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching data from Firebase:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setInitialValues({
+      minimumSalary: user.minimumSalary.toString(),
+      baseSalary: user.baseSalary.toString(),
+      totalCompensation: user.totalCompensation.toString(),
+    });
+  }, [user]);
 
   return (
     <SafeAreaView style={commonStyles.container}>

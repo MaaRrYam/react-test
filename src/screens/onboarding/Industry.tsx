@@ -14,13 +14,15 @@ import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
 import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
-import StorageService from '@/services/Storage';
-import FirebaseService from '@/services/Firebase';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const {user} = useUserManagement();
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>(
+    user?.jobTags,
+  );
   const [allIndustries, setAllIndustries] = useState<string[]>([]);
-  const [userId, setUserId] = useState('');
 
   const toggleIndustrySelection = (industry: string) => {
     if (selectedIndustries.includes(industry)) {
@@ -32,24 +34,12 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
     }
   };
   const handleSubmit = async () => {
-    await FirebaseService.updateDocument('users', userId, {
-      jobTags: selectedIndustries,
-      onboardingStep: 2,
-    });
+    OnboardingService.industry(selectedIndustries);
     navigation.navigate(SCREEN_NAMES.Experience);
   };
 
   useEffect(() => {
     RoleService.getJobRoles().then(setAllIndustries);
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const item = await StorageService.getItem('uid');
-      setUserId(item);
-      const data = await FirebaseService.getDocument('users', item);
-      setSelectedIndustries(data.jobTags);
-    })();
   }, []);
 
   return (
