@@ -2,8 +2,13 @@ import {API_GET} from '@/config/api/apiRequests';
 import {NetworkResponse, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
+import {getUID} from '@/utils/functions';
 
-const UID = 'CHhXrCEyVvRaPTrPqkKzYjN1Rj02';
+let UID: string;
+(async () => {
+  UID = await getUID();
+  console.log(UID);
+})();
 
 const NetworkService = {
   async getAllConnections() {

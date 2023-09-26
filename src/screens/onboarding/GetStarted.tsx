@@ -6,6 +6,7 @@ import {Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
+import { SCREEN_NAMES } from '@/constants';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const initialValues = {
@@ -20,7 +21,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       validationSchema: getStartedSchema,
       onSubmit: formValues => {
         console.log(formValues);
-        navigation.navigate('Education');
+        navigation.navigate(SCREEN_NAMES.Education);
       },
     });
 

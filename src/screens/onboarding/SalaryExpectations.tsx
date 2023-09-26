@@ -6,6 +6,7 @@ import {BackButton, Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
+import { SCREEN_NAMES } from '@/constants';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
@@ -16,7 +17,7 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
     totalCompensation: string;
   }) => {
     console.log(values);
-    navigation.navigate('OnboardingCompleted');
+    navigation.navigate(SCREEN_NAMES.OnboardingCompleted);
   };
 
   const {values, touched, handleChange, handleSubmit, errors} = useFormik({

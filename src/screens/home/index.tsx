@@ -5,8 +5,10 @@ import {Header, Feed} from '@/components';
 import {HomeScreenProps} from '@/types';
 import {homeStyles} from '@/styles/home';
 import {styles} from './styles';
+import useUserManagement from '@/hooks/useUserManagement';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+  const {user} = useUserManagement();
   return (
     <View style={homeStyles.outerContainer}>
       <SafeAreaView style={homeStyles.container}>
@@ -14,7 +16,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <Header navigation={navigation} />
           <View style={homeStyles.subheader}>
             <Image
-              source={require('@/assets/images/user.png')}
+              source={
+                user?.photoUrl
+                  ? {uri: user.photoUrl}
+                  : require('@/assets/images/user.png')
+              }
               style={styles.userImage}
             />
 

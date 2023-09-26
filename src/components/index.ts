@@ -19,9 +19,11 @@ import {default as BottomSheet} from '@/components/BottomSheet';
 import {EducationForm, ExperienceForm} from '@/components/Forms';
 import Loading from '@/components/Loading';
 import Header from '@/components/Header';
+import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import Feed from '@/components/Feed/Feed';
 
+import SearchButton from '@/components/Search';
 export {
   BackButton,
   Button,
@@ -42,7 +44,9 @@ export {
   NetworkItem,
   RoundedButton,
   NotificationItem,
+  SocialLoginButton,
   Loading,
   Empty,
   Feed,
+  SearchButton,
 };

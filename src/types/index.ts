@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  SignIn: undefined;
+  Signin: undefined;
   SelectRole: undefined;
   RequestAccess: {
     role: string;
@@ -23,10 +23,15 @@ export type RootStackParamList = {
     name?: string;
   };
   Notifications: undefined;
+  Launch: undefined;
+  SigninWithEmail: undefined;
+  Signup: undefined;
+  SignupWithEmail: undefined;
+  Header: undefined;
 };
 
-export type SignInScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
+export type LaunchScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Launch'>;
 };
 
 export type SelectRoleScreenProps = {
@@ -91,4 +96,21 @@ export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };
 
+export type SignInScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Signin'>;
+};
+export type SigninWithEmailProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SigninWithEmail'>;
+};
+export type SignupScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Signup'>;
+};
+
+export type SignupWithEmailProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SignupWithEmail'>;
+};
+
+export type HeaderProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Header'>;
+};
 export type DateFormatOption = 'date' | 'dateTime';

@@ -1,7 +1,11 @@
+import {UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
+import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
-
+import {StyleProp, ViewStyle} from 'react-native';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -100,7 +104,12 @@ export interface FirebaseServiceProps {
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
 }
-
+export interface SigninServiceProps {
+  checkIfUserIsWhitelisted(
+    loggedInUser: UserCredential,
+    navigation: NavigationProp<RootStackParamList>,
+  ): Promise<void>;
+}
 export interface requestAccessFormValues {
   name: string;
   email: string;
@@ -155,6 +164,11 @@ export interface RoundedButtonProps {
   text: string;
   style?: object;
   isLoading?: boolean;
+}
+
+export interface NavigationConfigProps {
+  name: string;
+  component: React.ComponentType<any>;
 }
 
 export interface IconProps extends SvgProps {
@@ -221,16 +235,21 @@ export interface UserInterface {
   readNotifications?: number;
   redeems?: Array<string>;
 }
-
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
 }
-
 export interface LoadingProps {
   size?: 'small' | 'large';
   color?: string;
   containerStyles?: object;
   indicatorStyles?: object;
+}
+export interface SocialLoginButtonProps {
+  text: string;
+  logoSource: ImageSourcePropType;
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 export interface NotificationInterface {
@@ -276,4 +295,17 @@ export interface FeedItem {
   views?: number;
   coverImage?: string;
   timestamp?: Timestamp;
+}
+export interface ScreenDimensions {
+  width: number;
+  height: number;
+}
+
+export interface UserManagement {
+  user: UserInterface | null;
+}
+
+export interface SearchButtonProps {
+  style: StyleProp<ViewStyle>;
+  onPress: () => void;
 }

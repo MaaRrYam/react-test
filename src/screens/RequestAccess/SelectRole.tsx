@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {BackButton, Button, Link, RoleCard} from '@/components';
-import {ROLES_DATA} from '@/constants';
+import {ROLES_DATA, SCREEN_NAMES} from '@/constants';
 import {RootStackParamList, SelectRoleScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {useNavigation} from '@react-navigation/native';
@@ -14,11 +14,11 @@ const SelectRole: React.FC<SelectRoleScreenProps> = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleContinue = () => {
-    navigation.navigate('RequestAccess', {role: selectedRole});
+    navigation.navigate(SCREEN_NAMES.RequestAccessForm, {role: selectedRole});
   };
 
   const handleSignIn = () => {
-    navigation.navigate('SignIn');
+    navigation.navigate(SCREEN_NAMES.Signin);
   };
 
   return (
