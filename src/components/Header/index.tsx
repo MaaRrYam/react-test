@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
