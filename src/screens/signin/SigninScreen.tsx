@@ -10,17 +10,10 @@ import {UserCredential} from '@firebase/auth';
 import {styles} from '@/styles/signinScreen';
 
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
-  const [user, setUser] = useState<any>();
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(setUser);
-    try {
-      await SigninService.checkIfUserIsWhitelisted(
-        user as UserCredential,
-        navigation,
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    await _signInWithGoogle(navigation).catch(error => {
+      console.log(error.message);
+    });
   };
   return (
     <SafeAreaView style={styles.safeArea}>
