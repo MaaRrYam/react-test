@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   reactionButton: {
     paddingHorizontal: 20,
     paddingVertical: 5,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.lightGrayBackground,
     borderRadius: BORDER_RADIUS.general * 2,
   },
   like: {
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     paddingTop: PADDING.general,
   },
   feedItem: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     padding: 10,
     marginBottom: 16,
