@@ -1,3 +1,4 @@
+import {API_GET} from '@/config/api/apiRequests';
 import {SCREEN_NAMES} from '@/constants';
 import {
   EducationState,
@@ -72,6 +73,13 @@ const OnboardingService = {
   },
   async SalaryExpectation(newData: UserInterface) {
     FirebaseService.updateDocument('users', UID, newData);
+  },
+
+  async onboardingCompleted() {
+    await FirebaseService.updateDocument('users', UID, {
+      onboarded: true,
+    });
+    await API_GET(`email/sendWelcomeEmail`);
   },
 };
 

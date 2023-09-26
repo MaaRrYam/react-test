@@ -14,27 +14,20 @@ import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const containerWidth = windowWidth - 50;
 
 const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
-  const [userId, setUserId] = useState('');
+  const {user} = useUserManagement();
 
   const handleOnboardingCompleted = async () => {
-    await FirebaseService.updateDocument('users', userId, {
-      onboarded: true,
-    });
+    OnboardingService.onboardingCompleted();
     navigation.navigate(SCREEN_NAMES.BottomNavigator);
   };
-
-  useEffect(() => {
-    (async () => {
-      const item = await StorageService.getItem('uid');
-      setUserId(item);
-    })();
-  }, []);
 
   return (
     <LinearGradient colors={['#2356F6', '#6EF0D3']} style={styles.gradient}>
