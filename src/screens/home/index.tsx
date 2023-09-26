@@ -1,5 +1,3 @@
-import {Header} from 'components';
-import {BORDER_RADIUS, COLORS, PADDING} from '../../constants';
 import React from 'react';
 import {
   View,
@@ -10,18 +8,23 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {Header} from '@/components';
+import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import {HomeScreenProps} from 'types';
 import {homeStyles} from '@/styles/home';
 import {TextInput} from 'react-native';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
+import useUserManagement from '@/hooks/useUserManagement';
+
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+  const {user} = useUserManagement();
   const feedData = [
     {
       id: '1',
       title: 'Post 1',
       content: 'This is the content of the first post.',
       author: {
-        name: 'John Doe',
+        name: user?.name,
         tagline: 'UX Designer',
         avatar: require('@/assets/images/user.png'),
       },
@@ -79,7 +82,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <Header navigation={navigation} />
           <View style={homeStyles.subheader}>
             <Image
-              source={require('@/assets/images/user.png')}
+              source={
+                user?.photoUrl
+                  ? {uri: user.photoUrl}
+                  : require('@/assets/images/user.png')
+              }
               style={styles.userImage}
             />
 

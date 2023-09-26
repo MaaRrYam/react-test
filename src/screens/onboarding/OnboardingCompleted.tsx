@@ -26,7 +26,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
     await FirebaseService.updateDocument('users', userId, {
       onboarded: true,
     });
-    navigation.navigate(SCREEN_NAMES.MyTabs);
+    navigation.navigate(SCREEN_NAMES.BottomNavigator);
   };
 
   useEffect(() => {

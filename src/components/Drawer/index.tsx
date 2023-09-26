@@ -16,7 +16,7 @@ function SettingsScreen() {
   );
 }
 
-function MyTabBar({state, descriptors, navigation}) {
+function Drawer({state, descriptors, navigation}) {
   return (
     <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {
@@ -71,7 +71,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{headerShown: false}}
-      tabBar={props => <MyTabBar {...props} />}>
+      tabBar={props => <Drawer {...props} />}>
       <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
       <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
       <Tab.Screen name={SCREEN_NAMES.Notifications} component={Notifications} />

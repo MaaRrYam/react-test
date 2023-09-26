@@ -23,14 +23,15 @@ export type RootStackParamList = {
     name?: string;
   };
   Notifications: undefined;
-  Main: undefined;
+  Launch: undefined;
   SigninWithEmail: undefined;
   Signup: undefined;
   SignupWithEmail: undefined;
+  Header: undefined;
 };
 
-export type MainScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Main'>;
+export type LaunchScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Launch'>;
 };
 
 export type SelectRoleScreenProps = {
@@ -107,5 +108,9 @@ export type SignupScreenProps = {
 
 export type SignupWithEmailProps = {
   navigation: StackNavigationProp<RootStackParamList, 'SignupWithEmail'>;
+};
+
+export type HeaderProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Header'>;
 };
 export type DateFormatOption = 'date' | 'dateTime';

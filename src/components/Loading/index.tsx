@@ -8,12 +8,11 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-
 import {styles} from '@/components/Loading/styles';
 
 const emblemImage = require('@/assets/images/emblem.png');
 
-export default function LoadingScreen() {
+export default function Loading() {
   const rotation = useSharedValue(0);
 
   useEffect(() => {

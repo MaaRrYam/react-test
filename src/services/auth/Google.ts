@@ -1,11 +1,11 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {UserCredential} from 'firebase/auth';
-import SigninService from '../signin';
-
+import SigninService from '@/services/signin';
+import {RootStackParamList} from '@/types';
+import {NavigationProp} from '@react-navigation/native';
 export const _signInWithGoogle = async (
-  // setUser: (value: UserCredential) => void,
-  navigation: any,
+  navigation: NavigationProp<RootStackParamList>,
 ) => {
   try {
     GoogleSignin.configure({

@@ -1,8 +1,8 @@
+import React, {FC} from 'react';
+import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
 import {signInSchema} from '@/utils/schemas/schemas';
 import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
 import {useFormik} from 'formik';
-import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
 import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
@@ -10,6 +10,7 @@ import SigninService from '@/services/signin';
 import {KeyboardAvoidingView} from 'react-native';
 import {styles} from '@/styles/signinWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
+import ToastService from '@/services/toast';
 
 const auth = getAuth();
 const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
@@ -52,7 +53,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
           ? getErrorMessageByCode(error.code)
           : 'An error occurred during sign-in.';
 
-      Alert.alert('Authentication Error', errorMessage);
+      await ToastService.showError(errorMessage);
     } finally {
       setSubmitting(false);
     }

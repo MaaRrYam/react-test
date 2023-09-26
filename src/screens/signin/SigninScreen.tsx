@@ -1,11 +1,11 @@
+import React, {FC, useState} from 'react';
+import {View, Text, Image, SafeAreaView} from 'react-native';
 import {Button, SocialLoginButton} from '@/components';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import SigninService from '@/services/signin';
 import {SignInScreenProps} from '@/types';
 import {UserCredential} from '@firebase/auth';
-import React, {FC, useState} from 'react';
-import {View, Text, Image, SafeAreaView} from 'react-native';
 
 import {styles} from '@/styles/signinScreen';
 

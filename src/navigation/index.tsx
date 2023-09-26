@@ -2,39 +2,38 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '@/services/Storage';
-import navigationConfig from './NavigationConfig';
+import navigationConfig from '@/navigation/NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';
 import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
-import {SCREEN_NAMES} from '../constants';
+import {SCREEN_NAMES} from '@/constants';
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
-  const [initialScreen, setInitialScreen] = useState('');
+  const [initialScreen, setInitialScreen] = useState();
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
         const uid = await StorageService.getItem('uid');
-        if (uid !== null) {
-          // If uid is in storage, check the user's onboarded status
+        if (uid) {
           const userDoc = await FirebaseService.getDocument('users', uid);
           if (userDoc && !userDoc.onboarded) {
             setInitialScreen(SCREEN_NAMES.Onboarding);
           } else {
-            setInitialScreen(SCREEN_NAMES.MyTabs);
+            setInitialScreen(SCREEN_NAMES.BottomNavigator);
           }
         } else {
-          setInitialScreen(SCREEN_NAMES.Main);
+          setInitialScreen(SCREEN_NAMES.Launch);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        setInitialScreen(SCREEN_NAMES.Main);
+        setInitialScreen(SCREEN_NAMES.Launch);
       }
     };
 
     fetchInitialScreen();
   }, []);
 
-  if (initialScreen === '') {
+  if (!initialScreen) {
     return <Loading />;
   }
 

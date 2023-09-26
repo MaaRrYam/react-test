@@ -21,7 +21,7 @@ import Loading from '@/components/Loading';
 import Header from '@/components/Header';
 import {default as SocialLoginButton} from '@/components/SocialLoginButton'
 import Empty from '@/components/NoResults/Empty';
-
+import SearchButton from '@/components/Search'
 export {
   BackButton,
   Button,
@@ -45,4 +45,5 @@ export {
   SocialLoginButton,
   Loading,
   Empty,
+  SearchButton,
 };

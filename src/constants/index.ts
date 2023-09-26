@@ -1,5 +1,5 @@
-import {getScreenDimensions} from '@/utils/functions';
 import {Platform} from 'react-native';
+import {getScreenDimensions} from '@/utils/functions';
 
 export const baseURL: string =
   process.env.REACT_APP_API_BASE_URL ||
@@ -182,12 +182,12 @@ const {width} = getScreenDimensions();
 export const containerWidth = width - 50;
 
 export const SCREEN_NAMES = {
-  Main: 'Main',
+  Launch: 'Launch',
   Signin: 'Signin',
   Signup: 'Signup',
   RequestAccess: 'RequestAccess',
   Onboarding: 'Onboarding',
-  MyTabs: 'MyTabs',
+  BottomNavigator: 'BottomNavigator',
   Chats: 'Chats',
   ChatDetails: 'ChatDetails',
   GetStarted: 'GetStarted',

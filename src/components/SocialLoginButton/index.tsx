@@ -1,7 +1,14 @@
-import {BORDER_RADIUS, COLORS} from '@/constants';
+import React, {useState} from 'react';
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
+import {COLORS} from '@/constants';
 import {SocialLoginButtonProps} from '@/interfaces';
-import React from 'react';
-import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
+import {styles} from './styles';
 
 const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   text,
@@ -10,43 +17,38 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   style,
   textStyle,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handlePress = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await onPress();
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={handlePress}
       style={[styles.socialsButtonContainer, style]}>
       <View style={styles.iconContainer}>
-        <Image source={logoSource} style={styles.icon} />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={COLORS.black} />
+        ) : (
+          <Image source={logoSource} style={styles.icon} />
+        )}
       </View>
-      <Text style={[styles.signinButtonText, textStyle]}>{text}</Text>
+      <Text style={[styles.signinButtonText, textStyle]}>
+        {!isLoading && text}
+      </Text>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  socialsButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    padding: 10,
-    borderRadius: BORDER_RADIUS.general,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    color: COLORS.black,
-    fontWeight: '400',
-  },
-  iconContainer: {
-    marginRight: 10,
-  },
-  signinButtonText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  icon: {
-    width: 30,
-    height: 30,
-  },
-});
 
 export default SocialLoginButton;

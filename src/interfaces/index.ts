@@ -279,3 +279,12 @@ export interface ScreenDimensions {
   width: number;
   height: number;
 }
+
+export interface UserManagement {
+  user: UserInterface | null;
+}
+
+export interface SearchButtonProps {
+  style: StyleProp<ViewStyle>;
+  onPress: () => void;
+}

@@ -1,18 +1,20 @@
-import {signUpSchema} from '@/utils/schemas/schemas';
+
+import React, {FC} from 'react';
+import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
+import {useFormik} from 'formik';
 import {
   createUserWithEmailAndPassword,
   getAuth,
   UserCredential,
 } from '@firebase/auth';
-import {useFormik} from 'formik';
-import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
 import {styles} from '@/styles/signupWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
+import {signUpSchema} from '@/utils/schemas/schemas';
+import ToastService from '@/services/toast';
 
 const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   const auth = getAuth();
@@ -50,15 +52,13 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         );
 
       await SigninService.checkIfUserIsWhitelisted(userCredentials, navigation);
-
-      // If everything is successful, you can log or perform additional actions here
       console.log('Sign-in successful');
     } catch (error: any) {
       const errorMessage =
         getErrorMessageByCode(error.code) ||
         'An error occurred during sign-in.';
 
-      Alert.alert('Authentication Error', errorMessage);
+      await ToastService.showError(errorMessage);
     } finally {
       setSubmitting(false);
     }

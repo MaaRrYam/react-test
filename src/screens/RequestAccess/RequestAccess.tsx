@@ -9,6 +9,7 @@ import {requestAccessSchema} from '@/utils/schemas/schemas';
 import {requestAccessFormValues} from '@/interfaces';
 import {submitRequestAccess} from '@/services/requestAccess';
 import {COLORS, SCREEN_NAMES} from '@/constants';
+import ToastService from '@/services/toast';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({
   route,
@@ -49,7 +50,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
       selectedRole: role,
     };
     const data = await submitRequestAccess(payload);
-    Alert.alert(data.message);
+    await ToastService.showSuccess(data.message);
     setSubmitting(false);
     if (data.success) {
       navigation.navigate(SCREEN_NAMES.Signin);
