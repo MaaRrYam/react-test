@@ -2,11 +2,12 @@ import React, {useCallback} from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {Search, Chats} from '@/assets/icons';
+import {Chats} from '@/assets/icons';
 import {SCREEN_NAMES} from '@/constants';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
+import {SearchButton} from '@/components';
 
 const Header = ({navigation}: HeaderProps) => {
   const dispatch = useAppDispatch();
@@ -23,10 +24,7 @@ const Header = ({navigation}: HeaderProps) => {
         />
       </TouchableOpacity>
       <View style={homeStyles.headerIcons}>
-        <TouchableOpacity style={homeStyles.searchIcon}>
-          <Search />
-        </TouchableOpacity>
-
+        <SearchButton onPress={() => {}} style={homeStyles.searchIcon} />
         <TouchableOpacity
           style={[homeStyles.searchIcon, homeStyles.messageIcon]}
           onPress={() => navigation.navigate('Chats')}>

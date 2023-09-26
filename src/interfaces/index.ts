@@ -277,3 +277,8 @@ export interface ScreenDimensions {
 export interface UserManagement {
   user: UserInterface | null;
 }
+
+export interface SearchButtonProps {
+  style: StyleProp<ViewStyle>;
+  onPress: () => void;
+}
