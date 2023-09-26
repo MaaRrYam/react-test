@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 import {Button} from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
 
 const windowWidth = Dimensions.get('window').width;
@@ -41,7 +41,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
         <View style={styles.btnContainer}>
           <Button
             title="Explore CareerNetwork.co"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate(SCREEN_NAMES.BottomNavigator)}
             textColor={COLORS.black}
             backgroundColor={COLORS.white}
             icon="arrow-right"

@@ -1,9 +1,13 @@
 import {NotificationInterface, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
+import {getUID} from '@/utils/functions';
 
-const UID = 'ucCUjQtHVnZ8lblVtFHqAYMigot1';
-
+let UID: string;
+(async () => {
+  UID = await getUID();
+  console.log(UID);
+})();
 const NotificationService = {
   async getAllNotifications() {
     try {

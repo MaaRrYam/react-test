@@ -1,21 +1,28 @@
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import FirebaseService from '@/services/Firebase';
 import StorageService from '@/services/Storage';
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {User} from 'firebase/auth';
+import {UserInterface} from '@/interfaces';
 
 const initialState = {
-  user: {},
-  token: null,
+  user: {} as UserInterface,
+  token: null as string | null,
 };
 
-export const getUser = createAsyncThunk('auth/getUser', async () => {
-  const localStateUser = (await StorageService.getItem('user')) as User;
-  const user = await FirebaseService.getDocument('users', localStateUser.uid);
-  if (user) {
-    console.log(user);
-    return user;
-  }
-});
+export const getUser = createAsyncThunk<UserInterface, void>(
+  'auth/getUser',
+  async (_, {rejectWithValue}) => {
+    try {
+      const UID = (await StorageService.getItem('uid')) as string;
+      const user = await FirebaseService.getDocument('users', UID);
+      if (user) {
+        return user as UserInterface;
+      }
+      return {} as UserInterface;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -23,7 +30,7 @@ export const authSlice = createSlice({
   reducers: {
     logOut: state => {
       state.token = null;
-      state.user = {};
+      state.user = {} as UserInterface;
       StorageService.nuke();
     },
     addUser: (state, {payload}) => {

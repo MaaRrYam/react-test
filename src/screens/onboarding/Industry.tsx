@@ -10,7 +10,7 @@ import {
 
 import {BackButton, Button} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {COLORS, MARGINS} from '@/constants';
+import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
 import {RoleService} from '@/services/onboarding';
 import {ActivityIndicator} from 'react-native';
@@ -34,7 +34,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   }, []);
 
   const handleSubmit = () => {
-    navigation.navigate('Experience');
+    navigation.navigate(SCREEN_NAMES.Experience);
   };
 
   return (
