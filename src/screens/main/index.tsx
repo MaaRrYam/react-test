@@ -20,9 +20,7 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
   };
 
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(navigation).catch(error => {
-      console.log(error.message);
-    });
+    await _signInWithGoogle(navigation);
   };
   return (
     <KeyboardAvoidingView
