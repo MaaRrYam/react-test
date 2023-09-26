@@ -261,23 +261,19 @@ export interface FeedItem {
   type: string;
   text?: string;
   authorId: string;
+  author: UserInterface;
   media?: string;
   mediaType?: string;
-  editedTime?: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  editedTime: Timestamp;
   edited: boolean;
   _id: string;
   feedType: string;
-  postLikes: number;
+  postLikes?: any[];
+  postDislikes?: any[];
   tags?: string[];
   title?: string;
   content?: string;
   views?: number;
   coverImage?: string;
-  timestamp?: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  timestamp?: Timestamp;
 }

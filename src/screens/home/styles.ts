@@ -123,6 +123,15 @@ export const styles = StyleSheet.create({
   },
   actionText: {
     marginLeft: 5,
-    color: 'gray',
+    color: COLORS.lightGrayBackground,
+  },
+  showMoreText: {
+    color: COLORS.primary,
+    marginTop: 5,
+    alignSelf: 'flex-end',
+  },
+  articleContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
 });

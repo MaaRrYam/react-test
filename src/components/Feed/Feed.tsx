@@ -41,7 +41,7 @@ const Feed = () => {
     <FlatList
       data={feed}
       renderItem={({item}) => <FeedItem item={item} />}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item._id}
       refreshControl={
         <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
       }
