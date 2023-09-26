@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StorageService from '@/services/Storage';
-import navigationConfig from './NavigationConfig';
+import navigationConfig from '@/navigation/NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';
 import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
 import {SCREEN_NAMES} from '@/constants'
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
-  const [initialScreen, setInitialScreen] = useState('');
+  const [initialScreen, setInitialScreen] = useState();
   useEffect(() => {
     const fetchInitialScreen = async () => {
       try {
@@ -33,7 +33,7 @@ const RootNavigation = () => {
     fetchInitialScreen();
   }, []);
 
-  if (initialScreen === '') {
+  if (!initialScreen) {
     return <Loading />;
   }
 

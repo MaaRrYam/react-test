@@ -5,12 +5,12 @@ import {auth} from '@/config/firebase';
 import {SigninServiceProps, UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
-import ToastService from '../toast';
-
+import ToastService from '@/services/toast';
+import {SignInScreenProps} from '@/types';
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
-    navigation: any,
+    navigation: SignInScreenProps,
   ) {
     const user = loggedInUser.user;
     const email = user.email?.toString();
