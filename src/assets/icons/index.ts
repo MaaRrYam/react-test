@@ -6,7 +6,7 @@ import Comment from './Comment';
 import ForwardArrow from './ForwardArrow';
 import Home from './Home';
 import Network from './Network';
-import Image from './Image';
+import ImageIcon from './Image';
 import Jobs from './Jobs';
 import NewChat from './NewChat';
 import Notifications from './Notifications';
@@ -25,7 +25,7 @@ export {
   ForwardArrow,
   Home,
   Network,
-  Image,
+  ImageIcon,
   Jobs,
   NewChat,
   Notifications,

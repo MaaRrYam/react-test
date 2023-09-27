@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {RootState} from '@/store';
+import {getUser} from '@/store/features/authSlice';
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
+import Profile from '@/screens/profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +21,14 @@ function SettingsScreen() {
 }
 
 function Drawer({state, descriptors, navigation}) {
+  const dispatch = useAppDispatch();
+  const {user} = useAppSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if(user === {}){
+      dispatch(getUser());
+    }
+  }, [dispatch]);
   return (
     <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {
@@ -59,7 +71,7 @@ function Drawer({state, descriptors, navigation}) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={styles.tab}>
-            {getIcon(label, isFocused)}
+            {getIcon(label, isFocused, user.photoUrl)}
           </TouchableOpacity>
         );
       })}
@@ -76,7 +88,7 @@ const Tabs = () => {
       <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
       <Tab.Screen name={SCREEN_NAMES.Notifications} component={Notifications} />
       <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
-      <Tab.Screen name={SCREEN_NAMES.Profile} component={SettingsScreen} />
+      <Tab.Screen name={SCREEN_NAMES.Profile} component={Profile} />
     </Tab.Navigator>
   );
 };
