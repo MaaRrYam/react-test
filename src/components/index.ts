@@ -12,6 +12,7 @@ import {
   ChatItem,
   NetworkItem,
   NotificationItem,
+  CareerCard,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
@@ -22,7 +23,7 @@ import Loading from '@/components/Loading';
 import Header from '@/components/Header';
 import {default as SocialLoginButton} from '@/components/SocialLoginButton'
 import Empty from '@/components/NoResults/Empty';
-import SearchButton from '@/components/Search'
+import SearchButton from '@/components/Search';
 export {
   BackButton,
   PrimaryButton,
@@ -48,4 +49,5 @@ export {
   Empty,
   SearchButton,
   SecondaryButton,
+  CareerCard,
 };

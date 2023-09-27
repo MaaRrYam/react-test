@@ -1,6 +1,5 @@
-// ProfileStyles.js
 import {StyleSheet} from 'react-native';
-import {COLORS, PADDING} from '@/constants';
+import {COLORS, FONTS, MARGINS, PADDING} from '@/constants';
 
 export default StyleSheet.create({
   safeArea: {
@@ -35,34 +34,42 @@ export default StyleSheet.create({
     marginTop: 54,
     color: COLORS.black,
     fontWeight: 'bold',
+    fontSize: FONTS.largeLabel,
   },
   userTagline: {
     color: COLORS.black,
+    fontSize: FONTS.bodyRegular,
   },
   userLocation: {
-    color: COLORS.black,
+    color: COLORS.text,
+    fontSize: FONTS.bodyRegular,
   },
   connectionsLink: {
     color: COLORS.primary,
     textDecorationLine: 'underline',
+    fontSize: FONTS.bodyRegular,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginTop: 10,
+    marginLeft: -3,
   },
   connectButton: {
-    paddingHorizontal: 50,
+    paddingHorizontal: 55,
     paddingVertical: 10,
     borderRadius: 1000,
   },
   messageButton: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 34,
     paddingVertical: 10,
     borderRadius: 1000,
   },
   optionsButton: {
+    backgroundColor: COLORS.lightGrayBackground,
+    padding: 10,
+    borderRadius: 1000,
     marginTop: -2,
   },
   tabsContainer: {
@@ -94,4 +101,13 @@ export default StyleSheet.create({
     color: COLORS.black,
     paddingHorizontal: 10,
   },
+  editIcon: {
+    backgroundColor: COLORS.lightGrayBackground,
+    padding: 10,
+    borderRadius: 1000,
+    marginTop: -2,
+  },
+  moreIcon: {
+
+  }
 });
