@@ -1,84 +1,146 @@
+import React, {useEffect, useState} from 'react';
+import {Text, View, SafeAreaView, Image, TouchableOpacity} from 'react-native';
 import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-} from 'react-native';
-import React, {useEffect} from 'react';
-import {Header, PrimaryButton, SecondaryButton} from '@/components';
-import {getScreenDimensions} from '@/utils/functions';
+  Header,
+  PrimaryButton,
+  RoundedButton,
+  SecondaryButton,
+} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
 import {getUser} from '@/store/features/authSlice';
+import {homeStyles} from '../../styles/home';
+import {ThreeDots, NewChat} from '@/assets/icons';
+import ProfileTab from './ProfileTab';
+import profileStyles from '@/styles/profile'; // Import the styles
 
 const Profile = () => {
-  const {width} = getScreenDimensions();
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
+  const [selectedTab, setSelectedTab] = useState('Profile');
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
       dispatch(getUser());
     }
   }, [user, dispatch]);
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={profileStyles.safeArea}>
       <View>
         <Header />
-
         <View>
           <Image
             source={{
               uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             }}
-            style={{width: width, height: 110, objectFit: 'cover'}}
+            style={profileStyles.headerImage}
           />
         </View>
 
-        <View style={{backgroundColor: 'white'}}>
-          <View
-            style={{
-              position: 'absolute',
-              paddingHorizontal: 10,
-              top: -55,
-              zIndex: 50,
-            }}>
+        <View style={profileStyles.container}>
+          <View style={profileStyles.avatarContainer}>
             <Image
               source={{
                 uri: user.photoUrl,
               }}
-              style={{
-                width: 100,
-                height: 100,
-                objectFit: 'cover',
-                borderRadius: 25,
-              }}
+              style={profileStyles.avatarImage}
             />
           </View>
-          <View style={{width: width, height: 'auto', paddingHorizontal: 15}}>
+          <View style={profileStyles.userInfoContainer}>
             <View>
-              <Text style={{marginTop: 54, color: 'black', fontWeight: 'bold'}}>
-                {user.name}
-              </Text>
-              <Text style={styles.text}>{user.tagline}</Text>
-              <Text style={styles.text}>
+              <Text style={profileStyles.userName}>{user.name}</Text>
+              <Text style={profileStyles.userTagline}>{user.tagline}</Text>
+              <Text style={profileStyles.userLocation}>
                 {user.city}, {user.countryDetails.name}
               </Text>
-              <Text style={{color: '#1918FF', textDecorationLine: 'underline'}}>
-                26 connections
-              </Text>
+              <Text style={profileStyles.connectionsLink}>26 connections</Text>
             </View>
-            <View style={{flexDirection: 'row', width: width}}>
-              <PrimaryButton title="Connect" />
-              <SecondaryButton title="Message"/>,
+            <View style={profileStyles.buttonContainer}>
+              <PrimaryButton
+                title="Connect"
+                style={profileStyles.connectButton}
+              />
+              <SecondaryButton
+                title="Message"
+                style={profileStyles.messageButton}
+              />
+              <TouchableOpacity
+                style={[
+                  homeStyles.searchIcon,
+                  homeStyles.messageIcon,
+                  profileStyles.optionsButton,
+                ]}>
+                <View style={{paddingTop: 0}}>
+                  <ThreeDots />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
 
+        <View style={profileStyles.tabsContainer}>
+          <View style={profileStyles.tabsHeader}>
+            <View style={profileStyles.tabButtonContainer}>
+              <RoundedButton
+                text="Profile"
+                style={
+                  selectedTab === 'Profile'
+                    ? profileStyles.selectedTabButton
+                    : profileStyles.tabButton
+                }
+                onPress={() => setSelectedTab('Profile')}
+              />
+              <RoundedButton
+                text="Career"
+                style={
+                  selectedTab === 'Career'
+                    ? profileStyles.selectedTabButton
+                    : profileStyles.tabButton
+                }
+                onPress={() => setSelectedTab('Career')}
+              />
+              <RoundedButton
+                text="Education"
+                style={
+                  selectedTab === 'Education'
+                    ? profileStyles.selectedTabButton
+                    : {borderRadius: 10}
+                }
+                onPress={() => setSelectedTab('Education')}
+              />
+            </View>
+            <View>
+              <TouchableOpacity
+                style={[
+                  homeStyles.searchIcon,
+                  homeStyles.messageIcon,
+                  {marginTop: -2},
+                ]}>
+                <View style={{paddingTop: 0}}>
+                  <NewChat />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            {selectedTab === 'Profile' ? (
+              <ProfileTab bio={user.description as string} />
+            ) : selectedTab === 'Career' ? (
+              <View>
+                <Text>Career</Text>
+              </View>
+            ) : (
+              <View>
+                <Text>Education</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
         <View>
-          <Text style={{color: 'black'}}>Posts</Text>
+          <Text style={profileStyles.postsHeader}>Posts</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -86,12 +148,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  text: {
-    color: 'black',
-  },
-});

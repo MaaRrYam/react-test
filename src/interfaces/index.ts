@@ -30,7 +30,7 @@ export interface EducationData {
 export interface ButtonProps {
   title: string;
   onPress: () => void;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   backgroundColor?: string;
   textColor?: string;
   borderWidth?: number;
