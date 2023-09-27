@@ -18,7 +18,7 @@ import OnboardingService from '@/services/onboarding';
 const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
   const [experience, setExperience] = useState<ExperienceState[]>(
-    user?.employmentList,
+    user?.employmentList || [],
   );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
@@ -44,10 +44,10 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
             renderItem={({item}) => (
               <ExperienceCard
                 id={item.id}
-                currentCompany={item.currentCompany}
-                designation={item.designation}
-                startingYear={item.startingYear}
-                endingYear={item.endingYear}
+                currentCompany={item.companyName}
+                designation={item.role}
+                startingYear={item.startYear}
+                endingYear={item.endYear}
                 currentlyWorking={item.currentlyWorking}
                 onPress={id => {
                   console.log('Experience card pressed:', id);
@@ -59,7 +59,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
         </View>
         <View style={commonStyles.footer}>
           <Button
-            title={experience.length ? 'Add More' : 'Add Experience'}
+            title={experience ? 'Add More' : 'Add Experience'}
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
@@ -67,7 +67,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
             borderColor={COLORS.border}
           />
           <Button
-            title={experience.length ? 'Continue' : 'Skip'}
+            title={experience ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />
         </View>

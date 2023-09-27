@@ -136,9 +136,9 @@ export interface EducationState {
   id: number;
   instituteName: string;
   degree: string;
-  startingYear: string;
-  endingYear?: string;
-  currentlyWorking?: boolean;
+  startYear: string;
+  endYear?: string;
+  currentlyStudying?: boolean;
 }
 
 export interface CheckboxProps {
@@ -155,10 +155,10 @@ export interface CheckboxProps {
 
 export interface ExperienceState {
   id: number;
-  currentCompany: string;
-  designation: string;
-  startingYear: number;
-  endingYear?: number;
+  companyName: string;
+  role: string;
+  startYear: number;
+  endYear?: number;
   currentlyWorking?: boolean;
 }
 

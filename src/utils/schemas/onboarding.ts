@@ -14,6 +14,7 @@ export const salaryExpectationsSchema = Yup.object().shape({
 
 export const getStartedSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
+  country: Yup.string().required('Country is required'),
   city: Yup.string().required('City is required'),
   state: Yup.string().required('State is required'),
 });
@@ -21,34 +22,33 @@ export const getStartedSchema = Yup.object().shape({
 export const addEducationSchema = Yup.object().shape({
   instituteName: Yup.string().required('Institute Name is required'),
   degree: Yup.string().required('Degree is required'),
-  cgpa: Yup.string(),
-  startingYear: Yup.number()
+  startYear: Yup.number()
     .min(1950, 'Start Year should be greater than 1950')
     .max(
       new Date().getFullYear(),
       'Start Year should be less than current year',
     )
     .required('Start Year is required'),
-  endingYear: Yup.number()
+  endYear: Yup.number()
     .min(1950, 'Ending Year should be greater than 1950')
     .max(
       new Date().getFullYear(),
       'Ending Year should be equal or less than current year',
     ),
-  currentlyWorking: Yup.boolean(),
+  currentlyStudying: Yup.boolean(),
 });
 
 export const addExperienceSchema = Yup.object().shape({
-  currentCompany: Yup.string().required('Current Company is Required'),
-  designation: Yup.string().required('Designation is Required'),
-  startingYear: Yup.number()
+  companyName: Yup.string().required('Current Company is Required'),
+  role: Yup.string().required('Designation is Required'),
+  startYear: Yup.number()
     .min(1950, 'Start Year should be greater than 1950')
     .max(
       new Date().getFullYear(),
       'Start Year should be less than current year',
     )
     .required('Start Year is required'),
-  endingYear: Yup.number()
+  endYear: Yup.number()
     .min(1950, 'Ending Year should be greater than 1950')
     .max(
       new Date().getFullYear(),

@@ -23,6 +23,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     username: user.username || '',
     city: user.city || '',
     state: user.state || '',
+    country: user.country || '',
   });
   const {isLoading} = useAppSelector((state: RootState) => state.loading);
   const dispatch = useAppDispatch();
@@ -57,6 +58,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       username: user.username,
       city: user.city,
       state: user.state,
+      country: user.country,
     });
   }, [user]);
 
@@ -77,12 +79,12 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
           setFieldTouched={setFieldTouched}
         />
         <Input
-          placeholder="City"
-          value={values.city}
-          onChangeText={handleChange('city')}
-          touched={touched.city}
-          error={errors.city}
-          name="city"
+          placeholder="Country"
+          value={values.country}
+          onChangeText={handleChange('country')}
+          touched={touched.country}
+          error={errors.country}
+          name="country"
           setFieldTouched={setFieldTouched}
         />
         <Input
@@ -92,6 +94,15 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
           touched={touched.state}
           error={errors.state}
           name="state"
+          setFieldTouched={setFieldTouched}
+        />
+        <Input
+          placeholder="City"
+          value={values.city}
+          onChangeText={handleChange('city')}
+          touched={touched.city}
+          error={errors.city}
+          name="city"
           setFieldTouched={setFieldTouched}
         />
       </View>

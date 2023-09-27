@@ -20,7 +20,7 @@ import OnboardingService from '@/services/onboarding';
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>(
-    user?.jobTags,
+    user?.jobTags || [],
   );
   const [allIndustries, setAllIndustries] = useState<string[]>([]);
 

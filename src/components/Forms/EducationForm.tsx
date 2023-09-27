@@ -27,8 +27,8 @@ const EducationForm = ({
     initialValues: {
       instituteName: '',
       degree: '',
-      startingYear: `${new Date().getFullYear()}`,
-      endingYear: `${new Date().getFullYear()}`,
+      startYear: `${new Date().getFullYear()}`,
+      endYear: `${new Date().getFullYear()}`,
       currentlyStudying: false,
     },
     validationSchema: addEducationSchema,
@@ -40,8 +40,8 @@ const EducationForm = ({
         values: {
           instituteName: '',
           degree: '',
-          startingYear: `${new Date().getFullYear()}`,
-          endingYear: `${new Date().getFullYear()}`,
+          startYear: `${new Date().getFullYear()}`,
+          endYear: `${new Date().getFullYear()}`,
           currentlyStudying: false,
         },
       });
@@ -74,24 +74,24 @@ const EducationForm = ({
 
         <Input
           placeholder="Starting Year"
-          value={values.startingYear}
-          onChangeText={handleChange('startingYear')}
-          onBlur={handleBlur('startingYear')}
-          error={errors.startingYear}
-          name="startingYear"
-          touched={touched.startingYear}
+          value={values.startYear}
+          onChangeText={handleChange('startYear')}
+          onBlur={handleBlur('startYear')}
+          error={errors.startYear}
+          name="startYear"
+          touched={touched.startYear}
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
         />
 
         <Input
           placeholder="Ending Year"
-          value={values.endingYear}
-          onChangeText={handleChange('endingYear')}
-          onBlur={handleBlur('endingYear')}
-          error={errors.endingYear}
-          touched={touched.endingYear}
-          name="endingYear"
+          value={values.endYear}
+          onChangeText={handleChange('endYear')}
+          onBlur={handleBlur('endYear')}
+          error={errors.endYear}
+          touched={touched.endYear}
+          name="endYear"
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
           disabled={values.currentlyStudying}
