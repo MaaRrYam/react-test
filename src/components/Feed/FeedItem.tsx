@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Image,
@@ -12,62 +12,108 @@ import {FeedItem} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import {formatFirebaseTimestamp} from '@/utils';
+import {getUID} from '@/utils/functions';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import HomeService from '@/services/home';
+import {addDislike, addLike} from '@/store/features/homeSlice';
+import FirebaseService from '@/services/Firebase';
+import ToastService from '@/services/toast';
 
-const RenderPost = ({item}: {item: FeedItem}) => (
-  <>
-    <Text style={styles.feedContent}>{item.text}</Text>
-    {item.media && <Image source={{uri: item.media}} style={styles.media} />}
-    <View style={styles.postReactions}>
-      <View style={styles.reactionButton}>
-        <Like />
-      </View>
-      <Text style={styles.like}>
-        {item?.postLikes!.length - item?.postDislikes!.length}
-      </Text>
-      <View style={styles.reactionButton}>
-        <Dislike />
-      </View>
+const RenderPost = ({item}: {item: FeedItem}) => {
+  const dispatch = useAppDispatch();
 
-      <View style={styles.iconsContainer}>
-        <TouchableOpacity>
-          <Comment />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Share />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Report />
-        </TouchableOpacity>
-      </View>
-    </View>
-  </>
-);
+  let UID: string;
+  (async () => {
+    const response = await getUID();
+    if (response) {
+      UID = response;
+    }
+  })();
 
-const RenderArticle = ({item}: {item: FeedItem}) => {
-  const [showFullContent, setShowFullContent] = useState(false);
-  const {width} = useWindowDimensions();
+  const isPostLikedByUser =
+    item.postLikes?.some(like => like.likedBy === UID) || false;
+  const isPostDisLikedByUser =
+    item.postDislikes?.some(like => like.likedBy === UID) || false;
 
-  const toggleContent = () => {
-    setShowFullContent(prev => !prev);
+  const likeAPost = async () => {
+    dispatch(
+      addLike({
+        id: item.id,
+        reaction: {
+          likedBy: UID,
+          timestamp: FirebaseService.serverTimestamp(),
+        },
+      }),
+    );
+    const response = await HomeService.likeAPost(item.id, UID);
+    if (response) {
+      ToastService.showSuccess('Post liked');
+    }
   };
 
-  const source = {
-    html: `
-${showFullContent ? item.content : item.content!.substring(0, 200) + '....'}`,
+  const disLikeAPost = async () => {
+    dispatch(
+      addDislike({
+        id: item.id,
+        reaction: {
+          likedBy: UID,
+          timestamp: FirebaseService.serverTimestamp(),
+        },
+      }),
+    );
+
+    const response = await HomeService.disLikeAPost(item.id, UID);
+    if (response) {
+      ToastService.showSuccess('Post Disliked');
+    }
   };
 
   return (
-    <View style={styles.articleContainer}>
-      <RenderHtml contentWidth={width} source={source} />
-      {item.content!.length > 200 && (
-        <TouchableOpacity onPress={toggleContent}>
-          <Text style={styles.showMoreText}>
-            {showFullContent ? 'Show Less' : 'Show More'}
-          </Text>
+    <>
+      <Text style={styles.feedContent}>{item.text}</Text>
+      {item.media && <Image source={{uri: item.media}} style={styles.media} />}
+      <View style={styles.postReactions}>
+        <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
+          <Like isLiked={isPostLikedByUser} />
         </TouchableOpacity>
-      )}
-      <Image source={{uri: item.coverImage}} style={styles.media} />
-    </View>
+        <Text style={styles.like}>
+          {item?.postLikes!.length - item?.postDislikes!.length}
+        </Text>
+        <TouchableOpacity style={styles.reactionButton} onPress={disLikeAPost}>
+          <Dislike isLiked={isPostDisLikedByUser} />
+        </TouchableOpacity>
+
+        <View style={styles.iconsContainer}>
+          <TouchableOpacity>
+            <Comment />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Share />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Report />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
+  );
+};
+
+const RenderArticle = ({item}: {item: FeedItem}) => {
+  const {width} = useWindowDimensions();
+
+  const source = {
+    html: `
+${item.content!.substring(0, 300) + '....'}`,
+  };
+
+  return (
+    <TouchableOpacity onPress={() => console.log('article Pressed')}>
+      <View style={styles.articleContainer}>
+        <RenderHtml contentWidth={width} source={source} />
+        <Image source={{uri: item.coverImage}} style={styles.media} />
+      </View>
+    </TouchableOpacity>
   );
 };
 

@@ -28,10 +28,13 @@ const Feed = () => {
 
   useEffect(() => {
     fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
     if (isFeedFetched) {
       setIsRefreshing(false);
     }
-  }, [fetchData, isFeedFetched]);
+  }, [isFeedFetched]);
 
   if (isFeedFirstRequest) {
     return <Loading />;

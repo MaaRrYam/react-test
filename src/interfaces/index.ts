@@ -88,6 +88,11 @@ export interface FirebaseServiceProps {
     id: string,
     data: DocumentData,
   ): Promise<void>;
+  setDoc(
+    collectionName: string,
+    docId: string,
+    payload: DocumentData,
+  ): Promise<void>;
   getAllDocuments(collectionName: string): Promise<DocumentData[]>;
   getDocumentsByQuery(
     collectionName: string,
@@ -173,6 +178,10 @@ export interface NavigationConfigProps {
 
 export interface IconProps extends SvgProps {
   isFocused?: boolean;
+}
+
+export interface ReactionIconProps extends SvgProps {
+  isLiked: boolean;
 }
 
 export interface EducationProps {
@@ -270,6 +279,16 @@ export interface NetworkItemProps {
   isFollowing?: boolean;
 }
 
+interface ReactionInterface {
+  likedBy: string;
+  timestamp: Timestamp;
+}
+
+export interface ReactionPayload {
+  id: string;
+  reaction: ReactionInterface;
+}
+
 export interface FeedItem {
   id: string;
   creationTime: {
@@ -287,8 +306,8 @@ export interface FeedItem {
   edited: boolean;
   _id: string;
   feedType: string;
-  postLikes?: any[];
-  postDislikes?: any[];
+  postLikes?: ReactionInterface[];
+  postDislikes?: ReactionInterface[];
   tags?: string[];
   title?: string;
   content?: string;
