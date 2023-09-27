@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -19,16 +19,18 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
 import {getUser} from '@/store/features/authSlice';
+import {getConnections} from '@/store/features/networkSlice';
 import {ThreeDots, NewChat} from '@/assets/icons';
-import ProfileTab from './ProfileTab';
+import ProfileTab from '@/screens/Profile/ProfileTab';
 import profileStyles from '@/styles/profile'; // Import the styles
-import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '../../constants';
+import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
-import CareerTab from './CareerTab';
-import EducationTab from './EducationTab';
+import CareerTab from '@/screens/Profile/CareerTab';
+import EducationTab from '@/screens/Profile/EducationTab';
 const Profile = () => {
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
+  const {connections, isConnectionsFetched, isConnectionsFirstRequest} = useAppSelector((networkState: RootState) => networkState.network);
   const [selectedTab, setSelectedTab] = useState('Profile');
 
   useEffect(() => {
@@ -36,6 +38,16 @@ const Profile = () => {
       dispatch(getUser());
     }
   }, [user, dispatch]);
+
+  const fetchData = useCallback(() => {
+    if (!isConnectionsFetched) {
+      dispatch(getConnections());
+    }
+  }, [dispatch, isConnectionsFetched]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const feedData = [
     {
@@ -125,7 +137,7 @@ const Profile = () => {
                   {user.city}, {user.countryDetails.name}
                 </Text>
                 <Text style={profileStyles.connectionsLink}>
-                  26 connections
+                  {connections.length} connections
                 </Text>
               </View>
               <View style={profileStyles.buttonContainer}>
