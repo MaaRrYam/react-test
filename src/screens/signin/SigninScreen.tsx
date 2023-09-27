@@ -1,26 +1,15 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {View, Text, Image, SafeAreaView} from 'react-native';
 import {Button, SocialLoginButton} from '@/components';
 import {SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
-import SigninService from '@/services/signin';
 import {SignInScreenProps} from '@/types';
-import {UserCredential} from '@firebase/auth';
 
 import {styles} from '@/styles/signinScreen';
 
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
-  const [user, setUser] = useState<any>();
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(setUser);
-    try {
-      await SigninService.checkIfUserIsWhitelisted(
-        user as UserCredential,
-        navigation,
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    await _signInWithGoogle(navigation);
   };
   return (
     <SafeAreaView style={styles.safeArea}>
