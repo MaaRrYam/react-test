@@ -1,8 +1,9 @@
 import {
   BackButton,
-  Button,
+  PrimaryButton,
   IconButton,
   RoundedButton,
+  SecondaryButton,
 } from '@/components/Buttons';
 import {
   RoleCard,
@@ -24,7 +25,7 @@ import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search'
 export {
   BackButton,
-  Button,
+  PrimaryButton,
   RoleCard,
   Link,
   Input,
@@ -46,4 +47,5 @@ export {
   Loading,
   Empty,
   SearchButton,
+  SecondaryButton,
 };

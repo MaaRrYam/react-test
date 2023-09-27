@@ -22,13 +22,14 @@ function SettingsScreen() {
 
 function Drawer({state, descriptors, navigation}) {
   const dispatch = useAppDispatch();
-  const {user} = useAppSelector((state: RootState) => state.auth);
+  const {user} = useAppSelector((authState: RootState) => authState.auth);
 
   useEffect(() => {
-    if(user === {}){
+    if (Object.keys(user).length === 0) {
       dispatch(getUser());
     }
-  }, [dispatch]);
+  }, [user, dispatch]);
+
   return (
     <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {

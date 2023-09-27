@@ -1,6 +1,7 @@
 import React from 'react';
 import {Home, Network, Notifications, Jobs, ImageIcon} from '@/assets/icons';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
+import {BORDER_RADIUS} from '@/constants';
 
 export const getIcon = (
   label: string,
@@ -20,7 +21,7 @@ export const getIcon = (
       return photoUrl ? (
         <Image
           source={{uri: photoUrl}}
-          style={{width: 30, height: 30, borderRadius: 1000}}
+          style={styles.image}
         />
       ) : (
         <ImageIcon />
@@ -29,3 +30,11 @@ export const getIcon = (
       return <Home isFocused={isFocused} />;
   }
 };
+
+const styles = StyleSheet.create({
+  image: {
+    width: 30,
+    height: 30,
+    borderRadius: BORDER_RADIUS.general,
+  },
+});

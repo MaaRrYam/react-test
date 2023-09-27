@@ -9,16 +9,16 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import {COLORS} from '../../constants';
-import {ButtonProps} from 'interfaces';
+import {COLORS} from '@/constants';
+import {ButtonProps} from '@/interfaces';
 import {ForwardArrow} from '@/assets/icons';
 
-const Button: React.FC<ButtonProps> = ({
+const SecondaryButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   style,
-  backgroundColor = '#1918FF',
-  textColor = 'white',
+  backgroundColor = COLORS.lightBackground,
+  textColor = 'black',
   borderWidth = 0,
   borderColor = 'transparent',
   icon = null,
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   },
   buttonContent: {
     flexDirection: 'row',
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -111,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default SecondaryButton;
