@@ -46,6 +46,38 @@ export const homeSlice = createSlice({
         return post;
       });
     },
+    removeLike(state, {payload}: {payload: ReactionPayload}) {
+      state.feed = state.feed.map(post => {
+        if (post.id === payload.id) {
+          if (post.postLikes) {
+            return {
+              ...post,
+              postLikes: post.postLikes.filter(
+                like => like.likedBy !== payload.reaction.likedBy,
+              ),
+            };
+          }
+        }
+
+        return post;
+      });
+    },
+    removeDisLike(state, {payload}: {payload: ReactionPayload}) {
+      state.feed = state.feed.map(post => {
+        if (post.id === payload.id) {
+          if (post.postDislikes) {
+            return {
+              ...post,
+              postDislikes: post.postDislikes.filter(
+                like => like.likedBy !== payload.reaction.likedBy,
+              ),
+            };
+          }
+        }
+
+        return post;
+      });
+    },
     addDislikeAndRemoveLike(state, {payload}: {payload: ReactionPayload}) {
       let UID = '';
       (async () => {
@@ -101,6 +133,8 @@ export const homeSlice = createSlice({
 export const {
   addDislike,
   addLike,
+  removeDisLike,
+  removeLike,
   addDislikeAndRemoveLike,
   addLikeAndRemoveDislike,
 } = homeSlice.actions;

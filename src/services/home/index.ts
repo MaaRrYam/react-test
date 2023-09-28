@@ -33,9 +33,17 @@ const HomeService = {
       return false;
     }
   },
+  async removeLike(postId: string, disLikedBy: string) {
+    try {
+      await FirebaseService.deleteDocument(`posts/${postId}/likes`, disLikedBy);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
   async disLikeAPost(postId: string, disLikedBy: string) {
     try {
-      await FirebaseService.setDoc(`posts/${postId}/likes`, disLikedBy, {
+      await FirebaseService.setDoc(`posts/${postId}/dislikes`, disLikedBy, {
         likedBy: disLikedBy,
         timestamp: FirebaseService.serverTimestamp(),
       });
@@ -45,10 +53,23 @@ const HomeService = {
       return false;
     }
   },
+  async removeDislike(postId: string, disLikedBy: string) {
+    try {
+      await FirebaseService.deleteDocument(
+        `posts/${postId}/dislikes`,
+        disLikedBy,
+      );
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
   async removeDisLikeAndLike(postId: string, likedBy: string) {
     try {
-      await FirebaseService.deleteDocument(`posts/${postId}/likes`, likedBy);
-      await this.likeAPost(postId, likedBy);
+      await Promise.all([
+        this.removeDislike(postId, likedBy),
+        this.likeAPost(postId, likedBy),
+      ]);
       return true;
     } catch (error) {
       console.log(error);
@@ -57,8 +78,10 @@ const HomeService = {
   },
   async removeLikeAndDisLike(postId: string, disLikedBy: string) {
     try {
-      await FirebaseService.deleteDocument(`posts/${postId}/likes`, disLikedBy);
-      await this.disLikeAPost(postId, disLikedBy);
+      await Promise.all([
+        this.disLikeAPost(postId, disLikedBy),
+        this.removeLike(postId, disLikedBy),
+      ]);
       return true;
     } catch (error) {
       console.log(error);
