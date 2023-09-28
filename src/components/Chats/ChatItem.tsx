@@ -41,9 +41,9 @@ const ChatItem = ({
             <Text style={styles.chatItemLastMessage}>
               {item.message.slice(0, 50) || 'No recent message'}
             </Text>
-            {/* {item.hasUnreadMessages && (
+            {item.read === false && (
               <View style={styles.chatItemUnreadMessage} />
-            )} */}
+            )}
           </View>
         </View>
       </View>
