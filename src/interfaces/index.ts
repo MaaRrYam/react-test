@@ -370,3 +370,24 @@ export interface ChatsInterface {
   time: string | Timestamp;
   user: UserInterface;
 }
+
+export interface ChatMessageInterface {
+  fileName: string;
+  fileUrl: string;
+  message: string;
+  photoUrl: string;
+  recieverId: string;
+  senderId: string;
+  time: Timestamp;
+  type: 'text' | 'file' | 'picture';
+}
+
+export interface GroupedMessage {
+  id: number;
+  date: string;
+  messages: {
+    message: string;
+    sender: string;
+    time: string;
+  }[];
+}

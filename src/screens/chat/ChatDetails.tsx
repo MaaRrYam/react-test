@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,14 +8,18 @@ import {
   Image,
 } from 'react-native';
 
-import {CHAT_DETAILS} from '@/constants';
-import {BackButton, IconButton} from '@/components';
+import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {ChatsInterface} from '@/interfaces';
+import {ChatsInterface, GroupedMessage} from '@/interfaces';
 import {styles} from './styles';
+import {getUID} from '@/utils/functions';
+import ChatsService from '@/services/chats';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
+  const [messages, setMessages] = useState<GroupedMessage[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
   const {
     params: {name, id},
   } = route;
@@ -23,6 +27,30 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const chatHead = useAppSelector(state =>
     state.chats.chats.find(chat => chat.id === id),
   ) as ChatsInterface;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const self = (await getUID()) as string;
+      const chatAddress = ChatsService.findChatAddress(self, id);
+      const unsub = await ChatsService.fetchMessagesRealTime(
+        chatAddress,
+        setMessages,
+      );
+      setLoading(false);
+
+      return () => {
+        if (unsub) {
+          unsub();
+        }
+      };
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,7 +70,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
 
       <View style={styles.chatsContainer}>
         <FlatList
-          data={CHAT_DETAILS}
+          data={messages}
           keyExtractor={item => item.date}
           renderItem={({item}) => (
             <View>
@@ -52,24 +80,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
                 <View style={styles.dateLine} />
               </View>
               {item.messages.map((message, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.messageContainer,
-                    message.sender === 'me'
-                      ? styles.myMessageContainer
-                      : styles.otherMessageContainer,
-                  ]}>
-                  <View
-                    style={
-                      message.sender === 'me'
-                        ? styles.myMessage
-                        : styles.otherMessage
-                    }>
-                    <Text style={styles.messageText}>{message.message}</Text>
-                    <Text style={styles.messageTime}>{message.time}</Text>
-                  </View>
-                </View>
+                <Chat key={index} message={message} />
               ))}
             </View>
           )}

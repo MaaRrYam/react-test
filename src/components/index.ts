@@ -22,7 +22,7 @@ import Empty from '@/components/NoResults/Empty';
 import Feed from '@/components/Feed/Feed';
 import {NotificationsList} from '@/components/Notifications';
 import SearchButton from '@/components/Search';
-import {ChatItem, ChatsList} from '@/components/Chats';
+import {ChatItem, ChatsList, Chat} from '@/components/Chats';
 
 export {
   BackButton,
@@ -50,4 +50,5 @@ export {
   Feed,
   SearchButton,
   ChatsList,
+  Chat,
 };

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-import {ChatItem} from '@/components';
+import {ChatItem, Empty} from '@/components';
 import {ChatsInterface} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
@@ -45,14 +45,25 @@ const ChatsList = ({search, navigation}: ChatsListProps) => {
   };
 
   return (
-    <FlatList
-      data={filteredChats}
-      keyExtractor={item => item.id}
-      renderItem={({item}) => <ChatItem item={item} navigation={navigation} />}
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-      }
-    />
+    <>
+      {filteredChats.length ? (
+        <FlatList
+          data={filteredChats}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <ChatItem item={item} navigation={navigation} />
+          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+        />
+      ) : (
+        <Empty />
+      )}
+    </>
   );
 };
 
