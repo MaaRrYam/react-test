@@ -8,7 +8,7 @@ import {BottomSheetProps} from '@/interfaces';
 const CustomBottomSheet: React.FC<BottomSheetProps> = ({
   isVisible,
   onClose,
-  snapPoints = ['20%', '70%'],
+  snapPoints = ['20%', '70%', '100%'],
   children,
   containerStyle,
   contentContainerStyle,

@@ -27,11 +27,31 @@ import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
-const Profile = () => {
+
+interface ProfileProps {
+  route: {
+    params: {
+      setTabItem: React.Dispatch<React.SetStateAction<string>>;
+      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+      tabItem: string;
+    };
+  };
+}
+
+const Profile = ({route}: ProfileProps) => {
+  const {setIsVisible, setTabItem, tabItem} = route.params;
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
-  const {connections, isConnectionsFetched, isConnectionsFirstRequest} = useAppSelector((networkState: RootState) => networkState.network);
-  const [selectedTab, setSelectedTab] = useState('Profile');
+  const {connections, isConnectionsFetched} = useAppSelector(
+    (networkState: RootState) => networkState.network,
+  );
+  const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
+  const openBottomSheet = () => {
+    setIsVisible(true);
+  };
+  const closeBottomSheet = () => {
+    setIsVisible(false);
+  };
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -107,146 +127,154 @@ const Profile = () => {
   ];
 
   return (
-    <ScrollView>
-      <SafeAreaView style={profileStyles.safeArea}>
-        <View>
-          <Header />
+    <>
+      <ScrollView>
+        <SafeAreaView style={profileStyles.safeArea}>
           <View>
-            <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              }}
-              style={profileStyles.headerImage}
-            />
-          </View>
-
-          <View style={profileStyles.container}>
-            <View style={profileStyles.avatarContainer}>
+            <Header />
+            <View>
               <Image
                 source={{
-                  uri: user.photoUrl,
+                  uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                 }}
-                style={profileStyles.avatarImage}
+                style={profileStyles.headerImage}
               />
             </View>
-            <View style={profileStyles.userInfoContainer}>
-              <View>
-                <Text style={profileStyles.userName}>{user.name}</Text>
-                <Text style={profileStyles.userTagline}>{user.tagline}</Text>
-                <Text style={profileStyles.userLocation}>
-                  {user.city}, {user.countryDetails.name}
-                </Text>
-                <Text style={profileStyles.connectionsLink}>
-                  {connections.length} connections
-                </Text>
-              </View>
-              <View style={profileStyles.buttonContainer}>
-                <PrimaryButton
-                  title="Connect"
-                  style={profileStyles.connectButton}
-                />
-                <SecondaryButton
-                  title="Message"
-                  style={profileStyles.messageButton}
-                />
-                <TouchableOpacity style={profileStyles.optionsButton}>
-                  <View>
-                    <ThreeDots />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
 
-          <View style={profileStyles.tabsContainer}>
-            <View style={profileStyles.tabsHeader}>
-              <View style={profileStyles.tabButtonContainer}>
-                {PROFILE_TABS.map((tab, index) => (
-                  <RoundedButton
-                    key={tab}
-                    text={tab}
-                    style={
-                      selectedTab === tab
-                        ? profileStyles.selectedTabButton
-                        : index === PROFILE_TABS.length - 1
-                        ? {borderRadius: 10}
-                        : profileStyles.tabButton
-                    }
-                    onPress={() => setSelectedTab(tab)}
-                  />
-                ))}
-              </View>
-              <View>
-                <TouchableOpacity style={profileStyles.editIcon}>
-                  <NewChat />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View>
-              {selectedTab === PROFILE_TABS[0] ? (
-                <ProfileTab
-                  bio={user.description as string}
-                  photo={user.photoUrl as string}
+            <View style={profileStyles.container}>
+              <View style={profileStyles.avatarContainer}>
+                <Image
+                  source={{
+                    uri: user.photoUrl,
+                  }}
+                  style={profileStyles.avatarImage}
                 />
-              ) : selectedTab === PROFILE_TABS[1] ? (
-                <CareerTab careerList={user.employmentList} />
-              ) : (
-                <EducationTab educationList={user.educationList}/>
-              )}
-            </View>
-          </View>
-
-          <View style={styles.feedContainer}>
-            <FlatList
-              data={feedData}
-              renderItem={({item}) => (
-                <View style={styles.feedItem}>
-                  <View style={styles.authorInfo}>
-                    <Image
-                      source={item.author.avatar}
-                      style={styles.userImage}
-                    />
-                    <View style={{marginLeft: 10}}>
-                      <Text style={styles.authorName}>{item.author.name}</Text>
-                      <Text style={styles.authorTagline}>
-                        {item.author.tagline}
-                      </Text>
-                      <Text style={styles.authorTagline}>{item.time}</Text>
-                    </View>
-                  </View>
-                  <Text style={styles.feedContent}>{item.content}</Text>
-                  {item.media && (
-                    <Image source={item.media} style={styles.media} />
-                  )}
-                  <View style={styles.postReactions}>
-                    <View style={styles.reactionButton}>
-                      <Like />
-                    </View>
-                    <Text style={styles.like}>{item.likes}</Text>
-                    <View style={styles.reactionButton}>
-                      <Dislike />
-                    </View>
-
-                    <View style={styles.iconsContainer}>
-                      <TouchableOpacity>
-                        <Comment />
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Share />
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Report />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+              </View>
+              <View style={profileStyles.userInfoContainer}>
+                <View>
+                  <Text style={profileStyles.userName}>{user.name}</Text>
+                  <Text style={profileStyles.userTagline}>{user.tagline}</Text>
+                  <Text style={profileStyles.userLocation}>
+                    {user.city}, {user.countryDetails.name}
+                  </Text>
+                  <Text style={profileStyles.connectionsLink}>
+                    {connections.length} connections
+                  </Text>
                 </View>
-              )}
-              keyExtractor={item => item.id}
-            />
+                <View style={profileStyles.buttonContainer}>
+                  <PrimaryButton
+                    title="Connect"
+                    style={profileStyles.connectButton}
+                  />
+                  <SecondaryButton
+                    title="Message"
+                    style={profileStyles.messageButton}
+                  />
+                  <TouchableOpacity style={profileStyles.optionsButton}>
+                    <View>
+                      <ThreeDots />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            <View style={profileStyles.tabsContainer}>
+              <View style={profileStyles.tabsHeader}>
+                <View style={profileStyles.tabButtonContainer}>
+                  {PROFILE_TABS.map((tab, index) => (
+                    <RoundedButton
+                      key={tab}
+                      text={tab}
+                      style={
+                        selectedTab === tab
+                          ? profileStyles.selectedTabButton
+                          : index === PROFILE_TABS.length - 1
+                          ? {borderRadius: 10}
+                          : profileStyles.tabButton
+                      }
+                      onPress={() => setSelectedTab(tab)}
+                    />
+                  ))}
+                </View>
+                <View>
+                  <TouchableOpacity
+                    style={profileStyles.editIcon}
+                    onPress={openBottomSheet}>
+                    <NewChat />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View>
+                {selectedTab === PROFILE_TABS[0] ? (
+                  <ProfileTab
+                    bio={user.description as string}
+                    photo={user.photoUrl as string}
+                    bottomSheetVisible={bottomSheetVisible}
+                    setBottomSheetVisible={setIsVisible}
+                  />
+                ) : selectedTab === PROFILE_TABS[1] ? (
+                  <CareerTab careerList={user.employmentList} />
+                ) : (
+                  <EducationTab educationList={user.educationList} />
+                )}
+              </View>
+            </View>
+
+            <View style={styles.feedContainer}>
+              <FlatList
+                data={feedData}
+                renderItem={({item}) => (
+                  <View style={styles.feedItem}>
+                    <View style={styles.authorInfo}>
+                      <Image
+                        source={item.author.avatar}
+                        style={styles.userImage}
+                      />
+                      <View style={{marginLeft: 10}}>
+                        <Text style={styles.authorName}>
+                          {item.author.name}
+                        </Text>
+                        <Text style={styles.authorTagline}>
+                          {item.author.tagline}
+                        </Text>
+                        <Text style={styles.authorTagline}>{item.time}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.feedContent}>{item.content}</Text>
+                    {item.media && (
+                      <Image source={item.media} style={styles.media} />
+                    )}
+                    <View style={styles.postReactions}>
+                      <View style={styles.reactionButton}>
+                        <Like />
+                      </View>
+                      <Text style={styles.like}>{item.likes}</Text>
+                      <View style={styles.reactionButton}>
+                        <Dislike />
+                      </View>
+
+                      <View style={styles.iconsContainer}>
+                        <TouchableOpacity>
+                          <Comment />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                          <Share />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                          <Report />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                )}
+                keyExtractor={item => item.id}
+              />
+            </View>
           </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+        </SafeAreaView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -373,6 +401,17 @@ const styles = StyleSheet.create({
   actionText: {
     marginLeft: 5,
     color: 'gray',
+  },
+  bottomSheet: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '100%',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    backgroundColor: 'white',
+    padding: 16,
   },
 });
 

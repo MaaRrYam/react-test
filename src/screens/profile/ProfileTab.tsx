@@ -1,31 +1,36 @@
 import React, {FC} from 'react';
 import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
-import {homeStyles} from '@/styles/home';
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
+import {BottomSheet} from '@/components';
 interface TabDataInterface {
   bio: string;
   photo: string;
+  bottomSheetVisible?: boolean;
+  setBottomSheetVisible?: (value: boolean) => void;
 }
 
-const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
+const ProfileTab: FC<TabDataInterface> = ({bio, photo, bottomSheetVisible, setBottomSheetVisible}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>About</Text>
-      <Text style={styles.text}>{bio || 'About'}</Text>
+    <>
+      <View style={styles.container}>
+        <Text style={styles.heading}>About</Text>
+        <Text style={styles.text}>{bio || 'About'}</Text>
 
-      <View style={styles.subheader}>
-        <Image
-          source={photo ? {uri: photo} : require('@/assets/images/user.png')}
-          style={styles.userImage}
-        />
+        <View style={styles.subheader}>
+          <Image
+            source={photo ? {uri: photo} : require('@/assets/images/user.png')}
+            style={styles.userImage}
+          />
 
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Start a Post"
-          editable={false}
-        />
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Start a Post"
+            editable={false}
+            placeholderTextColor={COLORS.black}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

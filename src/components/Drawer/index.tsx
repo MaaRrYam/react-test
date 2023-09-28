@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -6,10 +6,10 @@ import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
 import {getUser} from '@/store/features/authSlice';
 import {Home, Network, Notifications} from '@/screens';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
-
+import {BottomSheet} from '@/components';
 const Tab = createBottomTabNavigator();
 
 function SettingsScreen() {
@@ -20,7 +20,7 @@ function SettingsScreen() {
   );
 }
 
-function Drawer({state, descriptors, navigation}) {
+function Drawer({state, descriptors, navigation, isVisible, setIsVisible}) {
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
 
@@ -31,66 +31,97 @@ function Drawer({state, descriptors, navigation}) {
   }, [user, dispatch]);
 
   return (
-    <View style={styles.tabBarContainer}>
-      {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
+    <>
+      <View style={styles.tabBarContainer}>
+        {state.routes.map((route, index) => {
+          const {options} = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name;
 
-        const isFocused = state.index === index;
+          const isFocused = state.index === index;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate({name: route.name, merge: true});
-          }
-        };
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate({name: route.name, merge: true});
+            }
+          };
 
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
+          const onLongPress = () => {
+            navigation.emit({
+              type: 'tabLongPress',
+              target: route.key,
+            });
+          };
 
-        return (
-          <TouchableOpacity
-            key={index}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? {selected: true} : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={styles.tab}>
-            {getIcon(label, isFocused, user.photoUrl)}
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+          return (
+            <TouchableOpacity
+              key={index}
+              accessibilityRole="button"
+              accessibilityState={isFocused ? {selected: true} : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={styles.tab}>
+              {getIcon(label, isFocused, user.photoUrl)}
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      {isVisible && (
+        <BottomSheet
+          isVisible={isVisible}
+          onClose={() => {
+            setIsVisible(false);
+          }}>
+          <View>
+            <Text style={{color: 'black'}}>Hello</Text>
+          </View>
+        </BottomSheet>
+      )}
+    </>
   );
 }
 
 const Tabs = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
   return (
-    <Tab.Navigator
-      screenOptions={{headerShown: false}}
-      tabBar={props => <Drawer {...props} />}>
-      <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
-      <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
-      <Tab.Screen name={SCREEN_NAMES.Notifications} component={Notifications} />
-      <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
-      <Tab.Screen name={SCREEN_NAMES.Profile} component={Profile} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator
+        screenOptions={{headerShown: false}}
+        tabBar={props => (
+          <Drawer
+            {...props}
+            isVisible={isVisible}
+            setIsVisible={setIsVisible}
+            tabItem={tabItem}
+          />
+        )}>
+        <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
+        <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
+        <Tab.Screen
+          name={SCREEN_NAMES.Notifications}
+          component={Notifications}
+        />
+        <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
+        <Tab.Screen
+          name={SCREEN_NAMES.Profile}
+          component={Profile}
+          initialParams={{isVisible, setIsVisible, setTabItem, tabItem}}
+        />
+      </Tab.Navigator>
+    </>
   );
 };
 
