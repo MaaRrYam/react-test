@@ -18,7 +18,7 @@ import useUserManagement from '@/hooks/useUserManagement';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
-  const [userData, setUserData] = useState<UserInterface>(user);
+  const [userData, setUserData] = useState<UserInterface>({});
   const [initialValues, setInitialValues] = useState({
     username: user.username || '',
     city: user.city || '',
@@ -47,6 +47,13 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
         handleSubmitUserData(formValues);
       },
     });
+
+  useEffect(() => {
+    (async () => {
+      const data = await OnboardingService.fetchUserData();
+      setUserData(data);
+    })();
+  }, []);
 
   useEffect(() => {
     dispatch(setLoading());
