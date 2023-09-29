@@ -29,6 +29,7 @@ import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
 
 interface ProfileProps {
+  navigation: any;
   route: {
     params: {
       setTabItem: React.Dispatch<React.SetStateAction<string>>;
@@ -38,7 +39,7 @@ interface ProfileProps {
   };
 }
 
-const Profile = ({route}: ProfileProps) => {
+const Profile = ({navigation, route}: ProfileProps) => {
   const {setIsVisible, setTabItem, tabItem} = route.params;
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
@@ -131,7 +132,7 @@ const Profile = ({route}: ProfileProps) => {
       <ScrollView>
         <SafeAreaView style={profileStyles.safeArea}>
           <View>
-            <Header />
+            <Header navigation={navigation} />
             <View>
               <Image
                 source={{
@@ -193,7 +194,10 @@ const Profile = ({route}: ProfileProps) => {
                           ? {borderRadius: 10}
                           : profileStyles.tabButton
                       }
-                      onPress={() => setSelectedTab(tab)}
+                      onPress={() => {
+                        setSelectedTab(tab);
+                        setTabItem(tab);
+                      }}
                     />
                   ))}
                 </View>
@@ -210,8 +214,6 @@ const Profile = ({route}: ProfileProps) => {
                   <ProfileTab
                     bio={user.description as string}
                     photo={user.photoUrl as string}
-                    bottomSheetVisible={bottomSheetVisible}
-                    setBottomSheetVisible={setIsVisible}
                   />
                 ) : selectedTab === PROFILE_TABS[1] ? (
                   <CareerTab careerList={user.employmentList} />
@@ -221,56 +223,58 @@ const Profile = ({route}: ProfileProps) => {
               </View>
             </View>
 
-            <View style={styles.feedContainer}>
-              <FlatList
-                data={feedData}
-                renderItem={({item}) => (
-                  <View style={styles.feedItem}>
-                    <View style={styles.authorInfo}>
-                      <Image
-                        source={item.author.avatar}
-                        style={styles.userImage}
-                      />
-                      <View style={{marginLeft: 10}}>
-                        <Text style={styles.authorName}>
-                          {item.author.name}
-                        </Text>
-                        <Text style={styles.authorTagline}>
-                          {item.author.tagline}
-                        </Text>
-                        <Text style={styles.authorTagline}>{item.time}</Text>
+            {selectedTab === PROFILE_TABS[0] && (
+              <View style={styles.feedContainer}>
+                <FlatList
+                  data={feedData}
+                  renderItem={({item}) => (
+                    <View style={styles.feedItem}>
+                      <View style={styles.authorInfo}>
+                        <Image
+                          source={item.author.avatar}
+                          style={styles.userImage}
+                        />
+                        <View style={{marginLeft: 10}}>
+                          <Text style={styles.authorName}>
+                            {item.author.name}
+                          </Text>
+                          <Text style={styles.authorTagline}>
+                            {item.author.tagline}
+                          </Text>
+                          <Text style={styles.authorTagline}>{item.time}</Text>
+                        </View>
                       </View>
-                    </View>
-                    <Text style={styles.feedContent}>{item.content}</Text>
-                    {item.media && (
-                      <Image source={item.media} style={styles.media} />
-                    )}
-                    <View style={styles.postReactions}>
-                      <View style={styles.reactionButton}>
-                        <Like />
-                      </View>
-                      <Text style={styles.like}>{item.likes}</Text>
-                      <View style={styles.reactionButton}>
-                        <Dislike />
-                      </View>
+                      <Text style={styles.feedContent}>{item.content}</Text>
+                      {item.media && (
+                        <Image source={item.media} style={styles.media} />
+                      )}
+                      <View style={styles.postReactions}>
+                        <View style={styles.reactionButton}>
+                          <Like />
+                        </View>
+                        <Text style={styles.like}>{item.likes}</Text>
+                        <View style={styles.reactionButton}>
+                          <Dislike />
+                        </View>
 
-                      <View style={styles.iconsContainer}>
-                        <TouchableOpacity>
-                          <Comment />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                          <Share />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                          <Report />
-                        </TouchableOpacity>
+                        <View style={styles.iconsContainer}>
+                          <TouchableOpacity>
+                            <Comment />
+                          </TouchableOpacity>
+                          <TouchableOpacity>
+                            <Share />
+                          </TouchableOpacity>
+                          <TouchableOpacity>
+                            <Report />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                )}
-                keyExtractor={item => item.id}
-              />
-            </View>
+                  )}
+                  keyExtractor={item => item.id}
+                />
+              </View>
+            )}
           </View>
         </SafeAreaView>
       </ScrollView>

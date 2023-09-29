@@ -126,6 +126,7 @@ export interface BottomSheetProps {
   children: ReactNode;
   containerStyle?: object;
   contentContainerStyle?: object;
+  profilePage?: boolean;
 }
 
 export interface EducationState {

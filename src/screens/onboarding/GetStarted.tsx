@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
 import {useFormik} from 'formik';
 
-import {Button, Input} from '@/components';
+import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
@@ -59,7 +59,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
         />
       </View>
       <View style={commonStyles.footer}>
-        <Button title="Continue" onPress={handleSubmit} />
+        <PrimaryButton title="Continue" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

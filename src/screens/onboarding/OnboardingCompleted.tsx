@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {Button} from '@/components';
+import {PrimaryButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
 
@@ -39,7 +39,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
         </View>
 
         <View style={styles.btnContainer}>
-          <Button
+          <PrimaryButton
             title="Explore CareerNetwork.co"
             onPress={() => navigation.navigate(SCREEN_NAMES.BottomNavigator)}
             textColor={COLORS.black}

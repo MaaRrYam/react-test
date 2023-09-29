@@ -9,7 +9,11 @@ import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
-import {BottomSheet} from '@/components';
+import {BottomSheet, SecondaryButton} from '@/components';
+import {Cross} from '@/assets/icons';
+import EditBasicInfoForm from '../Forms/EditBasicInfoForm';
+import EditCareerForm from '../Forms/EditCareerForm';
+import EditEducationForm from '../Forms/EditEducationForm';
 const Tab = createBottomTabNavigator();
 
 function SettingsScreen() {
@@ -20,7 +24,14 @@ function SettingsScreen() {
   );
 }
 
-function Drawer({state, descriptors, navigation, isVisible, setIsVisible}) {
+function Drawer({
+  state,
+  descriptors,
+  navigation,
+  isVisible,
+  setIsVisible,
+  tabItem,
+}) {
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
 
@@ -83,9 +94,67 @@ function Drawer({state, descriptors, navigation, isVisible, setIsVisible}) {
           isVisible={isVisible}
           onClose={() => {
             setIsVisible(false);
-          }}>
-          <View>
-            <Text style={{color: 'black'}}>Hello</Text>
+          }}
+          profilePage>
+          <View style={{}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                borderBottomWidth: 1,
+                borderBottomColor: '#E7E7E7',
+                paddingHorizontal: 20,
+                paddingBottom: 18,
+              }}>
+              <View
+                style={{
+                  backgroundColor: '#F4F4F4',
+                  width: 42,
+                  height: 42,
+                  borderRadius: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <TouchableOpacity
+                  style={{width: 30, height: 30}}
+                  onPress={() => setIsVisible(false)}>
+                  <Cross />
+                </TouchableOpacity>
+              </View>
+              <View>
+                <SecondaryButton
+                  title={
+                    tabItem === 'Education'
+                      ? 'Add New Education'
+                      : tabItem === 'Career'
+                      ? 'Add New Career'
+                      : 'Profile'
+                  }
+                  style={
+                    tabItem === 'Profile'
+                      ? {
+                          display: 'none',
+                        }
+                      : {
+                          paddingHorizontal: 25,
+                          paddingVertical: 7,
+                          borderRadius: 1000,
+                          marginTop: 5,
+                          display: 'flex',
+                        }
+                  }
+                />
+              </View>
+            </View>
+            <View style={{paddingHorizontal: 20, paddingTop: 20}}>
+              {tabItem === 'Profile' ? (
+                <EditBasicInfoForm />
+              ) : tabItem === 'Career' ? (
+                <EditCareerForm />
+              ) : (
+                <EditEducationForm />
+              )}
+            </View>
           </View>
         </BottomSheet>
       )}

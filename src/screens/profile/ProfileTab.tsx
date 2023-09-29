@@ -9,7 +9,7 @@ interface TabDataInterface {
   setBottomSheetVisible?: (value: boolean) => void;
 }
 
-const ProfileTab: FC<TabDataInterface> = ({bio, photo, bottomSheetVisible, setBottomSheetVisible}) => {
+const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
   return (
     <>
       <View style={styles.container}>

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
-import {BackButton, Button, Input} from '@/components';
+import {BackButton, PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
@@ -68,7 +68,7 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
         </ScrollView>
       </View>
       <View style={commonStyles.footer}>
-        <Button title="Continue" onPress={handleSubmit} />
+        <PrimaryButton title="Continue" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

@@ -8,10 +8,11 @@ import {BottomSheetProps} from '@/interfaces';
 const CustomBottomSheet: React.FC<BottomSheetProps> = ({
   isVisible,
   onClose,
-  snapPoints = ['20%', '70%', '100%'],
+  snapPoints = ['20%', '70%'],
   children,
   containerStyle,
   contentContainerStyle,
+  profilePage,
 }) => {
   const bottomSheetRef = useRef<BottomSheet | null>(null);
 
@@ -19,13 +20,14 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
     <BottomSheet
       ref={bottomSheetRef}
       index={isVisible ? 1 : 0}
-      snapPoints={snapPoints}
+      snapPoints={!profilePage ? snapPoints : ['20%', '100%']}
       style={styles.sheetStyles}
       onChange={index => {
         if (index === 0) {
           onClose();
         }
-      }}>
+      }}
+      handleIndicatorStyle={profilePage && {display: 'none'}}>
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           {children}

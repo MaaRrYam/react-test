@@ -18,10 +18,16 @@ import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
-import {EducationForm, ExperienceForm} from '@/components/Forms';
+import {
+  EducationForm,
+  ExperienceForm,
+  EditBasicInfoForm,
+  EditCareerForm,
+  EditEducationForm,
+} from '@/components/Forms';
 import Loading from '@/components/Loading';
 import Header from '@/components/Header';
-import {default as SocialLoginButton} from '@/components/SocialLoginButton'
+import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search';
 export {
@@ -50,4 +56,7 @@ export {
   SearchButton,
   SecondaryButton,
   CareerCard,
+  EditBasicInfoForm,
+  EditCareerForm,
+  EditEducationForm,
 };

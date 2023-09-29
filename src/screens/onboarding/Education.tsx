@@ -3,7 +3,7 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
   BackButton,
-  Button,
+  PrimaryButton,
   EducationCard,
   BottomSheet,
   EducationForm,
@@ -52,7 +52,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
           />
         </View>
         <View style={commonStyles.footer}>
-          <Button
+          <PrimaryButton
             title="Add More"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
@@ -61,7 +61,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
             borderColor={COLORS.border}
             disabled={education.length === 3}
           />
-          <Button
+          <PrimaryButton
             title={education.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />
