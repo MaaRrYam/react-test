@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { RootState } from '@/store';
-import { getUser } from '@/store/features/authSlice';
-import { Home, Network, Notifications } from '@/screens';
-import { COLORS, SCREEN_NAMES, PROFILE_TABS } from '@/constants';
-import { getIcon } from '@/utils/IconsHelper';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {RootState} from '@/store';
+import {getUser} from '@/store/features/authSlice';
+import {Home, Network, Notifications} from '@/screens';
+import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
+import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
-import { BottomSheet, SecondaryButton, PrimaryButton } from '@/components';
-import { Cross } from '@/assets/icons';
+import {BottomSheet, SecondaryButton, PrimaryButton} from '@/components';
+import {Cross} from '@/assets/icons';
+import {UserInterface} from '@/interfaces'
 import EditBasicInfoForm from '../Forms/EditBasicInfoForm';
 import EditCareerForm from '../Forms/EditCareerForm';
 import EditEducationForm from '../Forms/EditEducationForm';
@@ -33,7 +34,7 @@ function Drawer({
   tabItem,
 }) {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((authState: RootState) => authState.auth);
+  const {user} = useAppSelector((authState: RootState) => authState.auth);
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -45,13 +46,13 @@ function Drawer({
     <>
       <View style={styles.tabBarContainer}>
         {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
+          const {options} = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
               : options.title !== undefined
-                ? options.title
-                : route.name;
+              ? options.title
+              : route.name;
 
           const isFocused = state.index === index;
 
@@ -63,7 +64,7 @@ function Drawer({
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({ name: route.name, merge: true });
+              navigation.navigate({name: route.name, merge: true});
             }
           };
 
@@ -78,7 +79,7 @@ function Drawer({
             <TouchableOpacity
               key={index}
               accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityState={isFocused ? {selected: true} : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
               onPress={onPress}
@@ -116,7 +117,7 @@ function Drawer({
                   justifyContent: 'center',
                 }}>
                 <TouchableOpacity
-                  style={{ width: 30, height: 30 }}
+                  style={{width: 30, height: 30}}
                   onPress={() => setIsVisible(false)}>
                   <Cross />
                 </TouchableOpacity>
@@ -127,36 +128,43 @@ function Drawer({
                     tabItem === 'Education'
                       ? 'Add New Education'
                       : tabItem === 'Career'
-                        ? 'Add New Career'
-                        : 'Profile'
+                      ? 'Add New Career'
+                      : 'Profile'
                   }
                   style={
                     tabItem === 'Profile'
                       ? {
-                        display: 'none',
-                      }
+                          display: 'none',
+                        }
                       : {
-                        paddingHorizontal: 25,
-                        paddingVertical: 7,
-                        borderRadius: 1000,
-                        marginTop: 5,
-                        display: 'flex',
-                      }
+                          paddingHorizontal: 25,
+                          paddingVertical: 7,
+                          borderRadius: 1000,
+                          marginTop: 5,
+                          display: 'flex',
+                        }
                   }
                 />
               </View>
             </View>
-            <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
+            <View style={{paddingHorizontal: 20, paddingTop: 20}}>
               {tabItem === 'Profile' ? (
-                <EditBasicInfoForm />
+                <EditBasicInfoForm user={user as UserInterface} />
               ) : tabItem === 'Career' ? (
                 <EditCareerForm />
               ) : (
                 <EditEducationForm />
               )}
             </View>
-            <View style={{ borderTopColor: "#E4E4E4", borderTopWidth: 1, marginTop: 10, paddingTop: 10, paddingHorizontal: 20}}>
-                <PrimaryButton title="Save" onPress={()=>{}} />
+            <View
+              style={{
+                borderTopColor: '#E4E4E4',
+                borderTopWidth: 1,
+                marginTop: 10,
+                paddingTop: 10,
+                paddingHorizontal: 20,
+              }}>
+              <PrimaryButton title="Save" onPress={() => {}} />
             </View>
           </View>
         </BottomSheet>
@@ -171,7 +179,7 @@ const Tabs = () => {
   return (
     <>
       <Tab.Navigator
-        screenOptions={{ headerShown: false }}
+        screenOptions={{headerShown: false}}
         tabBar={props => (
           <Drawer
             {...props}
@@ -190,7 +198,7 @@ const Tabs = () => {
         <Tab.Screen
           name={SCREEN_NAMES.Profile}
           component={Profile}
-          initialParams={{ isVisible, setIsVisible, setTabItem, tabItem }}
+          initialParams={{isVisible, setIsVisible, setTabItem, tabItem}}
         />
       </Tab.Navigator>
     </>
@@ -206,7 +214,7 @@ const styles = StyleSheet.create({
     height: 60,
     elevation: 5,
     shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.1,
     shadowRadius: 5,
   },

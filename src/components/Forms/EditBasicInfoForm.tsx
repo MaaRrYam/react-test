@@ -1,34 +1,26 @@
 import {View, Text, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Dropdown, Input, LocationDropdown} from '@/components';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {RootState} from '@/store';
-import {EmploymentProps} from '@/interfaces';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {getUser} from '@/store/features/authSlice';
+import {EmploymentProps, UserInterface} from '@/interfaces';
 
-const EditBasicInfoForm = () => {
-  const [name, setName] = useState('');
-  const [about, setAbout] = useState('');
-  const [country, setCountry] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
-  const {user} = useAppSelector((state: RootState) => state.auth);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      dispatch(getUser());
-    }
-  }, [user, dispatch]);
-
+interface UserInfoProps {
+  user: UserInterface;
+}
+const EditBasicInfoForm = ({user}: UserInfoProps) => {
+  const [name, setName] = useState<string>(user.name);
+  const [about, setAbout] = useState<string>(user.description);
+  const [country, setCountry] = useState<string>(user.country);
+  const [state, setState] = useState<string>(user.state);
+  const [city, setCity] = useState<string>(user.city);
   const createArrayOfStringsFromEmploymentList = (list: EmploymentProps[]) => {
     return list.map(
       employment => ` ${employment.role} at ${employment.companyName}`,
     );
   };
 
-  const options = createArrayOfStringsFromEmploymentList(user.employmentList);
+  const options = createArrayOfStringsFromEmploymentList(
+    user.employmentList as EmploymentProps[],
+  );
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -54,7 +46,7 @@ const EditBasicInfoForm = () => {
       <Dropdown
         options={options}
         style={{marginTop: 10}}
-        startingOption="Tagline"
+        startingOption={user.tagline ? user.tagline : 'Tagline'}
       />
       <Text style={{color: 'black', fontWeight: 'bold', fontSize: 16}}>
         Current Position
@@ -80,8 +72,6 @@ const EditBasicInfoForm = () => {
         onChangeText={setCity}
         value={city}
       />
-
-      
     </ScrollView>
   );
 };
