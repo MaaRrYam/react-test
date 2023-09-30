@@ -21,6 +21,7 @@ import {
   YearPicker,
   Dropdown,
   LocationDropdown,
+  TextArea,
 } from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
@@ -67,4 +68,5 @@ export {
   EditEducationForm,
   Dropdown,
   LocationDropdown,
+  TextArea,
 };

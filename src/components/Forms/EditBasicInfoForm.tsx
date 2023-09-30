@@ -1,6 +1,6 @@
 import {View, Text, ScrollView} from 'react-native';
 import React, {useState} from 'react';
-import {Dropdown, Input, LocationDropdown} from '@/components';
+import {Dropdown, Input, LocationDropdown, TextArea} from '@/components';
 import {EmploymentProps, UserInterface} from '@/interfaces';
 
 interface UserInfoProps {
@@ -8,10 +8,15 @@ interface UserInfoProps {
 }
 const EditBasicInfoForm = ({user}: UserInfoProps) => {
   const [name, setName] = useState<string>(user.name);
-  const [about, setAbout] = useState<string>(user.description);
+  const [about, setAbout] = useState<string>(user.description as string);
   const [country, setCountry] = useState<string>(user.country);
   const [state, setState] = useState<string>(user.state);
   const [city, setCity] = useState<string>(user.city);
+
+  const formattedText = about.replace(
+    new RegExp(`(.{${20}})`, 'g'),
+    '$1\n'
+  );
   const createArrayOfStringsFromEmploymentList = (list: EmploymentProps[]) => {
     return list.map(
       employment => ` ${employment.role} at ${employment.companyName}`,
@@ -33,7 +38,7 @@ const EditBasicInfoForm = ({user}: UserInfoProps) => {
         onChangeText={setName}
         value={name}
       />
-      <Input
+      <TextArea
         name="About"
         placeholder="About"
         onChangeText={setAbout}

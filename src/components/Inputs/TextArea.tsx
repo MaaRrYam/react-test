@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
 import {COLORS, FONTS} from '../../constants';
-import {InputProps} from 'interfaces';
+import {InputProps} from '@/interfaces';
 
-const Input: React.FC<InputProps> = ({
+const TextArea: React.FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,
@@ -75,12 +75,14 @@ const Input: React.FC<InputProps> = ({
         <TextInput
           value={value}
           onChangeText={handleTextChange}
-          style={styles.input}
+          style={[styles.input, styles.textArea]} // Use styles.textArea for multiline input
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           editable={!disabled}
+          multiline={true} // Enable multiline input
+          numberOfLines={4} // You can adjust the number of visible lines as needed
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}
@@ -91,7 +93,7 @@ const Input: React.FC<InputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    paddingVertical: 10,
+    paddingVertical: 13,
     borderRadius: 8,
     borderWidth: 1,
     position: 'relative',
@@ -102,6 +104,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.black,
   },
+  textArea: {
+    minHeight: 100, // Adjust the minimum height for your text area
+    textAlignVertical: 'top', // Place the text at the top
+  },
   error: {
     fontSize: FONTS.bodySmall,
     color: 'red',
@@ -110,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Input;
+export default TextArea;

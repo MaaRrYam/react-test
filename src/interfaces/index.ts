@@ -72,6 +72,7 @@ export interface InputProps {
   setFieldTouched?: any;
   setFieldValue?: any;
   disabled?: boolean;
+  maxLength?: number;
 }
 
 export interface StorageServiceProps {
