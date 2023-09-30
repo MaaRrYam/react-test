@@ -328,3 +328,14 @@ export interface SearchButtonProps {
   style: StyleProp<ViewStyle>;
   onPress: () => void;
 }
+
+export interface CacheServiceInterface {
+  set<T>(key: string, data: T): Promise<void>;
+  get<T>(key: string): Promise<T | null>;
+  isCacheValid: (timestamp: number) => boolean;
+}
+
+export interface CacheItem<T> {
+  data: T;
+  timestamp: number;
+}

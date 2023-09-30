@@ -1,66 +1,28 @@
 import StorageService from '@/services/Storage';
-import FirebaseService from '@/services/Firebase';
+import {CACHE_EXPIRATION_TIME} from '@/constants';
+import {CacheServiceInterface, CacheItem} from '@/interfaces';
 
-import {
-  CACHE_EXPIRATION_TIME,
-  getUserCacheKey,
-  getFeedCacheKey,
-} from '@/constants';
-import {UserInterface, FeedItem} from '@/interfaces';
-
-const Cache = {
-  async setUser(user: UserInterface): Promise<void> {
-    const userCacheKey = getUserCacheKey(user.id);
-    await this.updateCache(userCacheKey, user);
-  },
-
-  async getUser(uid: string): Promise<UserInterface | null> {
+const Cache: CacheServiceInterface = {
+  async set<T>(key: string, data: T): Promise<void> {
     try {
-      const cachedUserData = await this.getCachedData(getUserCacheKey(uid));
-
-      if (cachedUserData && this.isCacheValid(cachedUserData.timestamp)) {
-        return cachedUserData.data as UserInterface;
-      }
-
-      const user = (await FirebaseService.getDocument(
-        'users',
-        uid,
-      )) as UserInterface;
-      this.updateCache(getUserCacheKey(uid), user);
-
-      return user;
+      const cacheItem: CacheItem<T> = {
+        data,
+        timestamp: new Date().getTime(),
+      };
+      await StorageService.setItem(key, cacheItem);
     } catch (error) {
-      console.error('Error fetching user data:', error);
-      throw error;
+      console.error('Error setting cache:', error);
     }
   },
 
-  async setFeed(feed: FeedItem[]): Promise<void> {
-    const feedCacheKey = getFeedCacheKey();
-    await this.updateCache(feedCacheKey, feed);
-  },
-
-  async getFeed(): Promise<FeedItem[] | null> {
+  async get<T>(key: string): Promise<T | null> {
     try {
-      const cachedFeedData = await this.getCachedData(getFeedCacheKey());
+      const cachedData = await StorageService.getItem<CacheItem<T>>(key);
 
-      if (cachedFeedData) {
-        return cachedFeedData.data as FeedItem[];
+      if (cachedData && this.isCacheValid(cachedData.timestamp)) {
+        return cachedData.data;
       }
 
-      return null;
-    } catch (error) {
-      console.error('Error fetching feed data:', error);
-      throw error;
-    }
-  },
-
-  async getCachedData(cacheKey: string): Promise<any | null> {
-    try {
-      const cachedData = (await StorageService.getItem(cacheKey)) as any;
-      if (cachedData) {
-        return JSON.parse(cachedData);
-      }
       return null;
     } catch (error) {
       console.error('Error getting cached data:', error);
@@ -72,11 +34,6 @@ const Cache = {
     const currentTime = new Date().getTime();
     return currentTime - timestamp < CACHE_EXPIRATION_TIME;
   },
-
-  async updateCache(cacheKey: string, data: any): Promise<void> {
-    const cacheItem = {data, timestamp: new Date().getTime()};
-    await StorageService.setItem(cacheKey, cacheItem);
-  },
 };
 
-export const {setUser, getUser, setFeed, getFeed} = Cache;
+export default Cache;

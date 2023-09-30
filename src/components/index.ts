@@ -10,7 +10,6 @@ import {
   ExperienceCard,
   ChatItem,
   NetworkItem,
-  NotificationItem,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
@@ -22,6 +21,7 @@ import Header from '@/components/Header';
 import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import Feed from '@/components/Feed/Feed';
+import {NotificationsList} from '@/components/Notifications';
 
 import SearchButton from '@/components/Search';
 export {
@@ -43,7 +43,7 @@ export {
   ChatItem,
   NetworkItem,
   RoundedButton,
-  NotificationItem,
+  NotificationsList,
   SocialLoginButton,
   Loading,
   Empty,
