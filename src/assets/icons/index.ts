@@ -16,7 +16,7 @@ import Share from './Share';
 import ThreeDots from './ThreeDots';
 import Empty from './Empty';
 import Cross from './Cross';
-
+import ArrowDown from './ArrowDown';
 export {
   BackArrow,
   Dislike,
@@ -36,4 +36,5 @@ export {
   ThreeDots,
   Empty,
   Cross,
+  ArrowDown,
 };

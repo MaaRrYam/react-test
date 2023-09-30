@@ -15,7 +15,13 @@ import {
   CareerCard,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
-import {Input, Checkbox, YearPicker} from '@/components/Inputs';
+import {
+  Input,
+  Checkbox,
+  YearPicker,
+  Dropdown,
+  LocationDropdown,
+} from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
 import {
@@ -59,4 +65,6 @@ export {
   EditBasicInfoForm,
   EditCareerForm,
   EditEducationForm,
+  Dropdown,
+  LocationDropdown,
 };

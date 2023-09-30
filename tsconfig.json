@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/utils/IconsHelper.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/utils/IconsHelper.tsx", "src/components/Inputs/Dropdown.tsx"],
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
