@@ -153,9 +153,6 @@ const PostItem = ({item}: {item: FeedItem}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // if (item.text === 'This is just a test') {
-  //   console.log(item.id);
-  // }
   return (
     <>
       <Text style={styles.feedContent}>{item.text}</Text>

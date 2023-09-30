@@ -14,7 +14,7 @@ const FeedItemComponent = ({item}: {item: FeedItem}) => {
         <Image source={{uri: item.author.photoUrl}} style={styles.userImage} />
         <View style={{marginLeft: 10}}>
           <Text style={styles.authorName}>{item.author?.name}</Text>
-          <Text style={styles.authorTagline}>
+          <Text style={styles.postTime}>
             {formatFirebaseTimestamp(
               item.editedTime || item.timestamp,
               'dateTime',

@@ -1,18 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, BORDER_RADIUS, PADDING} from '@/constants';
+import {COLORS, BORDER_RADIUS, PADDING, FONTS, MARGINS} from '@/constants';
 
 export const styles = StyleSheet.create({
   postReactions: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    marginTop: 15,
   },
   iconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: 3 / 4,
-    marginLeft: 15,
+    flex: 3 / 5,
+    marginLeft: MARGINS.general,
   },
   reactionButton: {
     paddingHorizontal: 20,
@@ -21,9 +19,10 @@ export const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.general * 2,
   },
   like: {
-    paddingTop: 7,
-    marginHorizontal: 8,
+    paddingTop: 8,
+    marginHorizontal: MARGINS.general / 2,
     color: COLORS.black,
+    fontSize: FONTS.bodySmall,
   },
   subheader: {
     backgroundColor: COLORS.white,
@@ -70,13 +69,13 @@ export const styles = StyleSheet.create({
   feedContent: {
     fontSize: 13,
     color: COLORS.black,
-    marginTop: 10,
+    marginBottom: 8,
   },
   media: {
     width: '100%',
     height: 200,
     borderRadius: 8,
-    marginVertical: 8,
+    marginBottom: 8,
     objectFit: 'cover',
   },
   authorInfo: {
@@ -94,16 +93,16 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   authorName: {
-    fontSize: 14,
+    fontSize: FONTS.bodyRegular,
     fontWeight: 'bold',
     color: COLORS.black,
   },
   authorTagline: {
-    fontSize: 14,
+    fontSize: FONTS.bodySmall,
     color: 'gray',
   },
   postTime: {
-    fontSize: 14,
+    fontSize: FONTS.bodySmall,
     color: 'gray',
     marginBottom: 8,
   },
