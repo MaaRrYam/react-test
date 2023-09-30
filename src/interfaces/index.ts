@@ -82,6 +82,11 @@ export interface StorageServiceProps {
 }
 export interface FirebaseServiceProps {
   addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  setDoc(
+    collectionName: string,
+    docId: string,
+    payload: DocumentData,
+  ): Promise<void>;
   deleteDocument(collectionName: string, id: string): Promise<void>;
   updateDocument(
     collectionName: string,
@@ -376,7 +381,7 @@ export interface ChatMessageInterface {
   fileUrl: string;
   message: string;
   photoUrl: string;
-  recieverId: string;
+  receiverId: string;
   senderId: string;
   time: Timestamp;
   type: 'text' | 'file' | 'picture';
@@ -390,4 +395,9 @@ export interface GroupedMessage {
     sender: string;
     time: string;
   }[];
+}
+
+export interface SendMessageInterface extends ChatMessageInterface {
+  receiver: UserInterface;
+  sender: UserInterface;
 }

@@ -1,3 +1,4 @@
+import {SendMessageInterface} from './../../interfaces/index';
 import {
   Timestamp,
   collection,
@@ -131,6 +132,65 @@ const ChatsService = {
     );
 
     return unsub;
+  },
+  async sendMessage(payload: SendMessageInterface) {
+    try {
+      const chatAddress = this.findChatAddress(
+        payload.senderId,
+        payload.receiverId,
+      );
+      await FirebaseService.addDocument(
+        `chats/${chatAddress}/messages`,
+        payload,
+      );
+
+      await Promise.all([
+        FirebaseService.setDoc(
+          `users/${payload.senderId}/chats`,
+          payload.receiverId,
+          {
+            userId: payload.receiverId,
+            message: payload.message,
+            time: FirebaseService.serverTimestamp(),
+            read: true,
+            name: payload.receiver?.name,
+            photoUrl: payload.receiver?.photoUrl,
+          },
+        ),
+        FirebaseService.setDoc(
+          `users/${payload.senderId}/chats`,
+          payload.receiverId,
+          {
+            userId: payload.senderId,
+            message: payload.message,
+            time: FirebaseService.serverTimestamp(),
+            read: false,
+            name: payload.sender?.name,
+            photoUrl: payload.sender?.photoUrl,
+          },
+        ),
+      ]);
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async bockUser(userId: string) {
+    try {
+      const data = {
+        userId,
+        blockedBy: UID,
+        timestamp: FirebaseService.serverTimestamp(),
+      };
+
+      await FirebaseService.setDoc(`users/${UID}/blockedUser`, userId, data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 };
 
