@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    paddingHorizontal: PADDING.general,
   },
   heading: {
     fontSize: 18,

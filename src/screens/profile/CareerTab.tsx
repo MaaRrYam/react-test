@@ -1,25 +1,24 @@
-import {View} from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React from 'react';
-import {CareerCard} from '@/components';
+import { CareerCard } from '@/components';
+import { EmploymentProps } from '@/interfaces'
 interface CareerTabProps {
-  careerList: Array<any>;
+  careerList: Array<EmploymentProps>;
 }
-const CareerTab = ({careerList}: CareerTabProps) => {
+const CareerTab = ({ careerList }: CareerTabProps) => {
   return (
-    <View>
+    <ScrollView scrollEnabled>
       {careerList?.map(item => (
-        <CareerCard
-          title={item.role}
-          company={item.companyName}
-          startDate={item.startYear}
-          endDate={
-            item.endYear === new Date().getFullYear().toString()
-              ? 'Present'
-              : item.endYear
-          }
-        />
+        <View style={{paddingHorizontal: 20,borderBottomColor: '#E4E4E4', borderBottomWidth: 1}}>
+          <CareerCard
+            title={item.role}
+            company={item.companyName}
+            startDate={item.startYear}
+            endDate={item.currentlyWorking ? 'Present' : item.endYear}
+          />
+        </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,26 +1,24 @@
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import React from 'react';
 import {CareerCard} from '@/components';
+import {EducationProps} from '@/interfaces';
 interface EducationTabProps {
-  educationList: Array<any>;
+  educationList: Array<EducationProps>;
 }
 const EducationTab = ({educationList}: EducationTabProps) => {
-  const today = new Date();
   return (
-    <View>
+    <ScrollView>
       {educationList.map(item => (
-        <CareerCard
-          title={item.degree}
-          company={item.instituteName}
-          startDate={item.startYear}
-          endDate={
-            item.endYear === today.getFullYear().toString()
-              ? 'Present'
-              : item.endYear
-          }
-        />
+        <View style={{paddingHorizontal: 20,borderBottomColor: '#E4E4E4', borderBottomWidth: 1}}>
+          <CareerCard
+            title={item.degree}
+            company={item.instituteName}
+            startDate={item.startYear}
+            endDate={item.currentlyStudying ? 'Present' : item.endYear}
+          />
+        </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

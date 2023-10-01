@@ -74,14 +74,14 @@ export default StyleSheet.create({
   },
   tabsContainer: {
     backgroundColor: COLORS.white,
-    marginTop: 3,
-    paddingHorizontal: 10,
+    marginTop: 6,
     paddingBottom: 10,
   },
   tabsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 20,
+    paddingHorizontal: PADDING.general,
   },
   tabButtonContainer: {
     flexDirection: 'row',

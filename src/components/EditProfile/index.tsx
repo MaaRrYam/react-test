@@ -53,7 +53,7 @@ const EditProfile = ({isVisible, onClose, user, tabItem}: EditProfileProps) => {
             {tabItem !== 'Profile' && (
               <SecondaryButton
                 title={`Add New ${
-                  tabItem === 'Education' ? 'Education' : 'Career'
+                  tabItem === 'Education' ? 'Education' : 'Experience'
                 }`}
                 style={styles.addButton}
                 onPress={() => {}}
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   contentContainer: {
-    paddingHorizontal: 20,
+
     paddingTop: 20,
     flex: 1,
   },

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
-    columnGap: 10,
+    paddingBottom: 10,
   },
   iconContainer: {
     width: 50,
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    marginLeft: 10,
   },
   title: {
     color: COLORS.black,

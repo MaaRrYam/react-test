@@ -1,26 +1,24 @@
-import {View} from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
-import {EmploymentProps} from '@/interfaces';
-import {CareerCard} from '../Cards';
+import { EmploymentProps } from '@/interfaces';
+import { CareerCard } from '../Cards';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
 }
-const EditCareerForm: React.FC<CareerFormProps> = ({careerList}) => {
+const EditCareerForm: React.FC<CareerFormProps> = ({ careerList }) => {
   return (
     <View>
       {careerList?.map(item => (
-        <CareerCard
-          title={item.role}
-          company={item.companyName}
-          startDate={item.startYear}
-          endDate={
-            item.endYear === new Date().getFullYear().toString()
-              ? 'Present'
-              : item.endYear
-          }
-          editable
-        />
+        <View style={{paddingHorizontal: 20, borderBottomColor: '#E4E4E4', borderBottomWidth: 1}}>
+          <CareerCard
+            title={item.role}
+            company={item.companyName}
+            startDate={item.startYear}
+            endDate={item.currentlyWorking ? 'Present' : item.endYear}
+            editable
+          />
+        </View>
       ))}
     </View>
   );

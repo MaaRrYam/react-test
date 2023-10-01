@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
 import {EducationProps} from '@/interfaces';
 import {CareerCard} from '../Cards';
@@ -6,25 +6,23 @@ import {CareerCard} from '../Cards';
 interface EditEducationProps {
   educationList: Array<EducationProps>;
 }
+
 const EditEducationForm = ({educationList}: EditEducationProps) => {
-  const today = new Date();
   return (
-    <View>
+    <ScrollView>
       {educationList.map((item, index) => (
-        <CareerCard
-          title={item.degree}
-          company={item.instituteName}
-          startDate={item.startYear}
-          endDate={
-            item.endYear === today.getFullYear().toString()
-              ? 'Present'
-              : item.endYear
-          }
-          editable
-          key={index}
-        />
+        <View style={{paddingHorizontal: 20, borderBottomWidth: 1, borderBottomColor: '#E4E4E4'}}>
+          <CareerCard
+            title={item.degree}
+            company={item.instituteName}
+            startDate={item.startYear}
+            endDate={item.currentlyStudying ? 'Present' : item.endYear}
+            editable
+            key={index}
+          />
+        </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

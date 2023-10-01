@@ -27,7 +27,8 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.container}>
       <ScrollView>
         <Text style={styles.headerText}>Basic Information</Text>
         <Input
@@ -78,6 +79,9 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+  },
   headerText: {
     color: 'black',
     fontWeight: 'bold',
