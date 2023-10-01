@@ -1,10 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {ActivityIndicator, FlatList, RefreshControl} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {Loading} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {getFeed} from '@/store/features/homeSlice';
+import {getFeed, setFeedFromCache} from '@/store/features/homeSlice';
+import {COLORS} from '@/constants';
 import FeedItem from './FeedItem';
 
 const Feed = () => {
@@ -26,29 +28,35 @@ const Feed = () => {
     }
   }, [dispatch, isFeedFetched]);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     fetchData();
-  }, [fetchData]);
+  });
 
   useEffect(() => {
     if (isFeedFetched) {
       setIsRefreshing(false);
     }
-  }, [isFeedFetched]);
 
-  if (isFeedFirstRequest) {
+    dispatch(setFeedFromCache());
+  }, [dispatch, isFeedFetched]);
+
+  if (isFeedFirstRequest && !feed.length) {
     return <Loading />;
   }
-
   return (
-    <FlatList
-      data={feed}
-      renderItem={({item}) => <FeedItem item={item} />}
-      keyExtractor={item => item._id}
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-      }
-    />
+    <>
+      <FlatList
+        data={feed}
+        renderItem={({item}) => <FeedItem item={item} />}
+        keyExtractor={item => item._id}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        }
+      />
+      {!isFeedFetched && feed.length && (
+        <ActivityIndicator color={COLORS.primary} size="large" />
+      )}
+    </>
   );
 };
 

@@ -6,9 +6,23 @@ import {HomeScreenProps} from '@/types';
 import {homeStyles} from '@/styles/home';
 import {styles} from './styles';
 import useUserManagement from '@/hooks/useUserManagement';
+import Cache from '@/cache';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {useFocusEffect} from '@react-navigation/native';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
+  const {feed} = useAppSelector(state => state.home);
+
+  useFocusEffect(() => {
+    return () => {
+      (async () => {
+        const lastFeedItems = feed?.slice(feed.length - 8);
+        await Cache.set('feed', lastFeedItems);
+      })();
+    };
+  });
+
   return (
     <View style={homeStyles.outerContainer}>
       <SafeAreaView style={homeStyles.container}>

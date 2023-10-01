@@ -3,6 +3,12 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {FeedItem, ReactionPayload} from '@/interfaces';
 import HomeService from '@/services/home';
 import {getUID} from '@/utils/functions';
+import Cache from '@/cache';
+
+let localFeed: FeedItem[] | null = null;
+(async () => {
+  localFeed = await Cache.get('feed');
+})();
 
 const initialState = {
   feed: [] as FeedItem[],
@@ -12,13 +18,31 @@ const initialState = {
 
 export const getFeed = createAsyncThunk('home/getFeed', async () => {
   const result = await HomeService.getFeed();
-  return result;
+  const mergedFeed: FeedItem[] = [];
+
+  if (localFeed) {
+    localFeed.forEach(localItem => {
+      const index = result.findIndex(item => item.id === localItem.id);
+      if (index !== -1) {
+        result.splice(index, 1, localItem);
+      }
+    });
+  }
+
+  mergedFeed.push(...result);
+
+  return mergedFeed;
 });
 
 export const homeSlice = createSlice({
   name: 'home',
   initialState,
   reducers: {
+    setFeedFromCache(state) {
+      if (localFeed) {
+        state.feed = localFeed;
+      }
+    },
     addLike(state, {payload}: {payload: ReactionPayload}) {
       state.feed = state.feed.map(post => {
         if (post.id === payload.id) {
@@ -137,6 +161,7 @@ export const {
   removeLike,
   addDislikeAndRemoveLike,
   addLikeAndRemoveDislike,
+  setFeedFromCache,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;

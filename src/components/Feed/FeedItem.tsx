@@ -31,4 +31,4 @@ const FeedItemComponent = ({item}: {item: FeedItem}) => {
   );
 };
 
-export default FeedItemComponent;
+export default React.memo(FeedItemComponent);
