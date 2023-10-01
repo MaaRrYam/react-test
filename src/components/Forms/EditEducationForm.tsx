@@ -11,7 +11,13 @@ const EditEducationForm = ({educationList}: EditEducationProps) => {
   return (
     <ScrollView>
       {educationList.map((item, index) => (
-        <View style={{paddingHorizontal: 20, borderBottomWidth: 1, borderBottomColor: '#E4E4E4'}}>
+        <View
+          style={{
+            paddingHorizontal: 20,
+            borderBottomColor:
+              index === educationList.length - 1 ? 'transparent' : '#E4E4E4',
+            borderBottomWidth: index === educationList.length - 1 ? 0 : 1,
+          }}>
           <CareerCard
             title={item.degree}
             company={item.instituteName}
