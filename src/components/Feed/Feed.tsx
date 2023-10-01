@@ -53,9 +53,9 @@ const Feed = () => {
           <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
         }
       />
-      {!isFeedFetched && feed.length && (
+      {/* {!isFeedFetched && feed.length && (
         <ActivityIndicator color={COLORS.primary} size="large" />
-      )}
+      )} */}
     </>
   );
 };

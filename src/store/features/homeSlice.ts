@@ -18,18 +18,22 @@ const initialState = {
 
 export const getFeed = createAsyncThunk('home/getFeed', async () => {
   const result = await HomeService.getFeed();
-  const mergedFeed: FeedItem[] = [];
+  const mergedFeed: FeedItem[] = localFeed ? [...localFeed] : [];
 
   if (localFeed) {
-    localFeed.forEach(localItem => {
-      const index = result.findIndex(item => item.id === localItem.id);
-      if (index !== -1) {
-        result.splice(index, 1, localItem);
+    result.forEach((post: FeedItem) => {
+      const foundPost = localFeed!.find(
+        (item: FeedItem) => item.id === post.id,
+      );
+      if (foundPost) {
+        return;
+      } else {
+        mergedFeed.push(post);
       }
     });
+  } else {
+    mergedFeed.push(...result);
   }
-
-  mergedFeed.push(...result);
 
   return mergedFeed;
 });
