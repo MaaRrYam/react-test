@@ -17,6 +17,7 @@ import ThreeDots from './ThreeDots';
 import Empty from './Empty';
 import Cross from './Cross';
 import ArrowDown from './ArrowDown';
+import Delete from './Delete';
 export {
   BackArrow,
   Dislike,
@@ -37,4 +38,5 @@ export {
   Empty,
   Cross,
   ArrowDown,
+  Delete,
 };

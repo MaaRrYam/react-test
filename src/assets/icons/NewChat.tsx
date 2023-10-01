@@ -4,7 +4,7 @@ import Svg, {Path, Defs, ClipPath, Rect, G} from 'react-native-svg';
 const NewChat = () => {
   return (
     <View style={styles.container}>
-      <Svg width={19} height={19} viewBox="0 0 19 19">
+      <Svg width={17} height={17} viewBox="0 0 19 19">
         <Defs>
           <ClipPath id="clip0">
             <Rect width={19} height={19} fill="white" />

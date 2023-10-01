@@ -37,6 +37,7 @@ import Header from '@/components/Header';
 import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search';
+import EditProfile from '@/components/EditProfile';
 export {
   BackButton,
   PrimaryButton,
@@ -69,4 +70,5 @@ export {
   Dropdown,
   LocationDropdown,
   TextArea,
+  EditProfile,
 };

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, FONTS, MARGINS, PADDING} from '@/constants';
+import {COLORS, FONTS, PADDING} from '@/constants';
 
 export default StyleSheet.create({
   safeArea: {
@@ -105,9 +105,6 @@ export default StyleSheet.create({
     backgroundColor: COLORS.lightGrayBackground,
     padding: 10,
     borderRadius: 1000,
-    marginTop: -2,
+    marginTop: 0,
   },
-  moreIcon: {
-
-  }
 });

@@ -15,7 +15,6 @@ const TextArea: React.FC<InputProps> = ({
   name,
   setFieldTouched,
   disabled,
-  maxLength,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -75,14 +74,14 @@ const TextArea: React.FC<InputProps> = ({
         <TextInput
           value={value}
           onChangeText={handleTextChange}
-          style={[styles.input, styles.textArea]} // Use styles.textArea for multiline input
+          style={[styles.input, styles.textArea]}
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           editable={!disabled}
-          multiline={true} // Enable multiline input
-          numberOfLines={4} // You can adjust the number of visible lines as needed
+          multiline={true}
+          numberOfLines={4}
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}
@@ -105,8 +104,8 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
   textArea: {
-    minHeight: 100, // Adjust the minimum height for your text area
-    textAlignVertical: 'top', // Place the text at the top
+    minHeight: 100,
+    textAlignVertical: 'top',
   },
   error: {
     fontSize: FONTS.bodySmall,

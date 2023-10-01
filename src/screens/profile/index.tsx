@@ -50,9 +50,6 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const openBottomSheet = () => {
     setIsVisible(true);
   };
-  const closeBottomSheet = () => {
-    setIsVisible(false);
-  };
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {

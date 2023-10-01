@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
-import {BottomSheet} from '@/components';
 interface TabDataInterface {
   bio: string;
   photo: string;
