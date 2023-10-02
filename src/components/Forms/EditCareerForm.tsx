@@ -1,9 +1,10 @@
-import {Text, View} from 'react-native';
 import React, {useState} from 'react';
+import {Text, View, StyleSheet} from 'react-native';
 import {EmploymentProps} from '@/interfaces';
 import {CareerCard} from '../Cards';
 import {FONTS} from '@/constants';
 import {Input, Checkbox} from '../Inputs';
+import {PrimaryButton} from '../Buttons';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -92,13 +93,43 @@ const EditCareerForm: React.FC<CareerFormProps> = ({careerList}) => {
               startDate={item.startYear}
               endDate={item.currentlyWorking ? 'Present' : item.endYear}
               editable
-              onEdit={() => setIsVisible(true)}
+              onEdit={() => {
+                setIsVisible(true);
+                setCompanyName(item.companyName);
+                setEndYear(item.currentlyWorking ? item.endYear as string : '');
+                setIsCurrentlyWorking(
+                  item.currentlyWorking ? item.currentlyWorking : false,
+                );
+                setStartYear(item.startYear);
+                setRole(item.role);
+              }}
             />
           </View>
         ))
       )}
+      {isVisible && (
+        <View style={styles.footer}>
+          <PrimaryButton
+            title="Save"
+            onPress={() => {}}
+            style={styles.saveButton}
+          />
+        </View>
+      )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  footer: {
+    borderTopColor: '#E4E4E4',
+    borderTopWidth: 1,
+    paddingHorizontal: 20,
+    marginTop: 260,
+  },
+  saveButton: {
+    marginTop: 10,
+  },
+});
 
 export default EditCareerForm;

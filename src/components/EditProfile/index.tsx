@@ -62,15 +62,6 @@ const EditProfile = ({isVisible, onClose, user, tabItem}: EditProfileProps) => {
           </View>
         </View>
         <View style={styles.contentContainer}>{renderForm()}</View>
-        <View style={styles.footer}>
-          <PrimaryButton
-            title="Save"
-            onPress={() => {}}
-            style={
-              tabItem === 'Profile' ? styles.saveButton : {display: 'none'}
-            }
-          />
-        </View>
       </View>
     </BottomSheet>
   );
@@ -110,15 +101,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 20,
     flex: 1,
-  },
-  footer: {
-    borderTopColor: '#E4E4E4',
-    borderTopWidth: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-  },
-  saveButton: {
-    marginTop: 10,
   },
 });
 

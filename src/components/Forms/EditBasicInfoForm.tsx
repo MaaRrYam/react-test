@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,14 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import {Dropdown, Input, TextArea} from '@/components';
-import {UserInterface} from '@/interfaces';
+import { Dropdown, Input, PrimaryButton, TextArea } from '@/components';
+import { UserInterface } from '@/interfaces';
 
 interface UserInfoProps {
   user: UserInterface;
 }
 
-const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
+const EditBasicInfoForm: React.FC<UserInfoProps> = ({ user }) => {
   const [name, setName] = useState<string>(user.name);
   const [about, setAbout] = useState<string>(user.description || '');
   const [country, setCountry] = useState<string>(user.country || '');
@@ -30,29 +30,31 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}>
       <ScrollView>
-        <Text style={styles.headerText}>Basic Information</Text>
-        <Input
-          name="Name"
-          placeholder="Name"
-          onChangeText={setName}
-          value={name}
-        />
-        <TextArea
-          name="About"
-          placeholder="About"
-          onChangeText={setAbout}
-          value={about}
-          style={styles.textArea}
-        />
+        <Text style={[styles.headerText, {paddingHorizontal: 20,}]}>Basic Information</Text>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Input
+            name="Name"
+            placeholder="Name"
+            onChangeText={setName}
+            value={name}
+          />
+          <TextArea
+            name="About"
+            placeholder="About"
+            onChangeText={setAbout}
+            value={about}
+            style={styles.textArea}
+          />
 
-        <Text style={styles.headerText}>Current Position</Text>
-        <Dropdown
-          options={employmentOptions || []}
-          style={styles.dropdown}
-          startingOption={user.tagline || 'Tagline'}
-        />
+          <Text style={styles.headerText}>Current Position</Text>
+          <Dropdown
+            options={employmentOptions || []}
+            style={styles.dropdown}
+            startingOption={user.tagline || 'Tagline'}
+          />
+        </View>
 
-        <ScrollView scrollEnabled>
+        <ScrollView scrollEnabled style={{ paddingHorizontal: 20, }}>
           <Text style={styles.headerText}>Location</Text>
           <Input
             name="Country"
@@ -72,15 +74,22 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
             onChangeText={setCity}
             value={city}
           />
-        </ScrollView>
+          </ScrollView>
       </ScrollView>
+      <View style={styles.footer}>
+        <PrimaryButton
+          title="Save"
+          onPress={() => { }}
+          style={styles.saveButton}
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    flex: 1,
   },
   headerText: {
     color: 'black',
@@ -91,6 +100,14 @@ const styles = StyleSheet.create({
     height: 106,
   },
   dropdown: {
+    marginTop: 10,
+  },
+  footer: {
+    borderTopColor: '#E4E4E4',
+    borderTopWidth: 1,
+    paddingHorizontal: 20,
+  },
+  saveButton: {
     marginTop: 10,
   },
 });
