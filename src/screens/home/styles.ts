@@ -134,4 +134,41 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
+  commentsContainer: {
+    flex: 1,
+  },
+  comments: {
+    marginTop: MARGINS.general / 2,
+    paddingHorizontal: PADDING.general,
+  },
+  comment: {
+    marginBottom: MARGINS.general,
+    backgroundColor: COLORS.lightGrayBackground,
+    borderRadius: BORDER_RADIUS.general,
+    padding: PADDING.general / 2,
+  },
+  commentImage: {
+    width: 34,
+    height: 34,
+    borderRadius: 12,
+    marginRight: 8,
+  },
+  author: {
+    flexDirection: 'row',
+  },
+  commentText: {
+    marginTop: MARGINS.general / 3,
+    fontSize: FONTS.bodyRegular,
+    color: COLORS.black,
+    marginLeft: 48,
+  },
+  commentAuthorName: {
+    fontSize: FONTS.bodySmall,
+    fontWeight: 'bold',
+    color: COLORS.black,
+  },
+  commentAuthorTagline: {
+    fontSize: FONTS.bodySmall,
+    color: 'gray',
+  },
 });

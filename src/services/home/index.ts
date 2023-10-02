@@ -124,6 +124,7 @@ const HomeService = {
       return result;
     } catch (error) {
       console.log(error);
+      return [] as FeedComment[];
     }
   },
 };

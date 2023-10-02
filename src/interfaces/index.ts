@@ -349,3 +349,14 @@ export interface FeedCommentsResponse {
 export interface FeedComment extends FeedCommentsResponse {
   user: UserInterface;
 }
+
+export interface FeedItemProps {
+  item: FeedItem;
+  fetchPostComments: (postId: string) => Promise<void>;
+}
+
+export interface PostCommentsProps {
+  loading: boolean;
+  comments: FeedComment[];
+  showComments: boolean;
+}

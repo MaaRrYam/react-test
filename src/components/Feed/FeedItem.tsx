@@ -1,13 +1,13 @@
 import React from 'react';
 import {View, Image, Text} from 'react-native';
 
-import {FeedItem} from '@/interfaces';
+import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
 import {formatFirebaseTimestamp} from '@/utils';
 import PostItem from './PostItem';
 import ArticleItem from './ArticleItem';
 
-const FeedItemComponent = ({item}: {item: FeedItem}) => {
+const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
   return (
     <View style={styles.feedItem}>
       <View style={styles.authorInfo}>
@@ -23,7 +23,7 @@ const FeedItemComponent = ({item}: {item: FeedItem}) => {
         </View>
       </View>
       {item.feedType === 'post' ? (
-        <PostItem item={item} />
+        <PostItem item={item} fetchPostComments={fetchPostComments} />
       ) : (
         <ArticleItem item={item} />
       )}

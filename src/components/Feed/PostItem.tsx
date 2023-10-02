@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 
-import {FeedItem} from '@/interfaces';
+import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -18,7 +18,7 @@ import FirebaseService from '@/services/Firebase';
 import ToastService from '@/services/toast';
 import {getUID} from '@/utils/functions';
 
-const PostItem = ({item}: {item: FeedItem}) => {
+const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   const dispatch = useAppDispatch();
   const [reactions, setReactions] = useState({
     like: false,
@@ -169,7 +169,7 @@ const PostItem = ({item}: {item: FeedItem}) => {
         </TouchableOpacity>
 
         <View style={styles.iconsContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
             <Comment />
           </TouchableOpacity>
           <TouchableOpacity>
