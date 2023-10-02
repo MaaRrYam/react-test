@@ -1,6 +1,12 @@
 import {API_GET} from '@/config/api/apiRequests';
-import {FeedItem} from '@/interfaces';
+import {
+  FeedComment,
+  FeedCommentsResponse,
+  FeedItem,
+  UserInterface,
+} from '@/interfaces';
 import FirebaseService from '../Firebase';
+import Cache from '@/cache';
 
 const HomeService = {
   async getFeed() {
@@ -86,6 +92,38 @@ const HomeService = {
     } catch (error) {
       console.log(error);
       return false;
+    }
+  },
+  async fetchPostComments(postId: string) {
+    try {
+      const response = (await FirebaseService.getAllDocuments(
+        `posts/${postId}/comments`,
+      )) as FeedCommentsResponse[];
+
+      const result: FeedComment[] = await Promise.all(
+        response.map(async item => {
+          let user = {} as UserInterface;
+
+          if (await Cache.get(`user_${item.userId}`)) {
+            user = (await Cache.get(`user_${item.userId}`)) as UserInterface;
+          } else {
+            user = (await FirebaseService.getDocument(
+              'users',
+              item.userId,
+            )) as UserInterface;
+            await Cache.set(`user_${item.userId}`, user);
+          }
+
+          return {
+            ...item,
+            user,
+          };
+        }),
+      );
+
+      return result;
+    } catch (error) {
+      console.log(error);
     }
   },
 };

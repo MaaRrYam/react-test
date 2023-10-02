@@ -1,12 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, RefreshControl} from 'react-native';
+import {FlatList, RefreshControl} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {Loading} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {getFeed, setFeedFromCache} from '@/store/features/homeSlice';
-import {COLORS} from '@/constants';
+import {
+  getFeed,
+  setFeedFetchedToFalse,
+  setFeedFromCache,
+} from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
 
 const Feed = () => {
@@ -19,6 +22,7 @@ const Feed = () => {
 
   const handleRefresh = () => {
     dispatch(getFeed());
+    dispatch(setFeedFetchedToFalse());
     setIsRefreshing(true);
   };
 
@@ -36,9 +40,11 @@ const Feed = () => {
     if (isFeedFetched) {
       setIsRefreshing(false);
     }
+  }, [isFeedFetched]);
 
+  useEffect(() => {
     dispatch(setFeedFromCache());
-  }, [dispatch, isFeedFetched]);
+  }, [dispatch]);
 
   if (isFeedFirstRequest && !feed.length) {
     return <Loading />;

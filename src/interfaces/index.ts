@@ -339,3 +339,13 @@ export interface CacheItem<T> {
   data: T;
   timestamp: number;
 }
+
+export interface FeedCommentsResponse {
+  text: string;
+  timestamp: string;
+  userId: string;
+}
+
+export interface FeedComment extends FeedCommentsResponse {
+  user: UserInterface;
+}

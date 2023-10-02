@@ -25,9 +25,8 @@ export const getFeed = createAsyncThunk('home/getFeed', async () => {
       const foundPost = localFeed!.find(
         (item: FeedItem) => item.id === post.id,
       );
-      if (foundPost) {
-        return;
-      } else {
+
+      if (!foundPost) {
         mergedFeed.push(post);
       }
     });
@@ -46,6 +45,9 @@ export const homeSlice = createSlice({
       if (localFeed) {
         state.feed = localFeed;
       }
+    },
+    setFeedFetchedToFalse(state) {
+      state.isFeedFetched = false;
     },
     addLike(state, {payload}: {payload: ReactionPayload}) {
       state.feed = state.feed.map(post => {
@@ -166,6 +168,7 @@ export const {
   addDislikeAndRemoveLike,
   addLikeAndRemoveDislike,
   setFeedFromCache,
+  setFeedFetchedToFalse,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;
