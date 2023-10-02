@@ -142,6 +142,7 @@ export interface EducationState {
 
 export interface CheckboxProps {
   onPress: (isChecked: boolean) => void;
+  isChecked: boolean;
   size?: number;
   color?: string;
   style?: any;

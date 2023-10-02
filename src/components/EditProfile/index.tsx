@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 8,
   },
   closeButton: {
     width: 30,
@@ -107,7 +108,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   contentContainer: {
-
     paddingTop: 20,
     flex: 1,
   },

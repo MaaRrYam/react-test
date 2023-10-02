@@ -9,6 +9,7 @@ interface CareerCardProps {
   startDate?: string;
   endDate?: string;
   editable?: boolean;
+  onEdit?: () => void;
 }
 
 const CareerCard: React.FC<CareerCardProps> = ({
@@ -17,6 +18,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
   startDate = 'Start Date',
   title = 'Title',
   editable = false,
+  onEdit,
 }) => {
   return (
     <View style={styles.container}>
@@ -42,7 +44,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
               <Delete />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onEdit}>
             <View style={styles.newChatButton}>
               <NewChat />
             </View>
