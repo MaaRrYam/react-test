@@ -1,12 +1,7 @@
 import React, {FC} from 'react';
 import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
-interface TabDataInterface {
-  bio: string;
-  photo: string;
-  bottomSheetVisible?: boolean;
-  setBottomSheetVisible?: (value: boolean) => void;
-}
+import {TabDataInterface} from '@/intefaces'
 
 const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
   return (

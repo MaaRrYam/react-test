@@ -1,24 +1,21 @@
-import { ScrollView, View } from 'react-native';
 import React from 'react';
-import { CareerCard } from '@/components';
-import { EmploymentProps } from '@/interfaces';
+import {ScrollView, View, StyleSheet} from 'react-native';
+import {CareerCard} from '@/components';
+import {CareerTabProps} from '@/interfaces';
 
-interface CareerTabProps {
-  careerList: Array<EmploymentProps>;
-}
-
-const CareerTab = ({ careerList }: CareerTabProps) => {
+const CareerTab = ({careerList}: CareerTabProps) => {
   return (
     <ScrollView scrollEnabled>
       {careerList?.map((item, index) => (
         <View
           key={index}
-          style={{
-            paddingHorizontal: 20,
-            borderBottomColor:
-              index === careerList.length - 1 ? 'transparent' : '#E4E4E4',
-            borderBottomWidth: index === careerList.length - 1 ? 0 : 1,
-          }}>
+          style={[
+            styles.careerItem,
+            {
+              borderBottomColor:
+                index === careerList.length - 1 ? 'transparent' : '#E4E4E4',
+            },
+          ]}>
           <CareerCard
             title={item.role}
             company={item.companyName}
@@ -30,5 +27,12 @@ const CareerTab = ({ careerList }: CareerTabProps) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  careerItem: {
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+  },
+});
 
 export default CareerTab;

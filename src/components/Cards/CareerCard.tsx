@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {COLORS} from '@/constants';
+import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import {Delete, NewChat} from '@/assets/icons';
 
 interface CareerCardProps {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
-    paddingBottom: 10,
+    paddingBottom: PADDING.general,
   },
   iconContainer: {
     width: 50,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.lightGrayBackground,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS.general,
   },
   icon: {
     width: 35,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     marginRight: 10,
-    backgroundColor: 'rgba(255, 24, 24, 0.06)',
+    backgroundColor: COLORS.deleteButtonBackground,
     padding: 10,
     borderRadius: 26,
   },

@@ -1,106 +1,139 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { EducationProps } from '@/interfaces';
-import { CareerCard } from '../Cards';
-import { Checkbox, Input, PrimaryButton } from '@/components';
-import { FONTS } from '@/constants';
-import { StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, View, ScrollView} from 'react-native';
+import {EducationProps} from '@/interfaces';
+import {CareerCard} from '../Cards';
+import {Checkbox, Input, PrimaryButton} from '@/components';
+import {FONTS} from '@/constants';
+import {StyleSheet} from 'react-native';
 
 interface EditEducationProps {
   educationList: Array<EducationProps>;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
+  setAddNew: (value: boolean) => void;
 }
 
-const EditEducationForm = ({ educationList }: EditEducationProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [instituteName, setInstituteName] = useState('');
-  const [degreeName, setDegreeName] = useState('');
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
-  const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(true);
+const EditEducationForm = ({
+  educationList,
+  isEditing,
+  setIsEditing,
+  addNew,
+  setAddNew,
+}: EditEducationProps) => {
+  const [educationDetails, setEducationDetails] = useState({
+    instituteName: '',
+    degreeName: '',
+    startYear: '',
+    endYear: '',
+    isCurrentlyStudying: false,
+  });
 
-  const handleSave = () => {
-    // Handle save action here
-    setIsVisible(false); // Close the form after saving
+  const [isNewData, setIsNewData] = useState(false);
+
+  useEffect(() => {
+    if (addNew) {
+      setEducationDetails({
+        instituteName: '',
+        degreeName: '',
+        startYear: '',
+        endYear: '',
+        isCurrentlyStudying: false,
+      });
+      setIsNewData(true);
+    } else {
+      setIsNewData(false);
+      const itemToEdit = educationList[0];
+      if (itemToEdit) {
+        setEducationDetails({
+          instituteName: itemToEdit.instituteName || '',
+          degreeName: itemToEdit.degree || '',
+          startYear: itemToEdit.startYear || '',
+          endYear: itemToEdit.currentlyStudying
+            ? 'Present'
+            : itemToEdit.endYear || '',
+          isCurrentlyStudying: itemToEdit.currentlyStudying || false,
+        });
+      }
+    }
+  }, [addNew, educationList]);
+
+  const handleEdit = (item: EducationProps) => {
+    setIsEditing(true);
+    if (!addNew) {
+      setEducationDetails({
+        instituteName: item.instituteName || '',
+        degreeName: item.degree || '',
+        startYear: item.startYear || '',
+        endYear: item.currentlyStudying ? 'Present' : item.endYear || '',
+        isCurrentlyStudying: item.currentlyStudying || false,
+      });
+    }
   };
 
   return (
     <ScrollView>
-      {isVisible ? (
-        <View
-          style={{
-            paddingHorizontal: 20,
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-          }}>
-          <View>
-            <Text
-              style={{
-                color: 'black',
-                marginBottom: 24,
-                fontWeight: 'bold',
-                fontSize: FONTS.largeLabel,
-              }}>
-              Education Details
-            </Text>
+      {isEditing || isNewData ? (
+        <View style={styles.paddedContainer}>
+          <Text style={styles.sectionHeader}>Education Details</Text>
+          <Input
+            onChangeText={text =>
+              setEducationDetails({...educationDetails, instituteName: text})
+            }
+            placeholder="Institute Name"
+            value={educationDetails.instituteName}
+          />
+          <Input
+            onChangeText={text =>
+              setEducationDetails({...educationDetails, degreeName: text})
+            }
+            placeholder="Degree Name"
+            value={educationDetails.degreeName}
+          />
+          <View style={styles.yearInputContainer}>
             <Input
-              onChangeText={setInstituteName}
-              placeholder="Institute Name"
-              value={instituteName}
-              name="Institute Name"
+              onChangeText={text =>
+                setEducationDetails({...educationDetails, startYear: text})
+              }
+              placeholder="Start Year"
+              value={educationDetails.startYear}
+              style={styles.yearInput}
             />
             <Input
-              onChangeText={setDegreeName}
-              placeholder="Degree Name"
-              value={degreeName}
-              name="Degree Name"
+              onChangeText={text =>
+                setEducationDetails({...educationDetails, endYear: text})
+              }
+              placeholder="End Year"
+              value={educationDetails.endYear}
+              style={styles.yearInput}
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Input
-                onChangeText={setStartYear}
-                placeholder="Start Year"
-                value={startYear}
-                name="Start Name"
-                style={{ width: 156 }}
-              />
-              <Input
-                onChangeText={setEndYear}
-                placeholder="End Year"
-                value={endYear}
-                name="End Name"
-                style={{ width: 156 }}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Checkbox
-                onPress={setIsCurrentlyWorking}
-                isChecked={isCurrentlyWorking}
-              />
-
-              <Text style={{ color: 'black', marginLeft: 20 }}>
-                Currently Studying?
-              </Text>
-            </View>
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              onPress={() =>
+                setEducationDetails({
+                  ...educationDetails,
+                  isCurrentlyStudying: !educationDetails.isCurrentlyStudying,
+                })
+              }
+              isChecked={educationDetails.isCurrentlyStudying}
+            />
+            <Text style={styles.checkboxText}>Currently Studying?</Text>
           </View>
         </View>
       ) : (
         educationList.map((item, index) => (
           <View
-            style={{
-              paddingHorizontal: 20,
-              borderBottomColor:
-                index === educationList.length - 1 ? 'transparent' : '#E4E4E4',
-              borderBottomWidth: index === educationList.length - 1 ? 0 : 1,
-            }}>
+            key={index}
+            style={[
+              styles.careerItem,
+              {
+                borderBottomColor:
+                  index === educationList.length - 1
+                    ? 'transparent'
+                    : '#E4E4E4',
+              },
+            ]}>
             <CareerCard
               title={item.degree}
               company={item.instituteName}
@@ -108,27 +141,19 @@ const EditEducationForm = ({ educationList }: EditEducationProps) => {
               endDate={item.currentlyStudying ? 'Present' : item.endYear}
               editable
               key={index}
-              onEdit={() => {
-                setIsVisible(true);
-                setInstituteName(item.instituteName);
-                setEndYear(
-                  !item.currentlyStudying ? (item.endYear as string) : '',
-                );
-                setIsCurrentlyWorking(
-                  item.currentlyStudying ? item.currentlyStudying : false,
-                );
-                setStartYear(item.startYear);
-                setDegreeName(item.degree);
-              }}
+              onEdit={() => handleEdit(item)}
             />
           </View>
         ))
       )}
-      {isVisible && (
+      {isEditing && (
         <View style={styles.footer}>
           <PrimaryButton
             title="Save"
-            onPress={handleSave}
+            onPress={() => {
+              setIsEditing(false);
+              setAddNew(true);
+            }}
             style={styles.saveButton}
           />
         </View>
@@ -138,6 +163,35 @@ const EditEducationForm = ({ educationList }: EditEducationProps) => {
 };
 
 const styles = StyleSheet.create({
+  paddedContainer: {
+    paddingHorizontal: 20,
+  },
+  sectionHeader: {
+    color: 'black',
+    marginBottom: 24,
+    fontWeight: 'bold',
+    fontSize: FONTS.largeLabel,
+  },
+  yearInputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  yearInput: {
+    width: 156,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkboxText: {
+    color: 'black',
+    marginLeft: 20,
+  },
+  careerItem: {
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+  },
   footer: {
     borderTopColor: '#E4E4E4',
     borderTopWidth: 1,

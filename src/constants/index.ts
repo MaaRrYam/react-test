@@ -17,6 +17,7 @@ export const COLORS = {
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
   lightGrayBackground: '#F4F4F4',
+  deleteButtonBackground: 'rgba(255, 24, 24, 0.06)',
 };
 
 export const BORDER_RADIUS = {

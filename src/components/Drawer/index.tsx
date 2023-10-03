@@ -10,6 +10,7 @@ import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
+
 const Tab = createBottomTabNavigator();
 
 function SettingsScreen() {
@@ -20,23 +21,17 @@ function SettingsScreen() {
   );
 }
 
-function Drawer({
+function DrawerContent({
   state,
   descriptors,
   navigation,
   isVisible,
   setIsVisible,
   tabItem,
+  isEditing,
+  setIsEditing,
+  user,
 }) {
-  const dispatch = useAppDispatch();
-  const {user} = useAppSelector((authState: RootState) => authState.auth);
-
-  useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      dispatch(getUser());
-    }
-  }, [user, dispatch]);
-
   return (
     <>
       <View style={styles.tabBarContainer}>
@@ -91,6 +86,8 @@ function Drawer({
           onClose={() => setIsVisible(false)}
           tabItem={tabItem}
           user={user}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
         />
       )}
     </>
@@ -100,16 +97,30 @@ function Drawer({
 const Tabs = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const {user} = useAppSelector((authState: RootState) => authState.auth);
+
+  useEffect(() => {
+    if (Object.keys(user).length === 0) {
+      dispatch(getUser());
+    }
+  }, [user, dispatch]);
+
   return (
     <>
       <Tab.Navigator
         screenOptions={{headerShown: false}}
         tabBar={props => (
-          <Drawer
+          <DrawerContent
             {...props}
             isVisible={isVisible}
             setIsVisible={setIsVisible}
             tabItem={tabItem}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            user={user}
           />
         )}>
         <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
@@ -122,7 +133,13 @@ const Tabs = () => {
         <Tab.Screen
           name={SCREEN_NAMES.Profile}
           component={Profile}
-          initialParams={{isVisible, setIsVisible, setTabItem, tabItem}}
+          initialParams={{
+            isVisible,
+            setIsVisible,
+            setTabItem,
+            tabItem,
+            isEditing,
+          }}
         />
       </Tab.Navigator>
     </>

@@ -22,7 +22,7 @@ import {getUser} from '@/store/features/authSlice';
 import {getConnections} from '@/store/features/networkSlice';
 import {ThreeDots, NewChat} from '@/assets/icons';
 import ProfileTab from '@/screens/Profile/ProfileTab';
-import profileStyles from '@/styles/profile'; // Import the styles
+import profileStyles from '@/styles/profile';
 import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
@@ -35,12 +35,13 @@ interface ProfileProps {
       setTabItem: React.Dispatch<React.SetStateAction<string>>;
       setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
       tabItem: string;
+      isEditing: boolean;
     };
   };
 }
 
 const Profile = ({navigation, route}: ProfileProps) => {
-  const {setIsVisible, setTabItem, tabItem} = route.params;
+  const {setIsVisible, setTabItem, isEditing} = route.params;
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
   const {connections, isConnectionsFetched} = useAppSelector(
@@ -213,9 +214,15 @@ const Profile = ({navigation, route}: ProfileProps) => {
                     photo={user.photoUrl as string}
                   />
                 ) : selectedTab === PROFILE_TABS[1] ? (
-                  <CareerTab careerList={user.employmentList} />
+                  <CareerTab
+                    careerList={user.employmentList}
+                    isEditing={isEditing}
+                  />
                 ) : (
-                  <EducationTab educationList={user.educationList} />
+                  <EducationTab
+                    educationList={user.educationList}
+                    isEditing={isEditing}
+                  />
                 )}
               </View>
             </View>

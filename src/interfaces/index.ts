@@ -285,3 +285,16 @@ export interface SearchButtonProps {
   style: StyleProp<ViewStyle>;
   onPress: () => void;
 }
+
+export interface TabDataInterface {
+  bio: string;
+  photo: string;
+}
+
+export interface EducationTabProps {
+  educationList: Array<EducationProps>;
+}
+
+export interface CareerTabProps {
+  careerList: Array<EmploymentProps>;
+}

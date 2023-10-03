@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {EmploymentProps} from '@/interfaces';
 import {CareerCard} from '../Cards';
@@ -8,110 +8,137 @@ import {PrimaryButton} from '../Buttons';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
+  setAddNew: (value: boolean) => void;
 }
-const EditCareerForm: React.FC<CareerFormProps> = ({careerList}) => {
-  const [companyName, setCompanyName] = useState('');
-  const [role, setRole] = useState('');
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
-  const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
+
+const EditCareerForm: React.FC<CareerFormProps> = ({
+  careerList,
+  isEditing,
+  setIsEditing,
+  addNew,
+  setAddNew,
+}) => {
+  const [jobDetails, setJobDetails] = useState({
+    companyName: '',
+    role: '',
+    startYear: '',
+    endYear: '',
+    isCurrentlyWorking: false,
+  });
+
+  const [isNewData, setIsNewData] = useState(false);
+
+  useEffect(() => {
+    if (addNew) {
+      setJobDetails({
+        companyName: null as unknown as string,
+        role: null as unknown as string,
+        startYear: null as unknown as string,
+        endYear: null as unknown as string,
+        isCurrentlyWorking: false,
+      });
+      setIsNewData(true);
+    } else {
+      setIsNewData(false);
+
+      const itemToEdit = careerList[0];
+      if (itemToEdit) {
+        setJobDetails({
+          companyName: itemToEdit.companyName || '',
+          role: itemToEdit.role || '',
+          startYear: itemToEdit.startYear || '',
+          endYear: itemToEdit.currentlyWorking
+            ? 'Present'
+            : itemToEdit.endYear || '',
+          isCurrentlyWorking: itemToEdit.currentlyWorking || false,
+        });
+      }
+    }
+  }, [addNew, careerList]);
+
+  const toggleEditForm = () => {
+    setIsEditing(!isEditing);
+    setAddNew(false);
+  };
+
   return (
     <View>
-      {isVisible ? (
-        <View style={{paddingHorizontal: 20}}>
-          <Text
-            style={{
-              color: 'black',
-              marginBottom: 24,
-              fontWeight: 'bold',
-              fontSize: FONTS.largeLabel,
-            }}>
-            Job Details
-          </Text>
+      {isEditing || isNewData ? (
+        <View style={styles.paddedContainer}>
+          <Text style={styles.sectionHeader}>Job Details</Text>
           <Input
-            onChangeText={setCompanyName}
+            onChangeText={text =>
+              setJobDetails({...jobDetails, companyName: text})
+            }
             placeholder="Current Company"
-            value={companyName}
-            name="Company Name"
+            value={jobDetails.companyName}
           />
           <Input
-            onChangeText={setRole}
+            onChangeText={text => setJobDetails({...jobDetails, role: text})}
             placeholder="Designation"
-            value={role}
-            name="Role"
+            value={jobDetails.role}
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignContent: 'center',
-              alignItems: 'center',
-            }}>
+          <View style={styles.yearInputContainer}>
             <Input
-              onChangeText={setStartYear}
+              onChangeText={text =>
+                setJobDetails({...jobDetails, startYear: text})
+              }
               placeholder="Start Year"
-              value={startYear}
-              name="Start Name"
-              style={{width: 156}}
+              value={jobDetails.startYear}
+              style={styles.yearInput}
             />
             <Input
-              onChangeText={setEndYear}
+              onChangeText={text =>
+                setJobDetails({...jobDetails, endYear: text})
+              }
               placeholder="End Year"
-              value={endYear}
-              name="End Name"
-              style={{width: 156}}
+              value={jobDetails.endYear}
+              style={styles.yearInput}
             />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
+          <View style={styles.checkboxContainer}>
             <Checkbox
-              onPress={setIsCurrentlyWorking}
-              isChecked={isCurrentlyWorking}
+              onPress={() =>
+                setJobDetails({
+                  ...jobDetails,
+                  isCurrentlyWorking: !jobDetails.isCurrentlyWorking,
+                })
+              }
+              isChecked={jobDetails.isCurrentlyWorking}
             />
-
-            <Text style={{color: 'black', marginLeft: 20}}>
-              Currently Studying?
-            </Text>
+            <Text style={styles.checkboxText}>Currently Studying?</Text>
           </View>
         </View>
       ) : (
         careerList?.map((item, index) => (
           <View
-            style={{
-              paddingHorizontal: 20,
-              borderBottomColor:
-                index === careerList.length - 1 ? 'transparent' : '#E4E4E4',
-              borderBottomWidth: index === careerList.length - 1 ? 0 : 1,
-            }}>
+            key={index}
+            style={[
+              styles.careerItem,
+              {
+                borderBottomColor:
+                  index === careerList.length - 1 ? 'transparent' : '#E4E4E4',
+              },
+            ]}>
             <CareerCard
               title={item.role}
               company={item.companyName}
               startDate={item.startYear}
               endDate={item.currentlyWorking ? 'Present' : item.endYear}
               editable
-              onEdit={() => {
-                setIsVisible(true);
-                setCompanyName(item.companyName);
-                setEndYear(item.currentlyWorking ? item.endYear as string : '');
-                setIsCurrentlyWorking(
-                  item.currentlyWorking ? item.currentlyWorking : false,
-                );
-                setStartYear(item.startYear);
-                setRole(item.role);
-              }}
+              onEdit={() => toggleEditForm()}
             />
           </View>
         ))
       )}
-      {isVisible && (
+      {isEditing && (
         <View style={styles.footer}>
           <PrimaryButton
             title="Save"
-            onPress={() => {}}
+            onPress={() => toggleEditForm()}
             style={styles.saveButton}
           />
         </View>
@@ -121,6 +148,35 @@ const EditCareerForm: React.FC<CareerFormProps> = ({careerList}) => {
 };
 
 const styles = StyleSheet.create({
+  paddedContainer: {
+    paddingHorizontal: 20,
+  },
+  sectionHeader: {
+    color: 'black',
+    marginBottom: 24,
+    fontWeight: 'bold',
+    fontSize: FONTS.largeLabel,
+  },
+  yearInputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  yearInput: {
+    width: 156,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkboxText: {
+    color: 'black',
+    marginLeft: 20,
+  },
+  careerItem: {
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+  },
   footer: {
     borderTopColor: '#E4E4E4',
     borderTopWidth: 1,

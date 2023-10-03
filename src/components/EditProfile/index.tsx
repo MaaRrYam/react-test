@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import BottomSheet from '@/components/BottomSheet';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
@@ -8,17 +8,28 @@ import {
   EditBasicInfoForm,
   EditCareerForm,
   EditEducationForm,
-  PrimaryButton,
 } from '@/components';
+import {COLORS} from '@/constants';
 
 interface EditProfileProps {
   isVisible: boolean;
   onClose: () => void;
   user: UserInterface;
   tabItem: string;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
 }
 
-const EditProfile = ({isVisible, onClose, user, tabItem}: EditProfileProps) => {
+const EditProfile = ({
+  isVisible,
+  onClose,
+  user,
+  tabItem,
+  isEditing,
+  setIsEditing,
+}: EditProfileProps) => {
+  const [addNew, setAddNew] = useState(false);
   const renderForm = () => {
     switch (tabItem) {
       case 'Profile':
@@ -27,16 +38,33 @@ const EditProfile = ({isVisible, onClose, user, tabItem}: EditProfileProps) => {
         return (
           <EditCareerForm
             careerList={user.employmentList as Array<EmploymentProps>}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            addNew={addNew}
+            setAddNew={setAddNew}
           />
         );
       case 'Education':
         return (
           <EditEducationForm
             educationList={user.educationList as Array<EducationProps>}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            addNew={addNew}
+            setAddNew={setAddNew}
           />
         );
       default:
         return null;
+    }
+  };
+
+  const handleOnClose = () => {
+    if (isEditing) {
+      setIsEditing(false);
+      setAddNew(false);
+    } else {
+      onClose();
     }
   };
 
@@ -45,7 +73,9 @@ const EditProfile = ({isVisible, onClose, user, tabItem}: EditProfileProps) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.closeButtonContainer}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleOnClose}>
               <Cross />
             </TouchableOpacity>
           </View>
@@ -55,8 +85,11 @@ const EditProfile = ({isVisible, onClose, user, tabItem}: EditProfileProps) => {
                 title={`Add New ${
                   tabItem === 'Education' ? 'Education' : 'Experience'
                 }`}
-                style={styles.addButton}
-                onPress={() => {}}
+                style={!isEditing ? styles.addButton : {display: 'none'}}
+                onPress={async () => {
+                  setAddNew(true);
+                  setIsEditing(true);
+                }}
               />
             )}
           </View>
@@ -75,12 +108,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: '#E7E7E7',
+    borderBottomColor: COLORS.border,
     paddingHorizontal: 20,
     paddingBottom: 18,
   },
   closeButtonContainer: {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.lightBackground,
     width: 42,
     height: 42,
     borderRadius: 30,
