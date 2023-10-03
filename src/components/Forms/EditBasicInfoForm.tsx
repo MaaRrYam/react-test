@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
 import {UserInterface} from '@/interfaces';
+import {COLORS, FONTS} from '@/constants';
 
 interface UserInfoProps {
   user: UserInterface;
@@ -30,7 +31,12 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}>
       <ScrollView>
-        <Text style={[styles.headerText, styles.sectionHeader]}>
+        <Text
+          style={[
+            styles.headerText,
+            styles.sectionHeader,
+            {paddingHorizontal: 20},
+          ]}>
           Basic Information
         </Text>
         <View style={styles.section}>
@@ -96,23 +102,25 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // Set your background color here
+    backgroundColor: COLORS.white, // Set your background color here
   },
   section: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#E4E4E4',
+    borderBottomColor: COLORS.border,
   },
   sectionHeader: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: FONTS.largeLabel,
   },
   subSectionHeader: {
     marginTop: 10,
   },
   headerText: {
-    color: 'black',
+    color: COLORS.black,
+    fontSize: FONTS.largeLabel,
+    fontWeight: 'bold',
   },
   textArea: {
     height: 106,
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   footer: {
-    borderTopColor: '#E4E4E4',
+    borderTopColor: COLORS.border,
     borderTopWidth: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,

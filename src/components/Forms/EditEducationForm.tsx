@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {EducationProps} from '@/interfaces';
-import {CareerCard} from '../Cards';
-import {Checkbox, Input, PrimaryButton} from '@/components';
-import {FONTS} from '@/constants';
-import {StyleSheet} from 'react-native';
+import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
+import {COLORS, FONTS} from '@/constants';
 
 interface EditEducationProps {
   educationList: Array<EducationProps>;
@@ -131,7 +129,7 @@ const EditEducationForm = ({
                 borderBottomColor:
                   index === educationList.length - 1
                     ? 'transparent'
-                    : '#E4E4E4',
+                    : COLORS.border,
               },
             ]}>
             <CareerCard
@@ -185,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxText: {
-    color: 'black',
+    color: COLORS.black,
     marginLeft: 20,
   },
   careerItem: {
@@ -193,7 +191,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   footer: {
-    borderTopColor: '#E4E4E4',
+    borderTopColor: COLORS.border,
     borderTopWidth: 1,
     paddingHorizontal: 20,
     marginTop: 260,

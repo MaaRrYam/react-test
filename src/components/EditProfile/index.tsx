@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import BottomSheet from '@/components/BottomSheet';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
 import {
@@ -8,6 +7,7 @@ import {
   EditBasicInfoForm,
   EditCareerForm,
   EditEducationForm,
+  BottomSheet,
 } from '@/components';
 import {COLORS} from '@/constants';
 

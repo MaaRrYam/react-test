@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {EmploymentProps} from '@/interfaces';
-import {CareerCard} from '../Cards';
-import {FONTS} from '@/constants';
-import {Input, Checkbox} from '../Inputs';
-import {PrimaryButton} from '../Buttons';
+import {COLORS, FONTS} from '@/constants';
+import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -120,7 +118,9 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
               styles.careerItem,
               {
                 borderBottomColor:
-                  index === careerList.length - 1 ? 'transparent' : '#E4E4E4',
+                  index === careerList.length - 1
+                    ? 'transparent'
+                    : COLORS.border,
               },
             ]}>
             <CareerCard
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sectionHeader: {
-    color: 'black',
+    color: COLORS.black,
     marginBottom: 24,
     fontWeight: 'bold',
     fontSize: FONTS.largeLabel,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxText: {
-    color: 'black',
+    color: COLORS.black,
     marginLeft: 20,
   },
   careerItem: {
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   footer: {
-    borderTopColor: '#E4E4E4',
+    borderTopColor: COLORS.border,
     borderTopWidth: 1,
     paddingHorizontal: 20,
     marginTop: 260,

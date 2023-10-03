@@ -12,7 +12,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   unfillColor = COLORS.lightBackground,
   iconStyle = {},
   innerIconStyle = {},
-  isChecked,
+  isChecked = false,
 }) => {
   
   const toggleCheckbox = () => {
