@@ -360,3 +360,13 @@ export interface PostCommentsProps {
   comments: FeedComment[];
   showComments: boolean;
 }
+export interface ChatsInterface {
+  id: string;
+  userId: string;
+  message: string;
+  name: string;
+  photoUrl: string;
+  read: boolean;
+  time: string | Timestamp;
+  user: UserInterface;
+}

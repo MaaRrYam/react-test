@@ -1,33 +1,36 @@
-import React, {useState} from 'react';
-import {FlatList, SafeAreaView, TextInput, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {SafeAreaView, TextInput, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {BackButton, ChatItem} from '@/components';
+import {BackButton, ChatsList, Loading} from '@/components';
 import {ChatsScreenProps} from '@/types';
 import {styles} from './styles';
 import {NewChat} from '@/assets/icons';
-
-const CHATS = [
-  {
-    id: '1',
-    image: '@/assets/images/user.png',
-    name: 'Дима',
-    time: '17 Jul',
-    hasUnreadMessages: true,
-    lastMessage: 'Какой-то текст от дима',
-  },
-  {
-    id: '2',
-    image: '@/assets/images/user.png',
-    name: 'Someone',
-    time: '17 Jul',
-    hasUnreadMessages: false,
-    lastMessage: 'Какой-то текст от дима',
-  },
-];
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {getAllChats} from '@/store/features/chatsSlice';
 
 const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
   const [search, setSearch] = useState('');
+
+  const {isChatsFetched, isChatsFirstRequest} = useAppSelector(
+    state => state.chats,
+  );
+  const dispatch = useAppDispatch();
+
+  const fetchData = useCallback(() => {
+    if (!isChatsFetched) {
+      dispatch(getAllChats());
+    }
+  }, [dispatch, isChatsFetched]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, isChatsFetched]);
+
+  if (isChatsFirstRequest) {
+    return <Loading />;
+  }
 
   return (
     <View style={homeStyles.outerContainer}>
@@ -49,13 +52,7 @@ const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
           </View>
         </View>
 
-        <FlatList
-          data={CHATS}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <ChatItem item={item} navigation={navigation} />
-          )}
-        />
+        <ChatsList search={search} navigation={navigation} />
       </SafeAreaView>
     </View>
   );

@@ -1,4 +1,5 @@
 import {FirebaseServiceProps} from '@/interfaces';
+import {formatFirebaseTimestamp} from '@/utils';
 import {
   getFirestore,
   collection,
@@ -82,7 +83,20 @@ const FirebaseService: FirebaseServiceProps = {
       const docRef = doc(db, collectionName, documentId);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        const document = {id: docSnapshot.id, ...docSnapshot.data()};
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
         return document;
       } else {
         return null;

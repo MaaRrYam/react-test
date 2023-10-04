@@ -8,7 +8,6 @@ import {
   RoleCard,
   EducationCard,
   ExperienceCard,
-  ChatItem,
   NetworkItem,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
@@ -22,8 +21,9 @@ import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import Feed from '@/components/Feed/Feed';
 import {NotificationsList} from '@/components/Notifications';
-
 import SearchButton from '@/components/Search';
+import {ChatItem, ChatsList} from '@/components/Chats';
+
 export {
   BackButton,
   Button,
@@ -49,4 +49,5 @@ export {
   Empty,
   Feed,
   SearchButton,
+  ChatsList,
 };
