@@ -73,11 +73,13 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
             }
             placeholder="Current Company"
             value={jobDetails.companyName}
+            style={styles.textInput}
           />
           <Input
             onChangeText={text => setJobDetails({...jobDetails, role: text})}
             placeholder="Designation"
             value={jobDetails.role}
+            style={styles.textInput}
           />
           <View style={styles.yearInputContainer}>
             <Input
@@ -94,7 +96,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
               }
               placeholder="End Year"
               value={jobDetails.endYear}
-              style={styles.yearInput}
+              style={[styles.yearInput, {marginLeft: 11}]}
             />
           </View>
           <View style={styles.checkboxContainer}>
@@ -159,11 +161,14 @@ const styles = StyleSheet.create({
   },
   yearInputContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   yearInput: {
     width: 156,
+  },
+  textInput: {
+    width: 323,
   },
   checkboxContainer: {
     flexDirection: 'row',

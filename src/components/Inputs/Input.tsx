@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {COLORS, FONTS} from '../../constants';
-import {InputProps} from 'interfaces';
+import {COLORS, FONTS} from '@/constants';
+import {InputProps} from '@/interfaces';
 
 const Input: React.FC<InputProps> = ({
   placeholder,
@@ -15,7 +15,6 @@ const Input: React.FC<InputProps> = ({
   name,
   setFieldTouched,
   disabled,
-  maxLength,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -52,7 +51,7 @@ const Input: React.FC<InputProps> = ({
     left: 12,
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 0],
+      outputRange: [22, 13],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -98,9 +97,10 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: 12,
-    paddingVertical: 8,
     fontSize: 16,
     color: COLORS.black,
+    marginTop: 10,
+    marginBottom: -10,
   },
   error: {
     fontSize: FONTS.bodySmall,

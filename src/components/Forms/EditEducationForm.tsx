@@ -80,6 +80,7 @@ const EditEducationForm = ({
             }
             placeholder="Institute Name"
             value={educationDetails.instituteName}
+            style={styles.textInput}
           />
           <Input
             onChangeText={text =>
@@ -87,6 +88,7 @@ const EditEducationForm = ({
             }
             placeholder="Degree Name"
             value={educationDetails.degreeName}
+            style={styles.textInput}
           />
           <View style={styles.yearInputContainer}>
             <Input
@@ -103,7 +105,7 @@ const EditEducationForm = ({
               }
               placeholder="End Year"
               value={educationDetails.endYear}
-              style={styles.yearInput}
+              style={[styles.yearInput, {marginLeft: 11}]}
             />
           </View>
           <View style={styles.checkboxContainer}>
@@ -172,11 +174,14 @@ const styles = StyleSheet.create({
   },
   yearInputContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   yearInput: {
     width: 156,
+  },
+  textInput: {
+    width: 323,
   },
   checkboxContainer: {
     flexDirection: 'row',
