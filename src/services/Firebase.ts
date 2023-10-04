@@ -14,6 +14,7 @@ import {
   getDoc,
   deleteDoc,
   updateDoc,
+  setDoc,
 } from 'firebase/firestore';
 
 const db = getFirestore();
@@ -28,6 +29,18 @@ const FirebaseService: FirebaseServiceProps = {
       return docRef.id;
     } catch (error) {
       console.error('Error adding document: ', error);
+      throw error;
+    }
+  },
+  async setDoc(collectionName, docId, payload) {
+    try {
+      const docRef = doc(db, collectionName, docId);
+
+      await setDoc(docRef, payload);
+
+      console.log('Document successfully written!');
+    } catch (error) {
+      console.error('Error while setting document: ', error);
       throw error;
     }
   },

@@ -1,13 +1,12 @@
 import {API_GET} from '@/config/api/apiRequests';
 import {NetworkResponse, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
-import {formatFirebaseTimestamp} from '@/utils';
 import {getUID} from '@/utils/functions';
+import Cache from '@/cache';
 
 let UID: string;
 (async () => {
-  UID = await getUID();
-  console.log(UID);
+  UID = (await getUID()) as string;
 })();
 
 const NetworkService = {
@@ -19,14 +18,21 @@ const NetworkService = {
 
       const result: NetworkResponse[] = await Promise.all(
         response.map(async item => {
-          const connection = (await FirebaseService.getDocument(
-            'users',
-            item.id,
-          )) as UserInterface;
+          let connection = {} as UserInterface;
+
+          if (await Cache.get(`user_${item.senderId}`)) {
+            connection = (await Cache.get(`user_${item.id}`)) as UserInterface;
+          } else {
+            connection = (await FirebaseService.getDocument(
+              'users',
+              item.id,
+            )) as UserInterface;
+            await Cache.set(`user_${item.id}`, connection);
+          }
 
           return {
             ...connection,
-            requestTime: formatFirebaseTimestamp(item.time, 'date'),
+            requestTime: item.time,
           };
         }),
       );
@@ -45,14 +51,21 @@ const NetworkService = {
 
       const result: NetworkResponse[] = await Promise.all(
         response.map(async item => {
-          const follower = (await FirebaseService.getDocument(
-            'users',
-            item.id,
-          )) as UserInterface;
+          let follower = {} as UserInterface;
+
+          if (await Cache.get(`user_${item.senderId}`)) {
+            follower = (await Cache.get(`user_${item.id}`)) as UserInterface;
+          } else {
+            follower = (await FirebaseService.getDocument(
+              'users',
+              item.id,
+            )) as UserInterface;
+            await Cache.set(`user_${item.id}`, follower);
+          }
 
           return {
             ...follower,
-            requestTime: formatFirebaseTimestamp(item.time, 'date'),
+            requestTime: item.time,
           };
         }),
       );
@@ -71,14 +84,21 @@ const NetworkService = {
 
       const result: NetworkResponse[] = await Promise.all(
         response.map(async item => {
-          const following = (await FirebaseService.getDocument(
-            'users',
-            item.id,
-          )) as UserInterface;
+          let following = {} as UserInterface;
+
+          if (await Cache.get(`user_${item.senderId}`)) {
+            following = (await Cache.get(`user_${item.id}`)) as UserInterface;
+          } else {
+            following = (await FirebaseService.getDocument(
+              'users',
+              item.id,
+            )) as UserInterface;
+            await Cache.set(`user_${item.id}`, following);
+          }
 
           return {
             ...following,
-            requestTime: formatFirebaseTimestamp(item.time, 'date'),
+            requestTime: item.time,
           };
         }),
       );
@@ -180,7 +200,7 @@ const NetworkService = {
 
         return {
           ...request,
-          requestTime: formatFirebaseTimestamp(item.time, 'date'),
+          requestTime: item.time,
         };
       }),
     );
