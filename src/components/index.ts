@@ -11,7 +11,6 @@ import {
   ExperienceCard,
   ChatItem,
   NetworkItem,
-  NotificationItem,
   CareerCard,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
@@ -38,6 +37,9 @@ import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search';
 import EditProfile from '@/components/EditProfile';
+import Feed from '@/components/Feed/Feed';
+import {NotificationsList} from '@/components/Notifications';
+
 export {
   BackButton,
   PrimaryButton,
@@ -57,10 +59,11 @@ export {
   ChatItem,
   NetworkItem,
   RoundedButton,
-  NotificationItem,
+  NotificationsList,
   SocialLoginButton,
   Loading,
   Empty,
+  Feed,
   SearchButton,
   SecondaryButton,
   CareerCard,
