@@ -6,19 +6,23 @@ import {
   FlatList,
   SafeAreaView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {ChatsInterface, GroupedMessage} from '@/interfaces';
+import {ChatsInterface, GroupedMessage, UserInterface} from '@/interfaces';
 import {styles} from './styles';
 import {getUID} from '@/utils/functions';
 import ChatsService from '@/services/chats';
+import {SendIcon} from '@/assets/icons';
+import StorageService from '@/services/Storage';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const [messages, setMessages] = useState<GroupedMessage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [message, setMessage] = useState('');
 
   const {
     params: {name, id},
@@ -32,21 +36,39 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
     const fetchData = async () => {
       const self = (await getUID()) as string;
       const chatAddress = ChatsService.findChatAddress(self, id);
-      const unsub = await ChatsService.fetchMessagesRealTime(
+      const unSub = await ChatsService.fetchMessagesRealTime(
         chatAddress,
         setMessages,
       );
       setLoading(false);
 
       return () => {
-        if (unsub) {
-          unsub();
+        if (unSub) {
+          unSub();
         }
       };
     };
 
     fetchData();
   }, [id]);
+
+  const handleSendMessage = async () => {
+    const sender = (await StorageService.getItem('user')) as UserInterface;
+    const senderId = (await getUID()) as string;
+
+    const payload = {
+      senderId,
+      receiverId: id,
+      message,
+      sender,
+      receiver: chatHead.user,
+    };
+
+    const response = await ChatsService.sendMessage(payload);
+    if (response) {
+      setMessage('');
+    }
+  };
 
   if (loading) {
     return <Loading />;
@@ -79,8 +101,8 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
                 <Text style={styles.dateText}>{item.date}</Text>
                 <View style={styles.dateLine} />
               </View>
-              {item.messages.map((message, index) => (
-                <Chat key={index} message={message} />
+              {item.messages.map((messageItem, index) => (
+                <Chat key={index} message={messageItem} />
               ))}
             </View>
           )}
@@ -88,7 +110,18 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <TextInput placeholder="Start Typing..." style={styles.input} />
+        <View style={styles.input}>
+          <TextInput
+            placeholder="Start Typing..."
+            value={message}
+            onChangeText={setMessage}
+          />
+          {message && (
+            <TouchableOpacity onPress={handleSendMessage}>
+              <SendIcon />
+            </TouchableOpacity>
+          )}
+        </View>
         <IconButton
           imageSource={require('@/assets/icons/image.png')}
           onPress={() => console.log('Upload Image')}

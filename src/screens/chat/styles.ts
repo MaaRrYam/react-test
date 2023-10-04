@@ -125,6 +125,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lightBackground,
     borderRadius: 20,
     padding: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   uploadImageButton: {
     width: 40,

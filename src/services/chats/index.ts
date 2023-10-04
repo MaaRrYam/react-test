@@ -1,4 +1,3 @@
-import {SendMessageInterface} from './../../interfaces/index';
 import {
   Timestamp,
   collection,
@@ -17,6 +16,7 @@ import {
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
 import {getUID} from '@/utils/functions';
+import Cache from '@/cache';
 
 let UID: string;
 (async () => {
@@ -133,42 +133,37 @@ const ChatsService = {
 
     return unsub;
   },
-  async sendMessage(payload: SendMessageInterface) {
+  async sendMessage(payload: {
+    senderId: string;
+    receiverId: string;
+    message: string;
+    sender: UserInterface;
+    receiver: UserInterface;
+  }) {
     try {
-      const chatAddress = this.findChatAddress(
-        payload.senderId,
-        payload.receiverId,
-      );
+      const chatAddress = this.findChatAddress(UID, payload.receiverId);
       await FirebaseService.addDocument(
         `chats/${chatAddress}/messages`,
         payload,
       );
 
       await Promise.all([
-        FirebaseService.setDoc(
-          `users/${payload.senderId}/chats`,
-          payload.receiverId,
-          {
-            userId: payload.receiverId,
-            message: payload.message,
-            time: FirebaseService.serverTimestamp(),
-            read: true,
-            name: payload.receiver?.name,
-            photoUrl: payload.receiver?.photoUrl,
-          },
-        ),
-        FirebaseService.setDoc(
-          `users/${payload.senderId}/chats`,
-          payload.receiverId,
-          {
-            userId: payload.senderId,
-            message: payload.message,
-            time: FirebaseService.serverTimestamp(),
-            read: false,
-            name: payload.sender?.name,
-            photoUrl: payload.sender?.photoUrl,
-          },
-        ),
+        FirebaseService.setDoc(`users/${UID}/chats`, payload.receiverId, {
+          userId: payload.receiverId,
+          message: payload.message,
+          time: FirebaseService.serverTimestamp(),
+          read: true,
+          name: payload.receiver?.name,
+          photoUrl: payload.receiver?.photoUrl,
+        }),
+        FirebaseService.setDoc(`users/${payload.receiverId}/chats`, UID, {
+          userId: UID,
+          message: payload.message,
+          time: FirebaseService.serverTimestamp(),
+          read: false,
+          name: payload.sender?.name,
+          photoUrl: payload.sender?.photoUrl,
+        }),
       ]);
 
       return true;
@@ -186,6 +181,33 @@ const ChatsService = {
       };
 
       await FirebaseService.setDoc(`users/${UID}/blockedUser`, userId, data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async getAllUsers() {
+    try {
+      const response = await FirebaseService.getAllDocuments('users');
+
+      await Promise.all(
+        response.map(async item => {
+          await Cache.set(`user_${item.id}`, item);
+        }),
+      );
+      return response as UserInterface[];
+    } catch (error) {
+      console.log(error);
+      return [] as UserInterface[];
+    }
+  },
+  async addNewChat(targetUser: string, chat: ChatsInterface) {
+    try {
+      await FirebaseService.setDoc(`users/${UID}/chats`, targetUser, {
+        ...chat,
+        time: FirebaseService.serverTimestamp(),
+      });
       return true;
     } catch (error) {
       console.log(error);

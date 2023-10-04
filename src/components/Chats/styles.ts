@@ -1,4 +1,4 @@
-import {COLORS, FONTS} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -50,5 +50,36 @@ export const styles = StyleSheet.create({
     height: 12,
     borderRadius: 1000,
     backgroundColor: COLORS.primary,
+  },
+  userItem: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  userImage: {
+    width: 30,
+    height: 30,
+    borderRadius: BORDER_RADIUS.general,
+    marginRight: 10,
+  },
+  userItemContent: {
+    marginLeft: 10,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  userItemHeader: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  userItemName: {
+    fontSize: FONTS.bodyRegular,
+    color: COLORS.black,
+    fontWeight: 'bold',
+  },
+  userItemTagline: {
+    color: COLORS.text,
+    fontSize: FONTS.bodySmall,
   },
 });

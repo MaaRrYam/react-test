@@ -1,17 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SafeAreaView, TextInput, View} from 'react-native';
+import {SafeAreaView, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {BackButton, ChatsList, Loading} from '@/components';
+import {BackButton, ChatsList, Loading, NewChat} from '@/components';
 import {ChatsScreenProps} from '@/types';
 import {styles} from './styles';
-import {NewChat} from '@/assets/icons';
+import {NewChatIcon} from '@/assets/icons';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {getAllChats} from '@/store/features/chatsSlice';
 
 const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
   const [search, setSearch] = useState('');
+  const [isNewChatClicked, setIsNewChatClicked] = useState(false);
 
   const {isChatsFetched, isChatsFirstRequest} = useAppSelector(
     state => state.chats,
@@ -46,14 +47,22 @@ const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
             />
           </View>
           <View style={styles.rightContainer}>
-            <View style={styles.iconContainer}>
-              <NewChat />
-            </View>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => setIsNewChatClicked(true)}>
+              <NewChatIcon />
+            </TouchableOpacity>
           </View>
         </View>
 
         <ChatsList search={search} navigation={navigation} />
       </SafeAreaView>
+      {isNewChatClicked && (
+        <NewChat
+          isVisible={isNewChatClicked}
+          onClose={() => setIsNewChatClicked(false)}
+        />
+      )}
     </View>
   );
 };
