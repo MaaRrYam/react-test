@@ -18,6 +18,7 @@ import Empty from './Empty';
 import Cross from './Cross';
 import ArrowDown from './ArrowDown';
 import Delete from './Delete';
+import CheckMark from './CheckMark';
 export {
   BackArrow,
   Dislike,
@@ -39,4 +40,5 @@ export {
   Cross,
   ArrowDown,
   Delete,
+  CheckMark,
 };

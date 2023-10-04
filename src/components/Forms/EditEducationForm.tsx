@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   checkboxText: {
     color: COLORS.black,
-    marginLeft: 20,
+    marginLeft: 10,
   },
   careerItem: {
     paddingHorizontal: 20,

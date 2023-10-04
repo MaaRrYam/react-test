@@ -1,55 +1,75 @@
-import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {CheckboxProps} from '@/interfaces';
+import { CheckMark } from '@/assets/icons';
 import {COLORS} from '@/constants';
+import React from 'react';
+import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+interface CheckboxProps {
+  onPress: (isChecked: boolean) => void;
+  isChecked?: boolean;
+  size?: number;
+  color?: string;
+  style?: any;
+  text?: string;
+  fillColor?: string;
+  unfillColor?: string;
+  iconStyle?: any;
+  innerIconStyle?: any;
+}
 
 const Checkbox: React.FC<CheckboxProps> = ({
   onPress,
+  isChecked = false,
   size = 24,
-  style = {},
+  color = COLORS.white,
+  style,
   text,
   fillColor = COLORS.primary,
-  unfillColor = COLORS.lightBackground,
-  iconStyle = {},
-  innerIconStyle = {},
-  isChecked = false,
+  unfillColor = COLORS.lightGrayBackground,
+  iconStyle,
+  innerIconStyle,
 }) => {
-  
   const toggleCheckbox = () => {
     onPress(!isChecked);
   };
 
   return (
     <TouchableOpacity
-      onPress={toggleCheckbox}
-      style={[
-        styles.checkbox,
-        style,
-        {
-          width: size,
-          height: size,
-          backgroundColor: isChecked ? fillColor : unfillColor,
-        },
-      ]}>
-      <Text style={[styles.checkmark, iconStyle, innerIconStyle]}>✔</Text>
-      {text && <Text style={styles.label}>{text}</Text>}
+      onPress={() => onPress(!isChecked)}
+      style={[styles.checkboxContainer, style]}>
+      <View
+        style={[
+          styles.checkbox,
+          {
+            width: size,
+            height: size,
+            borderColor: color,
+            backgroundColor: isChecked ? fillColor : unfillColor,
+          },
+          iconStyle,
+        ]}>
+        {isChecked && <CheckMark />}
+      </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   checkbox: {
+    borderWidth: 2,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  checkmark: {
-    fontSize: 18,
-    color: 'white',
+  checkIcon: {
+    position: 'absolute',
   },
-  label: {
+  checkText: {
     marginLeft: 8,
   },
 });
-
 export default Checkbox;
