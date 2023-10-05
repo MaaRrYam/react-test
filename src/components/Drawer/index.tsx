@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
+import Jobs from '@/screens/jobs';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,7 +76,7 @@ const Tabs = () => {
       <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
       <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
       <Tab.Screen name={SCREEN_NAMES.Notifications} component={Notifications} />
-      <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
+      <Tab.Screen name={SCREEN_NAMES.Jobs} component={Jobs} />
       <Tab.Screen name={SCREEN_NAMES.Profile} component={SettingsScreen} />
     </Tab.Navigator>
   );

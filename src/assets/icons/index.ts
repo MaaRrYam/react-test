@@ -16,6 +16,7 @@ import Share from './Share';
 import ThreeDots from './ThreeDots';
 import Empty from './Empty';
 import SendIcon from './Send';
+import Location from './Location';
 
 export {
   BackArrow,
@@ -36,4 +37,5 @@ export {
   ThreeDots,
   Empty,
   SendIcon,
+  Location,
 };
