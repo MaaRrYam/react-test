@@ -81,9 +81,9 @@ const ChatsService = {
       };
 
       if (existingGroup) {
-        existingGroup.messages.unshift(formattedMessage);
+        existingGroup.messages.push(formattedMessage);
       } else {
-        groupedMessages.unshift({
+        groupedMessages.push({
           id: groupedMessages.length + 1,
           date: formattedDate,
           messages: [formattedMessage],
@@ -92,11 +92,13 @@ const ChatsService = {
     });
 
     groupedMessages.forEach(group => {
-      group.messages.sort((a, b) => {
-        const timeA = new Date(`1970/01/01 ${a.time}`);
-        const timeB = new Date(`1970/01/01 ${b.time}`);
-        return timeB.getTime() - timeA.getTime();
-      });
+      group.messages
+        .sort((a, b) => {
+          const timeA = new Date(`1970/01/01 ${a.time}`);
+          const timeB = new Date(`1970/01/01 ${b.time}`);
+          return timeB.getTime() - timeA.getTime();
+        })
+        .reverse();
     });
 
     return groupedMessages;
@@ -120,7 +122,7 @@ const ChatsService = {
       query(
         collection(db, 'chats', chatAddress, 'messages'),
         orderBy('time', 'desc'),
-        limit(100),
+        limit(20),
       ),
       chatDocs => {
         const fetchedMessages = chatDocs.docs.map(
@@ -142,10 +144,10 @@ const ChatsService = {
   }) {
     try {
       const chatAddress = this.findChatAddress(UID, payload.receiverId);
-      await FirebaseService.addDocument(
-        `chats/${chatAddress}/messages`,
-        payload,
-      );
+      await FirebaseService.addDocument(`chats/${chatAddress}/messages`, {
+        ...payload,
+        time: FirebaseService.serverTimestamp(),
+      });
 
       await Promise.all([
         FirebaseService.setDoc(`users/${UID}/chats`, payload.receiverId, {
