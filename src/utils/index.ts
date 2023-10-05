@@ -29,5 +29,15 @@ export const formatFirebaseTimestamp = (
     return date.toLocaleString(undefined, options);
   }
 
-  throw new Error('Invalid format option. Use "date" or "dateTime".');
+  if (formatOption === 'time') {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return date.toLocaleTimeString('en-US', options);
+  }
+
+  throw new Error(
+    'Invalid format option. Use "date", "dateTime", or "time24".',
+  );
 };

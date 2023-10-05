@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
 
 import {Loading, BottomSheet} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -40,9 +39,9 @@ const Feed = () => {
     }
   }, [dispatch, isFeedFetched]);
 
-  useFocusEffect(() => {
+  useEffect(() => {
     fetchData();
-  });
+  }, [fetchData]);
 
   useEffect(() => {
     if (isFeedFetched) {

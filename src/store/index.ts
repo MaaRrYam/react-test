@@ -5,6 +5,7 @@ import loadingSlice from '@/store/features/loadingSlice';
 import networkSlice from '@/store/features/networkSlice';
 import notificationsSlice from '@/store/features/notificationsSlice';
 import homeSlice from '@/store/features/homeSlice';
+import chatsSlice from '@/store/features/chatsSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     network: networkSlice,
     notifications: notificationsSlice,
     home: homeSlice,
+    chats: chatsSlice,
   },
 });
 
