@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -10,18 +10,59 @@ import {
 import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
 import {UserInterface} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
+import {useFormik} from 'formik';
+import {basicInfoSchema} from '@/utils/schemas/profile';
 
 interface UserInfoProps {
   user: UserInterface;
 }
 
 const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
-  const [name, setName] = useState<string>(user.name);
-  const [about, setAbout] = useState<string>(user.description || '');
-  const [country, setCountry] = useState<string>(user.country || '');
-  const [state, setState] = useState<string>(user.state || '');
-  const [city, setCity] = useState<string>(user.city || '');
-
+  const handleSave = async (formValues: {
+    name: string;
+    about: string;
+    tagline: string;
+    country: string;
+    city: string;
+    state: string;
+  }) => {
+    await console.log(formValues);
+    setSubmitting(false);
+  };
+  const {
+    values,
+    touched,
+    handleChange,
+    handleSubmit,
+    errors,
+    setFieldTouched,
+    isSubmitting,
+    setSubmitting,
+    handleReset,
+  } = useFormik({
+    initialValues: {
+      name: user.name ? user.name : '',
+      about: user.description ? (user.description as string) : '',
+      tagline: user.tagline ? (user.tagline as string) : '',
+      country: user.country ? user.country : '',
+      city: user.city ? user.city : '',
+      state: user.state ? user.state : '',
+    },
+    validationSchema: basicInfoSchema,
+    onSubmit: formValues => {
+      handleSave(formValues);
+      handleReset({
+        values: {
+          name: '',
+          about: '',
+          tagline: '',
+          country: '',
+          city: '',
+          state: '',
+        },
+      });
+    },
+  });
   const employmentOptions = user.employmentList?.map(
     employment => `${employment.role} at ${employment.companyName}`,
   );
@@ -43,15 +84,21 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
           <Input
             name="Name"
             placeholder="Name"
-            onChangeText={setName}
-            value={name}
+            touched={touched.name}
+            error={errors.name}
+            setFieldTouched={setFieldTouched}
+            onChangeText={handleChange('name')}
+            value={values.name}
           />
           <TextArea
             name="About"
             placeholder="About"
-            onChangeText={setAbout}
-            value={about}
+            onChangeText={handleChange('about')}
+            value={values.about as string}
             style={styles.textArea}
+            setFieldTouched={setFieldTouched}
+            touched={touched.about}
+            error={errors.about}
           />
 
           <Text style={[styles.headerText, styles.subSectionHeader]}>
@@ -60,7 +107,12 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
           <Dropdown
             options={employmentOptions || []}
             style={styles.dropdown}
-            startingOption={user.tagline || 'Tagline'}
+            startingOption={values.tagline || 'Select an optiona'}
+            selectedOption={values.tagline}
+            onOptionSelect={handleChange('tagline')}
+            error={errors.tagline}
+            touched={touched.tagline}
+            setFieldTouched={setFieldTouched}
           />
         </View>
 
@@ -71,27 +123,37 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
           <Input
             name="Country"
             placeholder="Country"
-            onChangeText={setCountry}
-            value={country}
+            onChangeText={handleChange('country')}
+            value={values.country}
+            setFieldTouched={setFieldTouched}
+            touched={touched.country}
+            error={errors.country}
           />
           <Input
             name="State"
             placeholder="State"
-            onChangeText={setState}
-            value={state}
+            onChangeText={handleChange('state')}
+            value={values.state}
+            setFieldTouched={setFieldTouched}
+            touched={touched.state}
+            error={errors.state}
           />
           <Input
             name="City"
             placeholder="City"
-            onChangeText={setCity}
-            value={city}
+            onChangeText={handleChange('city')}
+            value={values.city}
+            setFieldTouched={setFieldTouched}
+            touched={touched.city}
+            error={errors.city}
           />
         </View>
       </ScrollView>
       <View style={styles.footer}>
         <PrimaryButton
           title="Save"
-          onPress={() => {}}
+          onPress={handleSubmit}
+          isLoading={isSubmitting}
           style={styles.saveButton}
         />
       </View>
@@ -102,7 +164,7 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white, // Set your background color here
+    backgroundColor: COLORS.white,
   },
   section: {
     paddingHorizontal: 20,

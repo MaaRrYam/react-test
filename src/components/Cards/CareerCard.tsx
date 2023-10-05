@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
-import {Delete, NewChat} from '@/assets/icons';
+import {Delete, NewChatIcon as NewChat} from '@/assets/icons';
 
 interface CareerCardProps {
   title?: string;

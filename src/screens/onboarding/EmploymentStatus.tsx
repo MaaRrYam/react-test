@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
-import {BackButton, PrimaryButton, EmploymentSelectionField} from '@/components';
+import {
+  BackButton,
+  PrimaryButton,
+  EmploymentSelectionField,
+} from '@/components';
 import {SCREEN_NAMES, employmentStatuses} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EmploymentStatusScreenProps} from '@/types';

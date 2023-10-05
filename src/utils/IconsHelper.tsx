@@ -19,10 +19,7 @@ export const getIcon = (
       return <Jobs isFocused={isFocused} />;
     case 'Profile':
       return photoUrl ? (
-        <Image
-          source={{uri: photoUrl}}
-          style={styles.image}
-        />
+        <Image source={{uri: photoUrl}} style={styles.image} />
       ) : (
         <ImageIcon />
       );

@@ -11,7 +11,7 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
   return (
     <View style={styles.feedItem}>
       <View style={styles.authorInfo}>
-        <Image source={{uri: item.author.photoUrl}} style={styles.userImage} />
+        <Image source={{uri: item.author?.photoUrl}} style={styles.userImage} />
         <View style={{marginLeft: 10}}>
           <Text style={styles.authorName}>{item.author?.name}</Text>
           <Text style={styles.postTime}>

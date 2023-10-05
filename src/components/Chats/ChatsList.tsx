@@ -46,7 +46,7 @@ const ChatsList = ({search, navigation}: ChatsListProps) => {
 
   return (
     <>
-      {filteredChats.length ? (
+      {filteredChats?.length ? (
         <FlatList
           data={filteredChats}
           keyExtractor={item => item.id}

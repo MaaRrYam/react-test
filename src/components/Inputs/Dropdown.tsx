@@ -1,5 +1,5 @@
-import {ArrowDown, ArrowUp} from '@/assets/icons';
-import React, {useState} from 'react';
+import { ArrowDown } from '@/assets/icons';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,10 @@ interface DropdownProps {
   startingOption: string;
   selectedOption?: string | null;
   onOptionSelect?: (option: string) => void;
+  error?: string;
+  touched?: boolean;
+  onBlur?: Function;
+  setFieldTouched?: any;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -26,43 +30,54 @@ const Dropdown: React.FC<DropdownProps> = ({
   style,
   onOptionSelect,
   selectedOption,
+  error,
+  touched,
+  onBlur,
+  setFieldTouched,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [selectedOption, setSelectedOption] = useState<string | null>(
-  //   startingOption,
-  // );
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const selectOption = (option: string) => {
-    onOptionSelect(option);
-    console.log(option);
+    onOptionSelect?.(option);
     setIsOpen(false);
+  };
+
+  const handleBlur = () => {
+    setFieldTouched?.(true); // Mark the field as touched when blurred
+    onBlur?.(); // Call the onBlur function if provided
+  };
+
+  const setSelectedOption = (option: string) => {
+    setIsOpen(false);
+    onOptionSelect?.(option);
   };
 
   return (
     <ScrollView style={style}>
       <TouchableOpacity onPress={toggleDropdown}>
         <View style={styles.dropdownHeader}>
-          <Text style={{color: 'black'}}>
+          <Text style={{ color: 'black' }}>
             {selectedOption || startingOption}
           </Text>
-          <View>
-            <ArrowDown />
-          </View>
+          <View><ArrowDown /></View>
         </View>
       </TouchableOpacity>
       {isOpen && (
         <ScrollView style={styles.dropdownList}>
           {options.map(option => (
-            <TouchableOpacity key={option} onPress={() => selectOption(option)}>
-              <Text style={{color: 'black'}}>{option}</Text>
+            <TouchableOpacity
+              key={option}
+              onPress={() => setSelectedOption(option)}>
+              <Text style={{ color: 'black' }}>{option}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       )}
+      {touched && error && <Text style={styles.errorText}>{error}</Text>}
     </ScrollView>
   );
 };
@@ -87,6 +102,10 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
     padding: 5,
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
   },
 });
 
