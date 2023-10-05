@@ -288,7 +288,7 @@ export interface NetworkItemProps {
   isFollowing?: boolean;
 }
 
-interface ReactionInterface {
+export interface ReactionInterface {
   likedBy: string;
   timestamp: Timestamp;
 }
@@ -349,14 +349,25 @@ export interface CacheItem<T> {
   timestamp: number;
 }
 
-export interface FeedCommentsResponse {
+export interface ReplyCommentInterface {
+  dislikes: ReactionInterface[];
+  likes: ReactionInterface[];
+  id: string;
   text: string;
-  timestamp: string;
+  timestamp: Timestamp;
+  user: UserInterface;
   userId: string;
 }
 
-export interface FeedComment extends FeedCommentsResponse {
+export interface FeedCommentsResponse {
+  dislikes: ReactionInterface[];
+  id: string;
+  likes: ReactionInterface[];
+  replies: ReplyCommentInterface[];
   user: UserInterface;
+  userId: string;
+  text: string;
+  timestamp: Timestamp;
 }
 
 export interface FeedItemProps {
@@ -365,10 +376,33 @@ export interface FeedItemProps {
 }
 
 export interface PostCommentsProps {
+  postId: string;
   loading: boolean;
-  comments: FeedComment[];
+  comments: FeedCommentsResponse[];
   showComments: boolean;
+  setComments: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      comments: FeedCommentsResponse[];
+      showComments: boolean;
+      postId: string;
+    }>
+  >;
 }
+
+export interface PostCommentInterface {
+  postId: string;
+  item: FeedCommentsResponse;
+  setComments: React.Dispatch<
+    React.SetStateAction<{
+      postId: string;
+      loading: boolean;
+      comments: FeedCommentsResponse[];
+      showComments: boolean;
+    }>
+  >;
+}
+
 export interface ChatsInterface {
   id: string;
   userId: string;

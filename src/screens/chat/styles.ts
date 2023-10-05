@@ -127,6 +127,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingRight: PADDING.general,
   },
   input: {
     padding: 10,

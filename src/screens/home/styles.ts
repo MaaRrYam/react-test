@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 3 / 5,
     marginLeft: MARGINS.general,
+    marginTop: MARGINS.general / 3,
   },
   reactionButton: {
     paddingHorizontal: 20,
@@ -157,10 +158,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   commentText: {
-    marginTop: MARGINS.general / 3,
     fontSize: FONTS.bodyRegular,
     color: COLORS.black,
-    marginLeft: 48,
+    marginLeft: 15,
   },
   commentAuthorName: {
     fontSize: FONTS.bodySmall,
@@ -169,6 +169,66 @@ export const styles = StyleSheet.create({
   },
   commentAuthorTagline: {
     fontSize: FONTS.bodySmall,
-    color: 'gray',
+    color: COLORS.text,
+  },
+  commentContainer: {
+    flex: 1,
+    marginLeft: 30,
+    marginRight: 70,
+  },
+  reactionButtonsBordered: {
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: 0,
+    marginTop: 5,
+  },
+  postReactionsForComments: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  repliesText: {
+    color: COLORS.black,
+    fontSize: FONTS.bodySmall,
+    width: 150,
+    marginLeft: 2,
+  },
+  inputFieldContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    borderRadius: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: MARGINS.general / 2,
+    paddingRight: 8,
+  },
+  commentFieldContainer: {
+    backgroundColor: COLORS.lightGrayBackground,
+    borderRadius: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: MARGINS.general / 2,
+    padding: 8,
+    marginHorizontal: MARGINS.general,
+  },
+  input: {
+    padding: 10,
+    flex: 1,
+  },
+  replyContainer: {
+    flexDirection: 'row',
+    marginVertical: 5,
+    alignItems: 'center',
+  },
+  replyAuthor: {
+    fontWeight: 'bold',
+    marginRight: 5,
+    fontSize: FONTS.bodyRegular,
+    color: COLORS.black,
+  },
+  reply: {
+    fontSize: FONTS.bodyRegular,
+    color: COLORS.black,
   },
 });

@@ -24,6 +24,7 @@ const OnboardingService = {
     FirebaseService.updateDocument('users', UID, newData);
   },
   setScreen(navigation, dispatch: AppDispatch, userData: UserInterface) {
+    console.log(userData);
     if (userData.onboardingStep === 0 && userData.onboarded === false) {
       dispatch(setLoadingFinished());
     } else if (userData.onboardingStep === 1) {

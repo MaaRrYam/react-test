@@ -1,12 +1,11 @@
+import {CancelTokenSource} from 'axios';
 import {API_GET} from '@/config/api/apiRequests';
 import {
-  FeedComment,
   FeedCommentsResponse,
   FeedItem,
-  UserInterface,
+  ReplyCommentInterface,
 } from '@/interfaces';
-import FirebaseService from '../Firebase';
-import Cache from '@/cache';
+import FirebaseService from '@/services/Firebase';
 
 const HomeService = {
   async getFeed() {
@@ -21,6 +20,9 @@ const HomeService = {
       console.error('Error fetching followers:', error);
       throw error;
     }
+  },
+  cancelRequest(source: CancelTokenSource) {
+    source.cancel('Request cancelled by user');
   },
   async likeAPost(postId: string, likedBy: string) {
     try {
@@ -96,35 +98,40 @@ const HomeService = {
   },
   async fetchPostComments(postId: string) {
     try {
-      const response = (await FirebaseService.getAllDocuments(
-        `posts/${postId}/comments`,
-      )) as FeedCommentsResponse[];
-
-      const result: FeedComment[] = await Promise.all(
-        response.map(async item => {
-          let user = {} as UserInterface;
-
-          if (await Cache.get(`user_${item.userId}`)) {
-            user = (await Cache.get(`user_${item.userId}`)) as UserInterface;
-          } else {
-            user = (await FirebaseService.getDocument(
-              'users',
-              item.userId,
-            )) as UserInterface;
-            await Cache.set(`user_${item.userId}`, user);
-          }
-
-          return {
-            ...item,
-            user,
-          };
-        }),
-      );
-
-      return result;
+      const {data, status} = await API_GET(`/feed/${postId}/comments`);
+      if (status) {
+        return data as FeedCommentsResponse[];
+      } else {
+        return [] as FeedCommentsResponse[];
+      }
     } catch (error) {
       console.log(error);
-      return [] as FeedComment[];
+      return [] as FeedCommentsResponse[];
+    }
+  },
+  async addComment(postId: string, payload: FeedCommentsResponse) {
+    try {
+      await FirebaseService.addDocument(`posts/${postId}/comments`, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async addReply(
+    postId: string,
+    commentId: string,
+    payload: ReplyCommentInterface,
+  ) {
+    try {
+      await FirebaseService.addDocument(
+        `posts/${postId}/comments/${commentId}/replies`,
+        payload,
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   },
 };

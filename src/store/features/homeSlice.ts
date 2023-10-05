@@ -22,9 +22,11 @@ export const getFeed = createAsyncThunk('home/getFeed', async () => {
 
   if (localFeed) {
     result.forEach((post: FeedItem) => {
-      const foundPost = localFeed!.find(
-        (item: FeedItem) => item.id === post.id,
-      );
+      const foundPost = localFeed!.find((item: FeedItem) => {
+        if (item._id === post._id) {
+          return true;
+        }
+      });
 
       if (!foundPost) {
         mergedFeed.push(post);
@@ -33,8 +35,12 @@ export const getFeed = createAsyncThunk('home/getFeed', async () => {
   } else {
     mergedFeed.push(...result);
   }
-
   return mergedFeed;
+});
+
+export const refreshFeed = createAsyncThunk('home/refreshFeed', async () => {
+  const result = await HomeService.getFeed();
+  return result;
 });
 
 export const homeSlice = createSlice({
@@ -156,6 +162,13 @@ export const homeSlice = createSlice({
       state.feed = payload;
       state.isFeedFetched = true;
       state.isFeedFirstRequest = false;
+    });
+    builder.addCase(refreshFeed.pending, state => {
+      state.isFeedFetched = false;
+    });
+    builder.addCase(refreshFeed.fulfilled, (state, {payload}) => {
+      state.feed = payload;
+      state.isFeedFetched = true;
     });
   },
 });

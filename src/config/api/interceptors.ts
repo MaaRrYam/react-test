@@ -4,7 +4,7 @@ import StorageService from '@/services/Storage';
 
 export const onRequestSuccess = async (config: any) => {
   if (isInDevelopment) {
-    console.log('request success', config);
+    // console.log('request success', config);
   }
   const token = await StorageService.getItem('accessToken');
   config.headers.Authorization = `Bearer ${token}`;
@@ -19,7 +19,7 @@ export const onRequestFail = (error: any) => {
 
 export const onResponseSuccess = (response: any) => {
   if (isInDevelopment) {
-    console.log('response success', response);
+    // console.log('response success', response);
   }
   return response;
 };
