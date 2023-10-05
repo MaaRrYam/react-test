@@ -120,13 +120,17 @@ export const styles = StyleSheet.create({
     borderTopColor: COLORS.border,
     padding: 10,
   },
-  input: {
+  inputFieldContainer: {
     flex: 1,
     backgroundColor: COLORS.lightBackground,
     borderRadius: 20,
-    padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  input: {
+    padding: 10,
+    flex: 1,
   },
   uploadImageButton: {
     width: 40,

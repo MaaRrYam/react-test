@@ -108,11 +108,12 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <View style={styles.input}>
+        <View style={styles.inputFieldContainer}>
           <TextInput
             placeholder="Start Typing..."
             value={message}
             onChangeText={setMessage}
+            style={styles.input}
           />
           {message && (
             <TouchableOpacity onPress={handleSendMessage}>
