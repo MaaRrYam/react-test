@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
-const NewChat = (props: SvgProps) => (
+const NewChatIcon = (props: SvgProps) => (
   <Svg width={24} height={24} fill="none" {...props}>
     <G fill="#000" clipPath="url(#a)">
       <Path d="M15.546 1.28 5.386 11.44a4.137 4.137 0 0 0-1.22 2.946v1.12a.833.833 0 0 0 .833.833h1.12a4.138 4.138 0 0 0 2.945-1.22l10.16-10.16a2.604 2.604 0 0 0 0-3.678 2.662 2.662 0 0 0-3.678 0Zm2.5 2.5L7.886 13.94c-.47.468-1.105.73-1.767.732h-.286v-.286a2.517 2.517 0 0 1 .731-1.767l10.16-10.16a.957.957 0 0 1 1.322 0 .936.936 0 0 1 0 1.322Z" />
@@ -13,4 +13,4 @@ const NewChat = (props: SvgProps) => (
     </Defs>
   </Svg>
 );
-export default NewChat;
+export default NewChatIcon;

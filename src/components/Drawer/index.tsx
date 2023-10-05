@@ -85,14 +85,14 @@ const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
     backgroundColor: COLORS.white,
-    padding: 20,
     borderTopColor: COLORS.border,
-    height: 60,
+    height: 80,
     elevation: 5,
     shadowColor: COLORS.black,
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    paddingBottom: 20,
   },
   tab: {
     flex: 1,

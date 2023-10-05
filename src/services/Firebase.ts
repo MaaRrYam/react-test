@@ -1,4 +1,5 @@
 import {FirebaseServiceProps} from '@/interfaces';
+import {formatFirebaseTimestamp} from '@/utils';
 import {
   getFirestore,
   collection,
@@ -14,6 +15,7 @@ import {
   getDoc,
   deleteDoc,
   updateDoc,
+  setDoc,
 } from 'firebase/firestore';
 
 const db = getFirestore();
@@ -37,6 +39,18 @@ const FirebaseService: FirebaseServiceProps = {
       await updateDoc(updateDocRef, data);
     } catch (error) {
       console.error('Error adding document: ', error);
+      throw error;
+    }
+  },
+  async setDoc(collectionName, docId, payload) {
+    try {
+      const docRef = doc(db, collectionName, docId);
+
+      await setDoc(docRef, payload);
+
+      console.log('Document successfully written!');
+    } catch (error) {
+      console.error('Error while setting document: ', error);
       throw error;
     }
   },
@@ -69,7 +83,20 @@ const FirebaseService: FirebaseServiceProps = {
       const docRef = doc(db, collectionName, documentId);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        const document = {id: docSnapshot.id, ...docSnapshot.data()};
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
         return document;
       } else {
         return null;

@@ -8,9 +8,7 @@ import {
   RoleCard,
   EducationCard,
   ExperienceCard,
-  ChatItem,
   NetworkItem,
-  NotificationItem,
 } from '@/components/Cards';
 import {Link} from '@/components/Links';
 import {Input, Checkbox, YearPicker} from '@/components/Inputs';
@@ -19,9 +17,13 @@ import {default as BottomSheet} from '@/components/BottomSheet';
 import {EducationForm, ExperienceForm} from '@/components/Forms';
 import Loading from '@/components/Loading';
 import Header from '@/components/Header';
-import {default as SocialLoginButton} from '@/components/SocialLoginButton'
+import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
-import SearchButton from '@/components/Search'
+import Feed from '@/components/Feed/Feed';
+import {NotificationsList} from '@/components/Notifications';
+import SearchButton from '@/components/Search';
+import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
+
 export {
   BackButton,
   Button,
@@ -41,9 +43,13 @@ export {
   ChatItem,
   NetworkItem,
   RoundedButton,
-  NotificationItem,
+  NotificationsList,
   SocialLoginButton,
   Loading,
   Empty,
+  Feed,
   SearchButton,
+  ChatsList,
+  Chat,
+  NewChat,
 };

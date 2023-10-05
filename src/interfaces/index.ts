@@ -81,6 +81,11 @@ export interface StorageServiceProps {
 }
 export interface FirebaseServiceProps {
   addDocument(collectionName: string, data: DocumentData): Promise<string>;
+  setDoc(
+    collectionName: string,
+    docId: string,
+    payload: DocumentData,
+  ): Promise<void>;
   deleteDocument(collectionName: string, id: string): Promise<void>;
   updateDocument(
     collectionName: string,
@@ -92,6 +97,11 @@ export interface FirebaseServiceProps {
     documentName: string,
     data: DocumentData,
   ): void;
+  setDoc(
+    collectionName: string,
+    docId: string,
+    payload: DocumentData,
+  ): Promise<void>;
   getAllDocuments(collectionName: string): Promise<DocumentData[]>;
   getDocumentsByQuery(
     collectionName: string,
@@ -176,6 +186,10 @@ export interface NavigationConfigProps {
 
 export interface IconProps extends SvgProps {
   isFocused?: boolean;
+}
+
+export interface ReactionIconProps extends SvgProps {
+  isLiked: boolean;
 }
 
 export interface EducationProps {
@@ -273,6 +287,43 @@ export interface NetworkItemProps {
   isConnection?: boolean;
   isFollowing?: boolean;
 }
+
+interface ReactionInterface {
+  likedBy: string;
+  timestamp: Timestamp;
+}
+
+export interface ReactionPayload {
+  id: string;
+  reaction: ReactionInterface;
+}
+
+export interface FeedItem {
+  id: string;
+  creationTime: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  hashtag: string;
+  type: string;
+  text?: string;
+  authorId: string;
+  author: UserInterface;
+  media?: string;
+  mediaType?: string;
+  editedTime: Timestamp;
+  edited: boolean;
+  _id: string;
+  feedType: string;
+  postLikes?: ReactionInterface[];
+  postDislikes?: ReactionInterface[];
+  tags?: string[];
+  title?: string;
+  content?: string;
+  views?: number;
+  coverImage?: string;
+  timestamp?: Timestamp;
+}
 export interface ScreenDimensions {
   width: number;
   height: number;
@@ -285,4 +336,72 @@ export interface UserManagement {
 export interface SearchButtonProps {
   style: StyleProp<ViewStyle>;
   onPress: () => void;
+}
+
+export interface CacheServiceInterface {
+  set<T>(key: string, data: T): Promise<void>;
+  get<T>(key: string): Promise<T | null>;
+  isCacheValid: (timestamp: number) => boolean;
+}
+
+export interface CacheItem<T> {
+  data: T;
+  timestamp: number;
+}
+
+export interface FeedCommentsResponse {
+  text: string;
+  timestamp: string;
+  userId: string;
+}
+
+export interface FeedComment extends FeedCommentsResponse {
+  user: UserInterface;
+}
+
+export interface FeedItemProps {
+  item: FeedItem;
+  fetchPostComments: (postId: string) => Promise<void>;
+}
+
+export interface PostCommentsProps {
+  loading: boolean;
+  comments: FeedComment[];
+  showComments: boolean;
+}
+export interface ChatsInterface {
+  id: string;
+  userId: string;
+  message: string;
+  name: string;
+  photoUrl: string;
+  read: boolean;
+  time: string | Timestamp;
+  user: UserInterface;
+}
+
+export interface ChatMessageInterface {
+  fileName: string;
+  fileUrl: string;
+  message: string;
+  photoUrl: string;
+  receiverId: string;
+  senderId: string;
+  time: Timestamp;
+  type: 'text' | 'file' | 'picture';
+}
+
+export interface GroupedMessage {
+  id: number;
+  date: string;
+  messages: {
+    message: string;
+    sender: string;
+    time: string;
+  }[];
+}
+
+export interface SendMessageInterface extends ChatMessageInterface {
+  receiver: UserInterface;
+  sender: UserInterface;
 }

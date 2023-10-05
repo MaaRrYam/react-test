@@ -8,13 +8,14 @@ import Home from './Home';
 import Network from './Network';
 import Image from './Image';
 import Jobs from './Jobs';
-import NewChat from './NewChat';
+import NewChatIcon from './NewChat';
 import Notifications from './Notifications';
 import Report from './Report';
 import Search from './Search';
 import Share from './Share';
 import ThreeDots from './ThreeDots';
 import Empty from './Empty';
+import SendIcon from './Send';
 
 export {
   BackArrow,
@@ -27,11 +28,12 @@ export {
   Network,
   Image,
   Jobs,
-  NewChat,
+  NewChatIcon,
   Notifications,
   Report,
   Search,
   Share,
   ThreeDots,
   Empty,
+  SendIcon,
 };
