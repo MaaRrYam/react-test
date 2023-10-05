@@ -24,10 +24,7 @@ export const addEducationSchema = Yup.object().shape({
   degree: Yup.string().required('Degree is required'),
   startYear: Yup.number()
     .min(1950, 'Start Year should be greater than 1950')
-    .max(
-      new Date().getFullYear(),
-      'Start Year should be less than current year',
-    )
+    .max(new Date().getFullYear() + 1, 'Invalid Start Year')
     .required('Start Year is required'),
   endYear: Yup.number()
     .min(1950, 'Ending Year should be greater than 1950')
