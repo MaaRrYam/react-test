@@ -20,7 +20,7 @@ import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
 import {getUser} from '@/store/features/authSlice';
 import {getConnections} from '@/store/features/networkSlice';
-import {ThreeDots, NewChat} from '@/assets/icons';
+import {ThreeDots, NewChatIcon} from '@/assets/icons';
 import ProfileTab from '@/screens/Profile/ProfileTab';
 import profileStyles from '@/styles/profile';
 import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
@@ -203,7 +203,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                   <TouchableOpacity
                     style={profileStyles.editIcon}
                     onPress={openBottomSheet}>
-                    <NewChat />
+                    <NewChatIcon />
                   </TouchableOpacity>
                 </View>
               </View>
