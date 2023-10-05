@@ -12,12 +12,18 @@ import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
-  const [experience, setExperience] = useState<ExperienceState[]>([]);
+  const {user} = useUserManagement();
+  const [experience, setExperience] = useState<ExperienceState[]>(
+    user?.employmentList || [],
+  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    OnboardingService.experience(experience);
     navigation.navigate(SCREEN_NAMES.EmploymentStatus);
   };
 
@@ -38,10 +44,10 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
             renderItem={({item}) => (
               <ExperienceCard
                 id={item.id}
-                currentCompany={item.currentCompany}
-                designation={item.designation}
-                startingYear={item.startingYear}
-                endingYear={item.endingYear}
+                currentCompany={item.companyName}
+                designation={item.role}
+                startingYear={item.startYear}
+                endingYear={item.endYear}
                 currentlyWorking={item.currentlyWorking}
                 onPress={id => {
                   console.log('Experience card pressed:', id);

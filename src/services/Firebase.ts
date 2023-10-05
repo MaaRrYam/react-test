@@ -33,6 +33,15 @@ const FirebaseService: FirebaseServiceProps = {
       throw error;
     }
   },
+  async updateDocument(collectionName, documentId, data) {
+    try {
+      const updateDocRef = doc(db, collectionName, documentId);
+      await updateDoc(updateDocRef, data);
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      throw error;
+    }
+  },
   async setDoc(collectionName, docId, payload) {
     try {
       const docRef = doc(db, collectionName, docId);
@@ -51,15 +60,6 @@ const FirebaseService: FirebaseServiceProps = {
       await deleteDoc(docRef);
     } catch (error) {
       console.error('Error deleting document: ', error);
-      throw error;
-    }
-  },
-  async updateDocument(collectionName, documentId, data) {
-    try {
-      const docRef = doc(db, collectionName, documentId);
-      await updateDoc(docRef, data);
-    } catch (error) {
-      console.error('Error updating document: ', error);
       throw error;
     }
   },

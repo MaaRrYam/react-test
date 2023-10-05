@@ -1,43 +1,90 @@
-import {requestAccessFormValues} from '@/interfaces';
-import FirebaseService from '@/services/Firebase';
+import {API_GET} from '@/config/api/apiRequests';
+import {SCREEN_NAMES} from '@/constants';
+import {
+  EducationState,
+  EmploymentProps,
+  ExperienceState,
+  SalaryExpectation,
+  UserInterface,
+} from '@/interfaces';
+import {setLoadingFinished} from '@/store/features/loadingSlice';
+import {SalaryExpectationsScreenProps} from '@/types';
+import {getUID} from '@/utils/functions';
+import {Dispatch} from '@reduxjs/toolkit';
+import FirebaseService from '../Firebase';
 
-export async function submitRequestAccess(
-  requestDetails: requestAccessFormValues,
-) {
-  try {
-    const isDuplicate = await FirebaseService.checkDuplicateRequest(
-      'whitelist',
-      'email',
-      requestDetails.email,
-    );
-    if (isDuplicate) {
-      return {success: false, message: 'You already have a pending request'};
-    } else {
-      await FirebaseService.addDocument('whitelist', {
-        ...requestDetails,
-        time: FirebaseService.serverTimestamp(),
-        id: FirebaseService.generateUniqueId(),
-        whitelisted: false,
-      });
-      return {success: true, message: 'Request Successfully Submitted!'};
-    }
-  } catch (error) {
-    return {success: false, message: 'An Error Occurred'};
-  }
-}
+let UID: string;
+(async () => {
+  UID = await getUID();
+})();
+type AppDispatch = Dispatch;
 
-export const RoleService = {
-  async getJobRoles() {
-    try {
-      const constantsDoc = await FirebaseService.getDocument(
-        'constants',
-        'jobRoles',
-      );
-      const jobRoles: string[] = constantsDoc?.jobRoles || [];
-      return jobRoles;
-    } catch (error) {
-      console.error('Error fetching job roles: ', error);
-      throw error;
+const OnboardingService = {
+  async getStarted(newData: UserInterface) {
+    FirebaseService.updateDocument('users', UID, newData);
+  },
+  setScreen(navigation, dispatch: AppDispatch, userData: UserInterface) {
+    if (userData.onboardingStep === 0 && userData.onboarded === false) {
+      dispatch(setLoadingFinished());
+    } else if (userData.onboardingStep === 1) {
+      dispatch(setLoadingFinished());
+      navigation.navigate(SCREEN_NAMES.Education);
+    } else if (userData.onboardingStep === 2) {
+      dispatch(setLoadingFinished());
+      navigation.navigate(SCREEN_NAMES.Industry);
+    } else if (userData.onboardingStep === 3) {
+      dispatch(setLoadingFinished());
+      navigation.navigate(SCREEN_NAMES.Experience);
+    } else if (userData.onboardingStep === 4) {
+      dispatch(setLoadingFinished());
+      navigation.navigate(SCREEN_NAMES.EmploymentStatus);
     }
   },
+  async fetchUserData() {
+    try {
+      const data = await FirebaseService.getDocument('users', UID);
+      if (data) {
+        return data as UserInterface;
+      }
+    } catch (error) {
+      console.error('Error fetching data from Firebase:', error);
+    }
+  },
+  async education(education: EducationState) {
+    FirebaseService.updateDocument('users', UID, {
+      educationList: education,
+      onboardingStep: 1,
+    });
+  },
+
+  async industry(selectedIndustries: string[]) {
+    await FirebaseService.updateDocument('users', UID, {
+      jobTags: selectedIndustries,
+      onboardingStep: 2,
+    });
+  },
+  async experience(experience: ExperienceState) {
+    await FirebaseService.updateDocument('users', UID, {
+      employmentList: experience,
+      onboardingStep: 3,
+    });
+  },
+  async employmentStatus(employment: EmploymentProps) {
+    FirebaseService.updateDocument('users', UID, {
+      currentStatus: employment,
+      onboardingStep: 4,
+    });
+  },
+  async SalaryExpectation(newData: UserInterface) {
+    FirebaseService.updateDocument('users', UID, newData);
+  },
+
+  async onboardingCompleted() {
+    await FirebaseService.updateDocument('users', UID, {
+      onboarded: true,
+    });
+    await API_GET(`email/sendWelcomeEmail`);
+  },
 };
+
+export default OnboardingService;

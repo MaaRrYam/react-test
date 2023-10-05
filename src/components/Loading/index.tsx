@@ -15,10 +15,6 @@ const emblemImage = require('@/assets/images/emblem.png');
 export default function Loading() {
   const rotation = useSharedValue(0);
 
-  useEffect(() => {
-    startRotation();
-  }, []);
-
   const startRotation = () => {
     rotation.value = withRepeat(
       withSequence(
@@ -35,6 +31,10 @@ export default function Loading() {
       transform: [{rotate: `${rotation.value * 360}deg`}],
     };
   });
+
+  useEffect(() => {
+    startRotation();
+  }, []);
 
   return (
     <View style={styles.container}>
