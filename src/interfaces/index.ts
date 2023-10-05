@@ -253,6 +253,30 @@ export interface UserInterface {
   readNotifications?: number;
   redeems?: Array<string>;
 }
+
+export interface JobInterface {
+  baseSalary?: string;
+  employmentType?: string;
+  jobCompensation?: string;
+  jobLocation?: string;
+  jobSummary?: string;
+  jobTitle?: string;
+  keyQualifications?: string;
+  posterJobID?: string;
+  responsibilities?: string;
+  companyName?: string;
+  companyLocation?: string;
+  companyLogo?: string;
+  skills?: Array<string>;
+  customQuestions?: Array<string>;
+  timeStamp?: string;
+  contributors?: Array<string>;
+  workplaceType?: string;
+  isFeatured?: boolean;
+  id?: string;
+  isSaved?: boolean;
+}
+
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
 }

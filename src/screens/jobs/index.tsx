@@ -1,11 +1,32 @@
-import {StyleSheet, Text, View, SafeAreaView, ScrollView} from 'react-native';
-import React, {useState} from 'react';
-import {Header, Button, BottomSheet} from '@/components';
-import {COLORS} from '@/constants';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  FlatList,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Header, BottomSheet} from '../../components';
 import JobsDetailForm from '../../components/Forms/JobsDetailForm';
+import JobsService from '../../services/jobs/index';
+import JobsCard from '../../components/Cards/JobsCard';
+import {JobInterface} from '../../interfaces';
+import {COLORS} from '../../constants';
 
 const Jobs = ({navigation}: any) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
+  const [selectedJob, setSelectedJob] = useState<JobInterface>({});
+
+  const handleJobPress = (item: JobInterface) => {
+    setSelectedJob(item);
+    setIsBottomSheetVisible(true);
+  };
+
+  useEffect(() => {
+    JobsService.getAllJobs().then(setAllJobs);
+  }, []);
 
   return (
     <>
@@ -13,26 +34,20 @@ const Jobs = ({navigation}: any) => {
         <SafeAreaView style={styles.SafeAreaView}>
           <View>
             <Header navigation={navigation} />
-            <View style={styles.cardView}>
-              <Text style={styles.cardText}>Chabi Kahan hai?</Text>
-              <Button
-                title="Show Sheet"
-                onPress={() => setIsBottomSheetVisible(true)}
-                backgroundColor={COLORS.white}
-                textColor={COLORS.black}
-                borderWidth={1}
-                borderColor={COLORS.border}
-              />
-              <Text style={styles.cardText}>I am card baby</Text>
-              <Button
-                title="Show Sheet"
-                onPress={() => setIsBottomSheetVisible(true)}
-                backgroundColor={COLORS.white}
-                textColor={COLORS.black}
-                borderWidth={1}
-                borderColor={COLORS.border}
-              />
-            </View>
+            <FlatList
+              data={allJobs}
+              renderItem={({item}) => (
+                <JobsCard
+                  jobTitle={item?.jobTitle}
+                  companyName={item?.companyName}
+                  companyLogo={item?.companyLogo}
+                  jobLocation={item?.jobLocation}
+                  companyLocation={item?.companyLocation}
+                  onPress={() => handleJobPress(item)}
+                />
+              )}
+              keyExtractor={item => item?.id?.toString()!}
+            />
           </View>
         </SafeAreaView>
       </ScrollView>
@@ -41,29 +56,20 @@ const Jobs = ({navigation}: any) => {
           isVisible={isBottomSheetVisible}
           onClose={() => setIsBottomSheetVisible(false)}
           snapPoints={['20%', '90%']}>
-          <JobsDetailForm />
+          <JobsDetailForm
+            selectedJob={selectedJob}
+            setIsBottomSheetVisible={setIsBottomSheetVisible}
+          />
         </BottomSheet>
       )}
     </>
   );
 };
 
-export default Jobs;
-
 const styles = StyleSheet.create({
   SafeAreaView: {
     flex: 1,
-  },
-  cardView: {
-    padding: 5,
-    marginTop: 20,
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'red',
-  },
-  cardText: {
-    marginTop: 10,
-    marginBottom: 10,
+    backgroundColor: COLORS.white,
   },
 });
+export default Jobs;

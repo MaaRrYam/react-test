@@ -23,7 +23,6 @@ export const signUpSchema = Yup.object().shape({
     .required('Confirm Password is required'),
 });
 
-
 export const requestAccessSchema = Yup.object().shape({
   name: Yup.string().required('Name is Required'),
   linkedInUrl: Yup.string()
@@ -43,4 +42,10 @@ export const requestAccessSchema = Yup.object().shape({
       /^(?:\+\d{1,3}\s?)?(?:\d{10}|\d{3}-\d{3}-\d{4}|\(\d{3}\)\s?\d{3}-\d{4})$/,
       'Please Enter a valid Phone Number',
     ),
+});
+
+export const jobCustomQuestionSchema = Yup.object().shape({
+  questionOne: Yup.string(),
+  questionTwo: Yup.string(),
+  questionThree: Yup.string(),
 });

@@ -6,71 +6,132 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
+import {useEffect, useState} from 'react';
 import {Button} from '@components';
 import React from 'react';
 import Location from '../../assets/icons/Location';
-import user from '../../assets/images/user.png';
+import Compensation from '../../assets/icons/Compensation';
+import BaseSalary from '../../assets/icons/BaseSalary';
+import {JobInterface, UserInterface} from '@/interfaces';
+import JobsService from '@/services/jobs';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {RootState} from '@/store';
+import {setLoading, setLoadingFinished} from '@/store/features/loadingSlice';
+import LoadingScreen from '@/components/Loading';
+import ToastService from '@/services/toast';
+import {BottomSheet} from '../../components';
+import JobQuestionsForm from '../../components/Forms/JobQuestionsForm';
 
-const JobsDetailForm = () => {
+interface jobsdetail {
+  selectedJob: JobInterface;
+  setIsBottomSheetVisible: Function;
+}
+
+const JobsDetailForm = ({selectedJob, setIsBottomSheetVisible}: jobsdetail) => {
+  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>({});
+  const {isLoading} = useAppSelector((state: RootState) => state.loading);
+  const dispatch = useAppDispatch();
+  const [isQABottomSheetOpen, setIsQABottomSheetOpen] = useState(false);
+
+  const handleOnPress = () => {
+    if (selectedJob?.customQuestions?.length! > 0) {
+      setIsQABottomSheetOpen(true);
+    } else {
+      JobsService.applyForJob(selectedJob?.id!)
+        .then(() => {
+          setIsBottomSheetVisible(false);
+          ToastService.showSuccess('Applied to the Job Successfully');
+        })
+        .catch(() => {
+          ToastService.showError('An Error occured while applying to the job');
+        });
+    }
+  };
+
+  useEffect(() => {
+    dispatch(setLoading());
+    JobsService.getPosterJob(selectedJob?.posterJobID!).then(setPosterJobInfo);
+  }, []);
+
+  useEffect(() => {
+    if (posterJobInfo !== null && Object.keys(posterJobInfo).length > 0) {
+      dispatch(setLoadingFinished());
+    }
+  }, [posterJobInfo]);
+
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.SafeAreaView}>
-        <View>
-          <Text style={styles.jobTitle}>Security Sales Specialist</Text>
-          <Text style={styles.companyName}>Google</Text>
+    <>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView>
+          <SafeAreaView style={styles.SafeAreaView}>
+            <View>
+              <Text style={styles.jobTitle}>{selectedJob.jobTitle}</Text>
+              <Text style={styles.companyName}>{selectedJob.companyName}</Text>
 
-          <View style={styles.basicDetails}>
-            <View style={styles.basicDetailItem}>
-              <Location />
-              <Text style={styles.basicDetailItem}>In-office: Singapore</Text>
+              <View style={styles.basicDetails}>
+                <View style={styles.basicDetailItem}>
+                  <Location />
+                  <Text style={styles.basicDetailItem}>
+                    {selectedJob.workplaceType}: {selectedJob.companyLocation}
+                  </Text>
+                </View>
+                <View style={styles.basicDetailItem}>
+                  <Compensation />
+                  <Text style={styles.basicDetailItem}>
+                    Total Compensation: ${selectedJob.jobCompensation}
+                  </Text>
+                </View>
+                <View style={styles.basicDetailItem}>
+                  <BaseSalary />
+                  <Text style={styles.basicDetailItem}>
+                    Base Salary: ${selectedJob.baseSalary}
+                  </Text>
+                </View>
+              </View>
+              {posterJobInfo && (
+                <View style={styles.recruiterContainer}>
+                  <Image
+                    style={styles.recruiterImage}
+                    source={{uri: posterJobInfo?.photoUrl}}
+                  />
+                  <Text style={styles.recruiterDetail}>
+                    {posterJobInfo?.name} is hiring for this position
+                  </Text>
+                </View>
+              )}
+              <View style={styles.applyButtonContainer}>
+                <Button title="Apply" onPress={handleOnPress} />
+              </View>
+              <View style={styles.jobDetailContainer}>
+                <Text style={styles.jobDetailHeading}>Summary</Text>
+                <Text style={styles.JobsDetailText}>
+                  {selectedJob.jobSummary}
+                </Text>
+                <Text style={styles.jobDetailHeading}>Responsibilites</Text>
+                <Text style={styles.JobsDetailText}>
+                  {selectedJob.responsibilities}
+                </Text>
+              </View>
             </View>
-            <View style={styles.basicDetailItem}>
-              <Location />
-              <Text style={styles.basicDetailItem}>Total Compensation: L</Text>
-            </View>
-            <View style={styles.basicDetailItem}>
-              <Location />
-              <Text style={styles.basicDetailItem}>Base Salary: S</Text>
-            </View>
-          </View>
-          <View style={styles.recruiterContainer}>
-            <Image style={styles.recruiterImage} source={user} />
-            <Text style={styles.recruiterDetail}>
-              Muaaz Saeed is hiring for this position
-            </Text>
-          </View>
-          <View style={styles.applyButtonContainer}>
-            <Button title="Apply" />
-          </View>
-          <View style={styles.jobDetailContainer}>
-            <Text style={styles.jobDetailHeading}>Summary</Text>
-            <Text style={styles.JobsDetailText}>
-              As a Security Sales Specialist, you will help us grow our
-              cybersecurity business by building and expanding relationships
-              with customers. In this role, you will work with customers to
-              deliver true business value, demonstrate product functionality,
-              and provide a comprehensive overview of key business use cases.
-              You will lead day-to-day relationships with external customer
-              stakeholders, leading with empathy, while identifying innovative
-              ways to multiply your impact and the impact of the team as a
-              whole.
-            </Text>
-            <Text style={styles.jobDetailHeading}>Responsibilites</Text>
-            <Text style={styles.JobsDetailText}>
-              As a Security Sales Specialist, you will help us grow our
-              cybersecurity business by building and expanding relationships
-              with customers. In this role, you will work with customers to
-              deliver true business value, demonstrate product functionality,
-              and provide a comprehensive overview of key business use cases.
-              You will lead day-to-day relationships with external customer
-              stakeholders, leading with empathy, while identifying innovative
-              ways to multiply your impact and the impact of the team as a
-              whole.
-            </Text>
-          </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+          </SafeAreaView>
+        </ScrollView>
+      )}
+      {isQABottomSheetOpen && (
+        <BottomSheet
+          isVisible={isQABottomSheetOpen}
+          onClose={() => setIsQABottomSheetOpen(false)}
+          snapPoints={['20%', '90%']}>
+          <JobQuestionsForm
+            selectedJob={selectedJob}
+            setIsQABottomSheetOpen={setIsQABottomSheetOpen}
+            setIsBottomSheetVisible={setIsBottomSheetVisible}
+          />
+        </BottomSheet>
+      )}
+    </>
   );
 };
 
@@ -102,9 +163,9 @@ const styles = StyleSheet.create({
   basicDetailItem: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     fontSize: 15,
+    marginLeft: 4,
     color: 'black',
   },
   recruiterContainer: {
@@ -146,14 +207,15 @@ const styles = StyleSheet.create({
   },
   jobDetailHeading: {
     fontWeight: 'bold',
-    marginBottom: 7,
-    marginTop: 7,
+    marginBottom: 10,
+    marginTop: 10,
     fontSize: 18,
     color: 'black',
   },
   JobsDetailText: {
     fontSize: 15,
     color: 'black',
+    paddingRight: 30,
   },
 });
 

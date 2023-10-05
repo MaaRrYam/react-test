@@ -1,9 +1,9 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Svg, Rect, Path, Mask, G} from 'react-native-svg';
 
 const Location = () => (
-  <View>
+  <View style={styles.container}>
     <Svg width={17} height={17} viewBox="0 0 17 17" fill="none">
       <Mask
         id="mask0"
@@ -24,5 +24,12 @@ const Location = () => (
     </Svg>
   </View>
 );
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Location;
