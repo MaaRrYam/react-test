@@ -10,7 +10,6 @@ export interface EducationCardProps {
   id: number;
   instituteName: string;
   degree: string;
-  cgpa: string;
   startingYear: string;
   endingYear?: string;
   currentlyWorking?: boolean;
@@ -93,6 +92,11 @@ export interface FirebaseServiceProps {
     id: string,
     data: DocumentData,
   ): Promise<void>;
+  updateDocument(
+    collectionName: string,
+    documentName: string,
+    data: DocumentData,
+  ): void;
   setDoc(
     collectionName: string,
     docId: string,
@@ -142,10 +146,9 @@ export interface EducationState {
   id: number;
   instituteName: string;
   degree: string;
-  cgpa: string;
-  startingYear: string;
-  endingYear?: string;
-  currentlyWorking?: boolean;
+  startYear: string;
+  endYear?: string;
+  currentlyStudying?: boolean;
 }
 
 export interface CheckboxProps {
@@ -162,10 +165,10 @@ export interface CheckboxProps {
 
 export interface ExperienceState {
   id: number;
-  currentCompany: string;
-  designation: string;
-  startingYear: number;
-  endingYear?: number;
+  companyName: string;
+  role: string;
+  startYear: number;
+  endYear?: number;
   currentlyWorking?: boolean;
 }
 
@@ -196,7 +199,6 @@ export interface EducationProps {
   startYear: string;
   endYear?: string;
   currentlyStudying?: boolean;
-  cgpa?: string;
   educationLevel?: string;
 }
 
@@ -209,7 +211,6 @@ export interface EmploymentProps {
   currentlyWorking?: boolean;
   workEmail?: string;
 }
-
 export interface UserInterface {
   id: string;
   name: string;
@@ -224,6 +225,7 @@ export interface UserInterface {
   selectedRole: string;
   previousRole?: string;
   onboarded: boolean;
+  onboardingStep: number;
   photoUrl?: string;
   department?: string;
   currentCVC?: number;
@@ -245,7 +247,9 @@ export interface UserInterface {
   dateOfBirth?: string;
   phoneNumber?: string;
   currentStatus?: string;
-  minimumSalary?: string;
+  minimumSalary: string;
+  baseSalary: number;
+  totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
 }
