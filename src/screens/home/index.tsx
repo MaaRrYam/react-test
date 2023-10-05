@@ -17,7 +17,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   useFocusEffect(() => {
     return () => {
       (async () => {
-        const lastFeedItems = feed?.slice(feed.length - 8);
+        const lastFeedItems = feed?.slice(feed.length - 5);
         await Cache.set('feed', lastFeedItems);
       })();
     };

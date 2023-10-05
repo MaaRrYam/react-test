@@ -9,7 +9,6 @@ import {
   RoleCard,
   EducationCard,
   ExperienceCard,
-  ChatItem,
   NetworkItem,
   CareerCard,
 } from '@/components/Cards';
@@ -39,6 +38,7 @@ import SearchButton from '@/components/Search';
 import EditProfile from '@/components/EditProfile';
 import Feed from '@/components/Feed/Feed';
 import {NotificationsList} from '@/components/Notifications';
+import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 
 export {
   BackButton,
@@ -74,4 +74,7 @@ export {
   LocationDropdown,
   TextArea,
   EditProfile,
+  ChatsList,
+  Chat,
+  NewChat,
 };
