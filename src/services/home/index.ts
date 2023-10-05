@@ -6,6 +6,7 @@ import {
   ReplyCommentInterface,
 } from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
+import {getUID} from '@/utils/functions';
 
 const HomeService = {
   async getFeed() {
@@ -128,6 +129,39 @@ const HomeService = {
         `posts/${postId}/comments/${commentId}/replies`,
         payload,
       );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async reportAPost(postId: string, postAuthorId: string) {
+    const UID = await getUID();
+    const data = {
+      reportText: 'Post is inappropriate',
+      reportedBy: UID,
+      postId: postId,
+      authorId: postAuthorId,
+      timestamp: FirebaseService.serverTimestamp(),
+    };
+    try {
+      await FirebaseService.addDocument('postReports', data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async sharePost(postId: string) {
+    try {
+      const data = {
+        text: postId,
+        type: 'shared',
+        hashtag: 'shared',
+        creationTime: FirebaseService.serverTimestamp(),
+        authorId: await getUID(),
+      };
+      await FirebaseService.addDocument('posts', data);
       return true;
     } catch (error) {
       console.log(error);

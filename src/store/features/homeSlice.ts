@@ -52,6 +52,9 @@ export const homeSlice = createSlice({
         state.feed = localFeed;
       }
     },
+    removeReportedPostFromFeed(state, {payload}: {payload: string}) {
+      state.feed = state.feed.filter(post => post.id !== payload);
+    },
     setFeedFetchedToFalse(state) {
       state.isFeedFetched = false;
     },
@@ -182,6 +185,7 @@ export const {
   addLikeAndRemoveDislike,
   setFeedFromCache,
   setFeedFetchedToFalse,
+  removeReportedPostFromFeed,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;

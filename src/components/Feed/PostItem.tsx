@@ -13,6 +13,7 @@ import {
   addLikeAndRemoveDislike,
   removeDisLike,
   removeLike,
+  removeReportedPostFromFeed,
 } from '@/store/features/homeSlice';
 import FirebaseService from '@/services/Firebase';
 import ToastService from '@/services/toast';
@@ -147,6 +148,21 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     }
   };
 
+  const reportPost = async () => {
+    const response = await HomeService.reportAPost(item._id, item.authorId);
+    if (response) {
+      dispatch(removeReportedPostFromFeed(item._id));
+      ToastService.showSuccess('Post reported');
+    }
+  };
+
+  const sharePost = async () => {
+    const response = await HomeService.sharePost(item._id);
+    if (response) {
+      ToastService.showSuccess('Post shared');
+    }
+  };
+
   useEffect(() => {
     isPostDisLikedByUser();
     isPostLikedByUser();
@@ -172,10 +188,10 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
           <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
             <Comment />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={sharePost}>
             <Share />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={reportPost}>
             <Report />
           </TouchableOpacity>
         </View>
