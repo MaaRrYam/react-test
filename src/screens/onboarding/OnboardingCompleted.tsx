@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,12 +12,23 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
+import StorageService from '@/services/Storage';
+import FirebaseService from '@/services/Firebase';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const containerWidth = windowWidth - 50;
 
 const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
+  const {user} = useUserManagement();
+
+  const handleOnboardingCompleted = async () => {
+    OnboardingService.onboardingCompleted();
+    navigation.navigate(SCREEN_NAMES.BottomNavigator);
+  };
+
   return (
     <LinearGradient colors={['#2356F6', '#6EF0D3']} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
@@ -41,7 +52,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
         <View style={styles.btnContainer}>
           <Button
             title="Explore CareerNetwork.co"
-            onPress={() => navigation.navigate(SCREEN_NAMES.BottomNavigator)}
+            onPress={() => handleOnboardingCompleted()}
             textColor={COLORS.black}
             backgroundColor={COLORS.white}
             icon="arrow-right"
