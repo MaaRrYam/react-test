@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
-import {BackButton, Button, EmploymentSelectionField} from '@/components';
+import {BackButton, PrimaryButton, EmploymentSelectionField} from '@/components';
 import {SCREEN_NAMES, employmentStatuses} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EmploymentStatusScreenProps} from '@/types';
@@ -32,7 +32,7 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
         />
       </View>
       <View style={commonStyles.footer}>
-        <Button
+        <PrimaryButton
           title="Continue"
           onPress={() => navigation.navigate(SCREEN_NAMES.SalaryExpectations)}
         />
