@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,12 +12,24 @@ import {UserInterface} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 import {useFormik} from 'formik';
 import {basicInfoSchema} from '@/utils/schemas/profile';
+import FirebaseService from '@/services/Firebase';
+import {getUID} from '@/utils/functions';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {RootState} from '@/store';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {getUser} from '@/store/features/authSlice';
+// interface UserInfoProps {
+//   user: UserInterface;
+// }
 
-interface UserInfoProps {
-  user: UserInterface;
-}
-
-const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
+const EditBasicInfoForm: React.FC<{}> = ({}) => {
+  const {user} = useAppSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (user !== {}) {
+      dispatch(getUser());
+    }
+  }, [dispatch, user]);
   const handleSave = async (formValues: {
     name: string;
     about: string;
@@ -27,6 +39,11 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
     state: string;
   }) => {
     await console.log(formValues);
+    const uid = await getUID();
+    // console.log(uid);
+    await FirebaseService.updateDocument('users', uid as string, {
+      name: formValues.name,
+    });
     setSubmitting(false);
   };
   const {
