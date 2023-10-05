@@ -90,6 +90,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
 
       <View style={styles.chatsContainer}>
         <FlatList
+          inverted
           data={messages}
           keyExtractor={item => item.date}
           renderItem={({item}) => (
