@@ -9,7 +9,6 @@ const EducationCard = ({
   id,
   instituteName,
   degree,
-  cgpa,
   startingYear,
   endingYear,
   currentlyWorking,
@@ -20,7 +19,6 @@ const EducationCard = ({
       <Text style={styles.instituteName}>{instituteName}</Text>
       <Text style={styles.degree}>{degree}</Text>
       <View style={styles.thirdLine}>
-        <Text style={styles.cgpa}>{cgpa || ' '} CGPA</Text>
         <Text style={styles.dateRange}>
           {`${startingYear} - ${currentlyWorking ? 'Present' : endingYear}`}
         </Text>

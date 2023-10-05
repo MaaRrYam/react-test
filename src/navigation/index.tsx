@@ -6,7 +6,7 @@ import navigationConfig from '@/navigation/NavigationConfig';
 import {NavigationConfigProps} from '@/interfaces';
 import {Loading} from '@/components';
 import FirebaseService from '@/services/Firebase';
-import {SCREEN_NAMES} from '@/constants'
+import {SCREEN_NAMES} from '@/constants';
 const RootNavigation = () => {
   const MainStack = createStackNavigator();
   const [initialScreen, setInitialScreen] = useState();
@@ -40,7 +40,7 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={initialScreen}
+        initialRouteName={'initialScreen'}
         screenOptions={{headerShown: false}}>
         {navigationConfig.map(({name, component}: NavigationConfigProps) => (
           <MainStack.Screen key={name} name={name} component={component} />
