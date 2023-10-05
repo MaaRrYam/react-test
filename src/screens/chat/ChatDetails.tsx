@@ -64,10 +64,8 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       receiver: chatHead.user,
     };
 
-    const response = await ChatsService.sendMessage(payload);
-    if (response) {
-      setMessage('');
-    }
+    setMessage('');
+    await ChatsService.sendMessage(payload);
   };
 
   if (loading) {
