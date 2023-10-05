@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  FlatList,
+  KeyboardAvoidingView,
+} from 'react-native';
 
 import {
   BackButton,
