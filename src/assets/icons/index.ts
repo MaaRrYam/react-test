@@ -8,7 +8,7 @@ import Home from './Home';
 import Network from './Network';
 import ImageIcon from './Image';
 import Jobs from './Jobs';
-import NewChat from './NewChat';
+import NewChatIcon from './NewChat';
 import Notifications from './Notifications';
 import Report from './Report';
 import Search from './Search';
@@ -19,6 +19,8 @@ import Cross from './Cross';
 import ArrowDown from './ArrowDown';
 import Delete from './Delete';
 import CheckMark from './CheckMark';
+import SendIcon from './Send';
+
 export {
   BackArrow,
   Dislike,
@@ -30,7 +32,7 @@ export {
   Network,
   ImageIcon,
   Jobs,
-  NewChat,
+  NewChatIcon,
   Notifications,
   Report,
   Search,
@@ -41,4 +43,5 @@ export {
   ArrowDown,
   Delete,
   CheckMark,
+  SendIcon,
 };

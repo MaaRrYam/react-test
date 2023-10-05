@@ -20,7 +20,7 @@ export type RootStackParamList = {
   Network: undefined;
   ChatDetails: {
     id: string;
-    name?: string;
+    name: string;
   };
   Notifications: undefined;
   Launch: undefined;
@@ -113,4 +113,4 @@ export type SignupWithEmailProps = {
 export type HeaderProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Header'>;
 };
-export type DateFormatOption = 'date' | 'dateTime';
+export type DateFormatOption = 'date' | 'dateTime' | 'time';
