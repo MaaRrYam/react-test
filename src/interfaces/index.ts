@@ -256,6 +256,19 @@ export interface UserInterface {
   readNotifications?: number;
   redeems?: Array<string>;
 }
+
+export interface whiteListedUser {
+  name: string;
+  id: string;
+  email: string;
+  photoUrl: string;
+  onboarded: boolean;
+  onboardingStep: number;
+  currentCVC: number;
+  totalEarnedCVC: number;
+  selectedRole: string;
+  time: Timestamp;
+}
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
 }
