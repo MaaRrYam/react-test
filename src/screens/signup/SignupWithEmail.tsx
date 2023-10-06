@@ -7,7 +7,7 @@ import {
   getAuth,
   UserCredential,
 } from '@firebase/auth';
-import {Input, Button} from '@/components';
+import {Input, PrimaryButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
@@ -107,10 +107,10 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
         </View>
-        <Button
+        <PrimaryButton
           title="Sign up"
           onPress={handleSubmit}
-          style={styles.signUpButtonContainer}
+          style={styles.signUpPrimaryButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}
