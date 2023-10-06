@@ -24,18 +24,18 @@ const OnboardingService = {
     FirebaseService.updateDocument('users', UID, newData);
   },
   setScreen(navigation, dispatch: AppDispatch, userData: UserInterface) {
-    if (userData.onboardingStep === 0 && userData.onboarded === false) {
+    if (userData?.onboardingStep === 0 || userData?.onboarded === false) {
       dispatch(setLoadingFinished());
-    } else if (userData.onboardingStep === 1) {
+    } else if (userData?.onboardingStep === 1) {
       dispatch(setLoadingFinished());
       navigation.navigate(SCREEN_NAMES.Education);
-    } else if (userData.onboardingStep === 2) {
+    } else if (userData?.onboardingStep === 2) {
       dispatch(setLoadingFinished());
       navigation.navigate(SCREEN_NAMES.Industry);
-    } else if (userData.onboardingStep === 3) {
+    } else if (userData?.onboardingStep === 3) {
       dispatch(setLoadingFinished());
       navigation.navigate(SCREEN_NAMES.Experience);
-    } else if (userData.onboardingStep === 4) {
+    } else if (userData?.onboardingStep === 4) {
       dispatch(setLoadingFinished());
       navigation.navigate(SCREEN_NAMES.EmploymentStatus);
     }
