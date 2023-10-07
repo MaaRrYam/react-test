@@ -201,7 +201,7 @@ export interface ReactionIconProps extends SvgProps {
 }
 
 export interface EducationProps {
-  id: number;
+  id: string;
   instituteName: string;
   degree: string;
   startYear: string;

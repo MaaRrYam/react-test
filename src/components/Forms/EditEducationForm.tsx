@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import {useFormik} from 'formik';
 import {EducationProps} from '@/interfaces';
 import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
 import {COLORS, FONTS} from '@/constants';
+import FirebaseService from '@/services/Firebase';
+import {getUID} from '@/utils/functions';
+import {educationSchema} from '@/utils/schemas/profile';
 
 interface EditEducationProps {
   educationList: Array<EducationProps>;
@@ -11,7 +15,18 @@ interface EditEducationProps {
   addNew: boolean;
   setAddNew: (value: boolean) => void;
 }
-
+function areEducationsEqual(
+  education1: EducationProps,
+  education2: EducationProps,
+): boolean {
+  return (
+    education1.instituteName === education2.instituteName &&
+    education1.degree === education2.degree &&
+    education1.startYear === education2.startYear &&
+    education1.endYear === education2.endYear &&
+    education1.currentlyStudying === education2.currentlyStudying
+  );
+}
 const EditEducationForm = ({
   educationList,
   isEditing,
@@ -19,104 +34,113 @@ const EditEducationForm = ({
   addNew,
   setAddNew,
 }: EditEducationProps) => {
-  const [educationDetails, setEducationDetails] = useState({
-    instituteName: '',
-    degreeName: '',
-    startYear: '',
-    endYear: '',
-    isCurrentlyStudying: false,
-  });
+  const formik = useFormik({
+    initialValues: {
+      instituteName: '',
+      degreeName: '',
+      startYear: '',
+      endYear: '',
+      isCurrentlyStudying: false,
+    },
+    validationSchema: educationSchema,
+    onSubmit: async values => {
+      console.log('Form submitted with values:', values);
+      const uid = await getUID();
 
-  const [isNewData, setIsNewData] = useState(false);
+      const newEducation: EducationProps = {
+        instituteName: values.instituteName,
+        degree: values.degreeName,
+        startYear: values.startYear,
+        endYear: values.isCurrentlyStudying ? 'Present' : values.endYear,
+        currentlyStudying: values.isCurrentlyStudying,
+        id: FirebaseService.generateUniqueId(),
+      };      
+
+      const isDuplicate = educationList.some(education =>
+        areEducationsEqual(education, newEducation),
+      );
+
+      if (!isDuplicate) {
+        // Update the education list in Firebase
+        await FirebaseService.updateDocument('users', uid as string, {
+          educationList: [...educationList, newEducation],
+        });
+        toggleEditForm();
+      }
+    },
+  });
 
   useEffect(() => {
     if (addNew) {
-      setEducationDetails({
-        instituteName: '',
-        degreeName: '',
-        startYear: '',
-        endYear: '',
-        isCurrentlyStudying: false,
-      });
-      setIsNewData(true);
+      formik.resetForm();
     } else {
-      setIsNewData(false);
       const itemToEdit = educationList[0];
       if (itemToEdit) {
-        setEducationDetails({
+        const newValues = {
           instituteName: itemToEdit.instituteName || '',
           degreeName: itemToEdit.degree || '',
           startYear: itemToEdit.startYear || '',
-          endYear: itemToEdit.currentlyStudying
-            ? 'Present'
-            : itemToEdit.endYear || '',
+          endYear: itemToEdit.currentlyStudying ? '' : itemToEdit.endYear || '',
           isCurrentlyStudying: itemToEdit.currentlyStudying || false,
-        });
+        };
+
+        // Use formik's setValues outside of the useEffect to avoid infinite updates
+        formik.setValues(newValues);
       }
     }
-  }, [addNew, educationList]);
+  }, [addNew]);
 
-  const handleEdit = (item: EducationProps) => {
-    setIsEditing(true);
-    if (!addNew) {
-      setEducationDetails({
-        instituteName: item.instituteName || '',
-        degreeName: item.degree || '',
-        startYear: item.startYear || '',
-        endYear: item.currentlyStudying ? 'Present' : item.endYear || '',
-        isCurrentlyStudying: item.currentlyStudying || false,
-      });
-    }
+  const toggleEditForm = () => {
+    setIsEditing(!isEditing);
+    setAddNew(false);
   };
 
   return (
     <ScrollView>
-      {isEditing || isNewData ? (
+      {isEditing ? (
         <View style={styles.paddedContainer}>
           <Text style={styles.sectionHeader}>Education Details</Text>
           <Input
-            onChangeText={text =>
-              setEducationDetails({...educationDetails, instituteName: text})
-            }
+            onChangeText={formik.handleChange('instituteName')}
             placeholder="Institute Name"
-            value={educationDetails.instituteName}
+            value={formik.values.instituteName}
             style={styles.textInput}
+            error={formik.errors.instituteName}
           />
           <Input
-            onChangeText={text =>
-              setEducationDetails({...educationDetails, degreeName: text})
-            }
+            onChangeText={formik.handleChange('degreeName')}
             placeholder="Degree Name"
-            value={educationDetails.degreeName}
+            value={formik.values.degreeName}
             style={styles.textInput}
+            error={formik.errors.degreeName}
           />
           <View style={styles.yearInputContainer}>
             <Input
-              onChangeText={text =>
-                setEducationDetails({...educationDetails, startYear: text})
-              }
+              onChangeText={formik.handleChange('startYear')}
               placeholder="Start Year"
-              value={educationDetails.startYear}
+              value={formik.values.startYear}
               style={styles.yearInput}
+              error={formik.errors.startYear}
+              keyboardType="numeric"
             />
             <Input
-              onChangeText={text =>
-                setEducationDetails({...educationDetails, endYear: text})
-              }
+              onChangeText={formik.handleChange('endYear')}
               placeholder="End Year"
-              value={educationDetails.endYear}
+              value={formik.values.endYear}
               style={[styles.yearInput, {marginLeft: 11}]}
+              error={formik.errors.endYear}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.checkboxContainer}>
             <Checkbox
               onPress={() =>
-                setEducationDetails({
-                  ...educationDetails,
-                  isCurrentlyStudying: !educationDetails.isCurrentlyStudying,
-                })
+                formik.setFieldValue(
+                  'isCurrentlyStudying',
+                  !formik.values.isCurrentlyStudying,
+                )
               }
-              isChecked={educationDetails.isCurrentlyStudying}
+              isChecked={formik.values.isCurrentlyStudying}
             />
             <Text style={styles.checkboxText}>Currently Studying?</Text>
           </View>
@@ -141,7 +165,7 @@ const EditEducationForm = ({
               endDate={item.currentlyStudying ? 'Present' : item.endYear}
               editable
               key={index}
-              onEdit={() => handleEdit(item)}
+              onEdit={() => setIsEditing(true)}
             />
           </View>
         ))
@@ -150,10 +174,7 @@ const EditEducationForm = ({
         <View style={styles.footer}>
           <PrimaryButton
             title="Save"
-            onPress={() => {
-              setIsEditing(false);
-              setAddNew(true);
-            }}
+            onPress={formik.handleSubmit}
             style={styles.saveButton}
           />
         </View>
@@ -167,7 +188,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sectionHeader: {
-    color: 'black',
+    color: COLORS.black,
     marginBottom: 24,
     fontWeight: 'bold',
     fontSize: FONTS.largeLabel,

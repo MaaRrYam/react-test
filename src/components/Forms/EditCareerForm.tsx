@@ -16,6 +16,19 @@ interface CareerFormProps {
   setAddNew: (value: boolean) => void;
 }
 
+function areCareersEqual(
+  career1: EmploymentProps,
+  career2: EmploymentProps,
+): boolean {
+  return (
+    career1.companyName === career2.companyName &&
+    career1.role === career2.role &&
+    career1.startYear === career2.startYear &&
+    career1.endYear === career2.endYear &&
+    career1.currentlyWorking === career2.currentlyWorking
+  );
+}
+
 const EditCareerForm: React.FC<CareerFormProps> = ({
   careerList,
   isEditing,
@@ -45,7 +58,12 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
       id: FirebaseService.generateUniqueId(),
     };
 
-    setExperience(prevExperience => [...prevExperience, newEmployment]);
+    const isDuplicate = careerList.some(career =>
+      areCareersEqual(career, newEmployment),
+    );
+    if (!isDuplicate) {
+      setExperience(prevExperience => [...prevExperience, newEmployment]);
+    }
 
     await FirebaseService.updateDocument('users', uid as string, {
       employmentList: experience,
@@ -79,13 +97,10 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
           companyName: itemToEdit.companyName || '',
           role: itemToEdit.role || '',
           startYear: itemToEdit.startYear || '',
-          endYear: itemToEdit.currentlyWorking
-            ? 'Present'
-            : itemToEdit.endYear || '',
+          endYear: itemToEdit.currentlyWorking ? '' : itemToEdit.endYear || '',
           isCurrentlyWorking: itemToEdit.currentlyWorking || false,
         };
 
-        // Use formik's setValues outside of the useEffect to avoid infinite updates
         formik.setValues(newValues);
       }
     }

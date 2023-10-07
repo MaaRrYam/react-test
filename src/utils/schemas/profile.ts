@@ -15,3 +15,10 @@ export const careerSchema = Yup.object().shape({
   startYear: Yup.string().required('Start year is required'),
   endYear: Yup.string(),
 });
+
+export const educationSchema = Yup.object().shape({
+  instituteName: Yup.string().required('Institute name is required'),
+  degreeName: Yup.string().required('Degree name is required'),
+  startYear: Yup.string().required('Start year is required'),
+  endYear: Yup.string(),
+});
