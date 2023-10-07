@@ -54,14 +54,13 @@ const EditEducationForm = ({
         endYear: values.isCurrentlyStudying ? 'Present' : values.endYear,
         currentlyStudying: values.isCurrentlyStudying,
         id: FirebaseService.generateUniqueId(),
-      };      
+      };
 
       const isDuplicate = educationList.some(education =>
         areEducationsEqual(education, newEducation),
       );
 
       if (!isDuplicate) {
-        // Update the education list in Firebase
         await FirebaseService.updateDocument('users', uid as string, {
           educationList: [...educationList, newEducation],
         });
@@ -84,7 +83,6 @@ const EditEducationForm = ({
           isCurrentlyStudying: itemToEdit.currentlyStudying || false,
         };
 
-        // Use formik's setValues outside of the useEffect to avoid infinite updates
         formik.setValues(newValues);
       }
     }

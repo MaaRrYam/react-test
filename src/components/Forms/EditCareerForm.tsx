@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
+import {useFormik} from 'formik';
 import {EmploymentProps} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
-import {useFormik} from 'formik';
 import {careerSchema} from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
