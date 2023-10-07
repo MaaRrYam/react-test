@@ -25,7 +25,7 @@ function useUserManagement(): UserManagement {
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
-      console.log(dispatch(getUser()));
+      dispatch(getUser());
     }
   }, [dispatch, user]);
 

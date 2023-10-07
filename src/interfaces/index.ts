@@ -171,7 +171,7 @@ export interface CheckboxProps {
   innerIconStyle?: any;
 }
 
-export interface ExperienceState {
+export interface  ExperienceState {
   id: number;
   companyName: string;
   role: string;
@@ -211,7 +211,7 @@ export interface EducationProps {
 }
 
 export interface EmploymentProps {
-  id: number;
+  id: string;
   companyName: string;
   role: string;
   startYear: string;

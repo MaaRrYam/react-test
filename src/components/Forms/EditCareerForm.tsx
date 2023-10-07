@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {EmploymentProps} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
+import {useFormik} from 'formik';
+import {careerSchema} from '@/utils/schemas/profile';
+import FirebaseService from '@/services/Firebase';
+import {getUID} from '@/utils/functions';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -19,32 +23,59 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
   addNew,
   setAddNew,
 }) => {
-  const [jobDetails, setJobDetails] = useState({
-    companyName: '',
-    role: '',
-    startYear: '',
-    endYear: '',
-    isCurrentlyWorking: false,
+  const [experience, setExperience] = useState<EmploymentProps[]>(careerList);
+  const handleSave = async (values: {
+    companyName: string;
+    role: string;
+    startYear: string;
+    isCurrentlyWorking: boolean;
+    endYear: string;
+  }) => {
+    console.log('Form submitted with values:', values);
+    const uid = await getUID();
+
+    const newEmployment: EmploymentProps = {
+      companyName: values.companyName,
+      role: values.role,
+      startYear: values.startYear,
+      endYear: values.isCurrentlyWorking
+        ? new Date().getFullYear().toString()
+        : values.endYear,
+      currentlyWorking: values.isCurrentlyWorking,
+      id: FirebaseService.generateUniqueId(),
+    };
+
+    setExperience(prevExperience => [...prevExperience, newEmployment]);
+
+    await FirebaseService.updateDocument('users', uid as string, {
+      employmentList: experience,
+    });
+    toggleEditForm();
+  };
+  const formik = useFormik({
+    initialValues: {
+      companyName: '',
+      role: '',
+      startYear: '',
+      endYear: '',
+      isCurrentlyWorking: false,
+    },
+    validationSchema: careerSchema,
+    onSubmit: handleSave,
   });
 
-  const [isNewData, setIsNewData] = useState(false);
+  const toggleEditForm = () => {
+    setIsEditing(!isEditing);
+    setAddNew(false);
+  };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (addNew) {
-      setJobDetails({
-        companyName: null as unknown as string,
-        role: null as unknown as string,
-        startYear: null as unknown as string,
-        endYear: null as unknown as string,
-        isCurrentlyWorking: false,
-      });
-      setIsNewData(true);
+      formik.resetForm();
     } else {
-      setIsNewData(false);
-
       const itemToEdit = careerList[0];
       if (itemToEdit) {
-        setJobDetails({
+        const newValues = {
           companyName: itemToEdit.companyName || '',
           role: itemToEdit.role || '',
           startYear: itemToEdit.startYear || '',
@@ -52,64 +83,65 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
             ? 'Present'
             : itemToEdit.endYear || '',
           isCurrentlyWorking: itemToEdit.currentlyWorking || false,
-        });
+        };
+
+        // Use formik's setValues outside of the useEffect to avoid infinite updates
+        formik.setValues(newValues);
       }
     }
-  }, [addNew, careerList]);
-
-  const toggleEditForm = () => {
-    setIsEditing(!isEditing);
-    setAddNew(false);
-  };
-
+  }, [addNew]);
   return (
     <View>
-      {isEditing || isNewData ? (
+      {isEditing ? (
         <View style={styles.paddedContainer}>
           <Text style={styles.sectionHeader}>Job Details</Text>
           <Input
-            onChangeText={text =>
-              setJobDetails({...jobDetails, companyName: text})
-            }
+            onChangeText={formik.handleChange('companyName')}
             placeholder="Current Company"
-            value={jobDetails.companyName}
+            value={formik.values.companyName}
+            setFieldTouched={formik.setFieldTouched}
             style={styles.textInput}
+            error={formik.errors.companyName}
           />
           <Input
-            onChangeText={text => setJobDetails({...jobDetails, role: text})}
+            onChangeText={formik.handleChange('role')}
             placeholder="Designation"
-            value={jobDetails.role}
+            value={formik.values.role}
+            setFieldTouched={formik.setFieldTouched}
             style={styles.textInput}
+            error={formik.errors.role}
           />
           <View style={styles.yearInputContainer}>
             <Input
-              onChangeText={text =>
-                setJobDetails({...jobDetails, startYear: text})
-              }
+              onChangeText={formik.handleChange('startYear')}
               placeholder="Start Year"
-              value={jobDetails.startYear}
+              value={formik.values.startYear}
+              setFieldTouched={formik.setFieldTouched}
               style={styles.yearInput}
+              error={formik.errors.startYear}
+              keyboardType="numeric"
             />
             <Input
-              onChangeText={text =>
-                setJobDetails({...jobDetails, endYear: text})
-              }
+              onChangeText={formik.handleChange('endYear')}
               placeholder="End Year"
-              value={jobDetails.endYear}
+              value={formik.values.endYear}
               style={[styles.yearInput, {marginLeft: 11}]}
+              setFieldTouched={formik.setFieldTouched}
+              error={formik.errors.endYear}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.checkboxContainer}>
             <Checkbox
               onPress={() =>
-                setJobDetails({
-                  ...jobDetails,
-                  isCurrentlyWorking: !jobDetails.isCurrentlyWorking,
-                })
+                formik.setFieldValue(
+                  'isCurrentlyWorking',
+                  !formik.values.isCurrentlyWorking,
+                )
               }
-              isChecked={jobDetails.isCurrentlyWorking}
+              isChecked={formik.values.isCurrentlyWorking}
             />
-            <Text style={styles.checkboxText}>Currently Studying?</Text>
+            <Text style={styles.checkboxText}>Currently Working?</Text>
           </View>
         </View>
       ) : (
@@ -140,7 +172,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
         <View style={styles.footer}>
           <PrimaryButton
             title="Save"
-            onPress={() => toggleEditForm()}
+            onPress={formik.handleSubmit}
             style={styles.saveButton}
           />
         </View>

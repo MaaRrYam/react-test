@@ -14,7 +14,6 @@ import {useFormik} from 'formik';
 import {basicInfoSchema} from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
-import {useUserDoc} from '@/hooks/useUserDoc';
 
 interface UserInfoProps {
   user: UserInterface;
@@ -85,7 +84,7 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user, onClose}) => {
   );
   useEffect(() => {
     console.log(user);
-  }, []);
+  }, [user]);
 
   return (
     <KeyboardAvoidingView
