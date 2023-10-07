@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {EducationProps} from '@/interfaces';
@@ -34,6 +34,7 @@ const EditEducationForm = ({
   addNew,
   setAddNew,
 }: EditEducationProps) => {
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const formik = useFormik({
     initialValues: {
       instituteName: '',
@@ -55,16 +56,26 @@ const EditEducationForm = ({
         currentlyStudying: values.isCurrentlyStudying,
         id: FirebaseService.generateUniqueId(),
       };
-
-      const isDuplicate = educationList.some(education =>
-        areEducationsEqual(education, newEducation),
-      );
-
-      if (!isDuplicate) {
+      if (editingIndex !== null) {
+        // If we are editing, update the existing career at the editing index
+        const updatedEducation = [...educationList];
+        updatedEducation[editingIndex] = newEducation;
         await FirebaseService.updateDocument('users', uid as string, {
-          educationList: [...educationList, newEducation],
+          educationList: updatedEducation,
         });
+        setEditingIndex(null);
         toggleEditForm();
+      } else {
+        const isDuplicate = educationList.some(education =>
+          areEducationsEqual(education, newEducation),
+        );
+
+        if (!isDuplicate) {
+          await FirebaseService.updateDocument('users', uid as string, {
+            educationList: [...educationList, newEducation],
+          });
+          toggleEditForm();
+        }
       }
     },
   });
@@ -163,7 +174,10 @@ const EditEducationForm = ({
               endDate={item.currentlyStudying ? 'Present' : item.endYear}
               editable
               key={index}
-              onEdit={() => setIsEditing(true)}
+              onEdit={() => {
+                setEditingIndex(index);
+                toggleEditForm();
+              }}
             />
           </View>
         ))
