@@ -1,8 +1,7 @@
-import {Alert} from 'react-native';
 import {UserCredential} from 'firebase/auth';
 import FirebaseService from '@/services/Firebase';
 import {auth} from '@/config/firebase';
-import {SigninServiceProps, UserInterface} from '@/interfaces';
+import {SigninServiceProps, whiteListedUser} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
 import ToastService from '@/services/toast';
@@ -41,12 +40,13 @@ const SigninService: SigninServiceProps = {
         );
 
         if (!userData) {
-          const userDetails: UserInterface = {
+          const userDetails: whiteListedUser = {
             name: user.displayName!,
             id: user.uid!,
             email: email!,
             photoUrl: photoUrl,
             onboarded: false,
+            onboardingStep: 0,
             currentCVC: 0,
             totalEarnedCVC: 0,
             selectedRole: whiteListedUsers[0].selectedRole,
