@@ -14,22 +14,17 @@ import {useFormik} from 'formik';
 import {basicInfoSchema} from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {RootState} from '@/store';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {getUser} from '@/store/features/authSlice';
-// interface UserInfoProps {
-//   user: UserInterface;
-// }
+import {useUserDoc} from '@/hooks/useUserDoc';
 
-const EditBasicInfoForm: React.FC<{}> = ({}) => {
-  const {user} = useAppSelector((state: RootState) => state.auth);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (user !== {}) {
-      dispatch(getUser());
-    }
-  }, [dispatch, user]);
+interface UserInfoProps {
+  user: UserInterface;
+  onClose: () => void;
+  setIsEdit?: (value: boolean) => void;
+}
+
+const EditBasicInfoForm: React.FC<UserInfoProps> = ({user, onClose}) => {
+  // const user = useUserDoc();
+
   const handleSave = async (formValues: {
     name: string;
     about: string;
@@ -40,11 +35,16 @@ const EditBasicInfoForm: React.FC<{}> = ({}) => {
   }) => {
     await console.log(formValues);
     const uid = await getUID();
-    // console.log(uid);
     await FirebaseService.updateDocument('users', uid as string, {
       name: formValues.name,
+      description: formValues.about,
+      tagline: formValues.tagline,
+      country: formValues.country,
+      state: formValues.state,
+      city: formValues.city,
     });
     setSubmitting(false);
+    onClose();
   };
   const {
     values,
@@ -83,6 +83,9 @@ const EditBasicInfoForm: React.FC<{}> = ({}) => {
   const employmentOptions = user.employmentList?.map(
     employment => `${employment.role} at ${employment.companyName}`,
   );
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   return (
     <KeyboardAvoidingView

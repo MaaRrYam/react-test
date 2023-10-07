@@ -18,7 +18,6 @@ import {
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
-import {getUser} from '@/store/features/authSlice';
 import {getConnections} from '@/store/features/networkSlice';
 import {ThreeDots, NewChatIcon as NewChat} from '@/assets/icons';
 import ProfileTab from '@/screens/Profile/ProfileTab';
@@ -27,7 +26,6 @@ import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
-
 interface ProfileProps {
   navigation: any;
   route: {
@@ -42,8 +40,10 @@ interface ProfileProps {
 
 const Profile = ({navigation, route}: ProfileProps) => {
   const {setIsVisible, setTabItem, isEditing} = route.params;
+
+  const {user} = useAppSelector((state: RootState) => state.auth);
+  // const user = useUserDoc();
   const dispatch = useAppDispatch();
-  const {user} = useAppSelector((authState: RootState) => authState.auth);
   const {connections, isConnectionsFetched} = useAppSelector(
     (networkState: RootState) => networkState.network,
   );
@@ -51,13 +51,6 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const openBottomSheet = () => {
     setIsVisible(true);
   };
-
-  useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      dispatch(getUser());
-    }
-  }, [user, dispatch]);
-
   const fetchData = useCallback(() => {
     if (!isConnectionsFetched) {
       dispatch(getConnections());
@@ -75,8 +68,8 @@ const Profile = ({navigation, route}: ProfileProps) => {
       content: 'This is the content of the first post.',
       author: {
         name: user?.name,
-        tagline: user.tagline,
-        avatar: {uri: user.photoUrl},
+        tagline: user?.tagline,
+        avatar: {uri: user?.photoUrl},
       },
       media: require('@/assets/images/post.png'),
       time: '2 hours ago',
@@ -88,9 +81,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
       title: 'Post 1',
       content: 'This is the content of the first post.',
       author: {
-        name: user.name,
-        tagline: user.tagline,
-        avatar: {uri: user.photoUrl},
+        name: user?.name,
+        tagline: user?.tagline,
+        avatar: {uri: user?.photoUrl},
       },
       media: require('@/assets/images/post.png'),
       time: '2 hours ago',
@@ -102,9 +95,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
       title: 'Post 1',
       content: 'This is the content of the first post.',
       author: {
-        name: user.name,
-        tagline: user.tagline,
-        avatar: {uri: user.photoUrl},
+        name: user?.name,
+        tagline: user?.tagline,
+        avatar: {uri: user?.photoUrl},
       },
       time: '2 hours ago',
       likes: 20,
@@ -115,9 +108,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
       title: 'Post 1',
       content: 'This is the content of the first post.',
       author: {
-        name: user.name,
-        tagline: user.tagline,
-        avatar: {uri: user.photoUrl},
+        name: user?.name,
+        tagline: user?.tagline,
+        avatar: {uri: user?.photoUrl},
       },
       time: '2 hours ago',
       likes: 20,
@@ -144,17 +137,17 @@ const Profile = ({navigation, route}: ProfileProps) => {
               <View style={profileStyles.avatarContainer}>
                 <Image
                   source={{
-                    uri: user.photoUrl,
+                    uri: user?.photoUrl,
                   }}
                   style={profileStyles.avatarImage}
                 />
               </View>
               <View style={profileStyles.userInfoContainer}>
                 <View>
-                  <Text style={profileStyles.userName}>{user.name}</Text>
-                  <Text style={profileStyles.userTagline}>{user.tagline}</Text>
+                  <Text style={profileStyles.userName}>{user?.name}</Text>
+                  <Text style={profileStyles.userTagline}>{user?.tagline}</Text>
                   <Text style={profileStyles.userLocation}>
-                    {user.city}, {user.countryDetails.name}
+                    {user?.city}, {user?.country}
                   </Text>
                   <Text style={profileStyles.connectionsLink}>
                     {connections.length} connections
@@ -210,17 +203,17 @@ const Profile = ({navigation, route}: ProfileProps) => {
               <View>
                 {selectedTab === PROFILE_TABS[0] ? (
                   <ProfileTab
-                    bio={user.description as string}
-                    photo={user.photoUrl as string}
+                    bio={user?.description as string}
+                    photo={user?.photoUrl as string}
                   />
                 ) : selectedTab === PROFILE_TABS[1] ? (
                   <CareerTab
-                    careerList={user.employmentList}
+                    careerList={user?.employmentList}
                     isEditing={isEditing}
                   />
                 ) : (
                   <EducationTab
-                    educationList={user.educationList}
+                    educationList={user?.educationList}
                     isEditing={isEditing}
                   />
                 )}

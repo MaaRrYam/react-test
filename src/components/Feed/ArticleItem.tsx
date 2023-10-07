@@ -16,7 +16,11 @@ ${item.content!.substring(0, 300) + '....'}`,
   return (
     <TouchableOpacity onPress={() => console.log('article Pressed')}>
       <View style={styles.articleContainer}>
-        <RenderHtml contentWidth={width} source={source} />
+        <RenderHtml
+          contentWidth={width}
+          source={source}
+          baseStyle={{color: 'black', alignItems: 'center'}}
+        />
         <Image source={{uri: item.coverImage}} style={styles.media} />
       </View>
     </TouchableOpacity>

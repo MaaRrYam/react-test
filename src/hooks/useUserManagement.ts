@@ -8,8 +8,7 @@ import {addUser, getUser} from '@/store/features/authSlice';
 
 function useUserManagement(): UserManagement {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.auth.user);
-
+  const {user} = useAppSelector((state: RootState) => state.auth);
   const addUserToRedux = (token: string, userData: UserInterface) => {
     dispatch(addUser({token, user: userData}));
   };
@@ -25,8 +24,10 @@ function useUserManagement(): UserManagement {
   };
 
   useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+    if (Object.keys(user).length === 0) {
+      console.log(dispatch(getUser()));
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     storeUserInStorage(user);

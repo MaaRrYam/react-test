@@ -1,4 +1,4 @@
-import {UserCredential} from 'firebase/auth';
+import {Unsubscribe, UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
 import {ReactNode} from 'react';
 import {ImageSourcePropType, TextStyle} from 'react-native';
@@ -118,6 +118,11 @@ export interface FirebaseServiceProps {
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
+  listenToDocument(
+    collectionName: string,
+    documentId: string,
+    callback: (document: DocumentData | null) => void,
+  ): Unsubscribe;
 }
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(

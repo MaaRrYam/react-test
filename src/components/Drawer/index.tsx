@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
-import {getUser} from '@/store/features/authSlice';
+import {getUser, listenToUserData} from '../../store/features/authSlice';
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
@@ -103,10 +103,14 @@ const Tabs = () => {
   const {user} = useAppSelector((authState: RootState) => authState.auth);
 
   useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      dispatch(getUser());
-    }
-  }, [user, dispatch]);
+    // Start listening to user data updates when the component mounts
+    const unsubscribe = dispatch(listenToUserData());
+
+    // Unsubscribe from updates when the component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, [dispatch]);
 
   return (
     <>

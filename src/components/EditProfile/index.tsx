@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
@@ -10,6 +10,7 @@ import {
   BottomSheet,
 } from '@/components';
 import {COLORS} from '@/constants';
+// import {useUserDoc} from '@/hooks/useUserDoc';
 
 interface EditProfileProps {
   isVisible: boolean;
@@ -24,20 +25,26 @@ interface EditProfileProps {
 const EditProfile = ({
   isVisible,
   onClose,
-  user,
   tabItem,
   isEditing,
+  user,
   setIsEditing,
 }: EditProfileProps) => {
+  
   const [addNew, setAddNew] = useState(false);
   const renderForm = () => {
     switch (tabItem) {
       case 'Profile':
-        return <EditBasicInfoForm user={user} />;
+        return (
+          <EditBasicInfoForm
+            user={user as UserInterface}
+            onClose={handleOnClose}
+          />
+        );
       case 'Career':
         return (
           <EditCareerForm
-            careerList={user.employmentList as Array<EmploymentProps>}
+            careerList={user?.employmentList as Array<EmploymentProps>}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             addNew={addNew}
@@ -47,7 +54,7 @@ const EditProfile = ({
       case 'Education':
         return (
           <EditEducationForm
-            educationList={user.educationList as Array<EducationProps>}
+            educationList={user?.educationList as Array<EducationProps>}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             addNew={addNew}
