@@ -4,9 +4,8 @@ import {useFormik} from 'formik';
 import {EducationProps} from '@/interfaces';
 import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
 import {COLORS, FONTS} from '@/constants';
-import FirebaseService from '@/services/Firebase';
-import {areEducationsEqual, getUID} from '@/utils/functions';
 import {educationSchema} from '@/utils/schemas/profile';
+import ProfileService from '@/services/profile';
 
 interface EditEducationProps {
   educationList: Array<EducationProps>;
@@ -24,14 +23,6 @@ const EditEducationForm = ({
   setAddNew,
 }: EditEducationProps) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const deleteEducation = async (indexToDelete: number) => {
-    const uid = await getUID();
-    const updatedEducationList = [...educationList];
-    updatedEducationList.splice(indexToDelete, 1);
-    await FirebaseService.updateDocument('users', uid as string, {
-      educationList: updatedEducationList,
-    });
-  };
   const formik = useFormik({
     initialValues: {
       instituteName: '',
@@ -42,40 +33,16 @@ const EditEducationForm = ({
     },
     validationSchema: educationSchema,
     onSubmit: async values => {
-      await formik.setSubmitting(true);
-      console.log('Form submitted with values:', values);
-      const uid = await getUID();
-
-      const newEducation: EducationProps = {
-        instituteName: values.instituteName,
-        degree: values.degreeName,
-        startYear: values.startYear,
-        endYear: values.isCurrentlyStudying ? 'Present' : values.endYear,
-        currentlyStudying: values.isCurrentlyStudying,
-        id: FirebaseService.generateUniqueId(),
-      };
-      if (editingIndex !== null) {
-        // If we are editing, update the existing career at the editing index
-        const updatedEducation = [...educationList];
-        updatedEducation[editingIndex] = newEducation;
-        await FirebaseService.updateDocument('users', uid as string, {
-          educationList: updatedEducation,
-        });
-        setEditingIndex(null);
-        toggleEditForm();
-      } else {
-        const isDuplicate = educationList.some(education =>
-          areEducationsEqual(education, newEducation),
-        );
-
-        if (!isDuplicate) {
-          await FirebaseService.updateDocument('users', uid as string, {
-            educationList: [...educationList, newEducation],
-          });
-          await formik.setSubmitting(false);
-          toggleEditForm();
-        }
-      }
+      await ProfileService.handleEducationEdit(
+        values,
+        formik.setSubmitting,
+        editingIndex,
+        educationList,
+        setEditingIndex,
+        setAddNew,
+        setIsEditing,
+        isEditing,
+      );
     },
   });
 
@@ -97,11 +64,6 @@ const EditEducationForm = ({
       }
     }
   }, [addNew]);
-
-  const toggleEditForm = () => {
-    setIsEditing(!isEditing);
-    setAddNew(false);
-  };
 
   return (
     <ScrollView>
@@ -174,11 +136,16 @@ const EditEducationForm = ({
               editable
               key={index}
               onEdit={() => {
-                setEditingIndex(index);
-                toggleEditForm();
+                ProfileService.editEducation(
+                  setIsEditing,
+                  setAddNew,
+                  isEditing,
+                  setEditingIndex,
+                  index,
+                );
               }}
-               onDelete={() => {
-                deleteEducation(index);
+              onDelete={() => {
+                ProfileService.deleteEducation(index, educationList);
               }}
             />
           </View>

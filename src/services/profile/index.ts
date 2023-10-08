@@ -1,6 +1,6 @@
-import {getUID} from '@/utils/functions';
+import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '../Firebase';
-
+import {EmploymentProps, EducationProps} from '@/interfaces';
 const ProfileService = {
   async handleSaveBasicInformation(
     formValues: {
@@ -24,6 +24,169 @@ const ProfileService = {
       city: formValues.city,
     });
     await setSubmitting(false);
+  },
+  async handleCareerInfoEdit(
+    values: {
+      companyName: string;
+      role: string;
+      startYear: string;
+      isCurrentlyWorking: boolean;
+      endYear: string;
+    },
+    setSubmitting: (value: boolean) => void,
+    setEditingIndex: (value: number | null) => void,
+    editingIndex: number | null,
+    careerList: EmploymentProps[],
+  ) {
+    await setSubmitting(true);
+    console.log('Form submitted with values:', values);
+    const uid = await getUID();
+    const newEmployment: EmploymentProps = {
+      companyName: values.companyName,
+      role: values.role,
+      startYear: values.startYear,
+      endYear: values.isCurrentlyWorking
+        ? new Date().getFullYear().toString()
+        : values.endYear,
+      currentlyWorking: values.isCurrentlyWorking,
+      id: FirebaseService.generateUniqueId(),
+    };
+
+    if (editingIndex !== null) {
+      const updatedExperience = [...careerList];
+      updatedExperience[editingIndex] = newEmployment;
+      setEditingIndex(null);
+
+      await FirebaseService.updateDocument('users', uid as string, {
+        employmentList: updatedExperience,
+      });
+    } else {
+      const isDuplicate = careerList.some(career =>
+        areCareersEqual(career, newEmployment),
+      );
+      if (!isDuplicate) {
+        await FirebaseService.updateDocument('users', uid as string, {
+          employmentList: [...careerList, newEmployment],
+        });
+      }
+    }
+    await setSubmitting(false);
+  },
+  async deleteCareer(indexToRemove: number, careerList: EmploymentProps[]) {
+    const updatedCareerList = [...careerList];
+    updatedCareerList.splice(indexToRemove, 1);
+    const uid = await getUID();
+    if (uid) {
+      FirebaseService.updateDocument('users', uid as string, {
+        employmentList: updatedCareerList,
+      });
+    }
+  },
+  toggleCareerEditForm(
+    setIsEditing: (value: boolean) => void,
+    setAddNew: (value: boolean) => void,
+    isEditing: boolean,
+    resetForm: Function,
+  ) {
+    setIsEditing(!isEditing);
+    setAddNew(false);
+    resetForm();
+  },
+  async editCareer(
+    setIsEditing: (value: boolean) => void,
+    setAddNew: (value: boolean) => void,
+    isEditing: boolean,
+    resetForm: Function,
+    setEditingIndex: (value: number | null) => void,
+    index: number,
+  ) {
+    await this.toggleCareerEditForm(
+      setIsEditing,
+      setAddNew,
+      isEditing,
+      resetForm,
+    );
+    await setEditingIndex(index);
+  },
+  toggleEducationEditForm(
+    setIsEditing: (value: boolean) => void,
+    setAddNew: (value: boolean) => void,
+    isEditing: boolean,
+  ) {
+    setIsEditing(!isEditing);
+    setAddNew(false);
+  },
+  async editEducation(
+    setIsEditing: (value: boolean) => void,
+    setAddNew: (value: boolean) => void,
+    isEditing: boolean,
+    setEditingIndex: (value: number | null) => void,
+    index: number,
+  ) {
+    await this.toggleEducationEditForm(setIsEditing, setAddNew, isEditing);
+    await setEditingIndex(index);
+  },
+  async handleEducationEdit(
+    values: {
+      instituteName: string;
+      degreeName: string;
+      startYear: string;
+      endYear: string;
+      isCurrentlyStudying: boolean;
+    },
+    setSubmitting: (value: boolean) => void,
+    editingIndex: number | null,
+    educationList: EducationProps[],
+    setEditingIndex: (value: number | null) => void,
+    setAddNew: (value: boolean) => void,
+    setIsEditing: (value: boolean) => void,
+    isEditing: boolean,
+  ) {
+    await setSubmitting(true);
+    console.log('Form submitted with values:', values);
+    const uid = await getUID();
+
+    const newEducation: EducationProps = {
+      instituteName: values.instituteName,
+      degree: values.degreeName,
+      startYear: values.startYear,
+      endYear: values.isCurrentlyStudying ? 'Present' : values.endYear,
+      currentlyStudying: values.isCurrentlyStudying,
+      id: FirebaseService.generateUniqueId(),
+    };
+    if (editingIndex !== null) {
+      const updatedEducation = [...educationList];
+      updatedEducation[editingIndex] = newEducation;
+      await FirebaseService.updateDocument('users', uid as string, {
+        educationList: updatedEducation,
+      });
+      setEditingIndex(null);
+      this.toggleEducationEditForm(setIsEditing, setAddNew, isEditing);
+    } else {
+      const isDuplicate = educationList.some(education =>
+        areEducationsEqual(education, newEducation),
+      );
+
+      if (!isDuplicate) {
+        await FirebaseService.updateDocument('users', uid as string, {
+          educationList: [...educationList, newEducation],
+        });
+        await setSubmitting(false);
+        this.toggleEducationEditForm(setIsEditing, setAddNew, isEditing);
+      }
+    }
+  },
+
+  async deleteEducation(
+    indexToDelete: number,
+    educationList: EducationProps[],
+  ) {
+    const uid = await getUID();
+    const updatedEducationList = [...educationList];
+    updatedEducationList.splice(indexToDelete, 1);
+    await FirebaseService.updateDocument('users', uid as string, {
+      educationList: updatedEducationList,
+    });
   },
 };
 

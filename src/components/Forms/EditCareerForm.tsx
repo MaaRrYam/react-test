@@ -7,6 +7,7 @@ import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
 import {careerSchema} from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
 import {areCareersEqual, getUID} from '@/utils/functions';
+import ProfileService from '@/services/profile';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -24,58 +25,6 @@ const EditCareerForm: FC<CareerFormProps> = ({
   setAddNew,
 }) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const handleSave = async (values: {
-    companyName: string;
-    role: string;
-    startYear: string;
-    isCurrentlyWorking: boolean;
-    endYear: string;
-  }) => {
-    console.log('Form submitted with values:', values);
-    const uid = await getUID();
-    const newEmployment: EmploymentProps = {
-      companyName: values.companyName,
-      role: values.role,
-      startYear: values.startYear,
-      endYear: values.isCurrentlyWorking
-        ? new Date().getFullYear().toString()
-        : values.endYear,
-      currentlyWorking: values.isCurrentlyWorking,
-      id: FirebaseService.generateUniqueId(),
-    };
-
-    if (editingIndex !== null) {
-      const updatedExperience = [...careerList];
-      updatedExperience[editingIndex] = newEmployment;
-      setEditingIndex(null);
-
-      await FirebaseService.updateDocument('users', uid as string, {
-        employmentList: updatedExperience,
-      });
-    } else {
-      const isDuplicate = careerList.some(career =>
-        areCareersEqual(career, newEmployment),
-      );
-      if (!isDuplicate) {
-        await FirebaseService.updateDocument('users', uid as string, {
-          employmentList: [...careerList, newEmployment],
-        });
-      }
-    }
-    await formik.setSubmitting(false);
-    toggleEditForm();
-  };
-
-  const deleteCareer = async (indexToRemove: number) => {
-    const updatedCareerList = [...careerList];
-    updatedCareerList.splice(indexToRemove, 1);
-    const uid = await getUID();
-    if (uid) {
-      FirebaseService.updateDocument('users', uid as string, {
-        employmentList: updatedCareerList,
-      });
-    }
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -86,17 +35,22 @@ const EditCareerForm: FC<CareerFormProps> = ({
       isCurrentlyWorking: false,
     },
     validationSchema: careerSchema,
-    onSubmit: formValues => {
-      formik.setSubmitting(true);
-      handleSave(formValues);
+    onSubmit: async formValues => {
+      await ProfileService.handleCareerInfoEdit(
+        formValues,
+        formik.setSubmitting,
+        setEditingIndex,
+        editingIndex,
+        careerList,
+      );
+      ProfileService.toggleCareerEditForm(
+        setIsEditing,
+        setAddNew,
+        isEditing,
+        formik.resetForm,
+      );
     },
   });
-
-  const toggleEditForm = () => {
-    setIsEditing(!isEditing);
-    setAddNew(false);
-    formik.resetForm();
-  };
 
   useEffect(() => {
     if (!addNew && editingIndex !== null) {
@@ -111,7 +65,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
         });
       }
     }
-  }, [addNew, editingIndex]);
+  }, [addNew,]);
 
   return (
     <View>
@@ -192,11 +146,17 @@ const EditCareerForm: FC<CareerFormProps> = ({
               startDate={item.startYear}
               endDate={item.currentlyWorking ? 'Present' : item.endYear}
               editable
-              onEdit={() => {
-                toggleEditForm();
-                setEditingIndex(index);
+              onEdit={async () => {
+                await ProfileService.editCareer(
+                  setIsEditing,
+                  setAddNew,
+                  isEditing,
+                  formik.resetForm,
+                  setEditingIndex,
+                  index,
+                );
               }}
-              onDelete={() => deleteCareer(index)}
+              onDelete={() => ProfileService.deleteCareer(index, careerList)}
             />
           </View>
         ))
