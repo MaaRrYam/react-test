@@ -35,6 +35,14 @@ const EditEducationForm = ({
   setAddNew,
 }: EditEducationProps) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const deleteEducation = async (indexToDelete: number) => {
+    const uid = await getUID();
+    const updatedEducationList = [...educationList];
+    updatedEducationList.splice(indexToDelete, 1);
+    await FirebaseService.updateDocument('users', uid as string, {
+      educationList: updatedEducationList,
+    });
+  };
   const formik = useFormik({
     initialValues: {
       instituteName: '',
@@ -177,6 +185,9 @@ const EditEducationForm = ({
               onEdit={() => {
                 setEditingIndex(index);
                 toggleEditForm();
+              }}
+               onDelete={() => {
+                deleteEducation(index);
               }}
             />
           </View>

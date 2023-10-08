@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,13 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
-import {UserInterface} from '@/interfaces';
-import {COLORS, FONTS} from '@/constants';
-import {useFormik} from 'formik';
-import {basicInfoSchema} from '@/utils/schemas/profile';
+import { Dropdown, Input, PrimaryButton, TextArea } from '@/components';
+import { UserInterface } from '@/interfaces';
+import { COLORS, FONTS } from '@/constants';
+import { useFormik } from 'formik';
+import { basicInfoSchema } from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
-import {getUID} from '@/utils/functions';
+import { getUID } from '@/utils/functions';
 
 interface UserInfoProps {
   user: UserInterface;
@@ -21,18 +21,32 @@ interface UserInfoProps {
   setIsEdit?: (value: boolean) => void;
 }
 
-const EditBasicInfoForm: React.FC<UserInfoProps> = ({user, onClose}) => {
-  // const user = useUserDoc();
+const EditBasicInfoForm: React.FC<UserInfoProps> = ({ user, onClose, setIsEdit }) => {
+  const [editedValues, setEditedValues] = useState({
+    name: '',
+    about: '',
+    tagline: '',
+    country: '',
+    city: '',
+    state: '',
+  });
 
-  const handleSave = async (formValues: {
-    name: string;
-    about: string;
-    tagline: string;
-    country: string;
-    city: string;
-    state: string;
-  }) => {
-    await console.log(formValues);
+  useEffect(() => {
+    if (setIsEdit) {
+      // Only update editedValues when setIsEdit is true
+      setEditedValues({
+        name: user.name || '',
+        about: user.description || '',
+        tagline: user.tagline || '',
+        country: user.country || '',
+        city: user.city || '',
+        state: user.state || '',
+      });
+    }
+  }, [user, setIsEdit]);
+
+  const handleSave = async (formValues: typeof editedValues) => {
+    console.log(formValues);
     const uid = await getUID();
     await FirebaseService.updateDocument('users', uid as string, {
       name: formValues.name,
@@ -42,9 +56,9 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user, onClose}) => {
       state: formValues.state,
       city: formValues.city,
     });
-    setSubmitting(false);
     onClose();
   };
+
   const {
     values,
     touched,
@@ -56,47 +70,37 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user, onClose}) => {
     setSubmitting,
     handleReset,
   } = useFormik({
-    initialValues: {
-      name: user.name ? user.name : '',
-      about: user.description ? (user.description as string) : '',
-      tagline: user.tagline ? (user.tagline as string) : '',
-      country: user.country ? user.country : '',
-      city: user.city ? user.city : '',
-      state: user.state ? user.state : '',
+    initialValues: setIsEdit ? { ...editedValues } : {
+      name: user.name || '',
+      about: user.description || '',
+      tagline: user.tagline || '',
+      country: user.country || '',
+      city: user.city || '',
+      state: user.state || '',
     },
     validationSchema: basicInfoSchema,
-    onSubmit: formValues => {
+    onSubmit: (formValues) => {
       handleSave(formValues);
-      handleReset({
-        values: {
-          name: '',
-          about: '',
-          tagline: '',
-          country: '',
-          city: '',
-          state: '',
-        },
-      });
     },
   });
+
   const employmentOptions = user.employmentList?.map(
-    employment => `${employment.role} at ${employment.companyName}`,
+    (employment) => `${employment.role} at ${employment.companyName}`
   );
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}>
+      style={styles.container}
+    >
       <ScrollView>
         <Text
           style={[
             styles.headerText,
             styles.sectionHeader,
-            {paddingHorizontal: 20},
-          ]}>
+            { paddingHorizontal: 20 },
+          ]}
+        >
           Basic Information
         </Text>
         <View style={styles.section}>
@@ -126,7 +130,7 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user, onClose}) => {
           <Dropdown
             options={employmentOptions || []}
             style={styles.dropdown}
-            startingOption={values.tagline || 'Select an optiona'}
+            startingOption={values.tagline || 'Select an option'}
             selectedOption={values.tagline}
             onOptionSelect={handleChange('tagline')}
             error={errors.tagline}

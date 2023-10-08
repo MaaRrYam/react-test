@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { useFormik } from 'formik';
-import { EmploymentProps } from '@/interfaces';
-import { COLORS, FONTS } from '@/constants';
-import { Input, Checkbox, PrimaryButton, CareerCard } from '@/components';
-import { careerSchema } from '@/utils/schemas/profile';
+import React, {useState, useEffect} from 'react';
+import {Text, View, StyleSheet} from 'react-native';
+import {useFormik} from 'formik';
+import {EmploymentProps} from '@/interfaces';
+import {COLORS, FONTS} from '@/constants';
+import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
+import {careerSchema} from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
-import { getUID } from '@/utils/functions';
+import {getUID} from '@/utils/functions';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -18,7 +18,7 @@ interface CareerFormProps {
 
 function areCareersEqual(
   career1: EmploymentProps,
-  career2: EmploymentProps
+  career2: EmploymentProps,
 ): boolean {
   return (
     career1.companyName === career2.companyName &&
@@ -36,9 +36,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
   addNew,
   setAddNew,
 }) => {
-  const [experience, setExperience] = useState<EmploymentProps[]>(careerList);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-
   const handleSave = async (values: {
     companyName: string;
     role: string;
@@ -62,50 +60,37 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
 
     if (editingIndex !== null) {
       // If we are editing, update the existing career at the editing index
-      const updatedExperience = [...experience];
+      const updatedExperience = [...careerList];
       updatedExperience[editingIndex] = newEmployment;
-      setExperience(updatedExperience);
       setEditingIndex(null);
 
-      // Use the updatedExperience directly here
       await FirebaseService.updateDocument('users', uid as string, {
         employmentList: updatedExperience,
       });
     } else {
       // Otherwise, add a new career if it's not a duplicate
-      const isDuplicate = careerList.some((career) =>
-        areCareersEqual(career, newEmployment)
+      const isDuplicate = careerList.some(career =>
+        areCareersEqual(career, newEmployment),
       );
       if (!isDuplicate) {
-        const newExperience = [...experience, newEmployment];
-        setExperience(newExperience);
-
-        // Use the newExperience directly here
         await FirebaseService.updateDocument('users', uid as string, {
-          employmentList: newExperience,
+          employmentList: [...careerList, newEmployment],
         });
       }
     }
-
     toggleEditForm();
   };
 
-  useEffect(() => {
-    // This useEffect will be triggered whenever experience changes
-    // We can update Firebase here
-    async function updateFirebase() {
-      const uid = await getUID();
-      await FirebaseService.updateDocument('users', uid as string, {
-        employmentList: experience,
+  const deleteCareer = async (indexToRemove: number) => {
+    const updatedCareerList = [...careerList];
+    updatedCareerList.splice(indexToRemove, 1);
+    const uid = await getUID();
+    if (uid) {
+      FirebaseService.updateDocument('users', uid as string, {
+        employmentList: updatedCareerList,
       });
     }
-
-    if (experience.length > careerList.length) {
-      // If the length of experience is greater than careerList, that means
-      // a new employment was added or an existing one was edited, so update Firebase
-      updateFirebase();
-    }
-  }, [experience, careerList]);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -134,9 +119,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
           companyName: itemToEdit.companyName || '',
           role: itemToEdit.role || '',
           startYear: itemToEdit.startYear || '',
-          endYear: itemToEdit.currentlyWorking
-            ? ''
-            : itemToEdit.endYear || '',
+          endYear: itemToEdit.currentlyWorking ? '' : itemToEdit.endYear || '',
           isCurrentlyWorking: itemToEdit.currentlyWorking || false,
         });
       }
@@ -178,7 +161,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
               onChangeText={formik.handleChange('endYear')}
               placeholder="End Year"
               value={formik.values.endYear}
-              style={[styles.yearInput, { marginLeft: 11 }]}
+              style={[styles.yearInput, {marginLeft: 11}]}
               setFieldTouched={formik.setFieldTouched}
               error={formik.errors.endYear}
               keyboardType="numeric"
@@ -189,7 +172,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
               onPress={() =>
                 formik.setFieldValue(
                   'isCurrentlyWorking',
-                  !formik.values.isCurrentlyWorking
+                  !formik.values.isCurrentlyWorking,
                 )
               }
               isChecked={formik.values.isCurrentlyWorking}
@@ -214,8 +197,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
                     ? 'transparent'
                     : COLORS.border,
               },
-            ]}
-          >
+            ]}>
             <CareerCard
               title={item.role}
               company={item.companyName}
@@ -226,6 +208,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
                 toggleEditForm();
                 setEditingIndex(index);
               }}
+              onDelete={() => deleteCareer(index)}
             />
           </View>
         ))
