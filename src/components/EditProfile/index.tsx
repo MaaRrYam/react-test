@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
@@ -10,7 +10,6 @@ import {
   BottomSheet,
 } from '@/components';
 import {COLORS} from '@/constants';
-// import {useUserDoc} from '@/hooks/useUserDoc';
 
 interface EditProfileProps {
   isVisible: boolean;
@@ -30,7 +29,6 @@ const EditProfile = ({
   user,
   setIsEditing,
 }: EditProfileProps) => {
-  
   const [addNew, setAddNew] = useState(false);
   const renderForm = () => {
     switch (tabItem) {

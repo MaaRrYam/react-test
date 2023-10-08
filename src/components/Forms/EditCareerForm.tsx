@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {EmploymentProps} from '@/interfaces';
@@ -6,7 +6,7 @@ import {COLORS, FONTS} from '@/constants';
 import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
 import {careerSchema} from '@/utils/schemas/profile';
 import FirebaseService from '@/services/Firebase';
-import {getUID} from '@/utils/functions';
+import {areCareersEqual, getUID} from '@/utils/functions';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -16,20 +16,7 @@ interface CareerFormProps {
   setAddNew: (value: boolean) => void;
 }
 
-function areCareersEqual(
-  career1: EmploymentProps,
-  career2: EmploymentProps,
-): boolean {
-  return (
-    career1.companyName === career2.companyName &&
-    career1.role === career2.role &&
-    career1.startYear === career2.startYear &&
-    career1.endYear === career2.endYear &&
-    career1.currentlyWorking === career2.currentlyWorking
-  );
-}
-
-const EditCareerForm: React.FC<CareerFormProps> = ({
+const EditCareerForm: FC<CareerFormProps> = ({
   careerList,
   isEditing,
   setIsEditing,
@@ -46,7 +33,6 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
   }) => {
     console.log('Form submitted with values:', values);
     const uid = await getUID();
-
     const newEmployment: EmploymentProps = {
       companyName: values.companyName,
       role: values.role,
@@ -59,7 +45,6 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
     };
 
     if (editingIndex !== null) {
-      // If we are editing, update the existing career at the editing index
       const updatedExperience = [...careerList];
       updatedExperience[editingIndex] = newEmployment;
       setEditingIndex(null);
@@ -68,7 +53,6 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
         employmentList: updatedExperience,
       });
     } else {
-      // Otherwise, add a new career if it's not a duplicate
       const isDuplicate = careerList.some(career =>
         areCareersEqual(career, newEmployment),
       );
@@ -78,6 +62,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
         });
       }
     }
+    await formik.setSubmitting(false);
     toggleEditForm();
   };
 
@@ -101,7 +86,10 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
       isCurrentlyWorking: false,
     },
     validationSchema: careerSchema,
-    onSubmit: handleSave,
+    onSubmit: formValues => {
+      formik.setSubmitting(true);
+      handleSave(formValues);
+    },
   });
 
   const toggleEditForm = () => {
@@ -112,7 +100,6 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
 
   useEffect(() => {
     if (!addNew && editingIndex !== null) {
-      // If we are editing an existing career, populate the form with its details
       const itemToEdit = careerList[editingIndex];
       if (itemToEdit) {
         formik.setValues({
@@ -183,6 +170,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
             title={editingIndex !== null ? 'Update' : 'Save'}
             onPress={formik.handleSubmit}
             style={styles.saveButton}
+            isLoading={formik.isSubmitting}
           />
         </View>
       ) : (
@@ -251,7 +239,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   saveButton: {
-    marginTop: 10,
+    marginTop: 270,
   },
 });
 

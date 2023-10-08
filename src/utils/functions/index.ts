@@ -1,5 +1,5 @@
 import {Dimensions} from 'react-native';
-import {ScreenDimensions} from '@/interfaces';
+import {EducationProps, EmploymentProps, ScreenDimensions} from '@/interfaces';
 import StorageService from '@/services/Storage'; 
 
 export const getScreenDimensions = (): ScreenDimensions => {
@@ -46,3 +46,28 @@ export async function getUID() {
     return '';
   }
 }
+
+export const areEducationsEqual = (
+  education1: EducationProps,
+  education2: EducationProps,
+): boolean => {
+  return (
+    education1.instituteName === education2.instituteName &&
+    education1.degree === education2.degree &&
+    education1.startYear === education2.startYear &&
+    education1.endYear === education2.endYear &&
+    education1.currentlyStudying === education2.currentlyStudying
+  );
+};
+export const areCareersEqual = (
+  career1: EmploymentProps,
+  career2: EmploymentProps,
+): boolean => {
+  return (
+    career1.companyName === career2.companyName &&
+    career1.role === career2.role &&
+    career1.startYear === career2.startYear &&
+    career1.endYear === career2.endYear &&
+    career1.currentlyWorking === career2.currentlyWorking
+  );
+};

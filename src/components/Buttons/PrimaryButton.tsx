@@ -26,7 +26,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
   disabled = false,
   isLoading = false,
   activityIndicatorSize = 'small',
-  activityIndicatorColor = COLORS.primary,
+  activityIndicatorColor = COLORS.white,
 }) => {
   const renderButtonContent = () => {
     if (isLoading) {

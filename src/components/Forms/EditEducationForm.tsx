@@ -5,7 +5,7 @@ import {EducationProps} from '@/interfaces';
 import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
 import {COLORS, FONTS} from '@/constants';
 import FirebaseService from '@/services/Firebase';
-import {getUID} from '@/utils/functions';
+import {areEducationsEqual, getUID} from '@/utils/functions';
 import {educationSchema} from '@/utils/schemas/profile';
 
 interface EditEducationProps {
@@ -15,18 +15,7 @@ interface EditEducationProps {
   addNew: boolean;
   setAddNew: (value: boolean) => void;
 }
-function areEducationsEqual(
-  education1: EducationProps,
-  education2: EducationProps,
-): boolean {
-  return (
-    education1.instituteName === education2.instituteName &&
-    education1.degree === education2.degree &&
-    education1.startYear === education2.startYear &&
-    education1.endYear === education2.endYear &&
-    education1.currentlyStudying === education2.currentlyStudying
-  );
-}
+
 const EditEducationForm = ({
   educationList,
   isEditing,
@@ -53,6 +42,7 @@ const EditEducationForm = ({
     },
     validationSchema: educationSchema,
     onSubmit: async values => {
+      await formik.setSubmitting(true);
       console.log('Form submitted with values:', values);
       const uid = await getUID();
 
@@ -82,6 +72,7 @@ const EditEducationForm = ({
           await FirebaseService.updateDocument('users', uid as string, {
             educationList: [...educationList, newEducation],
           });
+          await formik.setSubmitting(false);
           toggleEditForm();
         }
       }
@@ -196,9 +187,10 @@ const EditEducationForm = ({
       {isEditing && (
         <View style={styles.footer}>
           <PrimaryButton
-            title="Save"
+            title={editingIndex !== null ? 'Update' : 'Save'}
             onPress={formik.handleSubmit}
             style={styles.saveButton}
+            isLoading={formik.isSubmitting}
           />
         </View>
       )}

@@ -15,7 +15,7 @@ import FirebaseService from '../Firebase';
 
 let UID: string;
 (async () => {
-  UID = await getUID();
+  UID = (await getUID()) as string;
 })();
 type AppDispatch = Dispatch;
 
@@ -83,7 +83,7 @@ const OnboardingService = {
     await FirebaseService.updateDocument('users', UID, {
       onboarded: true,
     });
-    await API_GET(`email/sendWelcomeEmail`);
+    await API_GET('email/sendWelcomeEmail');
   },
 };
 

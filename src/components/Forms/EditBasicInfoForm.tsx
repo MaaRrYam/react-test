@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,12 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { Dropdown, Input, PrimaryButton, TextArea } from '@/components';
-import { UserInterface } from '@/interfaces';
-import { COLORS, FONTS } from '@/constants';
-import { useFormik } from 'formik';
-import { basicInfoSchema } from '@/utils/schemas/profile';
-import FirebaseService from '@/services/Firebase';
-import { getUID } from '@/utils/functions';
+import {useFormik} from 'formik';
+import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
+import {UserInterface} from '@/interfaces';
+import {COLORS, FONTS} from '@/constants';
+import {basicInfoSchema} from '@/utils/schemas/profile';
+import ProfileService from '@/services/profile';
 
 interface UserInfoProps {
   user: UserInterface;
@@ -21,7 +20,11 @@ interface UserInfoProps {
   setIsEdit?: (value: boolean) => void;
 }
 
-const EditBasicInfoForm: React.FC<UserInfoProps> = ({ user, onClose, setIsEdit }) => {
+const EditBasicInfoForm: React.FC<UserInfoProps> = ({
+  user,
+  onClose,
+  setIsEdit,
+}) => {
   const [editedValues, setEditedValues] = useState({
     name: '',
     about: '',
@@ -33,7 +36,6 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({ user, onClose, setIsEdit }
 
   useEffect(() => {
     if (setIsEdit) {
-      // Only update editedValues when setIsEdit is true
       setEditedValues({
         name: user.name || '',
         about: user.description || '',
@@ -45,20 +47,6 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({ user, onClose, setIsEdit }
     }
   }, [user, setIsEdit]);
 
-  const handleSave = async (formValues: typeof editedValues) => {
-    console.log(formValues);
-    const uid = await getUID();
-    await FirebaseService.updateDocument('users', uid as string, {
-      name: formValues.name,
-      description: formValues.about,
-      tagline: formValues.tagline,
-      country: formValues.country,
-      state: formValues.state,
-      city: formValues.city,
-    });
-    onClose();
-  };
-
   const {
     values,
     touched,
@@ -68,39 +56,42 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({ user, onClose, setIsEdit }
     setFieldTouched,
     isSubmitting,
     setSubmitting,
-    handleReset,
   } = useFormik({
-    initialValues: setIsEdit ? { ...editedValues } : {
-      name: user.name || '',
-      about: user.description || '',
-      tagline: user.tagline || '',
-      country: user.country || '',
-      city: user.city || '',
-      state: user.state || '',
-    },
+    initialValues: setIsEdit
+      ? {...editedValues}
+      : {
+          name: user.name || '',
+          about: user.description || '',
+          tagline: user.tagline || '',
+          country: user.country || '',
+          city: user.city || '',
+          state: user.state || '',
+        },
     validationSchema: basicInfoSchema,
-    onSubmit: (formValues) => {
-      handleSave(formValues);
+    onSubmit: async formValues => {
+      await ProfileService.handleSaveBasicInformation(
+        formValues,
+        setSubmitting,
+      );
+      onClose();
     },
   });
 
   const employmentOptions = user.employmentList?.map(
-    (employment) => `${employment.role} at ${employment.companyName}`
+    employment => `${employment.role} at ${employment.companyName}`,
   );
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}
-    >
+      style={styles.container}>
       <ScrollView>
         <Text
           style={[
             styles.headerText,
             styles.sectionHeader,
-            { paddingHorizontal: 20 },
-          ]}
-        >
+            {paddingHorizontal: 20},
+          ]}>
           Basic Information
         </Text>
         <View style={styles.section}>
