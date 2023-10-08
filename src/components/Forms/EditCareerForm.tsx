@@ -5,8 +5,6 @@ import {EmploymentProps} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
 import {careerSchema} from '@/utils/schemas/profile';
-import FirebaseService from '@/services/Firebase';
-import {areCareersEqual, getUID} from '@/utils/functions';
 import ProfileService from '@/services/profile';
 
 interface CareerFormProps {
