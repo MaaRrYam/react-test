@@ -28,6 +28,7 @@ import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
 import {useUserDoc} from '../../hooks/useUserDoc';
+import useUserConnections from '../../hooks/useUserConnections';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -45,23 +46,11 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const {setIsVisible, setTabItem, isEditing, UID} = route.params;
   const [loading, setLoading] = useState(true);
   const user = useUserDoc(UID);
-  const dispatch = useAppDispatch();
-  const {connections, isConnectionsFetched} = useAppSelector(
-    (networkState: RootState) => networkState.network,
-  );
+  const connections = useUserConnections(UID);
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
   const openBottomSheet = () => {
     setIsVisible(true);
   };
-  const fetchData = useCallback(() => {
-    if (!isConnectionsFetched) {
-      dispatch(getConnections());
-    }
-  }, [dispatch, isConnectionsFetched]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   useEffect(() => {
     if (user) {
