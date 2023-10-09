@@ -27,9 +27,11 @@ import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
-import {useUserDoc} from '../../hooks/useUserDoc';
-import useUserConnections from '../../hooks/useUserConnections';
-import {getUID, getScreenDimensions} from '../../utils/functions';
+import {useUserDoc} from '@/hooks/useUserDoc';
+import useUserConnections from '@/hooks/useUserConnections';
+import {getUID, getScreenDimensions} from '@/utils/functions';
+import ProfileService from '../../services/profile';
+import useUsersPendingRequests from '../../hooks/useUserConnectionRequests';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -48,6 +50,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const [userUID, setUserUID] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const user = useUserDoc(UID ? UID : userUID);
+  const pendingRequests = useUsersPendingRequests(UID);
   const connections = useUserConnections(UID);
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
   const {width} = getScreenDimensions();
@@ -190,26 +193,39 @@ const Profile = ({navigation, route}: ProfileProps) => {
                     {!UID ||
                       (UID !== userUID && (
                         <>
-                          {!connections.some(conn => conn.id === userUID) && (
+                          {!connections.some(conn => conn.id === userUID) ? (
                             <PrimaryButton
                               title="Connect"
                               style={[profileStyles.connectButton]}
+                              onPress={ProfileService.connect(UID, userUID)}
                             />
-                          )}
+                          ) : !pendingRequests.some(
+                              conn => conn.id === userUID,
+                            ) ? (
+                            <PrimaryButton
+                              title="Accept"
+                              style={[profileStyles.connectButton]}
+                              onPress={() => {}}
+                            />
+                          ) : null}
                           <SecondaryButton
                             title="Message"
                             style={[
                               profileStyles.messageButton,
                               connections.some(conn => conn.id === userUID) && {
-                                marginLeft: 170,
+                                marginLeft: 0,
                               },
                             ]}
                           />
                         </>
                       ))}
-                    <TouchableOpacity style={[profileStyles.optionsButton, UID === userUID && {
-                      marginLeft: width - 70
-                    }]}>
+                    <TouchableOpacity
+                      style={[
+                        profileStyles.optionsButton,
+                        UID === userUID && {
+                          marginLeft: width - 70,
+                        },
+                      ]}>
                       <View>
                         <ThreeDots />
                       </View>

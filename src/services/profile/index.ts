@@ -1,6 +1,7 @@
 import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '../Firebase';
 import {EmploymentProps, EducationProps} from '@/interfaces';
+import {Timestamp} from 'firebase/firestore';
 const ProfileService = {
   async handleSaveBasicInformation(
     formValues: {
@@ -187,6 +188,67 @@ const ProfileService = {
     await FirebaseService.updateDocument('users', uid as string, {
       educationList: updatedEducationList,
     });
+  },
+
+  async connect(userId: string, loggedInUserId: string) {
+    await FirebaseService.addDocument(
+      `users/${userId}/requests/${loggedInUserId}`,
+      {
+        id: loggedInUserId,
+        time: Timestamp.now(),
+      },
+    );
+
+    await FirebaseService.addDocument(
+      `users/${loggedInUserId}/pendingRequests/${userId}`,
+      {
+        id: userId,
+        time: Timestamp.now(),
+      },
+    );
+    await this.follow(userId, loggedInUserId);
+  },
+  async acceptRequest(userId: string, loggedInUserId: string) {
+    await FirebaseService.addDocument(
+      `users/${userId}/connections/${loggedInUserId}`,
+      {
+        id: loggedInUserId,
+        time: Timestamp.now(),
+      },
+    );
+
+    await FirebaseService.addDocument(
+      `users/${loggedInUserId}/connections/${userId}`,
+      {
+        id: userId,
+        time: Timestamp.now(),
+      },
+    );
+    await FirebaseService.deleteDocument(
+      `users/${userId}/pendingRequests`,
+      loggedInUserId,
+    );
+    await FirebaseService.deleteDocument(
+      `users/${loggedInUserId}/requests`,
+      userId,
+    );
+  },
+  async follow(userId: string, loggedInUserId: string) {
+    await FirebaseService.addDocument(
+      `users/${userId}/followers/${loggedInUserId}`,
+      {
+        id: loggedInUserId,
+        time: Timestamp.now(),
+      },
+    );
+
+    await FirebaseService.addDocument(
+      `users/${loggedInUserId}/followering/${userId}`,
+      {
+        id: userId,
+        time: Timestamp.now(),
+      },
+    );
   },
 };
 

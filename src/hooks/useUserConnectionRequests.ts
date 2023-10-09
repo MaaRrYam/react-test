@@ -4,7 +4,7 @@ import {getUID} from '@/utils/functions';
 import {DocumentData} from 'firebase/firestore';
 
 const useConnections = (uid: string) => {
-  const [connections, setConnections] = useState<DocumentData[]>([]);
+  const [pendingRequests, setConnections] = useState<DocumentData[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,7 +12,7 @@ const useConnections = (uid: string) => {
         const uidToUse = uid || (await getUID());
 
         if (uidToUse) {
-          const collectionName = `users/${uidToUse}/connections`;
+          const collectionName = `users/${uidToUse}/pendingRequests`;
           const documents = await FirebaseService.getAllDocuments(
             collectionName,
           );
@@ -33,7 +33,7 @@ const useConnections = (uid: string) => {
     fetchData();
   }, [uid]);
 
-  return connections;
+  return pendingRequests;
 };
 
 export default useConnections;
