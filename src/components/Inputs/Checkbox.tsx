@@ -1,11 +1,11 @@
-import { CheckMark } from '@/assets/icons';
+import {CheckMark} from '@/assets/icons';
 import {COLORS} from '@/constants';
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface CheckboxProps {
-  onPress: (isChecked: boolean) => void;
+  onPress: () => void;
   isChecked?: boolean;
   size?: number;
   color?: string;
@@ -29,13 +29,9 @@ const Checkbox: React.FC<CheckboxProps> = ({
   iconStyle,
   innerIconStyle,
 }) => {
-  const toggleCheckbox = () => {
-    onPress(!isChecked);
-  };
-
   return (
     <TouchableOpacity
-      onPress={() => onPress(!isChecked)}
+      onPress={onPress}
       style={[styles.checkboxContainer, style]}>
       <View
         style={[

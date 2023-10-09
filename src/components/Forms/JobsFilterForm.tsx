@@ -9,7 +9,7 @@ import {
 import React, {useState} from 'react';
 import Input from '../../components/Inputs/Input';
 import {COLORS, experience, jobTypes, workEnviroment} from '../../constants';
-import {CheckMark} from '@/assets/icons';
+import {CheckMark} from '../../assets/icons';
 import PrimaryButton from '../../components/Buttons/PrimaryButton';
 
 const JobsFilterForm = ({
