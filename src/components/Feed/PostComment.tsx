@@ -22,6 +22,7 @@ import {Comment, Like, Dislike, SendIcon} from '@/assets/icons';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
 import HomeService from '@/services/home';
+import ToastService from '@/services/toast';
 
 const RepliesContainer = ({
   replies,
@@ -132,6 +133,170 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const likeAComment = async () => {
+    if (reactions.dislike) {
+      setReactions({dislike: false, like: true});
+      const response = await HomeService.removeDisLikeAndLike(postId, item.id);
+      setComments(prev => {
+        const targetComment = prev.comments.find(
+          comment => comment.id === item.id,
+        );
+
+        if (targetComment) {
+          targetComment.likes = targetComment.dislikes.filter(
+            like => like.likedBy !== item.user.id,
+          );
+          targetComment.likes = [
+            ...targetComment.likes,
+            {
+              likedBy: item.user.id,
+              timestamp: formatFirebaseTimestamp(
+                FirebaseService.serverTimestamp(),
+                'dateTime',
+              ) as any,
+            },
+          ];
+        }
+        const sortedComments = HomeService.sortComments(prev.comments);
+        return {...prev, comments: sortedComments};
+      });
+      if (response) {
+        ToastService.showSuccess('Post Comment Disliked');
+      }
+      return;
+    } else if (reactions.like) {
+      setReactions({dislike: false, like: false});
+      const response = await HomeService.removeLikeComment(postId, item.id);
+      if (response) {
+        ToastService.showSuccess('Post Comment Like Removed');
+      }
+      setComments(prev => {
+        const targetComment = prev.comments.find(
+          comment => comment.id === item.id,
+        );
+
+        if (targetComment) {
+          targetComment.likes = targetComment.likes.filter(
+            like => like.likedBy !== item.user.id,
+          );
+        }
+        const sortedComments = HomeService.sortComments(prev.comments);
+        return {...prev, comments: sortedComments};
+      });
+      return;
+    } else {
+      const response = await HomeService.likeComment(postId, item.id);
+      setReactions(prev => ({...prev, like: true}));
+      setComments(prev => {
+        const targetComment = prev.comments.find(
+          comment => comment.id === item.id,
+        );
+
+        if (targetComment) {
+          targetComment.likes = [
+            ...targetComment.likes,
+            {
+              likedBy: item.user.id,
+              timestamp: formatFirebaseTimestamp(
+                FirebaseService.serverTimestamp(),
+                'dateTime',
+              ) as any,
+            },
+          ];
+        }
+
+        const sortedComments = HomeService.sortComments(prev.comments);
+        return {...prev, comments: sortedComments};
+      });
+      if (response) {
+        ToastService.showSuccess('Post Comment Liked');
+      }
+    }
+  };
+
+  const dislikeAComment = async () => {
+    if (reactions.dislike) {
+      setReactions(prev => ({...prev, dislike: false}));
+      const response = await HomeService.removeDislikeComment(postId, item.id);
+      if (response) {
+        ToastService.showSuccess('Post Comment Dislike Removed');
+      }
+      setComments(prev => {
+        const targetComment = prev.comments.find(
+          comment => comment.id === item.id,
+        );
+
+        if (targetComment) {
+          targetComment.dislikes = targetComment.dislikes.filter(
+            like => like.likedBy !== item.user.id,
+          );
+        }
+        const sortedComments = HomeService.sortComments(prev.comments);
+        return {...prev, comments: sortedComments};
+      });
+      return;
+    } else if (reactions.like) {
+      setReactions({dislike: true, like: false});
+      const response = await HomeService.removeLikeAndDislikeComment(
+        postId,
+        item.id,
+      );
+      setComments(prev => {
+        const targetComment = prev.comments.find(
+          comment => comment.id === item.id,
+        );
+
+        if (targetComment) {
+          targetComment.dislikes = targetComment.dislikes.filter(
+            like => like.likedBy !== item.user.id,
+          );
+          targetComment.dislikes = [
+            ...targetComment.dislikes,
+            {
+              likedBy: item.user.id,
+              timestamp: formatFirebaseTimestamp(
+                FirebaseService.serverTimestamp(),
+                'dateTime',
+              ) as any,
+            },
+          ];
+        }
+        const sortedComments = HomeService.sortComments(prev.comments);
+        return {...prev, comments: sortedComments};
+      });
+      if (response) {
+        ToastService.showSuccess('Post Comment Disliked');
+      }
+      return;
+    } else {
+      const response = await HomeService.dislikeComment(postId, item.id);
+      setReactions(prev => ({...prev, dislike: true}));
+      if (response) {
+        ToastService.showSuccess('Post Comment Disliked');
+        setComments(prev => {
+          const targetComment = prev.comments.find(
+            comment => comment.id === item.id,
+          );
+
+          if (targetComment) {
+            targetComment.dislikes = [
+              ...targetComment.dislikes,
+              {
+                likedBy: item.user.id,
+                timestamp: formatFirebaseTimestamp(
+                  FirebaseService.serverTimestamp(),
+                  'dateTime',
+                ) as any,
+              },
+            ];
+          }
+          const sortedComments = HomeService.sortComments(prev.comments);
+          return {...prev, comments: sortedComments};
+        });
+      }
+    }
+  };
+
   return (
     <View style={styles.comment}>
       <View style={styles.author}>
@@ -156,7 +321,7 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
         <View style={[styles.postReactions, styles.postReactionsForComments]}>
           <TouchableOpacity
             style={[styles.reactionButton, styles.reactionButtonsBordered]}
-            onPress={() => {}}>
+            onPress={likeAComment}>
             <Like isLiked={reactions.like} />
           </TouchableOpacity>
           <Text style={styles.like}>
@@ -164,7 +329,7 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
           </Text>
           <TouchableOpacity
             style={[styles.reactionButton, styles.reactionButtonsBordered]}
-            onPress={() => {}}>
+            onPress={dislikeAComment}>
             <Dislike isLiked={reactions.dislike} />
           </TouchableOpacity>
           <TouchableOpacity

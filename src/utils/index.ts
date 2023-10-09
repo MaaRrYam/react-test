@@ -6,7 +6,7 @@ export const formatFirebaseTimestamp = (
   formatOption: DateFormatOption,
 ): string => {
   const date = new Date(
-    timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000,
+    timestamp?.seconds * 1000 + timestamp?.nanoseconds / 1000000,
   );
 
   if (formatOption === 'date') {
