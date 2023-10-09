@@ -134,166 +134,121 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
   }, []);
 
   const likeAComment = async () => {
-    if (reactions.dislike) {
-      setReactions({dislike: false, like: true});
-      const response = await HomeService.removeDisLikeAndLike(postId, item.id);
-      setComments(prev => {
-        const targetComment = prev.comments.find(
-          comment => comment.id === item.id,
-        );
-
-        if (targetComment) {
-          targetComment.likes = targetComment.dislikes.filter(
-            like => like.likedBy !== item.user.id,
-          );
-          targetComment.likes = [
-            ...targetComment.likes,
-            {
-              likedBy: item.user.id,
-              timestamp: formatFirebaseTimestamp(
-                FirebaseService.serverTimestamp(),
-                'dateTime',
-              ) as any,
-            },
-          ];
-        }
-        const sortedComments = HomeService.sortComments(prev.comments);
-        return {...prev, comments: sortedComments};
-      });
-      if (response) {
-        ToastService.showSuccess('Post Comment Disliked');
+    try {
+      const UID = (await getUID()) as string;
+      let action = 'like';
+      if (reactions.dislike) {
+        setReactions({dislike: false, like: true});
+        await HomeService.removeDisLikeAndLike(postId, item.id);
+        action = 'dislike';
+      } else if (reactions.like) {
+        setReactions({dislike: false, like: false});
+        await HomeService.removeLikeComment(postId, item.id);
+        action = 'removeLike';
+      } else {
+        setReactions(prev => ({...prev, like: true}));
+        await HomeService.likeComment(postId, item.id);
       }
-      return;
-    } else if (reactions.like) {
-      setReactions({dislike: false, like: false});
-      const response = await HomeService.removeLikeComment(postId, item.id);
-      if (response) {
-        ToastService.showSuccess('Post Comment Like Removed');
-      }
+
       setComments(prev => {
-        const targetComment = prev.comments.find(
-          comment => comment.id === item.id,
-        );
-
-        if (targetComment) {
-          targetComment.likes = targetComment.likes.filter(
-            like => like.likedBy !== item.user.id,
-          );
-        }
-        const sortedComments = HomeService.sortComments(prev.comments);
-        return {...prev, comments: sortedComments};
-      });
-      return;
-    } else {
-      const response = await HomeService.likeComment(postId, item.id);
-      setReactions(prev => ({...prev, like: true}));
-      setComments(prev => {
-        const targetComment = prev.comments.find(
-          comment => comment.id === item.id,
-        );
-
-        if (targetComment) {
-          targetComment.likes = [
-            ...targetComment.likes,
-            {
-              likedBy: item.user.id,
-              timestamp: formatFirebaseTimestamp(
-                FirebaseService.serverTimestamp(),
-                'dateTime',
-              ) as any,
-            },
-          ];
-        }
-
-        const sortedComments = HomeService.sortComments(prev.comments);
-        return {...prev, comments: sortedComments};
-      });
-      if (response) {
-        ToastService.showSuccess('Post Comment Liked');
-      }
-    }
-  };
-
-  const dislikeAComment = async () => {
-    if (reactions.dislike) {
-      setReactions(prev => ({...prev, dislike: false}));
-      const response = await HomeService.removeDislikeComment(postId, item.id);
-      if (response) {
-        ToastService.showSuccess('Post Comment Dislike Removed');
-      }
-      setComments(prev => {
-        const targetComment = prev.comments.find(
-          comment => comment.id === item.id,
-        );
-
-        if (targetComment) {
-          targetComment.dislikes = targetComment.dislikes.filter(
-            like => like.likedBy !== item.user.id,
-          );
-        }
-        const sortedComments = HomeService.sortComments(prev.comments);
-        return {...prev, comments: sortedComments};
-      });
-      return;
-    } else if (reactions.like) {
-      setReactions({dislike: true, like: false});
-      const response = await HomeService.removeLikeAndDislikeComment(
-        postId,
-        item.id,
-      );
-      setComments(prev => {
-        const targetComment = prev.comments.find(
-          comment => comment.id === item.id,
-        );
-
-        if (targetComment) {
-          targetComment.dislikes = targetComment.dislikes.filter(
-            like => like.likedBy !== item.user.id,
-          );
-          targetComment.dislikes = [
-            ...targetComment.dislikes,
-            {
-              likedBy: item.user.id,
-              timestamp: formatFirebaseTimestamp(
-                FirebaseService.serverTimestamp(),
-                'dateTime',
-              ) as any,
-            },
-          ];
-        }
-        const sortedComments = HomeService.sortComments(prev.comments);
-        return {...prev, comments: sortedComments};
-      });
-      if (response) {
-        ToastService.showSuccess('Post Comment Disliked');
-      }
-      return;
-    } else {
-      const response = await HomeService.dislikeComment(postId, item.id);
-      setReactions(prev => ({...prev, dislike: true}));
-      if (response) {
-        ToastService.showSuccess('Post Comment Disliked');
-        setComments(prev => {
-          const targetComment = prev.comments.find(
-            comment => comment.id === item.id,
-          );
-
-          if (targetComment) {
-            targetComment.dislikes = [
-              ...targetComment.dislikes,
-              {
-                likedBy: item.user.id,
+        const updatedComments = prev.comments.map(comment => {
+          if (comment.id === item.id) {
+            if (action === 'dislike') {
+              comment.likes = comment.dislikes
+                .filter(like => like.likedBy !== UID)
+                .concat({
+                  likedBy: UID,
+                  timestamp: formatFirebaseTimestamp(
+                    FirebaseService.serverTimestamp(),
+                    'dateTime',
+                  ) as any,
+                });
+            } else if (action === 'like') {
+              comment.likes.push({
+                likedBy: UID,
                 timestamp: formatFirebaseTimestamp(
                   FirebaseService.serverTimestamp(),
                   'dateTime',
                 ) as any,
-              },
-            ];
+              });
+            } else if (action === 'removeLike') {
+              comment.likes = comment.likes.filter(
+                like => like.likedBy !== UID,
+              );
+            }
           }
-          const sortedComments = HomeService.sortComments(prev.comments);
-          return {...prev, comments: sortedComments};
+          return comment;
         });
+
+        const sortedComments = HomeService.sortComments(updatedComments);
+        return {...prev, comments: sortedComments};
+      });
+
+      ToastService.showSuccess(
+        action === 'like'
+          ? 'Post Comment Liked'
+          : action === 'dislike'
+          ? 'Post Comment Disliked'
+          : 'Post Comment Like Removed',
+      );
+    } catch (error) {
+      console.error('Error while performing action:', error);
+    }
+  };
+
+  const dislikeAComment = async () => {
+    try {
+      const UID = (await getUID()) as string;
+      let action = 'dislike';
+      if (reactions.dislike) {
+        await HomeService.removeDislikeComment(postId, item.id);
+        action = 'removeDislike';
+      } else if (reactions.like) {
+        await HomeService.removeLikeAndDislikeComment(postId, item.id);
+
+        action = 'like';
+      } else {
+        await HomeService.dislikeComment(postId, item.id);
+        action = 'dislike';
       }
+
+      setReactions(prev => ({
+        ...prev,
+        like: false,
+        dislike: action === 'dislike',
+      }));
+
+      setComments(prev => {
+        const updatedComments = prev.comments.map(comment => {
+          if (comment.id === item.id) {
+            if (action === 'dislike') {
+              comment.dislikes.push({
+                likedBy: UID,
+                timestamp: formatFirebaseTimestamp(
+                  FirebaseService.serverTimestamp(),
+                  'dateTime',
+                ) as any,
+              });
+            } else if (action === 'removeDislike') {
+              comment.dislikes = comment.dislikes.filter(
+                dislike => dislike.likedBy !== UID,
+              );
+            }
+          }
+          return comment;
+        });
+
+        const sortedComments = HomeService.sortComments(updatedComments);
+        return {...prev, comments: sortedComments};
+      });
+
+      ToastService.showSuccess(
+        action === 'dislike'
+          ? 'Post Comment Disliked'
+          : 'Post Comment Dislike Removed',
+      );
+    } catch (error) {
+      console.error('Error while performing action:', error);
     }
   };
 
