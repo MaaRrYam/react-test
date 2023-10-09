@@ -29,6 +29,7 @@ import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
 import {useUserDoc} from '../../hooks/useUserDoc';
 import useUserConnections from '../../hooks/useUserConnections';
+import {getUID, getScreenDimensions} from '../../utils/functions';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -44,21 +45,41 @@ interface ProfileProps {
 
 const Profile = ({navigation, route}: ProfileProps) => {
   const {setIsVisible, setTabItem, isEditing, UID} = route.params;
+  const [userUID, setUserUID] = useState<string>('');
   const [loading, setLoading] = useState(true);
-  const user = useUserDoc(UID);
+  const user = useUserDoc(UID ? UID : userUID);
   const connections = useUserConnections(UID);
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
+  const {width} = getScreenDimensions();
+
   const openBottomSheet = () => {
     setIsVisible(true);
   };
 
   useEffect(() => {
+    console.log(connections);
+  }, [connections]);
+
+  useEffect(() => {
+    const fetchUID = async () => {
+      try {
+        // Fetch the UID asynchronously using async/await
+        const fetchedUID = await getUID();
+        setUserUID(fetchedUID as string);
+      } catch (error) {
+        console.error('Error fetching UID:', error);
+      }
+    };
+
+    // Fetch the UID when the component mounts
+    fetchUID();
+
     if (user) {
       setTimeout(() => {
         setLoading(false);
       }, 3000);
     }
-  }, [user]);
+  }, []);
 
   const feedData = [
     {
@@ -157,16 +178,38 @@ const Profile = ({navigation, route}: ProfileProps) => {
                       {connections.length} connections
                     </Text>
                   </View>
-                  <View style={profileStyles.buttonContainer}>
-                    <PrimaryButton
-                      title="Connect"
-                      style={profileStyles.connectButton}
-                    />
-                    <SecondaryButton
-                      title="Message"
-                      style={profileStyles.messageButton}
-                    />
-                    <TouchableOpacity style={profileStyles.optionsButton}>
+                  <View
+                    style={[
+                      profileStyles.buttonContainer,
+                      connections.some(conn => conn.id === userUID) ||
+                        UID === userUID ||
+                        (UID === '' && {
+                          justifyContent: 'flex-end',
+                        }),
+                    ]}>
+                    {!UID ||
+                      (UID !== userUID && (
+                        <>
+                          {!connections.some(conn => conn.id === userUID) && (
+                            <PrimaryButton
+                              title="Connect"
+                              style={[profileStyles.connectButton]}
+                            />
+                          )}
+                          <SecondaryButton
+                            title="Message"
+                            style={[
+                              profileStyles.messageButton,
+                              connections.some(conn => conn.id === userUID) && {
+                                marginLeft: 170,
+                              },
+                            ]}
+                          />
+                        </>
+                      ))}
+                    <TouchableOpacity style={[profileStyles.optionsButton, UID === userUID && {
+                      marginLeft: width - 70
+                    }]}>
                       <View>
                         <ThreeDots />
                       </View>
