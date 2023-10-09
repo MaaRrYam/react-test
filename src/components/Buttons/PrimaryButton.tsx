@@ -13,7 +13,7 @@ import {COLORS} from '../../constants';
 import {ButtonProps} from 'interfaces';
 import {ForwardArrow} from '@/assets/icons';
 
-const Button: React.FC<ButtonProps> = ({
+const PrimaryButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   style,
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default PrimaryButton;
