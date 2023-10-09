@@ -3,13 +3,14 @@ import {View, Image, TouchableOpacity} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
 import {Chats} from '@/assets/icons';
+import Filter from '@/assets/icons/Filter';
 import {SCREEN_NAMES} from '@/constants';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
 
-const Header = ({navigation}: HeaderProps) => {
+const Header = ({navigation, jobs, setJobsFilterBottomSheet}: HeaderProps) => {
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logOut());
@@ -25,11 +26,19 @@ const Header = ({navigation}: HeaderProps) => {
       </TouchableOpacity>
       <View style={homeStyles.headerIcons}>
         <SearchButton onPress={() => {}} style={homeStyles.searchIcon} />
-        <TouchableOpacity
-          style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-          onPress={() => navigation.navigate('Chats')}>
-          <Chats />
-        </TouchableOpacity>
+        {jobs ? (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
+            <Filter />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => navigation.navigate('Chats')}>
+            <Chats />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

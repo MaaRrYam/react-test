@@ -216,3 +216,13 @@ export const SCREEN_NAMES = {
   Jobs: 'Jobs',
   Profile: 'Profile',
 };
+
+export const jobTypes = ['Full-time', 'Part-time', 'Temporary', 'Intern'];
+export const experience = [
+  'Entry Level',
+  'Associate',
+  'Mid senior',
+  'Executive',
+  'Director',
+];
+export const workEnviroment = ['In-office', 'Remote', 'Hybrid'];

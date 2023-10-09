@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import {useEffect, useState} from 'react';
-import {Button} from '@components';
+import {PrimaryButton} from '../../components';
 import React from 'react';
 import Location from '../../assets/icons/Location';
 import Compensation from '../../assets/icons/Compensation';
@@ -103,7 +103,7 @@ const JobsDetailForm = ({selectedJob, setIsBottomSheetVisible}: jobsdetail) => {
                 </View>
               )}
               <View style={styles.applyButtonContainer}>
-                <Button title="Apply" onPress={handleOnPress} />
+                <PrimaryButton title="Apply" onPress={handleOnPress} />
               </View>
               <View style={styles.jobDetailContainer}>
                 <Text style={styles.jobDetailHeading}>Summary</Text>
