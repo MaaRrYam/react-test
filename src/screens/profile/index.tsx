@@ -14,6 +14,7 @@ import {
   PrimaryButton,
   RoundedButton,
   SecondaryButton,
+  Loading,
 } from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
@@ -26,6 +27,7 @@ import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
+import {useUserDoc} from '../../hooks/useUserDoc';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -34,15 +36,15 @@ interface ProfileProps {
       setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
       tabItem: string;
       isEditing: boolean;
+      UID: string;
     };
   };
 }
 
 const Profile = ({navigation, route}: ProfileProps) => {
-  const {setIsVisible, setTabItem, isEditing} = route.params;
-
-  const {user} = useAppSelector((state: RootState) => state.auth);
-  // const user = useUserDoc();
+  const {setIsVisible, setTabItem, isEditing, UID} = route.params;
+  const [loading, setLoading] = useState(true);
+  const user = useUserDoc(UID);
   const dispatch = useAppDispatch();
   const {connections, isConnectionsFetched} = useAppSelector(
     (networkState: RootState) => networkState.network,
@@ -60,6 +62,14 @@ const Profile = ({navigation, route}: ProfileProps) => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+    }
+  }, [user]);
 
   const feedData = [
     {
@@ -120,161 +130,168 @@ const Profile = ({navigation, route}: ProfileProps) => {
 
   return (
     <>
-      <ScrollView>
-        <SafeAreaView style={profileStyles.safeArea}>
-          <View>
-            <Header navigation={navigation} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView>
+          <SafeAreaView style={profileStyles.safeArea}>
             <View>
-              <Image
-                source={{
-                  uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                }}
-                style={profileStyles.headerImage}
-              />
-            </View>
-
-            <View style={profileStyles.container}>
-              <View style={profileStyles.avatarContainer}>
+              <Header navigation={navigation} />
+              <View>
                 <Image
                   source={{
-                    uri: user?.photoUrl,
+                    uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                   }}
-                  style={profileStyles.avatarImage}
+                  style={profileStyles.headerImage}
                 />
               </View>
-              <View style={profileStyles.userInfoContainer}>
-                <View>
-                  <Text style={profileStyles.userName}>{user?.name}</Text>
-                  <Text style={profileStyles.userTagline}>{user?.tagline}</Text>
-                  <Text style={profileStyles.userLocation}>
-                    {user?.city}, {user?.country}
-                  </Text>
-                  <Text style={profileStyles.connectionsLink}>
-                    {connections.length} connections
-                  </Text>
-                </View>
-                <View style={profileStyles.buttonContainer}>
-                  <PrimaryButton
-                    title="Connect"
-                    style={profileStyles.connectButton}
-                  />
-                  <SecondaryButton
-                    title="Message"
-                    style={profileStyles.messageButton}
-                  />
-                  <TouchableOpacity style={profileStyles.optionsButton}>
-                    <View>
-                      <ThreeDots />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
 
-            <View style={profileStyles.tabsContainer}>
-              <View style={profileStyles.tabsHeader}>
-                <View style={profileStyles.tabButtonContainer}>
-                  {PROFILE_TABS.map((tab, index) => (
-                    <RoundedButton
-                      key={tab}
-                      text={tab}
-                      style={
-                        selectedTab === tab
-                          ? profileStyles.selectedTabButton
-                          : index === PROFILE_TABS.length - 1
-                          ? {borderRadius: 10}
-                          : profileStyles.tabButton
-                      }
-                      onPress={() => {
-                        setSelectedTab(tab);
-                        setTabItem(tab);
-                      }}
+              <View style={profileStyles.container}>
+                <View style={profileStyles.avatarContainer}>
+                  <Image
+                    source={{
+                      uri: user?.photoUrl,
+                    }}
+                    style={profileStyles.avatarImage}
+                  />
+                </View>
+                <View style={profileStyles.userInfoContainer}>
+                  <View>
+                    <Text style={profileStyles.userName}>{user?.name}</Text>
+                    <Text style={profileStyles.userTagline}>
+                      {user?.tagline}
+                    </Text>
+                    <Text style={profileStyles.userLocation}>
+                      {user?.city}, {user?.country}
+                    </Text>
+                    <Text style={profileStyles.connectionsLink}>
+                      {connections.length} connections
+                    </Text>
+                  </View>
+                  <View style={profileStyles.buttonContainer}>
+                    <PrimaryButton
+                      title="Connect"
+                      style={profileStyles.connectButton}
                     />
-                  ))}
+                    <SecondaryButton
+                      title="Message"
+                      style={profileStyles.messageButton}
+                    />
+                    <TouchableOpacity style={profileStyles.optionsButton}>
+                      <View>
+                        <ThreeDots />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <View style={profileStyles.tabsContainer}>
+                <View style={profileStyles.tabsHeader}>
+                  <View style={profileStyles.tabButtonContainer}>
+                    {PROFILE_TABS.map((tab, index) => (
+                      <RoundedButton
+                        key={tab}
+                        text={tab}
+                        style={
+                          selectedTab === tab
+                            ? profileStyles.selectedTabButton
+                            : index === PROFILE_TABS.length - 1
+                            ? {borderRadius: 10}
+                            : profileStyles.tabButton
+                        }
+                        onPress={() => {
+                          setSelectedTab(tab);
+                          setTabItem(tab);
+                        }}
+                      />
+                    ))}
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={profileStyles.editIcon}
+                      onPress={openBottomSheet}>
+                      <NewChatIcon />
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <View>
-                  <TouchableOpacity
-                    style={profileStyles.editIcon}
-                    onPress={openBottomSheet}>
-                    <NewChatIcon />
-                  </TouchableOpacity>
+                  {selectedTab === PROFILE_TABS[0] ? (
+                    <ProfileTab
+                      bio={user?.description as string}
+                      photo={user?.photoUrl as string}
+                    />
+                  ) : selectedTab === PROFILE_TABS[1] ? (
+                    <CareerTab
+                      careerList={user?.employmentList}
+                      isEditing={isEditing}
+                    />
+                  ) : (
+                    <EducationTab
+                      educationList={user?.educationList}
+                      isEditing={isEditing}
+                    />
+                  )}
                 </View>
               </View>
-              <View>
-                {selectedTab === PROFILE_TABS[0] ? (
-                  <ProfileTab
-                    bio={user?.description as string}
-                    photo={user?.photoUrl as string}
+
+              {selectedTab === PROFILE_TABS[0] && !loading && (
+                <View style={styles.feedContainer}>
+                  <FlatList
+                    data={feedData}
+                    renderItem={({item}) => (
+                      <View style={styles.feedItem}>
+                        <View style={styles.authorInfo}>
+                          <Image
+                            source={item.author.avatar}
+                            style={styles.userImage}
+                          />
+                          <View style={{marginLeft: 10}}>
+                            <Text style={styles.authorName}>
+                              {item.author.name}
+                            </Text>
+                            <Text style={styles.authorTagline}>
+                              {item.author.tagline}
+                            </Text>
+                            <Text style={styles.authorTagline}>
+                              {item.time}
+                            </Text>
+                          </View>
+                        </View>
+                        <Text style={styles.feedContent}>{item.content}</Text>
+                        {item.media && (
+                          <Image source={item.media} style={styles.media} />
+                        )}
+                        <View style={styles.postReactions}>
+                          <View style={styles.reactionButton}>
+                            <Like />
+                          </View>
+                          <Text style={styles.like}>{item.likes}</Text>
+                          <View style={styles.reactionButton}>
+                            <Dislike />
+                          </View>
+
+                          <View style={styles.iconsContainer}>
+                            <TouchableOpacity>
+                              <Comment />
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                              <Share />
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                              <Report />
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                    keyExtractor={item => item.id}
                   />
-                ) : selectedTab === PROFILE_TABS[1] ? (
-                  <CareerTab
-                    careerList={user?.employmentList}
-                    isEditing={isEditing}
-                  />
-                ) : (
-                  <EducationTab
-                    educationList={user?.educationList}
-                    isEditing={isEditing}
-                  />
-                )}
-              </View>
+                </View>
+              )}
             </View>
-
-            {selectedTab === PROFILE_TABS[0] && (
-              <View style={styles.feedContainer}>
-                <FlatList
-                  data={feedData}
-                  renderItem={({item}) => (
-                    <View style={styles.feedItem}>
-                      <View style={styles.authorInfo}>
-                        <Image
-                          source={item.author.avatar}
-                          style={styles.userImage}
-                        />
-                        <View style={{marginLeft: 10}}>
-                          <Text style={styles.authorName}>
-                            {item.author.name}
-                          </Text>
-                          <Text style={styles.authorTagline}>
-                            {item.author.tagline}
-                          </Text>
-                          <Text style={styles.authorTagline}>{item.time}</Text>
-                        </View>
-                      </View>
-                      <Text style={styles.feedContent}>{item.content}</Text>
-                      {item.media && (
-                        <Image source={item.media} style={styles.media} />
-                      )}
-                      <View style={styles.postReactions}>
-                        <View style={styles.reactionButton}>
-                          <Like />
-                        </View>
-                        <Text style={styles.like}>{item.likes}</Text>
-                        <View style={styles.reactionButton}>
-                          <Dislike />
-                        </View>
-
-                        <View style={styles.iconsContainer}>
-                          <TouchableOpacity>
-                            <Comment />
-                          </TouchableOpacity>
-                          <TouchableOpacity>
-                            <Share />
-                          </TouchableOpacity>
-                          <TouchableOpacity>
-                            <Report />
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </View>
-                  )}
-                  keyExtractor={item => item.id}
-                />
-              </View>
-            )}
-          </View>
-        </SafeAreaView>
-      </ScrollView>
+          </SafeAreaView>
+        </ScrollView>
+      )}
     </>
   );
 };

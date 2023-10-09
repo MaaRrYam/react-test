@@ -1,13 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Home, Network, Notifications, Jobs, ImageIcon} from '@/assets/icons';
-import {Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '@/constants';
+import {useNavigation} from '@react-navigation/native';
+import {getUID} from './functions'; // Import your getUID function
 
 export const getIcon = (
   label: string,
   isFocused: boolean,
+  navigation: any,
   photoUrl?: string,
+  uid?: string,
 ) => {
+  // const navigation = useNavigation();
   switch (label) {
     case 'Home':
       return <Home isFocused={isFocused} />;
@@ -18,11 +23,16 @@ export const getIcon = (
     case 'Jobs':
       return <Jobs isFocused={isFocused} />;
     case 'Profile':
-      return photoUrl ? (
-        <Image source={{uri: photoUrl}} style={styles.image} />
-      ) : (
-        <ImageIcon />
-      );
+      if (photoUrl && uid) {
+        return (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Profile', {uid})}>
+            <Image source={{uri: photoUrl}} style={styles.image} />
+          </TouchableOpacity>
+        );
+      } else {
+        return <ImageIcon />;
+      }
     default:
       return <Home isFocused={isFocused} />;
   }

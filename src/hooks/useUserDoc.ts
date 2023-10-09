@@ -1,29 +1,26 @@
 import {useEffect, useState} from 'react';
-import FirebaseService from '@/services/Firebase'; // Import your FirebaseService
-import {UserInterface} from '@/interfaces'; // Import the UserInterface from '@/interfaces'
-import {getUID} from '@/utils/functions'; // Import the getUID function
-import {DocumentData} from 'firebase/firestore'; // Import DocumentData type from Firebase
+import FirebaseService from '@/services/Firebase';
+import {UserInterface} from '@/interfaces';
+import {getUID} from '@/utils/functions';
+import {DocumentData} from 'firebase/firestore';
 
-export const useUserDoc = (): UserInterface => {
+export const useUserDoc = (UID?: string): UserInterface => {
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
 
   useEffect(() => {
     const fetchUIDAndListen = async () => {
       try {
-        const UID = await getUID(); // Fetch the document ID asynchronously
+        const uid = UID || ((await getUID()) as string); // Use the provided UID or fetch it asynchronously
         const collectionName = 'users';
 
-        // Use the listenToDocument function to listen to the user document
         FirebaseService.listenToDocument(
           collectionName,
-          UID as string,
+          uid,
           (document: DocumentData | null) => {
             if (document) {
-              // Handle the updated document data here
               setUser(document as UserInterface);
             } else {
-              // Handle the case where the document no longer exists
-              setUser({} as UserInterface); // Return an empty user object
+              setUser({} as UserInterface);
             }
           },
         );
@@ -33,7 +30,7 @@ export const useUserDoc = (): UserInterface => {
     };
 
     fetchUIDAndListen();
-  }, []);
+  }, [UID]);
 
   return user;
 };

@@ -6,14 +6,24 @@ import {styles} from '@/screens/home/styles';
 import {formatFirebaseTimestamp} from '@/utils';
 import PostItem from './PostItem';
 import ArticleItem from './ArticleItem';
+import {useNavigation} from '@react-navigation/native';
+import {SCREEN_NAMES} from '@/constants';
+import {TouchableOpacity} from 'react-native';
 
 const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
+  const navigation = useNavigation();
+  const handleAuthorPress = () => {
+    navigation.navigate('Profile', {UID: item.authorId});
+  };
+
   return (
     <View style={styles.feedItem}>
       <View style={styles.authorInfo}>
         <Image source={{uri: item.author?.photoUrl}} style={styles.userImage} />
         <View style={{marginLeft: 10}}>
-          <Text style={styles.authorName}>{item.author?.name}</Text>
+          <TouchableOpacity onPress={handleAuthorPress}>
+            <Text style={styles.authorName}>{item.author?.name}</Text>
+          </TouchableOpacity>
           <Text style={styles.postTime}>
             {formatFirebaseTimestamp(
               item.editedTime || item.timestamp,

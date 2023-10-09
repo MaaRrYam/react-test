@@ -28,6 +28,9 @@ export type RootStackParamList = {
   Signup: undefined;
   SignupWithEmail: undefined;
   Header: undefined;
+  Profile: {
+    uid: string;
+  };
 };
 
 export type LaunchScreenProps = {

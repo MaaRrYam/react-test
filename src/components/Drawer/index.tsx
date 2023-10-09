@@ -4,12 +4,17 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
-import {getUser, listenToUserData} from '../../store/features/authSlice';
+import {
+  getUser,
+  listenToUserData,
+  getUID,
+} from '../../store/features/authSlice'; // Import getUID function
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
+import { useNavigation } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,7 +80,7 @@ function DrawerContent({
               onPress={onPress}
               onLongPress={onLongPress}
               style={styles.tab}>
-              {getIcon(label, isFocused, user.photoUrl)}
+              {getIcon(label, isFocused, navigation, user.photoUrl, user.id)}
             </TouchableOpacity>
           );
         })}
@@ -112,6 +117,18 @@ const Tabs = () => {
     };
   }, [dispatch]);
 
+  // Fetch UID using getUID function and set it as initial params
+  const [UID, setUID] = useState(''); // Initialize UID with an empty string
+
+  useEffect(() => {
+    async function fetchUID() {
+      const uid = await getUID();
+      setUID(uid); // Set the UID once it's fetched
+    }
+
+    fetchUID();
+  }, [dispatch]);
+
   return (
     <>
       <Tab.Navigator
@@ -143,6 +160,7 @@ const Tabs = () => {
             setTabItem,
             tabItem,
             isEditing,
+            UID, // Pass the fetched UID as an initial param
           }}
         />
       </Tab.Navigator>
