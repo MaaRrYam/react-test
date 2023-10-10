@@ -469,8 +469,13 @@ export interface JobsFilterFormInterface {
   setIsResetVisible: Function;
   setJobsFilterBottomSheet: Function;
 }
-
 export interface JobsDetailFormInterface {
   selectedJob: JobInterface;
+  setIsBottomSheetVisible: Function;
+}
+
+export interface JobQuestionsFormInterface {
+  selectedJob: JobInterface;
+  setIsQABottomSheetOpen: Function;
   setIsBottomSheetVisible: Function;
 }

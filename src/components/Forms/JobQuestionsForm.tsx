@@ -1,26 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 
-import {Button, Input} from '@/components';
+import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
-import {JobInterface} from '@/interfaces';
+import {JobInterface, JobQuestionsFormInterface} from '@/interfaces';
 import {jobCustomQuestionSchema} from '@/utils/schemas/schemas';
 import JobsService from '@/services/jobs';
 import ToastService from '@/services/toast';
-
-interface jobsdetail {
-  selectedJob: JobInterface;
-  setIsQABottomSheetOpen: Function;
-  setIsBottomSheetVisible: Function;
-}
 
 const JobQuestionsForm = ({
   selectedJob,
   setIsQABottomSheetOpen,
   setIsBottomSheetVisible,
-}: jobsdetail) => {
+}: JobQuestionsFormInterface) => {
   const initialValues = {
     questionOne: '',
     questionTwo: '',
@@ -127,7 +120,7 @@ const JobQuestionsForm = ({
         </ScrollView>
       </View>
       <View style={commonStyles.footer}>
-        <Button title="Apply" onPress={handleSubmit} />
+        <PrimaryButton title="Apply" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );
