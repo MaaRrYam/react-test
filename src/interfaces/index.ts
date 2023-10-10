@@ -123,6 +123,10 @@ export interface FirebaseServiceProps {
     documentId: string,
     callback: (document: DocumentData | null) => void,
   ): Unsubscribe;
+  listenToAllDocuments(
+    collectionName: string,
+    callback: (documents: DocumentData[]) => void,
+  ): Promise<Unsubscribe>;
 }
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(

@@ -199,6 +199,39 @@ const FirebaseService: FirebaseServiceProps = {
 
     return unsubscribe;
   },
+  listenToAllDocuments: async (
+    collectionName: string,
+    callback: (documents: DocumentData[]) => void,
+  ): Promise<Unsubscribe> => {
+    const colRef = collection(db, collectionName);
+
+    // Set up a listener to watch for changes to the entire collection
+    const unsubscribe = onSnapshot(colRef, async querySnapshot => {
+      const documents: DocumentData[] = [];
+      for (const docSnapshot of querySnapshot.docs) {
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
+        documents.push(document);
+      }
+
+      // Invoke the provided callback with the updated list of documents
+      callback(documents);
+    });
+
+    return unsubscribe;
+  },
 };
 
 export default FirebaseService;

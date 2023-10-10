@@ -13,17 +13,17 @@ const useConnections = (uid: string) => {
 
         if (uidToUse) {
           const collectionName = `users/${uidToUse}/connections`;
-          const documents = await FirebaseService.getAllDocuments(
+          const unsubscribe = await FirebaseService.listenToAllDocuments(
             collectionName,
+            documents => {
+              if (documents && documents.length > 0) {
+                setConnections(documents);
+              } else {
+                setConnections([]);
+              }
+            },
           );
-
-          if (documents && documents.length > 0) {
-            setConnections(documents);
-          } else {
-            setConnections([]);
-          }
-        } else {
-          setConnections([]);
+          return () => unsubscribe();
         }
       } catch (error) {
         console.error('Error retrieving UID or documents:', error);

@@ -1,11 +1,10 @@
 import {useEffect, useState} from 'react';
-import FirebaseService from '@/services/Firebase'; // Import your FirebaseService
+import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
 import {DocumentData} from 'firebase/firestore';
 
 const useGetSentRequests = (uid: string) => {
-  const [sentRequests, setConnections] = useState<DocumentData[]>([]);
-
+  const [sentRequests, setSentRequests] = useState<DocumentData[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -13,20 +12,21 @@ const useGetSentRequests = (uid: string) => {
 
         if (uidToUse) {
           const collectionName = `users/${uidToUse}/requests`;
-          const documents = await FirebaseService.getAllDocuments(
+          const unsubscribe = await FirebaseService.listenToAllDocuments(
             collectionName,
+            documents => {
+              if (documents && documents.length > 0) {
+                setSentRequests(documents);
+              } else {
+                setSentRequests([]);
+              }
+            },
           );
-
-          if (documents && documents.length > 0) {
-            setConnections(documents);
-          } else {
-            setConnections([]);
-          }
-        } else {
-          setConnections([]);
+          return () => unsubscribe();
         }
       } catch (error) {
         console.error('Error retrieving UID or documents:', error);
+        // Handle the error as needed
       }
     };
 

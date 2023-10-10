@@ -29,6 +29,7 @@ import ProfileService from '../../services/profile';
 import useGetSentRequests from '@/hooks/useGetSentRequests';
 import useGetPendingRequests from '@/hooks/useGetPendingRequest';
 import useConnections from '@/hooks/useGetUserConnection';
+import {EducationProps, EmploymentProps} from '@/interfaces';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -43,7 +44,7 @@ interface ProfileProps {
 }
 
 const Profile = ({navigation, route}: ProfileProps) => {
-  const {setIsVisible, setTabItem, isEditing, UID} = route.params;
+  const {setIsVisible, setTabItem, UID} = route.params;
   const [userUID, setUserUID] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const user = useUserDoc(UID ? UID : userUID);
@@ -51,6 +52,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const connections = useConnections(UID);
   const sentRequests = useGetSentRequests(UID);
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const {width} = getScreenDimensions();
 
   const openBottomSheet = () => {
@@ -58,21 +60,20 @@ const Profile = ({navigation, route}: ProfileProps) => {
   };
 
   useEffect(() => {
-    console.log(connections);
-  }, [connections]);
+    // console.log('connections: ', connections);
+    console.log('pendingRequests: ', pendingRequests);
+    // console.log('sent Requests', sentRequests);
+  }, [connections, pendingRequests, sentRequests]);
 
   useEffect(() => {
     const fetchUID = async () => {
       try {
-        // Fetch the UID asynchronously using async/await
         const fetchedUID = await getUID();
         setUserUID(fetchedUID as string);
       } catch (error) {
         console.error('Error fetching UID:', error);
       }
     };
-
-    // Fetch the UID when the component mounts
     fetchUID();
 
     if (user) {
@@ -80,7 +81,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
         setLoading(false);
       }, 3000);
     }
-  }, []);
+  }, [user]);
 
   const feedData = [
     {
@@ -195,20 +196,25 @@ const Profile = ({navigation, route}: ProfileProps) => {
                             <PrimaryButton
                               title="Connect"
                               style={[profileStyles.connectButton]}
-                              onPress={ProfileService.connect(UID, userUID)}
+                              isLoading={buttonLoading}
+                              onPress={async () => {
+                                setButtonLoading(true);
+                                await ProfileService.connect(UID, userUID);
+                                setButtonLoading(false);
+                              }}
                             />
                           ) : pendingRequests.some(
                               conn => conn.id === userUID,
                             ) ? (
                             <PrimaryButton
                               title="Accept"
-                              style={[profileStyles.connectButton]}
+                              style={profileStyles.connectButton}
                               onPress={() => {}}
                             />
                           ) : sentRequests.some(conn => conn.id === userUID) ? (
                             <SecondaryButton
                               title="Request Sent"
-                              style={[profileStyles.connectButton]}
+                              style={profileStyles.messageButton}
                               onPress={() => {}}
                             />
                           ) : null}
@@ -220,6 +226,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                                 marginLeft: 170,
                               },
                             ]}
+                            onPress={() => {}}
                           />
                         </>
                       ))}
@@ -274,13 +281,11 @@ const Profile = ({navigation, route}: ProfileProps) => {
                     />
                   ) : selectedTab === PROFILE_TABS[1] ? (
                     <CareerTab
-                      careerList={user?.employmentList}
-                      isEditing={isEditing}
+                      careerList={user?.employmentList as EmploymentProps[]}
                     />
                   ) : (
                     <EducationTab
-                      educationList={user?.educationList}
-                      isEditing={isEditing}
+                      educationList={user?.educationList as EducationProps[]}
                     />
                   )}
                 </View>
@@ -315,11 +320,11 @@ const Profile = ({navigation, route}: ProfileProps) => {
                         )}
                         <View style={styles.postReactions}>
                           <View style={styles.reactionButton}>
-                            <Like />
+                            <Like isLiked={false} />
                           </View>
                           <Text style={styles.like}>{item.likes}</Text>
                           <View style={styles.reactionButton}>
-                            <Dislike />
+                            <Dislike isLiked />
                           </View>
 
                           <View style={styles.iconsContainer}>

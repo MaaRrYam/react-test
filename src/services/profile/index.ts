@@ -2,6 +2,8 @@ import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '../Firebase';
 import {EmploymentProps, EducationProps} from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
+import NetworkService from '../network';
+import ToastService from '../toast';
 const ProfileService = {
   async handleSaveBasicInformation(
     formValues: {
@@ -190,40 +192,29 @@ const ProfileService = {
     });
   },
 
-  async connect(userId: string, loggedInUserId: string) {
-    await FirebaseService.addDocument(
-      `users/${userId}/requests/${loggedInUserId}`,
-      {
-        id: loggedInUserId,
-        time: Timestamp.now(),
-      },
-    );
-
-    await FirebaseService.addDocument(
-      `users/${loggedInUserId}/pendingRequests/${userId}`,
-      {
-        id: userId,
-        time: Timestamp.now(),
-      },
-    );
-    await this.follow(userId, loggedInUserId);
+  async connect(userId: string, loggedinUserUID: string) {
+    try {
+      await FirebaseService.addDocument(`users/${userId}/requests`, {
+        id: loggedinUserUID,
+        time: FirebaseService.serverTimestamp(),
+      });
+      await this.follow(userId, loggedinUserUID);
+      await ToastService.showSuccess('Connection Request Sent');
+      await ToastService.showSuccess('You are now Following this user');
+    } catch (error) {
+      console.log(error);
+    }
   },
   async acceptRequest(userId: string, loggedInUserId: string) {
-    await FirebaseService.addDocument(
-      `users/${userId}/connections/${loggedInUserId}`,
-      {
-        id: loggedInUserId,
-        time: Timestamp.now(),
-      },
-    );
+    await FirebaseService.addDocument(`users/${userId}/connections`, {
+      id: loggedInUserId,
+      time: FirebaseService.serverTimestamp(),
+    });
 
-    await FirebaseService.addDocument(
-      `users/${loggedInUserId}/connections/${userId}`,
-      {
-        id: userId,
-        time: Timestamp.now(),
-      },
-    );
+    await FirebaseService.addDocument(`users/${userId}/connections`, {
+      id: userId,
+      time: Timestamp.now(),
+    });
     await FirebaseService.deleteDocument(
       `users/${userId}/pendingRequests`,
       loggedInUserId,
@@ -232,23 +223,19 @@ const ProfileService = {
       `users/${loggedInUserId}/requests`,
       userId,
     );
+    await ToastService.showSuccess('Request Accepted');
   },
   async follow(userId: string, loggedInUserId: string) {
-    await FirebaseService.addDocument(
-      `users/${userId}/followers/${loggedInUserId}`,
-      {
-        id: loggedInUserId,
-        time: Timestamp.now(),
-      },
-    );
+    await FirebaseService.addDocument(`users/${userId}/followers`, {
+      id: loggedInUserId,
+      time: Timestamp.now(),
+    });
 
-    await FirebaseService.addDocument(
-      `users/${loggedInUserId}/followering/${userId}`,
-      {
-        id: userId,
-        time: Timestamp.now(),
-      },
-    );
+    await FirebaseService.addDocument(`users/${loggedInUserId}/followering`, {
+      id: userId,
+      time: Timestamp.now(),
+    });
+    await ToastService.showSuccess('You are now Following this user');
   },
 };
 
