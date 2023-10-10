@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -16,10 +16,6 @@ import {
   SecondaryButton,
   Loading,
 } from '@/components';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {RootState} from '@/store';
-import {getConnections} from '@/store/features/networkSlice';
 import {ThreeDots, NewChatIcon} from '@/assets/icons';
 import ProfileTab from '@/screens/Profile/ProfileTab';
 import profileStyles from '@/styles/profile';
