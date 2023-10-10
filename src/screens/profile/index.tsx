@@ -28,10 +28,11 @@ import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
 import {useUserDoc} from '@/hooks/useUserDoc';
-import useUserConnections from '@/hooks/useUserConnections';
 import {getUID, getScreenDimensions} from '@/utils/functions';
 import ProfileService from '../../services/profile';
-import useUsersPendingRequests from '../../hooks/useUserConnectionRequests';
+import useGetSentRequests from '@/hooks/useGetSentRequests';
+import useGetPendingRequests from '@/hooks/useGetPendingRequest';
+import useConnections from '@/hooks/useGetUserConnection';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -50,8 +51,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const [userUID, setUserUID] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const user = useUserDoc(UID ? UID : userUID);
-  const pendingRequests = useUsersPendingRequests(UID);
-  const connections = useUserConnections(UID);
+  const pendingRequests = useGetPendingRequests(UID);
+  const connections = useConnections(UID);
+  const sentRequests = useGetSentRequests(UID);
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
   const {width} = getScreenDimensions();
 
@@ -184,26 +186,32 @@ const Profile = ({navigation, route}: ProfileProps) => {
                   <View
                     style={[
                       profileStyles.buttonContainer,
-                      connections.some(conn => conn.id === userUID) ||
-                        UID === userUID ||
-                        (UID === '' && {
-                          justifyContent: 'flex-end',
-                        }),
+                      (UID === userUID || UID === '') && {
+                        justifyContent: 'flex-end',
+                      },
                     ]}>
                     {!UID ||
                       (UID !== userUID && (
                         <>
-                          {!connections.some(conn => conn.id === userUID) ? (
+                          {!connections.some(conn => conn.id === userUID) &&
+                          !pendingRequests.some(conn => conn.id === userUID) &&
+                          !sentRequests.some(conn => conn.id === userUID) ? (
                             <PrimaryButton
                               title="Connect"
                               style={[profileStyles.connectButton]}
                               onPress={ProfileService.connect(UID, userUID)}
                             />
-                          ) : !pendingRequests.some(
+                          ) : pendingRequests.some(
                               conn => conn.id === userUID,
                             ) ? (
                             <PrimaryButton
                               title="Accept"
+                              style={[profileStyles.connectButton]}
+                              onPress={() => {}}
+                            />
+                          ) : sentRequests.some(conn => conn.id === userUID) ? (
+                            <SecondaryButton
+                              title="Request Sent"
                               style={[profileStyles.connectButton]}
                               onPress={() => {}}
                             />
@@ -213,7 +221,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                             style={[
                               profileStyles.messageButton,
                               connections.some(conn => conn.id === userUID) && {
-                                marginLeft: 0,
+                                marginLeft: 170,
                               },
                             ]}
                           />

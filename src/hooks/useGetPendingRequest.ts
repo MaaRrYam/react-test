@@ -3,7 +3,7 @@ import FirebaseService from '@/services/Firebase'; // Import your FirebaseServic
 import {getUID} from '@/utils/functions';
 import {DocumentData} from 'firebase/firestore';
 
-const useConnections = (uid: string) => {
+const useGetPendingRequest = (uid: string) => {
   const [pendingRequests, setConnections] = useState<DocumentData[]>([]);
 
   useEffect(() => {
@@ -35,5 +35,4 @@ const useConnections = (uid: string) => {
 
   return pendingRequests;
 };
-
-export default useConnections;
+export default useGetPendingRequest;
