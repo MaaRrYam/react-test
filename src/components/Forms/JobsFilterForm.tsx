@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import Input from '../../components/Inputs/Input';
-import {COLORS, experience, jobTypes, workEnviroment} from '../../constants';
-import {CheckMark} from '../../assets/icons';
-import PrimaryButton from '../../components/Buttons/PrimaryButton';
+import Input from '@/components/Inputs/Input';
+import {COLORS, jobTypes, workEnviroment} from '@/constants';
+import {CheckMark} from '@/assets/icons';
+import PrimaryButton from '@/components/Buttons/PrimaryButton';
+import {JobsFilterFormInterface} from '@/interfaces';
+import {Checkbox} from '../Inputs';
 
 const JobsFilterForm = ({
   selectedFilters,
@@ -22,8 +24,8 @@ const JobsFilterForm = ({
   isResetVisible,
   setIsResetVisible,
   setJobsFilterBottomSheet,
-}) => {
-  const toggleFilter = (key, value) => {
+}: JobsFilterFormInterface) => {
+  const toggleFilter = (key: String, value: String) => {
     const filter = {[key]: value};
     const filterIndex = selectedFilters.findIndex(
       f => JSON.stringify(f) === JSON.stringify(filter),
@@ -39,23 +41,10 @@ const JobsFilterForm = ({
     setIsResetVisible(selectedFilters.length > 0 || searchTerm !== '');
   };
 
-  const resetFilters = () => {
-    setSelectedFilters([]);
-    setSearchTerm('');
-    setIsResetVisible(false);
-    setFilteredJobs([]);
-    setJobsFilterBottomSheet(false);
-  };
-
   return (
     <ScrollView>
       <SafeAreaView style={styles.SafeAreaView}>
         <View>
-          {isResetVisible && (
-            <TouchableOpacity onPress={resetFilters}>
-              <Text>Reset All Filters</Text>
-            </TouchableOpacity>
-          )}
           <Text style={styles.title}>Location</Text>
           <Input
             style={styles.inputfield}
@@ -72,69 +61,17 @@ const JobsFilterForm = ({
               flexWrap: 'wrap',
               marginTop: 5,
             }}>
-            {jobTypes.map((option, index) => (
-              <TouchableOpacity
-                key={index}
+            {jobTypes.map(option => (
+              <Checkbox
                 onPress={() => toggleFilter('employmentType', option)}
-                style={styles.checkboxContainer}>
-                <View
-                  style={[
-                    styles.checkbox,
-                    {
-                      width: 24,
-                      height: 24,
-                      borderColor: COLORS.white,
-                      backgroundColor: selectedFilters.some(filter => {
-                        return Object.values(filter).includes(option);
-                      })
-                        ? COLORS.primary
-                        : COLORS.lightGrayBackground,
-                    },
-                  ]}>
-                  {selectedFilters.some(filter => {
-                    return Object.values(filter).includes(option);
-                  }) && <CheckMark />}
-                </View>
-                <Text style={styles.checkboxValues}>{option}</Text>
-              </TouchableOpacity>
+                isChecked={selectedFilters.some(filter => {
+                  return Object.values(filter).includes(option);
+                })}
+                text={option}
+              />
             ))}
           </View>
-          <Text style={styles.title}>Experience</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              flexWrap: 'wrap',
-              marginTop: 5,
-            }}>
-            {experience.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => toggleFilter('experience', option)}
-                style={styles.checkboxContainer}>
-                <View
-                  style={[
-                    styles.checkbox,
-                    {
-                      width: 24,
-                      height: 24,
-                      borderColor: COLORS.white,
-                      backgroundColor: selectedFilters.some(filter => {
-                        return Object.values(filter).includes(option);
-                      })
-                        ? COLORS.primary
-                        : COLORS.lightGrayBackground,
-                    },
-                  ]}>
-                  {selectedFilters.some(filter => {
-                    return Object.values(filter).includes(option);
-                  }) && <CheckMark />}
-                </View>
-                <Text style={styles.checkboxValues}>{option}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+
           <Text style={styles.title}>Work Enviroment</Text>
           <View
             style={{

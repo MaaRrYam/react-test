@@ -7,32 +7,26 @@ import {
   Image,
 } from 'react-native';
 import {useEffect, useState} from 'react';
-import {PrimaryButton} from '../../components';
+import {PrimaryButton} from '@/components';
 import React from 'react';
-import Location from '../../assets/icons/Location';
-import Compensation from '../../assets/icons/Compensation';
-import BaseSalary from '../../assets/icons/BaseSalary';
-import {JobInterface, UserInterface} from '@/interfaces';
+import Location from '@/assets/icons/Location';
+import Compensation from '@/assets/icons/Compensation';
+import BaseSalary from '@/assets/icons/BaseSalary';
+import {JobsDetailFormInterface, UserInterface} from '@/interfaces';
 import JobsService from '@/services/jobs';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {RootState} from '@/store';
 import {setLoading, setLoadingFinished} from '@/store/features/loadingSlice';
 import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
-import {BottomSheet} from '../../components';
-import JobQuestionsForm from '../../components/Forms/JobQuestionsForm';
+import {BottomSheet} from '@/components';
+import JobQuestionsForm from '@/components/Forms/JobQuestionsForm';
 
-interface jobsdetail {
-  selectedJob: JobInterface;
-  setIsBottomSheetVisible: Function;
-}
-
-const JobsDetailForm = ({selectedJob, setIsBottomSheetVisible}: jobsdetail) => {
+const JobsDetailForm = ({
+  selectedJob,
+  setIsBottomSheetVisible,
+}: JobsDetailFormInterface) => {
   const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>({});
-  const {isLoading} = useAppSelector((state: RootState) => state.loading);
-  const dispatch = useAppDispatch();
   const [isQABottomSheetOpen, setIsQABottomSheetOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleOnPress = () => {
     if (selectedJob?.customQuestions?.length! > 0) {
@@ -50,13 +44,12 @@ const JobsDetailForm = ({selectedJob, setIsBottomSheetVisible}: jobsdetail) => {
   };
 
   useEffect(() => {
-    dispatch(setLoading());
     JobsService.getPosterJob(selectedJob?.posterJobID!).then(setPosterJobInfo);
   }, []);
 
   useEffect(() => {
     if (posterJobInfo !== null && Object.keys(posterJobInfo).length > 0) {
-      dispatch(setLoadingFinished());
+      setIsLoading(false);
     }
   }, [posterJobInfo]);
 

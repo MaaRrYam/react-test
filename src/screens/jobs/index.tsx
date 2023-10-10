@@ -4,16 +4,18 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Text,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Header, BottomSheet} from '../../components';
-import JobsDetailForm from '../../components/Forms/JobsDetailForm';
-import JobsService from '../../services/jobs/index';
-import JobsCard from '../../components/Cards/JobsCard';
-import {JobInterface} from '../../interfaces';
-import {COLORS} from '../../constants';
-import JobsFilterForm from '../../components/Forms/JobsFilterForm';
-import LoadingScreen from '../../components/Loading';
+import {Header, BottomSheet} from '@/components';
+import JobsDetailForm from '@/components/Forms/JobsDetailForm';
+import JobsService from '@/services/jobs/index';
+import JobsCard from '@/components/Cards/JobsCard';
+import {JobInterface} from '@/interfaces';
+import {COLORS} from '@/constants';
+import JobsFilterForm from '@/components/Forms/JobsFilterForm';
+import LoadingScreen from '@/components/Loading';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Jobs = ({navigation}: any) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -49,8 +51,16 @@ const Jobs = ({navigation}: any) => {
         return false;
       });
     });
-
+    setIsResetVisible(selectedFilters.length > 0 || searchTerm !== '');
     setFilteredJobs(filteredJobsWithSearch);
+  };
+
+  const resetFilters = () => {
+    setSelectedFilters([]);
+    setSearchTerm('');
+    setIsResetVisible(false);
+    setFilteredJobs([]);
+    setJobsFilterBottomSheet(false);
   };
 
   useEffect(() => {
@@ -76,6 +86,16 @@ const Jobs = ({navigation}: any) => {
                   jobs={true}
                   setJobsFilterBottomSheet={setJobsFilterBottomSheet}
                 />
+                {isResetVisible && (
+                  <>
+                    <View style={styles.filterView}>
+                      <Text style={styles.filterText}>Search Results</Text>
+                      <TouchableOpacity onPress={resetFilters}>
+                        <Text>Reset All Filters</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                )}
                 <FlatList
                   data={filteredJobs.length > 0 ? filteredJobs : allJobs}
                   renderItem={({item}) => (
@@ -132,6 +152,18 @@ const styles = StyleSheet.create({
   SafeAreaView: {
     flex: 1,
     backgroundColor: COLORS.white,
+  },
+  filterView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  filterText: {
+    color: COLORS.primary,
+    fontWeight: 'bold',
+    fontSize: 17,
   },
 });
 export default Jobs;

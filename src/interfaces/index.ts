@@ -457,3 +457,20 @@ export interface SendMessageInterface extends ChatMessageInterface {
   receiver: UserInterface;
   sender: UserInterface;
 }
+
+export interface JobsFilterFormInterface {
+  selectedFilters: Array<String>;
+  setSelectedFilters: Function;
+  applyFilters: () => void;
+  searchTerm: string;
+  setSearchTerm: Function;
+  setFilteredJobs: Function;
+  isResetVisible: boolean;
+  setIsResetVisible: Function;
+  setJobsFilterBottomSheet: Function;
+}
+
+export interface JobsDetailFormInterface {
+  selectedJob: JobInterface;
+  setIsBottomSheetVisible: Function;
+}

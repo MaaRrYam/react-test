@@ -46,6 +46,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         ]}>
         {isChecked && <CheckMark />}
       </View>
+      <Text style={styles.checkboxValues}>{text}</Text>
     </TouchableOpacity>
   );
 };
@@ -60,12 +61,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 15,
+    marginTop: 15,
   },
   checkIcon: {
     position: 'absolute',
   },
-  checkText: {
-    marginLeft: 8,
+  checkboxValues: {
+    fontSize: 15,
+    fontWeight: 'normal',
+    paddingLeft: 10,
+    marginTop: 10,
+    color: 'black',
   },
 });
 export default Checkbox;
