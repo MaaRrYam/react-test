@@ -434,6 +434,7 @@ export interface GroupedMessage {
     message: string;
     sender: string;
     time: string;
+    fileUrl: string;
   }[];
 }
 
