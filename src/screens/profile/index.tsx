@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   Text,
@@ -7,7 +8,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  FlatList,
 } from 'react-native';
 import {
   Header,
@@ -15,21 +15,22 @@ import {
   RoundedButton,
   SecondaryButton,
   Loading,
+  ProfileFeed,
 } from '@/components';
 import {ThreeDots, NewChatIcon} from '@/assets/icons';
 import ProfileTab from '@/screens/Profile/ProfileTab';
 import profileStyles from '@/styles/profile';
 import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
-import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
 import {useUserDoc} from '@/hooks/useUserDoc';
 import {getUID, getScreenDimensions} from '@/utils/functions';
-import ProfileService from '../../services/profile';
+import ProfileService from '@/services/profile';
 import useGetSentRequests from '@/hooks/useGetSentRequests';
 import useGetPendingRequests from '@/hooks/useGetPendingRequest';
 import useConnections from '@/hooks/useGetUserConnection';
 import {EducationProps, EmploymentProps} from '@/interfaces';
+import NetworkService from '@/services/network';
 interface ProfileProps {
   navigation: any;
   route: {
@@ -60,12 +61,6 @@ const Profile = ({navigation, route}: ProfileProps) => {
   };
 
   useEffect(() => {
-    // console.log('connections: ', connections);
-    console.log('pendingRequests: ', pendingRequests);
-    // console.log('sent Requests', sentRequests);
-  }, [connections, pendingRequests, sentRequests]);
-
-  useEffect(() => {
     const fetchUID = async () => {
       try {
         const fetchedUID = await getUID();
@@ -82,64 +77,6 @@ const Profile = ({navigation, route}: ProfileProps) => {
       }, 3000);
     }
   }, [user]);
-
-  const feedData = [
-    {
-      id: '1',
-      title: 'Post 1',
-      content: 'This is the content of the first post.',
-      author: {
-        name: user?.name,
-        tagline: user?.tagline,
-        avatar: {uri: user?.photoUrl},
-      },
-      media: require('@/assets/images/post.png'),
-      time: '2 hours ago',
-      likes: 20,
-      comments: 2,
-    },
-    {
-      id: '12',
-      title: 'Post 1',
-      content: 'This is the content of the first post.',
-      author: {
-        name: user?.name,
-        tagline: user?.tagline,
-        avatar: {uri: user?.photoUrl},
-      },
-      media: require('@/assets/images/post.png'),
-      time: '2 hours ago',
-      likes: 20,
-      comments: 2,
-    },
-    {
-      id: '21',
-      title: 'Post 1',
-      content: 'This is the content of the first post.',
-      author: {
-        name: user?.name,
-        tagline: user?.tagline,
-        avatar: {uri: user?.photoUrl},
-      },
-      time: '2 hours ago',
-      likes: 20,
-      comments: 2,
-    },
-    {
-      id: '112',
-      title: 'Post 1',
-      content: 'This is the content of the first post.',
-      author: {
-        name: user?.name,
-        tagline: user?.tagline,
-        avatar: {uri: user?.photoUrl},
-      },
-      time: '2 hours ago',
-      likes: 20,
-      comments: 2,
-    },
-  ];
-
   return (
     <>
       {loading ? (
@@ -198,9 +135,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
                               style={[profileStyles.connectButton]}
                               isLoading={buttonLoading}
                               onPress={async () => {
-                                setButtonLoading(true);
-                                await ProfileService.connect(UID, userUID);
-                                setButtonLoading(false);
+                                await setButtonLoading(true);
+                                await NetworkService.connectWithSomeone(UID);
+                                await setButtonLoading(false);
                               }}
                             />
                           ) : pendingRequests.some(
@@ -209,7 +146,14 @@ const Profile = ({navigation, route}: ProfileProps) => {
                             <PrimaryButton
                               title="Accept"
                               style={profileStyles.connectButton}
-                              onPress={() => {}}
+                              onPress={async () => {
+                                setButtonLoading(true);
+                                await ProfileService.acceptRequest(
+                                  UID,
+                                  userUID,
+                                );
+                                setButtonLoading(false);
+                              }}
                             />
                           ) : sentRequests.some(conn => conn.id === userUID) ? (
                             <SecondaryButton
@@ -293,56 +237,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
 
               {selectedTab === PROFILE_TABS[0] && !loading && (
                 <View style={styles.feedContainer}>
-                  <FlatList
-                    data={feedData}
-                    renderItem={({item}) => (
-                      <View style={styles.feedItem}>
-                        <View style={styles.authorInfo}>
-                          <Image
-                            source={item.author.avatar}
-                            style={styles.userImage}
-                          />
-                          <View style={{marginLeft: 10}}>
-                            <Text style={styles.authorName}>
-                              {item.author.name}
-                            </Text>
-                            <Text style={styles.authorTagline}>
-                              {item.author.tagline}
-                            </Text>
-                            <Text style={styles.authorTagline}>
-                              {item.time}
-                            </Text>
-                          </View>
-                        </View>
-                        <Text style={styles.feedContent}>{item.content}</Text>
-                        {item.media && (
-                          <Image source={item.media} style={styles.media} />
-                        )}
-                        <View style={styles.postReactions}>
-                          <View style={styles.reactionButton}>
-                            <Like isLiked={false} />
-                          </View>
-                          <Text style={styles.like}>{item.likes}</Text>
-                          <View style={styles.reactionButton}>
-                            <Dislike isLiked />
-                          </View>
-
-                          <View style={styles.iconsContainer}>
-                            <TouchableOpacity>
-                              <Comment />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                              <Share />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                              <Report />
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      </View>
-                    )}
-                    keyExtractor={item => item.id}
-                  />
+                  <ProfileFeed />
                 </View>
               )}
             </View>
@@ -418,6 +313,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: COLORS.black,
   },
   feedContent: {
     fontSize: 13,

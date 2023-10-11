@@ -6,6 +6,7 @@ import networkSlice from '@/store/features/networkSlice';
 import notificationsSlice from '@/store/features/notificationsSlice';
 import homeSlice from '@/store/features/homeSlice';
 import chatsSlice from '@/store/features/chatsSlice';
+import profileSlice from '@/store/features/profileSlice';
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     notifications: notificationsSlice,
     home: homeSlice,
     chats: chatsSlice,
+    profile: profileSlice,
   },
 });
 

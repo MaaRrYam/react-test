@@ -1,9 +1,9 @@
 import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '../Firebase';
-import {EmploymentProps, EducationProps} from '@/interfaces';
+import {EmploymentProps, EducationProps, FeedItem} from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
-import NetworkService from '../network';
 import ToastService from '../toast';
+import {API_GET} from '@/config/api/apiRequests';
 const ProfileService = {
   async handleSaveBasicInformation(
     formValues: {
@@ -206,24 +206,37 @@ const ProfileService = {
     }
   },
   async acceptRequest(userId: string, loggedInUserId: string) {
-    await FirebaseService.addDocument(`users/${userId}/connections`, {
-      id: loggedInUserId,
-      time: FirebaseService.serverTimestamp(),
-    });
+    try {
+      const addCurrentUserConnection = FirebaseService.addDocument(
+        `users/${loggedInUserId}/connections/${userId}`,
+        {
+          id: userId,
+          time: FirebaseService.serverTimestamp(),
+        },
+      );
+      const addTargetUserConnection = FirebaseService.addDocument(
+        `users/${userId}/connections/${loggedInUserId}`,
+        {
+          id: userId,
+          time: FirebaseService.serverTimestamp(),
+        },
+      );
+      const deleteRequest = FirebaseService.deleteDocument(
+        `users/${loggedInUserId}/requests`,
+        userId,
+      );
 
-    await FirebaseService.addDocument(`users/${userId}/connections`, {
-      id: userId,
-      time: Timestamp.now(),
-    });
-    await FirebaseService.deleteDocument(
-      `users/${userId}/pendingRequests`,
-      loggedInUserId,
-    );
-    await FirebaseService.deleteDocument(
-      `users/${loggedInUserId}/requests`,
-      userId,
-    );
-    await ToastService.showSuccess('Request Accepted');
+      await Promise.allSettled([
+        addCurrentUserConnection,
+        addTargetUserConnection,
+        deleteRequest,
+      ]);
+
+      return true;
+    } catch (error) {
+      console.error('Error accepting connection:', error);
+      return false;
+    }
   },
   async follow(userId: string, loggedInUserId: string) {
     await FirebaseService.addDocument(`users/${userId}/followers`, {
@@ -236,6 +249,19 @@ const ProfileService = {
       time: Timestamp.now(),
     });
     await ToastService.showSuccess('You are now Following this user');
+  },
+  async getFeed() {
+    try {
+      const {status, message, data} = await API_GET('/feed/profile');
+      if (status) {
+        return data as FeedItem[];
+      } else {
+        throw new Error(message);
+      }
+    } catch (error) {
+      console.error('Error fetching followers:', error);
+      throw error;
+    }
   },
 };
 

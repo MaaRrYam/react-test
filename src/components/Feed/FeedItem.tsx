@@ -13,7 +13,7 @@ import {TouchableOpacity} from 'react-native';
 const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
   const navigation = useNavigation();
   const handleAuthorPress = () => {
-    navigation.navigate('Profile', {UID: item.authorId});
+    navigation.navigate(SCREEN_NAMES.Profile , {UID: item.authorId});
   };
 
   return (
