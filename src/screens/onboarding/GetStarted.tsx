@@ -43,8 +43,14 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     });
 
   useEffect(() => {
-    OnboardingService.setScreen(navigation, setIsLoading, user!);
-  }, [user]);
+    (async () => {
+      OnboardingService.fetchUserData().then(setUserData);
+    })();
+  }, []);
+
+  useEffect(() => {
+    OnboardingService.setScreen(navigation, setIsLoading, userData);
+  }, [userData]);
 
   useEffect(() => {
     setInitialValues({

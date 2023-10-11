@@ -16,18 +16,15 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   const {user} = useUserManagement();
   const [initialValues, setInitialValues] = useState({
     minimumSalary: '',
-    baseSalary: '',
     totalCompensation: '',
   });
 
   const handleSubmitSalary = (values: {
     minimumSalary: string;
-    baseSalary: string;
     totalCompensation: string;
   }) => {
     const newData = {
       minimumSalary: parseInt(values.minimumSalary),
-      baseSalary: parseInt(values.baseSalary),
       totalCompensation: parseInt(values.totalCompensation),
       onboardingStep: 4,
     };
@@ -46,9 +43,8 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
 
   useEffect(() => {
     setInitialValues({
-      minimumSalary: user.minimumSalary.toString(),
-      baseSalary: user.baseSalary.toString(),
-      totalCompensation: user.totalCompensation.toString(),
+      minimumSalary: user?.minimumSalary.toString()!,
+      totalCompensation: user?.totalCompensation.toString()!,
     });
   }, [user]);
 
@@ -68,14 +64,6 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
             keyboardType="numeric"
             touched={touched.minimumSalary}
             error={errors.minimumSalary}
-          />
-          <Input
-            placeholder="Base Salary"
-            value={values.baseSalary}
-            touched={touched.baseSalary}
-            error={errors.baseSalary}
-            onChangeText={handleChange('baseSalary')}
-            keyboardType="numeric"
           />
           <Input
             placeholder="Total Compensation"

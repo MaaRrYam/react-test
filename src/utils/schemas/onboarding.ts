@@ -4,9 +4,6 @@ export const salaryExpectationsSchema = Yup.object().shape({
   minimumSalary: Yup.number()
     .min(10, 'Minimum Salary should be greater than 10')
     .required('Minimum Salary is required'),
-  baseSalary: Yup.number()
-    .min(10, 'Base Salary should be greater than 10')
-    .required('Base Salary is required'),
   totalCompensation: Yup.number()
     .min(10, 'Total Compensation should be greater than 10')
     .required('Total Compensation is required'),
