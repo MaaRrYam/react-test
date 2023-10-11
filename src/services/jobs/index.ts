@@ -1,5 +1,6 @@
 import {getUID} from '@/utils/functions';
 import FirebaseService from '../Firebase';
+import {JobInterface, ApplicantInterface} from '@/interfaces/index';
 
 let UID: string;
 (async () => {
@@ -13,6 +14,48 @@ const JobsService = {
   async getPosterJob(userID: string) {
     return FirebaseService.getDocument('users', userID);
   },
+  async checkAppliedForJob(jobID: string) {
+    return FirebaseService.getDocumentsByQuery(
+      `jobs/${jobID}/applications`,
+      'applicantId',
+      '==',
+      UID,
+    );
+  },
+  async checkExistingJobApplication() {
+    let item: ApplicantInterface[] = [];
+    const jobs = await FirebaseService.getAllDocuments('jobs');
+
+    await Promise.all(
+      jobs.map(async job => {
+        const subJob: ApplicantInterface[] =
+          await FirebaseService.getDocumentsByQuery(
+            `jobs/${job.id}/applications`,
+            'applicantId',
+            '==',
+            UID,
+          );
+
+        subJob.forEach(sub => {
+          if (
+            sub.isAccepted === false &&
+            sub.isPending === true &&
+            sub.starred === false
+          ) {
+            item.push(sub);
+          } else if (
+            sub.isAccepted === false &&
+            sub.isPending === false &&
+            sub.starred === true
+          ) {
+            item.push(sub);
+          }
+        });
+      }),
+    );
+    return item;
+  },
+
   async applyForJob(jobID: string) {
     return FirebaseService.addDocument(`jobs/${jobID}/applications`, {
       applicantId: UID,

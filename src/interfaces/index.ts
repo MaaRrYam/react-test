@@ -292,6 +292,22 @@ export interface JobInterface {
   id?: string;
   isSaved?: boolean;
 }
+export interface ApplicantInterface {
+  applicantId?: string;
+  timeStamp?: ResponseTimeStamp;
+  isAccepted?: boolean;
+  isPending?: boolean;
+  feedback?: string;
+  customQuestions?: Array<Object>;
+  starred?: boolean;
+  rating?: number;
+  notes?: string;
+}
+
+interface ResponseTimeStamp {
+  _seconds: number;
+  _nanoseconds: number;
+}
 
 export interface NetworkResponse extends UserInterface {
   requestTime: string;

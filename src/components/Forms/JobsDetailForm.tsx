@@ -12,9 +12,12 @@ import React from 'react';
 import Location from '@/assets/icons/Location';
 import Compensation from '@/assets/icons/Compensation';
 import BaseSalary from '@/assets/icons/BaseSalary';
-import {JobsDetailFormInterface, UserInterface} from '@/interfaces';
+import {
+  ApplicantInterface,
+  JobsDetailFormInterface,
+  UserInterface,
+} from '@/interfaces';
 import JobsService from '@/services/jobs';
-import {setLoading, setLoadingFinished} from '@/store/features/loadingSlice';
 import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
 import {BottomSheet} from '@/components';
@@ -24,41 +27,62 @@ const JobsDetailForm = ({
   selectedJob,
   setIsBottomSheetVisible,
 }: JobsDetailFormInterface) => {
-  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>();
+  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>({});
   const [isQABottomSheetOpen, setIsQABottomSheetOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isBtnDisable, setIsBtnDisable] = useState(false);
+  const [checkApplied, setCheckApplied] = useState([]);
+  const [checkExisitngApplications, setCheckExistingApplications] = useState<
+    ApplicantInterface[]
+  >([]);
+  const [btnTitle, setBtnTitle] = useState('Apply');
 
   const handleOnPress = () => {
-    if (
-      selectedJob?.customQuestions?.length! > 0 &&
-      (selectedJob?.customQuestions![0] ||
-        selectedJob?.customQuestions![1] ||
-        selectedJob?.customQuestions![2])
-    ) {
-      setIsQABottomSheetOpen(true);
-    } else {
+    if (checkExisitngApplications.length >= 3) {
+      ToastService.showError('Cannot Apply to more than 3 jobs');
       setIsBtnDisable(true);
-      JobsService.applyForJob(selectedJob?.id!)
-        .then(() => {
-          setIsBottomSheetVisible(false);
-          ToastService.showSuccess('Applied to the Job Successfully');
-        })
-        .catch(() => {
-          ToastService.showError('An Error occured while applying to the job');
-        });
+    } else {
+      if (
+        selectedJob?.customQuestions?.length! > 0 &&
+        (selectedJob?.customQuestions![0] ||
+          selectedJob?.customQuestions![1] ||
+          selectedJob?.customQuestions![2])
+      ) {
+        setIsQABottomSheetOpen(true);
+      } else {
+        setIsBtnDisable(true);
+        JobsService.applyForJob(selectedJob?.id!)
+          .then(() => {
+            setIsBottomSheetVisible(false);
+            ToastService.showSuccess('Applied to the Job Successfully');
+          })
+          .catch(() => {
+            ToastService.showError(
+              'An Error occured while applying to the job',
+            );
+          });
+      }
     }
   };
 
   useEffect(() => {
     JobsService.getPosterJob(selectedJob?.posterJobID!).then(setPosterJobInfo);
+    JobsService.checkAppliedForJob(selectedJob?.id!).then(setCheckApplied);
+    JobsService.checkExistingJobApplication().then(
+      setCheckExistingApplications,
+    );
   }, []);
 
   useEffect(() => {
-    if (posterJobInfo !== null) {
+    if (checkApplied.length > 0) {
+      setIsBtnDisable(true);
+      setBtnTitle('Applied');
+    }
+
+    if (checkApplied.length > 0 || checkExisitngApplications.length > 0) {
       setIsLoading(false);
     }
-  }, [posterJobInfo]);
+  }, [checkApplied, checkExisitngApplications]);
 
   return (
     <>
@@ -105,7 +129,7 @@ const JobsDetailForm = ({
               <View style={styles.applyButtonContainer}>
                 <PrimaryButton
                   disabled={isBtnDisable}
-                  title="Apply"
+                  title={btnTitle}
                   onPress={handleOnPress}
                 />
               </View>
