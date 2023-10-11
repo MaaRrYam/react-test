@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {COLORS, FONTS} from '@/constants';
+import {COLORS, FONTS} from '../../constants';
 import {InputProps} from '@/interfaces';
 
-const Input: React.FC<InputProps> = ({
+const TextArea: React.FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,
@@ -51,7 +51,7 @@ const Input: React.FC<InputProps> = ({
     left: 12,
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [22, 13],
+      outputRange: [20, 0],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -67,12 +67,6 @@ const Input: React.FC<InputProps> = ({
     borderColor: touched && error ? 'red' : COLORS.border,
   };
 
-  useEffect(() => {
-    if (value) {
-      handleFocus();
-    }
-  }, [value]);
-
   return (
     <View>
       <View style={[styles.container, style, inputContainerStyle]}>
@@ -80,12 +74,14 @@ const Input: React.FC<InputProps> = ({
         <TextInput
           value={value}
           onChangeText={handleTextChange}
-          style={styles.input}
+          style={[styles.input, styles.textArea]}
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           editable={!disabled}
+          multiline={true}
+          numberOfLines={4}
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}
@@ -96,17 +92,20 @@ const Input: React.FC<InputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    paddingVertical: 10,
+    paddingVertical: 13,
     borderRadius: 8,
     borderWidth: 1,
     position: 'relative',
   },
   input: {
     paddingHorizontal: 12,
+    paddingVertical: 8,
     fontSize: 16,
     color: COLORS.black,
-    marginTop: 10,
-    marginBottom: -10,
+  },
+  textArea: {
+    minHeight: 100,
+    textAlignVertical: 'top',
   },
   error: {
     fontSize: FONTS.bodySmall,
@@ -116,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Input;
+export default TextArea;

@@ -19,7 +19,7 @@ const RoundedButton = ({
       {isLoading ? (
         <ActivityIndicator size="small" color={COLORS.primary} />
       ) : (
-        <Text>{text}</Text>
+        <Text style={styles.text}>{text}</Text>
       )}
     </TouchableOpacity>
   );
@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGrayBackground,
     color: COLORS.black,
     borderRadius: 20,
+  },
+  text: {
+    color: COLORS.black,
+    fontWeight: 'bold',
   },
 });
 

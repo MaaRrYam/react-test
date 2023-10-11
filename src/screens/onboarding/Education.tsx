@@ -9,7 +9,7 @@ import {
 
 import {
   BackButton,
-  Button,
+  PrimaryButton,
   EducationCard,
   BottomSheet,
   EducationForm,
@@ -63,8 +63,8 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
           />
         </View>
         <View style={commonStyles.footer}>
-          <Button
-            title={education ? 'Add More' : 'Add Education'}
+          <PrimaryButton
+            title="Add More"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
@@ -72,8 +72,8 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
             borderColor={COLORS.border}
             disabled={education && education.length === 3}
           />
-          <Button
-            title={education ? 'Continue' : 'Skip'}
+          <PrimaryButton
+            title={education.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />
         </View>

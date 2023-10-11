@@ -21,6 +21,7 @@ export const COLORS = {
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
   lightGrayBackground: '#F4F4F4',
+  deleteButtonBackground: 'rgba(255, 24, 24, 0.06)',
 };
 
 export const BORDER_RADIUS = {
@@ -80,6 +81,8 @@ export const employmentStatuses = [
 ];
 
 export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
+
+export const PROFILE_TABS = ['Profile', 'Career', 'Education'];
 
 export const NETWORK_REQUESTS = [
   {
