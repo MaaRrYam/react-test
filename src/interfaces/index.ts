@@ -293,15 +293,24 @@ export interface JobInterface {
   isSaved?: boolean;
 }
 export interface ApplicantInterface {
-  applicantId?: string;
-  timeStamp?: ResponseTimeStamp;
-  isAccepted?: boolean;
-  isPending?: boolean;
-  feedback?: string;
-  customQuestions?: Array<Object>;
-  starred?: boolean;
-  rating?: number;
-  notes?: string;
+  applicantId: string;
+  timeStamp: ResponseTimeStamp;
+  isAccepted: boolean;
+  isPending: boolean;
+  feedback: string;
+  customQuestions: Array<Object>;
+  starred: boolean;
+  rating: number;
+  notes: string;
+}
+
+export interface JobsCardProps {
+  jobTitle: string;
+  companyName: string;
+  companyLogo?: string;
+  jobLocation: string;
+  companyLocation: string;
+  onPress: () => void;
 }
 
 interface ResponseTimeStamp {

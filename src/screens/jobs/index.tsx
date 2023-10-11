@@ -1,24 +1,19 @@
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-  FlatList,
-  Text,
-} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {View, SafeAreaView, ScrollView, FlatList, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Header, BottomSheet} from '@/components';
+import {JobInterface} from '@/interfaces';
+import {JobsScreenProps} from '@/types';
+import {jobMainStyles} from '@/styles/jobs';
+
 import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsService from '@/services/jobs/index';
 import JobsCard from '@/components/Cards/JobsCard';
-import {JobInterface} from '@/interfaces';
-import {COLORS, PADDING} from '@/constants';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import LoadingScreen from '@/components/Loading';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import EmptyComponent from '@/components/NoResults/Empty';
 
-const Jobs = ({navigation}: any) => {
+const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
   const [selectedJob, setSelectedJob] = useState<JobInterface>({});
@@ -78,9 +73,9 @@ const Jobs = ({navigation}: any) => {
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <View style={styles.SafeAreaView}>
+        <View style={jobMainStyles.SafeAreaView}>
           <ScrollView>
-            <SafeAreaView style={styles.SafeAreaView}>
+            <SafeAreaView style={jobMainStyles.SafeAreaView}>
               <View>
                 <Header
                   navigation={navigation}
@@ -89,8 +84,10 @@ const Jobs = ({navigation}: any) => {
                 />
                 {isResetVisible && (
                   <>
-                    <View style={styles.filterView}>
-                      <Text style={styles.filterText}>Search Results</Text>
+                    <View style={jobMainStyles.filterView}>
+                      <Text style={jobMainStyles.filterText}>
+                        Search Results
+                      </Text>
                       <TouchableOpacity onPress={resetFilters}>
                         <Text>Reset All Filters</Text>
                       </TouchableOpacity>
@@ -102,11 +99,11 @@ const Jobs = ({navigation}: any) => {
                     data={allJobs}
                     renderItem={({item}) => (
                       <JobsCard
-                        jobTitle={item?.jobTitle}
-                        companyName={item?.companyName}
+                        jobTitle={item?.jobTitle!}
+                        companyName={item?.companyName!}
                         companyLogo={item?.companyLogo}
-                        jobLocation={item?.workplaceType}
-                        companyLocation={item?.companyLocation}
+                        jobLocation={item?.workplaceType!}
+                        companyLocation={item?.companyLocation!}
                         onPress={() => handleJobPress(item)}
                       />
                     )}
@@ -115,7 +112,7 @@ const Jobs = ({navigation}: any) => {
                 )}
 
                 {!allJobs && selectedFilters.length <= 0 && !searchTerm && (
-                  <View style={styles.emptyContainer}>
+                  <View style={jobMainStyles.emptyContainer}>
                     <EmptyComponent />
                   </View>
                 )}
@@ -125,11 +122,11 @@ const Jobs = ({navigation}: any) => {
                     data={filteredJobs}
                     renderItem={({item}) => (
                       <JobsCard
-                        jobTitle={item?.jobTitle}
-                        companyName={item?.companyName}
+                        jobTitle={item?.jobTitle!}
+                        companyName={item?.companyName!}
                         companyLogo={item?.companyLogo}
-                        jobLocation={item?.workplaceType}
-                        companyLocation={item?.companyLocation}
+                        jobLocation={item?.workplaceType!}
+                        companyLocation={item?.companyLocation!}
                         onPress={() => handleJobPress(item)}
                       />
                     )}
@@ -139,7 +136,7 @@ const Jobs = ({navigation}: any) => {
 
                 {(!filteredJobs && selectedFilters.length >= 0) ||
                   (searchTerm && (
-                    <View style={styles.emptyContainer}>
+                    <View style={jobMainStyles.emptyContainer}>
                       <EmptyComponent />
                     </View>
                   ))}
@@ -180,30 +177,4 @@ const Jobs = ({navigation}: any) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  SafeAreaView: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  emptyContainer: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    alignItems: 'center',
-    paddingHorizontal: PADDING.general,
-    flexDirection: 'row',
-  },
-  filterView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-  },
-  filterText: {
-    color: COLORS.primary,
-    fontWeight: 'bold',
-    fontSize: 17,
-  },
-});
 export default Jobs;

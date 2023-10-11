@@ -1,6 +1,6 @@
 import {getUID} from '@/utils/functions';
-import FirebaseService from '../Firebase';
-import {JobInterface, ApplicantInterface} from '@/interfaces/index';
+import FirebaseService from '@/services/Firebase';
+import {ApplicantInterface} from '@/interfaces/index';
 
 let UID: string;
 (async () => {

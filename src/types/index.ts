@@ -23,6 +23,7 @@ export type RootStackParamList = {
     name: string;
   };
   Notifications: undefined;
+  Jobs: undefined;
   Launch: undefined;
   SigninWithEmail: undefined;
   Signup: undefined;
@@ -94,6 +95,9 @@ export type ChatDetailsScreenProps = {
 
 export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
+};
+export type JobsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Jobs'>;
 };
 
 export type SignInScreenProps = {
