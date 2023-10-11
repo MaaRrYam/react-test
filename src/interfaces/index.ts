@@ -251,7 +251,6 @@ export interface UserInterface {
   phoneNumber?: string;
   currentStatus?: string;
   minimumSalary: string;
-  baseSalary: number;
   totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;

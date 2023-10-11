@@ -43,8 +43,8 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
 
   useEffect(() => {
     setInitialValues({
-      minimumSalary: user?.minimumSalary.toString()!,
-      totalCompensation: user?.totalCompensation.toString()!,
+      minimumSalary: user?.minimumSalary?.toString() || '',
+      totalCompensation: user?.totalCompensation?.toString() || '',
     });
   }, [user]);
 
