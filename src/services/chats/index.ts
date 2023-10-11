@@ -74,6 +74,7 @@ const ChatsService = {
       const formattedMessage = {
         message: message.message,
         sender: message.senderId,
+        fileUrl: message.fileUrl,
         time: messageDate.toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
@@ -141,6 +142,7 @@ const ChatsService = {
     message: string;
     sender: UserInterface;
     receiver: UserInterface;
+    fileUrl?: string;
   }) {
     try {
       const chatAddress = this.findChatAddress(UID, payload.receiverId);
@@ -157,6 +159,7 @@ const ChatsService = {
           read: true,
           name: payload.receiver?.name,
           photoUrl: payload.receiver?.photoUrl,
+          fileUrl: payload.fileUrl,
         }),
         FirebaseService.setDoc(`users/${payload.receiverId}/chats`, UID, {
           userId: UID,
@@ -165,6 +168,7 @@ const ChatsService = {
           read: false,
           name: payload.sender?.name,
           photoUrl: payload.sender?.photoUrl,
+          fileUrl: payload.fileUrl,
         }),
       ]);
 

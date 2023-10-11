@@ -97,6 +97,15 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     width: '70%',
   },
+  myMessageWithFile: {
+    padding: 0,
+    paddingBottom: 20,
+  },
+  withFileMessage: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+  },
+  file: {flex: 1, height: 250, borderRadius: 10},
   otherMessage: {
     backgroundColor: COLORS.lightGrayBackground,
     padding: 20,

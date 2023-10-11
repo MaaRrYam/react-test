@@ -114,10 +114,11 @@ export interface FirebaseServiceProps {
     fieldName: string,
     value: any,
   ): Promise<boolean>;
-  uploadToStorage(uri: string, mime?: string): Promise<string | null>;
+  uploadToStorage(file: Asset, mime?: string): Promise<string | null>;
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
+  generateUniqueFilename(): string;
 }
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
@@ -439,4 +440,18 @@ export interface GroupedMessage {
 export interface SendMessageInterface extends ChatMessageInterface {
   receiver: UserInterface;
   sender: UserInterface;
+}
+export interface Asset {
+  base64?: string;
+  uri?: string;
+  width?: number;
+  height?: number;
+  originalPath?: string;
+  fileSize?: number;
+  type?: string;
+  fileName?: string;
+  duration?: number;
+  bitrate?: number;
+  timestamp?: string;
+  id?: string;
 }

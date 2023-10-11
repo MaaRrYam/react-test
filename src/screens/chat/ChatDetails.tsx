@@ -7,25 +7,33 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {ChatsInterface, GroupedMessage, UserInterface} from '@/interfaces';
+import {
+  Asset,
+  ChatsInterface,
+  GroupedMessage,
+  UserInterface,
+} from '@/interfaces';
 import {styles} from './styles';
 import {getUID} from '@/utils/functions';
 import ChatsService from '@/services/chats';
 import {SendIcon} from '@/assets/icons';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
+import {COLORS} from '@/constants';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const [messages, setMessages] = useState<GroupedMessage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [message, setMessage] = useState('');
-  const [selectedImage, setSelectedImage] = useState<null | string>(null);
+  const [selectedImage, setSelectedImage] = useState<null | Asset>(null);
+  const [isMessageSending, setIsMessageSending] = useState<boolean>(false);
 
   const {
     params: {name, id},
@@ -56,13 +64,9 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   }, [id]);
 
   const handleSendMessage = async () => {
+    setIsMessageSending(true);
     const sender = (await StorageService.getItem('user')) as UserInterface;
     const senderId = (await getUID()) as string;
-
-    if (selectedImage) {
-      const imageUrl = await FirebaseService.uploadToStorage(selectedImage);
-      console.log(imageUrl, 'IMAGE URL');
-    }
 
     const payload = {
       senderId,
@@ -70,10 +74,19 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       message,
       sender,
       receiver: chatHead.user,
+      fileUrl: '',
     };
+    if (selectedImage) {
+      const imageUrl = (await FirebaseService.uploadToStorage(
+        selectedImage,
+      )) as string;
+      payload.fileUrl = imageUrl;
+    }
 
     setMessage('');
+    handleResetImage();
     await ChatsService.sendMessage(payload);
+    setIsMessageSending(false);
   };
 
   const handleResetImage = () => {
@@ -97,7 +110,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
           console.log('Image picker error: ', response.errorMessage);
         } else {
           if (response.assets && response.assets.length) {
-            let imageUri = response.assets[0].uri || '';
+            let imageUri = response.assets[0];
             setSelectedImage(imageUri);
           }
         }
@@ -143,7 +156,10 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
 
       <View style={styles.imageContainer}>
         {selectedImage && (
-          <Image source={{uri: selectedImage}} style={styles.selectedImage} />
+          <Image
+            source={{uri: selectedImage.uri || ''}}
+            style={styles.selectedImage}
+          />
         )}
 
         {selectedImage && (
@@ -163,9 +179,15 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
             style={styles.input}
           />
           {message && (
-            <TouchableOpacity onPress={handleSendMessage}>
-              <SendIcon />
-            </TouchableOpacity>
+            <>
+              {isMessageSending ? (
+                <ActivityIndicator size="small" color={COLORS.primary} />
+              ) : (
+                <TouchableOpacity onPress={handleSendMessage}>
+                  <SendIcon />
+                </TouchableOpacity>
+              )}
+            </>
           )}
         </View>
         <IconButton
