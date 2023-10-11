@@ -1,8 +1,8 @@
 import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
-import FirebaseService from '../Firebase';
+import FirebaseService from '@/services/Firebase';
 import {EmploymentProps, EducationProps, FeedItem} from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
-import ToastService from '../toast';
+import ToastService from '@/services/toast';
 import {API_GET} from '@/config/api/apiRequests';
 const ProfileService = {
   async handleSaveBasicInformation(
