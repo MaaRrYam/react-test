@@ -41,7 +41,7 @@ const JobQuestionsForm = ({
       question: selectedJob?.customQuestions![2],
     });
     JobsService.applyForJobWithCustomQuestions(
-      selectedJob?.id!,
+      selectedJob?.id,
       customQuestionsArray,
     )
       .then(() => {
