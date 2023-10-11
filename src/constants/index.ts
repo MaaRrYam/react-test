@@ -25,7 +25,11 @@ export const COLORS = {
 };
 
 export const BORDER_RADIUS = {
-  general: 10,
+  general: 5,
+  recruiterIcon: 20,
+};
+export const BORDER_WIDTH = {
+  general: 2,
 };
 
 export const FONTS = {
@@ -45,6 +49,13 @@ export const MARGINS = {
 
 export const PADDING = {
   general: Platform.OS === 'ios' ? 20 : 12,
+};
+
+export const ICON_WIDTH = {
+  general: 50,
+};
+export const ICON_HEIGHT = {
+  general: 50,
 };
 
 export const ROLES_DATA = [

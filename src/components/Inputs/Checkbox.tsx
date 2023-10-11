@@ -1,5 +1,12 @@
 import {CheckMark} from '@/assets/icons';
-import {COLORS} from '@/constants';
+import {
+  BORDER_RADIUS,
+  BORDER_WIDTH,
+  COLORS,
+  FONTS,
+  MARGINS,
+  PADDING,
+} from '@/constants';
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -57,22 +64,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkbox: {
-    borderWidth: 2,
-    borderRadius: 5,
+    borderWidth: BORDER_WIDTH.general,
+    borderRadius: BORDER_RADIUS.general,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 15,
-    marginTop: 15,
+    marginLeft: MARGINS.general,
+    marginTop: MARGINS.general,
   },
   checkIcon: {
     position: 'absolute',
   },
   checkboxValues: {
-    fontSize: 15,
+    fontSize: FONTS.text,
     fontWeight: 'normal',
-    paddingLeft: 10,
-    marginTop: 10,
-    color: 'black',
+    paddingLeft: PADDING.general,
+    marginTop: MARGINS.general,
+    color: COLORS.black,
   },
 });
 export default Checkbox;

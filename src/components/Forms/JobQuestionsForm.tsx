@@ -69,7 +69,7 @@ const JobQuestionsForm = ({
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
         <ScrollView>
-          {selectedJob?.customQuestions!.length &&
+          {selectedJob?.customQuestions?.length &&
             selectedJob?.customQuestions![0] && (
               <>
                 <Text style={jobQuestionFormStyles.questionHeading}>
@@ -85,7 +85,7 @@ const JobQuestionsForm = ({
                 />
               </>
             )}
-          {selectedJob?.customQuestions!.length &&
+          {selectedJob?.customQuestions?.length &&
             selectedJob?.customQuestions![1] && (
               <>
                 <Text style={jobQuestionFormStyles.questionHeading}>
@@ -102,7 +102,7 @@ const JobQuestionsForm = ({
                 />
               </>
             )}
-          {selectedJob?.customQuestions!.length &&
+          {selectedJob?.customQuestions?.length &&
             selectedJob?.customQuestions![2] && (
               <>
                 <Text style={jobQuestionFormStyles.questionHeading}>

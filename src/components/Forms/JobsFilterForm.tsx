@@ -51,14 +51,7 @@ const JobsFilterForm = ({
             onChangeText={setSearchTerm}
           />
           <Text style={jobsFilterFormStyles.title}>Job Type</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              flexWrap: 'wrap',
-              marginTop: 5,
-            }}>
+          <View style={jobsFilterFormStyles.checkboxContainer}>
             {jobTypes.map(option => (
               <Checkbox
                 onPress={() => toggleFilter('employmentType', option)}
@@ -71,41 +64,15 @@ const JobsFilterForm = ({
           </View>
 
           <Text style={jobsFilterFormStyles.title}>Work Enviroment</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              flexWrap: 'wrap',
-              marginTop: 5,
-            }}>
-            {workEnviroment.map((option, index) => (
-              <TouchableOpacity
-                key={index}
+          <View style={jobsFilterFormStyles.checkboxContainer}>
+            {workEnviroment.map(option => (
+              <Checkbox
                 onPress={() => toggleFilter('workplaceType', option)}
-                style={jobsFilterFormStyles.checkboxContainer}>
-                <View
-                  style={[
-                    jobsFilterFormStyles.checkbox,
-                    {
-                      width: 24,
-                      height: 24,
-                      borderColor: COLORS.white,
-                      backgroundColor: selectedFilters.some(filter => {
-                        return Object.values(filter).includes(option);
-                      })
-                        ? COLORS.primary
-                        : COLORS.lightGrayBackground,
-                    },
-                  ]}>
-                  {selectedFilters.some(filter => {
-                    return Object.values(filter).includes(option);
-                  }) && <CheckMark />}
-                </View>
-                <Text style={jobsFilterFormStyles.checkboxValues}>
-                  {option}
-                </Text>
-              </TouchableOpacity>
+                isChecked={selectedFilters.some(filter => {
+                  return Object.values(filter).includes(option);
+                })}
+                text={option}
+              />
             ))}
           </View>
         </View>

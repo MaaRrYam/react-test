@@ -71,7 +71,7 @@ const JobsDetailForm = ({
       setBtnTitle('Applied');
     }
 
-    if (checkApplied.length || checkExisitngApplications.length) {
+    if (checkApplied?.length || checkExisitngApplications?.length) {
       setIsLoading(false);
     }
   }, [checkApplied, checkExisitngApplications]);
@@ -95,19 +95,19 @@ const JobsDetailForm = ({
                 <View style={jobDetailFormStyles.basicDetailItem}>
                   <Location />
                   <Text style={jobDetailFormStyles.basicDetailItem}>
-                    {selectedJob.workplaceType}: {selectedJob.companyLocation}
+                    {selectedJob?.workplaceType}: {selectedJob?.companyLocation}
                   </Text>
                 </View>
                 <View style={jobDetailFormStyles.basicDetailItem}>
                   <Compensation />
                   <Text style={jobDetailFormStyles.basicDetailItem}>
-                    Total Compensation: ${selectedJob.jobCompensation}
+                    Total Compensation: ${selectedJob?.jobCompensation}
                   </Text>
                 </View>
                 <View style={jobDetailFormStyles.basicDetailItem}>
                   <BaseSalary />
                   <Text style={jobDetailFormStyles.basicDetailItem}>
-                    Base Salary: ${selectedJob.baseSalary}
+                    Base Salary: ${selectedJob?.baseSalary}
                   </Text>
                 </View>
               </View>
