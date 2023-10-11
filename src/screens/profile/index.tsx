@@ -31,8 +31,11 @@ import useGetPendingRequests from '@/hooks/useGetPendingRequest';
 import useConnections from '@/hooks/useGetUserConnection';
 import {EducationProps, EmploymentProps} from '@/interfaces';
 import NetworkService from '@/services/network';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
+import {SCREEN_NAMES} from '@/constants';
 interface ProfileProps {
-  navigation: any;
+  navigation: NavigationProp<RootStackParamList, 'Profile'>;
   route: {
     params: {
       setTabItem: React.Dispatch<React.SetStateAction<string>>;
@@ -170,7 +173,12 @@ const Profile = ({navigation, route}: ProfileProps) => {
                                 marginLeft: 170,
                               },
                             ]}
-                            onPress={() => {}}
+                            onPress={() => {
+                              navigation.navigate(SCREEN_NAMES.ChatDetails, {
+                                name: user.name,
+                                id: user.id,
+                              });
+                            }}
                           />
                         </>
                       ))}
