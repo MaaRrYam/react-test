@@ -4,40 +4,38 @@ import {
   EducationState,
   EmploymentProps,
   ExperienceState,
-  SalaryExpectation,
   UserInterface,
 } from '@/interfaces';
-import {setLoadingFinished} from '@/store/features/loadingSlice';
-import {SalaryExpectationsScreenProps} from '@/types';
 import {getUID} from '@/utils/functions';
-import {Dispatch} from '@reduxjs/toolkit';
 import FirebaseService from '../Firebase';
 
 let UID: string;
 (async () => {
   UID = await getUID();
 })();
-type AppDispatch = Dispatch;
 
 const OnboardingService = {
   async getStarted(newData: UserInterface) {
     FirebaseService.updateDocument('users', UID, newData);
   },
-  setScreen(navigation, dispatch: AppDispatch, userData: UserInterface) {
-    if (userData?.onboardingStep === 0 || userData?.onboarded === false) {
-      dispatch(setLoadingFinished());
+  setScreen(navigation, setIsLoading: Function, userData: UserInterface) {
+    console.log(userData);
+    if (userData?.onboardingStep === 0) {
+      setIsLoading(false);
     } else if (userData?.onboardingStep === 1) {
-      dispatch(setLoadingFinished());
+      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.Education);
     } else if (userData?.onboardingStep === 2) {
-      dispatch(setLoadingFinished());
+      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.Industry);
     } else if (userData?.onboardingStep === 3) {
-      dispatch(setLoadingFinished());
+      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.Experience);
     } else if (userData?.onboardingStep === 4) {
-      dispatch(setLoadingFinished());
+      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.EmploymentStatus);
+    } else {
+      setIsLoading(false);
     }
   },
   async fetchUserData() {
