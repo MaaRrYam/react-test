@@ -165,10 +165,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
                 applyFilters={applyFilters}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
-                setFilteredJobs={setFilteredJobs}
-                isResetVisible={isResetVisible}
                 setIsResetVisible={setIsResetVisible}
-                setJobsFilterBottomSheet={setJobsFilterBottomSheet}
               />
             </BottomSheet>
           )}

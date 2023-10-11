@@ -1,26 +1,18 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Image,
-} from 'react-native';
 import {useEffect, useState} from 'react';
-import {PrimaryButton} from '@/components';
-import React from 'react';
-import Location from '@/assets/icons/Location';
-import Compensation from '@/assets/icons/Compensation';
-import BaseSalary from '@/assets/icons/BaseSalary';
+import {View, Text, ScrollView, SafeAreaView, Image} from 'react-native';
+import {PrimaryButton, BottomSheet} from '@/components';
 import {
   ApplicantInterface,
   JobsDetailFormInterface,
   UserInterface,
 } from '@/interfaces';
+import {jobDetailFormStyles} from '@/styles/jobs';
+import {BaseSalary, Compensation, Location} from '@/assets/icons/index';
+
+import React from 'react';
 import JobsService from '@/services/jobs';
 import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
-import {BottomSheet} from '@/components';
 import JobQuestionsForm from '@/components/Forms/JobQuestionsForm';
 
 const JobsDetailForm = ({
@@ -79,7 +71,7 @@ const JobsDetailForm = ({
       setBtnTitle('Applied');
     }
 
-    if (checkApplied.length > 0 || checkExisitngApplications.length > 0) {
+    if (checkApplied.length || checkExisitngApplications.length) {
       setIsLoading(false);
     }
   }, [checkApplied, checkExisitngApplications]);
@@ -90,56 +82,64 @@ const JobsDetailForm = ({
         <LoadingScreen />
       ) : (
         <ScrollView>
-          <SafeAreaView style={styles.SafeAreaView}>
+          <SafeAreaView style={jobDetailFormStyles.SafeAreaView}>
             <View>
-              <Text style={styles.jobTitle}>{selectedJob.jobTitle}</Text>
-              <Text style={styles.companyName}>{selectedJob.companyName}</Text>
+              <Text style={jobDetailFormStyles.jobTitle}>
+                {selectedJob.jobTitle}
+              </Text>
+              <Text style={jobDetailFormStyles.companyName}>
+                {selectedJob.companyName}
+              </Text>
 
-              <View style={styles.basicDetails}>
-                <View style={styles.basicDetailItem}>
+              <View style={jobDetailFormStyles.basicDetails}>
+                <View style={jobDetailFormStyles.basicDetailItem}>
                   <Location />
-                  <Text style={styles.basicDetailItem}>
+                  <Text style={jobDetailFormStyles.basicDetailItem}>
                     {selectedJob.workplaceType}: {selectedJob.companyLocation}
                   </Text>
                 </View>
-                <View style={styles.basicDetailItem}>
+                <View style={jobDetailFormStyles.basicDetailItem}>
                   <Compensation />
-                  <Text style={styles.basicDetailItem}>
+                  <Text style={jobDetailFormStyles.basicDetailItem}>
                     Total Compensation: ${selectedJob.jobCompensation}
                   </Text>
                 </View>
-                <View style={styles.basicDetailItem}>
+                <View style={jobDetailFormStyles.basicDetailItem}>
                   <BaseSalary />
-                  <Text style={styles.basicDetailItem}>
+                  <Text style={jobDetailFormStyles.basicDetailItem}>
                     Base Salary: ${selectedJob.baseSalary}
                   </Text>
                 </View>
               </View>
               {posterJobInfo && (
-                <View style={styles.recruiterContainer}>
+                <View style={jobDetailFormStyles.recruiterContainer}>
                   <Image
-                    style={styles.recruiterImage}
+                    style={jobDetailFormStyles.recruiterImage}
                     source={{uri: posterJobInfo?.photoUrl}}
                   />
-                  <Text style={styles.recruiterDetail}>
+                  <Text style={jobDetailFormStyles.recruiterDetail}>
                     {posterJobInfo?.name} is hiring for this position
                   </Text>
                 </View>
               )}
-              <View style={styles.applyButtonContainer}>
+              <View style={jobDetailFormStyles.applyButtonContainer}>
                 <PrimaryButton
                   disabled={isBtnDisable}
                   title={btnTitle}
                   onPress={handleOnPress}
                 />
               </View>
-              <View style={styles.jobDetailContainer}>
-                <Text style={styles.jobDetailHeading}>Summary</Text>
-                <Text style={styles.JobsDetailText}>
+              <View style={jobDetailFormStyles.jobDetailContainer}>
+                <Text style={jobDetailFormStyles.jobDetailHeading}>
+                  Summary
+                </Text>
+                <Text style={jobDetailFormStyles.JobsDetailText}>
                   {selectedJob.jobSummary}
                 </Text>
-                <Text style={styles.jobDetailHeading}>Responsibilites</Text>
-                <Text style={styles.JobsDetailText}>
+                <Text style={jobDetailFormStyles.jobDetailHeading}>
+                  Responsibilites
+                </Text>
+                <Text style={jobDetailFormStyles.JobsDetailText}>
                   {selectedJob.responsibilities}
                 </Text>
               </View>
@@ -162,89 +162,5 @@ const JobsDetailForm = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  SafeAreaView: {
-    flex: 1,
-  },
-  jobTitle: {
-    fontSize: 23,
-    fontWeight: 'bold',
-    paddingLeft: 20,
-    marginTop: 20,
-    color: 'black',
-  },
-  companyName: {
-    fontSize: 15,
-    fontWeight: 'normal',
-    paddingLeft: 20,
-    marginTop: 3,
-    color: 'black',
-  },
-  basicDetails: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginLeft: 20,
-    marginTop: 20,
-  },
-  basicDetailItem: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    fontSize: 15,
-    marginLeft: 4,
-    color: 'black',
-  },
-  recruiterContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'flex-start',
-    marginLeft: 20,
-  },
-  recruiterImage: {
-    width: 40,
-    marginTop: 30,
-    height: 40,
-    resizeMode: 'cover',
-    borderRadius: 100,
-  },
-  recruiterDetail: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    paddingLeft: 20,
-    marginTop: 25,
-    color: 'black',
-  },
-  applyButtonContainer: {
-    flex: 1,
-    paddingLeft: 30,
-    paddingRight: 30,
-    marginTop: 40,
-  },
-  jobDetailContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignContent: 'center',
-    justifyContent: 'flex-start',
-    marginLeft: 20,
-    marginTop: 20,
-    color: 'black',
-  },
-  jobDetailHeading: {
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 10,
-    fontSize: 18,
-    color: 'black',
-  },
-  JobsDetailText: {
-    fontSize: 15,
-    color: 'black',
-    paddingRight: 30,
-  },
-});
 
 export default JobsDetailForm;

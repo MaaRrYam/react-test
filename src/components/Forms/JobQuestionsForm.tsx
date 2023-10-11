@@ -1,11 +1,13 @@
 import React from 'react';
-import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
 import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {JobInterface, JobQuestionsFormInterface} from '@/interfaces';
+import {JobQuestionsFormInterface} from '@/interfaces';
 import {jobCustomQuestionSchema} from '@/utils/schemas/schemas';
+import {jobQuestionFormStyles} from '@/styles/jobs';
+
 import JobsService from '@/services/jobs';
 import ToastService from '@/services/toast';
 
@@ -67,10 +69,10 @@ const JobQuestionsForm = ({
     <SafeAreaView style={commonStyles.container}>
       <View style={commonStyles.container}>
         <ScrollView>
-          {selectedJob?.customQuestions!.length > 0 &&
+          {selectedJob?.customQuestions!.length &&
             selectedJob?.customQuestions![0] && (
               <>
-                <Text style={styles.questionHeading}>
+                <Text style={jobQuestionFormStyles.questionHeading}>
                   {selectedJob?.customQuestions[0]}
                 </Text>
                 <Input
@@ -83,10 +85,10 @@ const JobQuestionsForm = ({
                 />
               </>
             )}
-          {selectedJob?.customQuestions!.length > 0 &&
+          {selectedJob?.customQuestions!.length &&
             selectedJob?.customQuestions![1] && (
               <>
-                <Text style={styles.questionHeading}>
+                <Text style={jobQuestionFormStyles.questionHeading}>
                   {selectedJob?.customQuestions[1]}
                 </Text>
 
@@ -100,10 +102,10 @@ const JobQuestionsForm = ({
                 />
               </>
             )}
-          {selectedJob?.customQuestions!.length > 0 &&
+          {selectedJob?.customQuestions!.length &&
             selectedJob?.customQuestions![2] && (
               <>
-                <Text style={styles.questionHeading}>
+                <Text style={jobQuestionFormStyles.questionHeading}>
                   {selectedJob?.customQuestions[2]}
                 </Text>
 
@@ -125,15 +127,5 @@ const JobQuestionsForm = ({
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  questionHeading: {
-    fontSize: 20,
-    marginBottom: 19,
-    marginTop: 10,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-});
 
 export default JobQuestionsForm;

@@ -21,6 +21,8 @@ import Delete from './Delete';
 import CheckMark from './CheckMark';
 import SendIcon from './Send';
 import Location from './Location';
+import Compensation from './Compensation';
+import BaseSalary from './BaseSalary';
 
 export {
   BackArrow,
@@ -46,4 +48,6 @@ export {
   CheckMark,
   SendIcon,
   Location,
+  Compensation,
+  BaseSalary,
 };

@@ -271,26 +271,26 @@ export interface whiteListedUser {
 }
 
 export interface JobInterface {
-  baseSalary?: string;
-  employmentType?: string;
-  jobCompensation?: string;
-  jobLocation?: string;
-  jobSummary?: string;
-  jobTitle?: string;
-  keyQualifications?: string;
-  posterJobID?: string;
-  responsibilities?: string;
+  baseSalary: string;
+  employmentType: string;
+  jobCompensation: string;
+  jobLocation: string;
+  jobSummary: string;
+  jobTitle: string;
+  keyQualifications: string;
+  posterJobID: string;
+  responsibilities: string;
   companyName?: string;
   companyLocation?: string;
   companyLogo?: string;
   skills?: Array<string>;
   customQuestions?: Array<string>;
-  timeStamp?: string;
+  timeStamp: string;
   contributors?: Array<string>;
-  workplaceType?: string;
-  isFeatured?: boolean;
-  id?: string;
-  isSaved?: boolean;
+  workplaceType: string;
+  isFeatured: boolean;
+  id: string;
+  isSaved: boolean;
 }
 export interface ApplicantInterface {
   applicantId: string;
@@ -489,10 +489,7 @@ export interface JobsFilterFormInterface {
   applyFilters: () => void;
   searchTerm: string;
   setSearchTerm: Function;
-  setFilteredJobs: Function;
-  isResetVisible: boolean;
   setIsResetVisible: Function;
-  setJobsFilterBottomSheet: Function;
 }
 export interface JobsDetailFormInterface {
   selectedJob: JobInterface;

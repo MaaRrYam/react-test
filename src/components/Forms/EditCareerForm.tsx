@@ -58,7 +58,6 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
   }, [addNew, careerList]);
 
   const toggleEditForm = () => {
-    console.log(jobDetails);
     setIsEditing(!isEditing);
     setAddNew(false);
   };

@@ -1,18 +1,19 @@
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   SafeAreaView,
-  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
-import Input from '@/components/Inputs/Input';
 import {COLORS, jobTypes, workEnviroment} from '@/constants';
 import {CheckMark} from '@/assets/icons';
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import {JobsFilterFormInterface} from '@/interfaces';
-import {Checkbox} from '../Inputs';
+import {Checkbox} from '@/components/Inputs';
+import {jobsFilterFormStyles} from '@/styles/jobs';
+
+import Input from '@/components/Inputs/Input';
+import PrimaryButton from '@/components/Buttons/PrimaryButton';
 
 const JobsFilterForm = ({
   selectedFilters,
@@ -20,10 +21,7 @@ const JobsFilterForm = ({
   applyFilters,
   searchTerm,
   setSearchTerm,
-  setFilteredJobs,
-  isResetVisible,
   setIsResetVisible,
-  setJobsFilterBottomSheet,
 }: JobsFilterFormInterface) => {
   const toggleFilter = (key: String, value: String) => {
     const filter = {[key]: value};
@@ -43,16 +41,16 @@ const JobsFilterForm = ({
 
   return (
     <ScrollView>
-      <SafeAreaView style={styles.SafeAreaView}>
+      <SafeAreaView style={jobsFilterFormStyles.SafeAreaView}>
         <View>
-          <Text style={styles.title}>Location</Text>
+          <Text style={jobsFilterFormStyles.title}>Location</Text>
           <Input
-            style={styles.inputfield}
+            style={jobsFilterFormStyles.inputfield}
             placeholder="City/State"
             value={searchTerm}
             onChangeText={setSearchTerm}
           />
-          <Text style={styles.title}>Job Type</Text>
+          <Text style={jobsFilterFormStyles.title}>Job Type</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -72,7 +70,7 @@ const JobsFilterForm = ({
             ))}
           </View>
 
-          <Text style={styles.title}>Work Enviroment</Text>
+          <Text style={jobsFilterFormStyles.title}>Work Enviroment</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -85,10 +83,10 @@ const JobsFilterForm = ({
               <TouchableOpacity
                 key={index}
                 onPress={() => toggleFilter('workplaceType', option)}
-                style={styles.checkboxContainer}>
+                style={jobsFilterFormStyles.checkboxContainer}>
                 <View
                   style={[
-                    styles.checkbox,
+                    jobsFilterFormStyles.checkbox,
                     {
                       width: 24,
                       height: 24,
@@ -104,59 +102,19 @@ const JobsFilterForm = ({
                     return Object.values(filter).includes(option);
                   }) && <CheckMark />}
                 </View>
-                <Text style={styles.checkboxValues}>{option}</Text>
+                <Text style={jobsFilterFormStyles.checkboxValues}>
+                  {option}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
-        <View style={styles.applyButtonContainer}>
+        <View style={jobsFilterFormStyles.applyButtonContainer}>
           <PrimaryButton title="Apply" onPress={applyFilters} />
         </View>
       </SafeAreaView>
     </ScrollView>
   );
 };
-const styles = StyleSheet.create({
-  SafeAreaView: {
-    flex: 1,
-  },
-  inputfield: {
-    marginTop: 15,
-    marginLeft: 15,
-    marginRight: 15,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkbox: {
-    borderWidth: 2,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 15,
-    marginTop: 15,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    paddingLeft: 20,
-    marginTop: 20,
-    color: 'black',
-  },
-  checkboxValues: {
-    fontSize: 15,
-    fontWeight: 'normal',
-    paddingLeft: 10,
-    marginTop: 10,
-    color: 'black',
-  },
-  applyButtonContainer: {
-    flex: 1,
-    paddingLeft: 30,
-    paddingRight: 30,
-    marginTop: 40,
-  },
-});
 
 export default JobsFilterForm;

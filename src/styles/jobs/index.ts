@@ -27,6 +27,143 @@ export const jobMainStyles = StyleSheet.create({
   },
 });
 
+export const jobQuestionFormStyles = StyleSheet.create({
+  questionHeading: {
+    fontSize: 20,
+    marginBottom: 19,
+    marginTop: 10,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+});
+
+export const jobDetailFormStyles = StyleSheet.create({
+  SafeAreaView: {
+    flex: 1,
+  },
+  jobTitle: {
+    fontSize: 23,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    marginTop: 20,
+    color: 'black',
+  },
+  companyName: {
+    fontSize: 15,
+    fontWeight: 'normal',
+    paddingLeft: 20,
+    marginTop: 3,
+    color: 'black',
+  },
+  basicDetails: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginLeft: 20,
+    marginTop: 20,
+  },
+  basicDetailItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 15,
+    marginLeft: 4,
+    color: 'black',
+  },
+  recruiterContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'flex-start',
+    marginLeft: 20,
+  },
+  recruiterImage: {
+    width: 40,
+    marginTop: 30,
+    height: 40,
+    resizeMode: 'cover',
+    borderRadius: 100,
+  },
+  recruiterDetail: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    marginTop: 25,
+    color: 'black',
+  },
+  applyButtonContainer: {
+    flex: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
+    marginTop: 40,
+  },
+  jobDetailContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'flex-start',
+    marginLeft: 20,
+    marginTop: 20,
+    color: 'black',
+  },
+  jobDetailHeading: {
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 10,
+    fontSize: 18,
+    color: 'black',
+  },
+  JobsDetailText: {
+    fontSize: 15,
+    color: 'black',
+    paddingRight: 30,
+  },
+});
+
+export const jobsFilterFormStyles = StyleSheet.create({
+  SafeAreaView: {
+    flex: 1,
+  },
+  inputfield: {
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    borderWidth: 2,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 15,
+    marginTop: 15,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    marginTop: 20,
+    color: 'black',
+  },
+  checkboxValues: {
+    fontSize: 15,
+    fontWeight: 'normal',
+    paddingLeft: 10,
+    marginTop: 10,
+    color: 'black',
+  },
+  applyButtonContainer: {
+    flex: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
+    marginTop: 40,
+  },
+});
+
 export const jobCardStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
