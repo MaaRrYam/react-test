@@ -140,4 +140,31 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGrayBackground,
     padding: 20,
   },
+  imageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    marginVertical: 5,
+  },
+  selectedImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+  },
+  crossButton: {
+    position: 'absolute',
+    left: 65,
+    top: -8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  crossText: {
+    color: 'white',
+    fontSize: FONTS.bodySmall,
+  },
 });

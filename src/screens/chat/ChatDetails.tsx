@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
@@ -18,11 +19,13 @@ import {getUID} from '@/utils/functions';
 import ChatsService from '@/services/chats';
 import {SendIcon} from '@/assets/icons';
 import StorageService from '@/services/Storage';
+import FirebaseService from '@/services/Firebase';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const [messages, setMessages] = useState<GroupedMessage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [message, setMessage] = useState('');
+  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const {
     params: {name, id},
@@ -56,6 +59,11 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
     const sender = (await StorageService.getItem('user')) as UserInterface;
     const senderId = (await getUID()) as string;
 
+    if (selectedImage) {
+      const imageUrl = await FirebaseService.uploadToStorage(selectedImage);
+      console.log(imageUrl, 'IMAGE URL');
+    }
+
     const payload = {
       senderId,
       receiverId: id,
@@ -68,9 +76,34 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
     await ChatsService.sendMessage(payload);
   };
 
+  const handleResetImage = () => {
+    setSelectedImage(null);
+  };
+
   if (loading) {
     return <Loading />;
   }
+
+  const openImagePicker = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 2000,
+        maxWidth: 2000,
+      },
+      response => {
+        if (response.errorCode) {
+          console.log('Image picker error: ', response.errorMessage);
+        } else {
+          if (response.assets && response.assets.length) {
+            let imageUri = response.assets[0].uri || '';
+            setSelectedImage(imageUri);
+          }
+        }
+      },
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -108,6 +141,19 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
         />
       </View>
 
+      <View style={styles.imageContainer}>
+        {selectedImage && (
+          <Image source={{uri: selectedImage}} style={styles.selectedImage} />
+        )}
+
+        {selectedImage && (
+          <TouchableOpacity
+            onPress={handleResetImage}
+            style={styles.crossButton}>
+            <Text style={styles.crossText}>X</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <View style={styles.inputContainer}>
         <View style={styles.inputFieldContainer}>
           <TextInput
@@ -124,7 +170,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
         </View>
         <IconButton
           imageSource={require('@/assets/icons/image.png')}
-          onPress={() => console.log('Upload Image')}
+          onPress={openImagePicker}
           style={styles.uploadImageButton}
         />
       </View>

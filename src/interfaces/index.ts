@@ -114,6 +114,7 @@ export interface FirebaseServiceProps {
     fieldName: string,
     value: any,
   ): Promise<boolean>;
+  uploadToStorage(uri: string, mime?: string): Promise<string | null>;
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;

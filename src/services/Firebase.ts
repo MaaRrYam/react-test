@@ -1,5 +1,4 @@
-import {FirebaseServiceProps} from '@/interfaces';
-import {formatFirebaseTimestamp} from '@/utils';
+import {Platform} from 'react-native';
 import {
   getFirestore,
   collection,
@@ -17,6 +16,10 @@ import {
   updateDoc,
   setDoc,
 } from 'firebase/firestore';
+import storage from '@react-native-firebase/storage';
+
+import {FirebaseServiceProps} from '@/interfaces';
+import {formatFirebaseTimestamp} from '@/utils';
 
 const db = getFirestore();
 
@@ -144,6 +147,28 @@ const FirebaseService: FirebaseServiceProps = {
         `Error checking for duplicate request in ${collectionName}:`,
         error,
       );
+      throw error;
+    }
+  },
+
+  async uploadToStorage(uri: string, mime = 'image/jpeg') {
+    try {
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri =
+        Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      const task = storage()
+        .ref(filename)
+        .putFile(uploadUri, {contentType: mime});
+
+      if (!task) {
+        return null;
+      }
+
+      await task;
+
+      return await storage().ref(filename).getDownloadURL();
+    } catch (error) {
+      console.error('Error uploading file to storage: ', error);
       throw error;
     }
   },
