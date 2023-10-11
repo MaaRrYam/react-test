@@ -24,14 +24,21 @@ const JobsDetailForm = ({
   selectedJob,
   setIsBottomSheetVisible,
 }: JobsDetailFormInterface) => {
-  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>({});
+  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>();
   const [isQABottomSheetOpen, setIsQABottomSheetOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isBtnDisable, setIsBtnDisable] = useState(false);
 
   const handleOnPress = () => {
-    if (selectedJob?.customQuestions?.length! > 0) {
+    if (
+      selectedJob?.customQuestions?.length! > 0 &&
+      (selectedJob?.customQuestions![0] ||
+        selectedJob?.customQuestions![1] ||
+        selectedJob?.customQuestions![2])
+    ) {
       setIsQABottomSheetOpen(true);
     } else {
+      setIsBtnDisable(true);
       JobsService.applyForJob(selectedJob?.id!)
         .then(() => {
           setIsBottomSheetVisible(false);
@@ -48,7 +55,7 @@ const JobsDetailForm = ({
   }, []);
 
   useEffect(() => {
-    if (posterJobInfo !== null && Object.keys(posterJobInfo).length > 0) {
+    if (posterJobInfo !== null) {
       setIsLoading(false);
     }
   }, [posterJobInfo]);
@@ -96,7 +103,11 @@ const JobsDetailForm = ({
                 </View>
               )}
               <View style={styles.applyButtonContainer}>
-                <PrimaryButton title="Apply" onPress={handleOnPress} />
+                <PrimaryButton
+                  disabled={isBtnDisable}
+                  title="Apply"
+                  onPress={handleOnPress}
+                />
               </View>
               <View style={styles.jobDetailContainer}>
                 <Text style={styles.jobDetailHeading}>Summary</Text>

@@ -12,10 +12,11 @@ import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsService from '@/services/jobs/index';
 import JobsCard from '@/components/Cards/JobsCard';
 import {JobInterface} from '@/interfaces';
-import {COLORS} from '@/constants';
+import {COLORS, PADDING} from '@/constants';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import LoadingScreen from '@/components/Loading';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import EmptyComponent from '@/components/NoResults/Empty';
 
 const Jobs = ({navigation}: any) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -77,7 +78,7 @@ const Jobs = ({navigation}: any) => {
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <>
+        <View style={styles.SafeAreaView}>
           <ScrollView>
             <SafeAreaView style={styles.SafeAreaView}>
               <View>
@@ -96,20 +97,52 @@ const Jobs = ({navigation}: any) => {
                     </View>
                   </>
                 )}
-                <FlatList
-                  data={filteredJobs.length > 0 ? filteredJobs : allJobs}
-                  renderItem={({item}) => (
-                    <JobsCard
-                      jobTitle={item?.jobTitle}
-                      companyName={item?.companyName}
-                      companyLogo={item?.companyLogo}
-                      jobLocation={item?.workplaceType}
-                      companyLocation={item?.companyLocation}
-                      onPress={() => handleJobPress(item)}
-                    />
-                  )}
-                  keyExtractor={item => item?.id?.toString()!}
-                />
+                {allJobs && selectedFilters.length <= 0 && !searchTerm && (
+                  <FlatList
+                    data={allJobs}
+                    renderItem={({item}) => (
+                      <JobsCard
+                        jobTitle={item?.jobTitle}
+                        companyName={item?.companyName}
+                        companyLogo={item?.companyLogo}
+                        jobLocation={item?.workplaceType}
+                        companyLocation={item?.companyLocation}
+                        onPress={() => handleJobPress(item)}
+                      />
+                    )}
+                    keyExtractor={item => item?.id?.toString()!}
+                  />
+                )}
+
+                {!allJobs && selectedFilters.length <= 0 && !searchTerm && (
+                  <View style={styles.emptyContainer}>
+                    <EmptyComponent />
+                  </View>
+                )}
+
+                {filteredJobs.length > 0 && (
+                  <FlatList
+                    data={filteredJobs}
+                    renderItem={({item}) => (
+                      <JobsCard
+                        jobTitle={item?.jobTitle}
+                        companyName={item?.companyName}
+                        companyLogo={item?.companyLogo}
+                        jobLocation={item?.workplaceType}
+                        companyLocation={item?.companyLocation}
+                        onPress={() => handleJobPress(item)}
+                      />
+                    )}
+                    keyExtractor={item => item?.id?.toString()!}
+                  />
+                )}
+
+                {(!filteredJobs && selectedFilters.length >= 0) ||
+                  (searchTerm && (
+                    <View style={styles.emptyContainer}>
+                      <EmptyComponent />
+                    </View>
+                  ))}
               </View>
             </SafeAreaView>
           </ScrollView>
@@ -142,7 +175,7 @@ const Jobs = ({navigation}: any) => {
               />
             </BottomSheet>
           )}
-        </>
+        </View>
       )}
     </>
   );
@@ -152,6 +185,13 @@ const styles = StyleSheet.create({
   SafeAreaView: {
     flex: 1,
     backgroundColor: COLORS.white,
+  },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    paddingHorizontal: PADDING.general,
+    flexDirection: 'row',
   },
   filterView: {
     flexDirection: 'row',
