@@ -40,7 +40,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: PADDING.general - 6,
     marginLeft: 10,
-    color: COLORS.black,
+  },
+  searchBarText: {
+    color: COLORS.text,
+    fontSize: FONTS.bodyRegular,
   },
   searchIcon: {
     marginRight: 10,
