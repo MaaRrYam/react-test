@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 
 import {styles} from '@/screens/chat/styles';
@@ -52,4 +52,4 @@ const Chat = ({
   );
 };
 
-export default Chat;
+export default memo(Chat);
