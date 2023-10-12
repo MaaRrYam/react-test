@@ -2127,6 +2127,11 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-camera-roll/camera-roll@^5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-5.10.0.tgz#98cf5489be6805ac926b1c4d29ac956cf4df45dc"
+  integrity sha512-NZb/zU4S+k1Hx2Y3BdNufrfn8whNsiRjHNxeiGMak8OwDDJikqP5Ej7HXFv8sJSfTGfi1ddH0wdd541MHV/Nbw==
+
 "@react-native-community/cli-clean@11.3.6":
   version "11.3.6"
   resolved "https://registry.npmjs.org/@react-native-community/cli-clean/-/cli-clean-11.3.6.tgz"
@@ -2306,7 +2311,7 @@
   dependencies:
     plist "^3.1.0"
 
-"@react-native-firebase/storage@^18.5.0":
+"@react-native-firebase/storage@^18.4.0":
   version "18.5.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-18.5.0.tgz#88d3d9976a968841bf922612a8814be30a5432bb"
   integrity sha512-iAiPLQPGPBKzwT+dCAK4y0a2EflHwHs6iKAK8GcGfBym+CSaCuULPqmIcDP6SrzEYAyQQ1bIVGPus8hmdNaB1w==
