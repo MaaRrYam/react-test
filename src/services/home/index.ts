@@ -1,3 +1,4 @@
+import {CreatePostInterface} from './../../interfaces/index';
 import {CancelTokenSource} from 'axios';
 import {API_GET} from '@/config/api/apiRequests';
 import {
@@ -285,6 +286,15 @@ const HomeService = {
         `posts/${postId}/comments/${commentId}/dislikes`,
         UID,
       );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async createPost(payload: CreatePostInterface) {
+    try {
+      await FirebaseService.setDoc('posts', payload.id, payload);
       return true;
     } catch (error) {
       console.log(error);

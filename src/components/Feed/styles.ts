@@ -54,6 +54,7 @@ export const styles = StyleSheet.create({
   input: {
     fontSize: FONTS.bodyRegular,
     color: COLORS.text,
+    textAlignVertical: 'top',
   },
   selectedImage: {
     height: 200,

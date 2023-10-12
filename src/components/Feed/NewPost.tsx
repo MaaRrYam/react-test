@@ -8,22 +8,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import {BottomSheet, Button} from '@/components';
 import {styles} from './styles';
 import useUserManagement from '@/hooks/useUserManagement';
-
-interface ImageInterface {
-  filename: string | null;
-  filepath: string | null;
-  extension: string | null;
-  uri: string;
-  height: number;
-  width: number;
-  fileSize: number | null;
-  playableDuration: number;
-  orientation: number | null;
-}
+import {Asset, ImageInterface} from '@/interfaces';
+import FirebaseService from '@/services/Firebase';
+import {getUID} from '@/utils/functions';
+import HomeService from '@/services/home';
+import ToastService from '@/services/toast';
+import {COLORS} from '@/constants';
 
 const NewChat = ({
   isVisible,
@@ -33,10 +28,45 @@ const NewChat = ({
   onClose: () => void;
 }) => {
   const {user} = useUserManagement();
-  const [photos, setPhotos] = useState<ImageInterface[]>([]);
-  const [selectedImage, setSelectedImage] = useState<ImageInterface | null>(
-    null,
-  );
+  const [photos, setPhotos] = useState<ImageInterface[]>([
+    {
+      filename: null,
+      filepath: null,
+      extension: null,
+      uri: 'https://media.istockphoto.com/id/1222357475/vector/image-preview-icon-picture-placeholder-for-website-or-ui-ux-design-vector-illustration.jpg?s=612x612&w=0&k=20&c=KuCo-dRBYV7nz2gbk4J9w1WtTAgpTdznHu55W9FjimE=',
+      height: 0,
+      width: 0,
+      fileSize: null,
+      playableDuration: 0,
+      orientation: null,
+    },
+  ]);
+  const [selectedImage, setSelectedImage] = useState<
+    ImageInterface | Asset | null
+  >(null);
+  const [text, setText] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const openImagePicker = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 2000,
+        maxWidth: 2000,
+      },
+      response => {
+        if (response.errorCode) {
+          console.log('Image picker error: ', response.errorMessage);
+        } else {
+          if (response.assets && response.assets.length) {
+            let imageUri = response.assets[0];
+            setSelectedImage(imageUri);
+          }
+        }
+      },
+    );
+  };
 
   const handleButtonPress = () => {
     CameraRoll.getPhotos({
@@ -45,7 +75,7 @@ const NewChat = ({
     })
       .then(r => {
         const images = r.edges.map(edge => edge.node.image);
-        setPhotos(images);
+        setPhotos(prev => [...prev, ...images]);
       })
       .catch(err => {
         console.log(err);
@@ -55,6 +85,50 @@ const NewChat = ({
   useEffect(() => {
     handleButtonPress();
   }, []);
+
+  const handleImagePress = (image: ImageInterface) => {
+    if (!image.fileSize) {
+      openImagePicker();
+      return;
+    }
+    setSelectedImage(image);
+  };
+
+  const handlePost = async () => {
+    setIsLoading(true);
+    const UID = (await getUID()) as string;
+
+    let imageUrl = '';
+    if (selectedImage?.uri) {
+      imageUrl = (await FirebaseService.uploadToStorage(
+        selectedImage,
+      )) as string;
+    }
+
+    const payload = {
+      id: FirebaseService.generateUniqueId(),
+      authorId: UID,
+      media: imageUrl,
+      mediaType: imageUrl ? 'image' : null,
+      type: imageUrl ? 'Media' : 'Text',
+      text,
+      hashtag: 'post',
+      creationTime: FirebaseService.serverTimestamp(),
+      edited: false,
+      editedTime: FirebaseService.serverTimestamp(),
+    };
+
+    const response = await HomeService.createPost(payload);
+    setIsLoading(false);
+    setText('');
+    setSelectedImage(null);
+    if (response) {
+      ToastService.showSuccess('Post created successfully');
+    } else {
+      ToastService.showError('Something went wrong');
+    }
+    onClose();
+  };
 
   return (
     <BottomSheet
@@ -82,6 +156,8 @@ const NewChat = ({
           <View style={styles.postContent}>
             <TextInput
               style={styles.input}
+              value={text}
+              onChangeText={setText}
               placeholder="What do you want to post today?"
             />
 
@@ -109,7 +185,7 @@ const NewChat = ({
               keyExtractor={(item, index) => index.toString()}
               horizontal
               renderItem={({item}) => (
-                <TouchableOpacity onPress={() => setSelectedImage(item)}>
+                <TouchableOpacity onPress={() => handleImagePress(item)}>
                   <Image
                     style={styles.image}
                     source={{uri: item.uri}}
@@ -119,7 +195,13 @@ const NewChat = ({
               )}
             />
           </View>
-          <Button title="Post" onPress={() => console.log('Im clicked')} />
+          <Button
+            disabled={!text}
+            title="Post"
+            isLoading={isLoading}
+            activityIndicatorColor={COLORS.white}
+            onPress={handlePost}
+          />
         </View>
       </View>
     </BottomSheet>

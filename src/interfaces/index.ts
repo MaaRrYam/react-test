@@ -114,12 +114,28 @@ export interface FirebaseServiceProps {
     fieldName: string,
     value: any,
   ): Promise<boolean>;
-  uploadToStorage(file: Asset, mime?: string): Promise<string | null>;
+  uploadToStorage(
+    file: Asset | ImageInterface,
+    mime?: string,
+  ): Promise<string | null>;
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
   generateUniqueFilename(): string;
 }
+
+export interface ImageInterface {
+  filename: string | null;
+  filepath: string | null;
+  extension: string | null;
+  uri: string;
+  height: number;
+  width: number;
+  fileSize: number | null;
+  playableDuration: number;
+  orientation: number | null;
+}
+
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
@@ -455,4 +471,17 @@ export interface Asset {
   bitrate?: number;
   timestamp?: string;
   id?: string;
+}
+
+export interface CreatePostInterface {
+  id: string;
+  authorId: string;
+  media: string;
+  mediaType: string | null;
+  text: string;
+  type: string;
+  hashtag: string;
+  creationTime: Timestamp;
+  edited: boolean;
+  editedTime: Timestamp;
 }
