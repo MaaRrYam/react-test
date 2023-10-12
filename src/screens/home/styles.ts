@@ -169,6 +169,6 @@ export const styles = StyleSheet.create({
   },
   commentAuthorTagline: {
     fontSize: FONTS.bodySmall,
-    color: 'gray',
+    color: COLORS.text,
   },
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import {ScrollView, View, StyleSheet} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {CareerCard} from '@/components';
 import {EducationTabProps} from '@/interfaces';
-
+import {editTabStyles as styles} from './styles';
 const EducationTab = ({educationList}: EducationTabProps) => {
   return (
     <ScrollView>
@@ -10,11 +10,10 @@ const EducationTab = ({educationList}: EducationTabProps) => {
         <View
           key={index}
           style={[
-            styles.educationItem,
-            {
-              borderBottomColor:
-                index === educationList.length - 1 ? 'transparent' : '#E4E4E4',
-            },
+            styles.tabItem,
+            index === educationList.length - 1
+              ? styles.borderBottomTransparent
+              : styles.borderBottomColored,
           ]}>
           <CareerCard
             title={item.degree}
@@ -27,12 +26,5 @@ const EducationTab = ({educationList}: EducationTabProps) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  educationItem: {
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-  },
-});
 
 export default EducationTab;

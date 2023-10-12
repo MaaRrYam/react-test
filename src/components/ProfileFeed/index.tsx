@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 
-import {Loading, BottomSheet} from '@/components';
+import {Loading} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {
@@ -10,22 +10,16 @@ import {
   setFeedFromCache,
 } from '@/store/features/profileSlice';
 import FeedItem from '@/components/Feed/FeedItem';
-import PostComments from '@/components/Feed/PostComments';
-import {FeedComment} from '@/interfaces';
+import {ProfileFeedInterface} from '@/interfaces';
 import HomeService from '@/services/home';
 
-const ProfileFeed = () => {
+const ProfileFeed = ({setComments}: ProfileFeedInterface) => {
   const {profileFeed, isFeedFetched, isFeedFirstRequest} = useAppSelector(
     state => state.profile,
   );
   const dispatch = useAppDispatch();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [comments, setComments] = useState({
-    loading: false,
-    comments: [] as FeedComment[],
-    showComments: false,
-  });
 
   const handleRefresh = () => {
     dispatch(getFeed());
@@ -77,19 +71,6 @@ const ProfileFeed = () => {
       {/* {!isFeedFetched && feed.length && (
         <ActivityIndicator color={COLORS.primary} size="large" />
       )} */}
-
-      {comments.showComments && (
-        <BottomSheet
-          isVisible={comments.showComments}
-          snapPoints={['20%', '100%']}
-          onClose={() => setComments(prev => ({...prev, showComments: false}))}>
-          <PostComments
-            showComments={comments.showComments}
-            comments={comments.comments}
-            loading={comments.loading}
-          />
-        </BottomSheet>
-      )}
     </>
   );
 };

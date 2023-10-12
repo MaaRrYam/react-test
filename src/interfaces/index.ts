@@ -1,6 +1,6 @@
 import {Unsubscribe, UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
-import {ReactNode} from 'react';
+import {Dispatch, ReactNode, SetStateAction} from 'react';
 import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
@@ -150,7 +150,7 @@ export interface BottomSheetProps {
   children: ReactNode;
   containerStyle?: object;
   contentContainerStyle?: object;
-  profilePage?: boolean;
+  indicatorVisible?: boolean;
 }
 
 export interface EducationState {
@@ -175,7 +175,7 @@ export interface CheckboxProps {
   innerIconStyle?: any;
 }
 
-export interface  ExperienceState {
+export interface ExperienceState {
   id: number;
   companyName: string;
   role: string;
@@ -442,4 +442,26 @@ export interface GroupedMessage {
 export interface SendMessageInterface extends ChatMessageInterface {
   receiver: UserInterface;
   sender: UserInterface;
+}
+
+export interface ProfileProps {
+  navigation: NavigationProp<RootStackParamList, 'Profile'>;
+  route: {
+    params: {
+      setTabItem: React.Dispatch<React.SetStateAction<string>>;
+      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+      tabItem: string;
+      isEditing: boolean;
+      UID: string;
+    };
+  };
+}
+export interface ProfileFeedInterface {
+  setComments: Dispatch<
+    SetStateAction<{
+      loading: boolean;
+      comments: FeedComment[];
+      showComments: boolean;
+    }>
+  >;
 }

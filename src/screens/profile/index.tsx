@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   Text,
@@ -7,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  StyleSheet,
 } from 'react-native';
 import {
   Header,
@@ -16,36 +14,30 @@ import {
   SecondaryButton,
   Loading,
   ProfileFeed,
+  BottomSheet,
 } from '@/components';
 import {ThreeDots, NewChatIcon} from '@/assets/icons';
 import ProfileTab from '@/screens/Profile/ProfileTab';
-import profileStyles from '@/styles/profile';
-import {BORDER_RADIUS, COLORS, PADDING, PROFILE_TABS} from '@/constants';
 import CareerTab from '@/screens/Profile/CareerTab';
 import EducationTab from '@/screens/Profile/EducationTab';
+import {PROFILE_TABS} from '@/constants';
 import {useUserDoc} from '@/hooks/useUserDoc';
-import {getUID, getScreenDimensions} from '@/utils/functions';
-import ProfileService from '@/services/profile';
 import useGetSentRequests from '@/hooks/useGetSentRequests';
 import useGetPendingRequests from '@/hooks/useGetPendingRequest';
 import useConnections from '@/hooks/useGetUserConnection';
-import {EducationProps, EmploymentProps} from '@/interfaces';
+import {getUID} from '@/utils/functions';
+import ProfileService from '@/services/profile';
 import NetworkService from '@/services/network';
-import {NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '@/types';
+import {
+  EducationProps,
+  EmploymentProps,
+  FeedComment,
+  ProfileProps,
+} from '@/interfaces';
 import {SCREEN_NAMES} from '@/constants';
-interface ProfileProps {
-  navigation: NavigationProp<RootStackParamList, 'Profile'>;
-  route: {
-    params: {
-      setTabItem: React.Dispatch<React.SetStateAction<string>>;
-      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-      tabItem: string;
-      isEditing: boolean;
-      UID: string;
-    };
-  };
-}
+import {styles} from '@/screens/home/styles';
+import profileStyles from '@/styles/profile';
+import PostComments from '@/components/Feed/PostComments';
 
 const Profile = ({navigation, route}: ProfileProps) => {
   const {setIsVisible, setTabItem, UID} = route.params;
@@ -57,8 +49,11 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const sentRequests = useGetSentRequests(UID);
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
   const [buttonLoading, setButtonLoading] = useState(false);
-  const {width} = getScreenDimensions();
-
+  const [comments, setComments] = useState({
+    loading: false,
+    comments: [] as FeedComment[],
+    showComments: false,
+  });
   const openBottomSheet = () => {
     setIsVisible(true);
   };
@@ -111,7 +106,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                   <View>
                     <Text style={profileStyles.userName}>{user?.name}</Text>
                     <Text style={profileStyles.userTagline}>
-                      {user?.tagline}
+                      {user?.tagline || 'Tagline Not Available'}
                     </Text>
                     <Text style={profileStyles.userLocation}>
                       {user?.city}, {user?.country}
@@ -123,9 +118,8 @@ const Profile = ({navigation, route}: ProfileProps) => {
                   <View
                     style={[
                       profileStyles.buttonContainer,
-                      (UID === userUID || UID === '') && {
-                        justifyContent: 'flex-end',
-                      },
+                      (UID === userUID || UID === '') &&
+                        profileStyles.justifyEnd,
                     ]}>
                     {!UID ||
                       (UID !== userUID && (
@@ -150,12 +144,12 @@ const Profile = ({navigation, route}: ProfileProps) => {
                               title="Accept"
                               style={profileStyles.connectButton}
                               onPress={async () => {
-                                setButtonLoading(true);
+                                await setButtonLoading(true);
                                 await ProfileService.acceptRequest(
                                   UID,
                                   userUID,
                                 );
-                                setButtonLoading(false);
+                                await setButtonLoading(false);
                               }}
                             />
                           ) : sentRequests.some(conn => conn.id === userUID) ? (
@@ -169,14 +163,13 @@ const Profile = ({navigation, route}: ProfileProps) => {
                             title="Message"
                             style={[
                               profileStyles.messageButton,
-                              connections.some(conn => conn.id === userUID) && {
-                                marginLeft: 170,
-                              },
+                              connections.some(conn => conn.id === userUID) &&
+                                profileStyles.messageMargin,
                             ]}
                             onPress={() => {
                               navigation.navigate(SCREEN_NAMES.ChatDetails, {
-                                name: user.name,
-                                id: user.id,
+                                id: userUID,
+                                id: user.name,
                               });
                             }}
                           />
@@ -185,9 +178,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                     <TouchableOpacity
                       style={[
                         profileStyles.optionsButton,
-                        UID === userUID && {
-                          marginLeft: width - 70,
-                        },
+                        UID === userUID && profileStyles.moreButtonMargin,
                       ]}>
                       <View>
                         <ThreeDots />
@@ -207,7 +198,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                           selectedTab === tab
                             ? profileStyles.selectedTabButton
                             : index === PROFILE_TABS.length - 1
-                            ? {borderRadius: 10}
+                            ? profileStyles.tabBorderRadius
                             : profileStyles.tabButton
                         }
                         onPress={() => {
@@ -245,153 +236,29 @@ const Profile = ({navigation, route}: ProfileProps) => {
 
               {selectedTab === PROFILE_TABS[0] && !loading && (
                 <View style={styles.feedContainer}>
-                  <ProfileFeed />
+                  <ProfileFeed setComments={setComments} />
                 </View>
               )}
             </View>
+            {comments.showComments && (
+              <BottomSheet
+                isVisible={comments.showComments}
+                snapPoints={['20%', '100%']}
+                onClose={() =>
+                  setComments(prev => ({...prev, showComments: false}))
+                }>
+                <PostComments
+                  showComments={comments.showComments}
+                  comments={comments.comments}
+                  loading={comments.loading}
+                />
+              </BottomSheet>
+            )}
           </SafeAreaView>
         </ScrollView>
       )}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  postReactions: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    marginTop: 15,
-  },
-  iconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 3 / 4,
-    marginLeft: 15,
-  },
-  reactionButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    backgroundColor: '#F4F4F4',
-    borderRadius: BORDER_RADIUS.general * 2,
-  },
-  like: {
-    paddingTop: 7,
-    marginHorizontal: 8,
-    color: COLORS.black,
-  },
-  subheader: {
-    backgroundColor: COLORS.white,
-    flexDirection: 'row',
-    padding: PADDING.general,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-    maxHeight: 100,
-  },
-  searchBar: {
-    flex: 1,
-    borderRadius: BORDER_RADIUS.general * 2,
-    backgroundColor: COLORS.lightBackground,
-    paddingHorizontal: 10,
-    paddingVertical: PADDING.general - 6,
-    marginLeft: 10,
-    color: COLORS.black,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  userImage: {
-    width: 43,
-    height: 43,
-    borderRadius: 15,
-  },
-  feedContainer: {
-    flex: 1,
-    backgroundColor: COLORS.lightBlueBackground,
-    paddingTop: PADDING.general,
-  },
-  feedItem: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 16,
-    elevation: 2,
-  },
-  feedTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: COLORS.black,
-  },
-  feedContent: {
-    fontSize: 13,
-    color: COLORS.black,
-    marginTop: 10,
-  },
-  media: {
-    width: '100%',
-    height: 200,
-    borderRadius: 8,
-    marginVertical: 8,
-  },
-  authorInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  authorAvatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    marginRight: 8,
-  },
-  authorText: {
-    flex: 1,
-  },
-  authorName: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: COLORS.black,
-  },
-  authorTagline: {
-    fontSize: 14,
-    color: 'gray',
-  },
-  postTime: {
-    fontSize: 14,
-    color: 'gray',
-    marginBottom: 8,
-  },
-  moreIcon: {
-    alignSelf: 'flex-end',
-  },
-  bottomActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-  },
-  actionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  actionText: {
-    marginLeft: 5,
-    color: 'gray',
-  },
-  bottomSheet: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '100%',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    backgroundColor: 'white',
-    padding: 16,
-  },
-});
 
 export default Profile;

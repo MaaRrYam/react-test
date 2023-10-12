@@ -74,7 +74,11 @@ const EditProfile = ({
   };
 
   return (
-    <BottomSheet isVisible={isVisible} onClose={onClose} profilePage>
+    <BottomSheet
+      isVisible={isVisible}
+      onClose={onClose}
+      indicatorVisible={false}
+      snapPoints={['20%', '100%']}>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.closeButtonContainer}>

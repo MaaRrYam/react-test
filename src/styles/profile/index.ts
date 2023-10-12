@@ -1,6 +1,8 @@
 import {StyleSheet} from 'react-native';
 import {COLORS, FONTS, PADDING} from '@/constants';
+import {getScreenDimensions} from '@/utils/functions';
 
+const {width} = getScreenDimensions();
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -106,5 +108,18 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 1000,
     marginTop: 0,
+  },
+  justifyEnd: {
+    justifyContent: 'flex-end',
+    marginBottom: 5,
+  },
+  messageMargin: {
+    marginLeft: 170,
+  },
+  moreButtonMargin: {
+    marginLeft: width - 70,
+  },
+  tabBorderRadius: {
+    borderRadius: 10,
   },
 });

@@ -29,16 +29,16 @@ const PostComments = ({comments, loading}: PostCommentsProps) => {
                   />
                   <View>
                     <Text style={styles.commentAuthorName}>
-                      {item.user.name}
+                      {item.user?.name}
                     </Text>
-                    {item.user.tagline && (
+                    {item.user?.tagline && (
                       <Text style={styles.commentAuthorTagline}>
-                        {item.user.tagline}
+                        {item.user?.tagline}
                       </Text>
                     )}
                   </View>
                 </View>
-                <Text style={styles.commentText}>{item.text}</Text>
+                <Text style={styles.commentText}>{item?.text}</Text>
               </View>
             )}
           />
