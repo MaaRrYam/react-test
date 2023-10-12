@@ -207,32 +207,30 @@ const ProfileService = {
   },
   async acceptRequest(userId: string, loggedInUserId: string) {
     try {
-      const addCurrentUserConnection = FirebaseService.addDocument(
-        `users/${loggedInUserId}/connections/${userId}`,
+      await FirebaseService.setDoc(
+        `users/${userId}/connections`,
+        loggedInUserId,
         {
-          id: userId,
-          time: FirebaseService.serverTimestamp(),
+          id: loggedInUserId,
+          time: Timestamp.now(),
         },
       );
-      const addTargetUserConnection = FirebaseService.addDocument(
-        `users/${userId}/connections/${loggedInUserId}`,
+      await FirebaseService.setDoc(
+        `users/${loggedInUserId}/connections`,
+        userId,
         {
           id: userId,
-          time: FirebaseService.serverTimestamp(),
+          time: Timestamp.now(),
         },
       );
-      const deleteRequest = FirebaseService.deleteDocument(
+      await FirebaseService.deleteDocument(
         `users/${loggedInUserId}/requests`,
         userId,
       );
-
-      await Promise.allSettled([
-        addCurrentUserConnection,
-        addTargetUserConnection,
-        deleteRequest,
-      ]);
-
-      return true;
+      await FirebaseService.deleteDocument(
+        `users/${userId}/pendingRequests`,
+        loggedInUserId,
+      );
     } catch (error) {
       console.error('Error accepting connection:', error);
       return false;

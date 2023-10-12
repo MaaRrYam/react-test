@@ -152,11 +152,17 @@ const Profile = ({navigation, route}: ProfileProps) => {
                                 await setButtonLoading(false);
                               }}
                             />
-                          ) : sentRequests.some(conn => conn.id === userUID) ? (
+                          ) : sentRequests.some(conn => conn.id === userUID) &&
+                            !connections.some(conn => conn.id === userUID) ? (
                             <SecondaryButton
                               title="Request Sent"
                               style={profileStyles.messageButton}
-                              onPress={() => {}}
+                              onPress={async () => {
+                                await ProfileService.acceptRequest(
+                                  UID,
+                                  userUID,
+                                );
+                              }}
                             />
                           ) : null}
                           <SecondaryButton
@@ -164,6 +170,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
                             style={[
                               profileStyles.messageButton,
                               connections.some(conn => conn.id === userUID) &&
+                                connections.some(conn => conn.id === userUID) &&
                                 profileStyles.messageMargin,
                             ]}
                             onPress={() => {
