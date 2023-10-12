@@ -248,9 +248,9 @@ const ProfileService = {
     });
     await ToastService.showSuccess('You are now Following this user');
   },
-  async getFeed() {
+  async getFeed(uid: string) {
     try {
-      const {status, message, data} = await API_GET('/feed/profile');
+      const {status, message, data} = await API_GET(`/feed/profile/${uid}`);
       if (status) {
         return data as FeedItem[];
       } else {

@@ -243,7 +243,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
 
               {selectedTab === PROFILE_TABS[0] && !loading && (
                 <View style={styles.feedContainer}>
-                  <ProfileFeed setComments={setComments} />
+                  <ProfileFeed setComments={setComments} uid={UID || userUID} />
                 </View>
               )}
             </View>

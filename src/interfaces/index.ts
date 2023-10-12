@@ -464,4 +464,5 @@ export interface ProfileFeedInterface {
       showComments: boolean;
     }>
   >;
+  uid: string;
 }
