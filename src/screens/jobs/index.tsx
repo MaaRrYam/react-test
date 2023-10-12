@@ -131,12 +131,12 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
                 />
               )}
 
-              {(!filteredJobs && selectedFilters.length >= 0) ||
-                (searchTerm && (
+              {filteredJobs.length <= 0 &&
+                (selectedFilters.length > 0 || searchTerm !== '') && (
                   <View style={jobMainStyles.emptyContainer}>
                     <EmptyComponent />
                   </View>
-                ))}
+                )}
             </SafeAreaView>
           </ScrollView>
           {isBottomSheetVisible && (
