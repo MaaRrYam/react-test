@@ -76,71 +76,67 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
         <View style={jobMainStyles.SafeAreaView}>
           <ScrollView>
             <SafeAreaView style={jobMainStyles.SafeAreaView}>
-              <View>
-                <Header
-                  navigation={navigation}
-                  jobs={true}
-                  setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+              <Header
+                navigation={navigation}
+                jobs={true}
+                setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+              />
+              {isResetVisible && (
+                <>
+                  <View style={jobMainStyles.filterView}>
+                    <Text style={jobMainStyles.filterText}>Search Results</Text>
+                    <TouchableOpacity onPress={resetFilters}>
+                      <Text>Reset All Filters</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+              {allJobs && selectedFilters.length <= 0 && !searchTerm && (
+                <FlatList
+                  data={allJobs}
+                  renderItem={({item}) => (
+                    <JobsCard
+                      jobTitle={item?.jobTitle!}
+                      companyName={item?.companyName!}
+                      companyLogo={item?.companyLogo}
+                      jobLocation={item?.workplaceType!}
+                      companyLocation={item?.companyLocation!}
+                      onPress={() => handleJobPress(item)}
+                    />
+                  )}
+                  keyExtractor={item => item?.id?.toString()!}
                 />
-                {isResetVisible && (
-                  <>
-                    <View style={jobMainStyles.filterView}>
-                      <Text style={jobMainStyles.filterText}>
-                        Search Results
-                      </Text>
-                      <TouchableOpacity onPress={resetFilters}>
-                        <Text>Reset All Filters</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                )}
-                {allJobs && selectedFilters.length <= 0 && !searchTerm && (
-                  <FlatList
-                    data={allJobs}
-                    renderItem={({item}) => (
-                      <JobsCard
-                        jobTitle={item?.jobTitle!}
-                        companyName={item?.companyName!}
-                        companyLogo={item?.companyLogo}
-                        jobLocation={item?.workplaceType!}
-                        companyLocation={item?.companyLocation!}
-                        onPress={() => handleJobPress(item)}
-                      />
-                    )}
-                    keyExtractor={item => item?.id?.toString()!}
-                  />
-                )}
+              )}
 
-                {!allJobs && selectedFilters.length <= 0 && !searchTerm && (
+              {!allJobs && selectedFilters.length <= 0 && !searchTerm && (
+                <View style={jobMainStyles.emptyContainer}>
+                  <EmptyComponent />
+                </View>
+              )}
+
+              {filteredJobs.length > 0 && (
+                <FlatList
+                  data={filteredJobs}
+                  renderItem={({item}) => (
+                    <JobsCard
+                      jobTitle={item?.jobTitle!}
+                      companyName={item?.companyName!}
+                      companyLogo={item?.companyLogo}
+                      jobLocation={item?.workplaceType!}
+                      companyLocation={item?.companyLocation!}
+                      onPress={() => handleJobPress(item)}
+                    />
+                  )}
+                  keyExtractor={item => item?.id?.toString()!}
+                />
+              )}
+
+              {(!filteredJobs && selectedFilters.length >= 0) ||
+                (searchTerm && (
                   <View style={jobMainStyles.emptyContainer}>
                     <EmptyComponent />
                   </View>
-                )}
-
-                {filteredJobs.length > 0 && (
-                  <FlatList
-                    data={filteredJobs}
-                    renderItem={({item}) => (
-                      <JobsCard
-                        jobTitle={item?.jobTitle!}
-                        companyName={item?.companyName!}
-                        companyLogo={item?.companyLogo}
-                        jobLocation={item?.workplaceType!}
-                        companyLocation={item?.companyLocation!}
-                        onPress={() => handleJobPress(item)}
-                      />
-                    )}
-                    keyExtractor={item => item?.id?.toString()!}
-                  />
-                )}
-
-                {(!filteredJobs && selectedFilters.length >= 0) ||
-                  (searchTerm && (
-                    <View style={jobMainStyles.emptyContainer}>
-                      <EmptyComponent />
-                    </View>
-                  ))}
-              </View>
+                ))}
             </SafeAreaView>
           </ScrollView>
           {isBottomSheetVisible && (

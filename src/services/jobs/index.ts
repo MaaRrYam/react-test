@@ -1,18 +1,34 @@
 import {getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
-import {ApplicantInterface} from '@/interfaces/index';
+import {
+  ApplicantInterface,
+  JobInterface,
+  UserInterface,
+} from '@/interfaces/index';
+import Cache from '@/cache';
 
 let UID: string;
 (async () => {
-  UID = await getUID();
+  UID = (await getUID()) as string;
 })();
 
 const JobsService = {
   async getAllJobs() {
-    return FirebaseService.getAllDocuments('jobs');
+    return FirebaseService.getAllDocuments('jobs') as JobInterface[];
   },
   async getPosterJob(userID: string) {
-    return FirebaseService.getDocument('users', userID);
+    let user = {} as UserInterface;
+
+    if (await Cache.get(`user_${userID}`)) {
+      user = (await Cache.get(`user_${userID}`)) as UserInterface;
+    } else {
+      user = (await FirebaseService.getDocument(
+        'users',
+        userID,
+      )) as UserInterface;
+      await Cache.set(`user_${userID}`, user);
+    }
+    return user;
   },
   async checkAppliedForJob(jobID: string) {
     return FirebaseService.getDocumentsByQuery(
@@ -28,26 +44,17 @@ const JobsService = {
 
     await Promise.all(
       jobs.map(async job => {
-        const subJob: ApplicantInterface[] =
-          await FirebaseService.getDocumentsByQuery(
-            `jobs/${job.id}/applications`,
-            'applicantId',
-            '==',
-            UID,
-          );
+        const subJob = (await FirebaseService.getDocumentsByQuery(
+          `jobs/${job.id}/applications`,
+          'applicantId',
+          '==',
+          UID,
+        )) as ApplicantInterface[];
 
         subJob.forEach(sub => {
-          if (
-            sub.isAccepted === false &&
-            sub.isPending === true &&
-            sub.starred === false
-          ) {
+          if (!sub.isAccepted && sub.isPending && !sub.starred) {
             item.push(sub);
-          } else if (
-            sub.isAccepted === false &&
-            sub.isPending === false &&
-            sub.starred === true
-          ) {
+          } else if (!sub.isAccepted && !sub.isPending && sub.starred) {
             item.push(sub);
           }
         });
