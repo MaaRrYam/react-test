@@ -67,7 +67,7 @@ const OnboardingService = {
       onboardingStep: 3,
     });
   },
-  async employmentStatus(employment: EmploymentProps) {
+  async employmentStatus(employment: string) {
     FirebaseService.updateDocument('users', UID, {
       currentStatus: employment,
       onboardingStep: 4,

@@ -15,10 +15,10 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
   const [userData, setUserData] = useState<UserInterface>({});
   const [initialValues, setInitialValues] = useState({
-    username: user?.username || '',
-    city: user?.city || '',
-    state: user?.state || '',
-    country: user?.country || '',
+    username: user.username || '',
+    city: user.city || '',
+    state: user.state || '',
+    country: user.country || '',
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,10 +54,10 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
 
   useEffect(() => {
     setInitialValues({
-      username: user?.username!,
-      city: user?.city!,
-      state: user?.state!,
-      country: user?.country!,
+      username: user.username || '',
+      city: user.city || '',
+      state: user.state || '',
+      country: user.country || '',
     });
   }, [user]);
 

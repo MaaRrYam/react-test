@@ -46,10 +46,7 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
         />
       </View>
       <View style={commonStyles.footer}>
-        <PrimaryButton
-          title="Continue"
-          onPress={() => navigation.navigate(SCREEN_NAMES.SalaryExpectations)}
-        />
+        <PrimaryButton title="Continue" onPress={handleEmploymentStatus} />
       </View>
     </SafeAreaView>
   );
