@@ -5,7 +5,6 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
 import {
-  getUser,
   listenToUserData,
   getUID,
 } from '../../store/features/authSlice'; // Import getUID function
@@ -14,7 +13,7 @@ import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
-import { useNavigation } from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,6 +35,8 @@ function DrawerContent({
   isEditing,
   setIsEditing,
   user,
+  editingIndex,
+  setEditingIndex
 }) {
   return (
     <>
@@ -93,6 +94,8 @@ function DrawerContent({
           user={user}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
+          editingIndex={editingIndex}
+          setEditingIndex={setEditingIndex}
         />
       )}
     </>
@@ -103,6 +106,7 @@ const Tabs = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
   const [isEditing, setIsEditing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(0);
 
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
@@ -142,6 +146,8 @@ const Tabs = () => {
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             user={user}
+            editingIndex={editingIndex}
+            setEditingIndex={setEditingIndex}
           />
         )}>
         <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />

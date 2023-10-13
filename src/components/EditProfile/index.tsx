@@ -19,6 +19,8 @@ interface EditProfileProps {
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
   addNew: boolean;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
 }
 
 const EditProfile = ({
@@ -28,6 +30,8 @@ const EditProfile = ({
   isEditing,
   user,
   setIsEditing,
+  editingIndex,
+  setEditingIndex,
 }: EditProfileProps) => {
   const [addNew, setAddNew] = useState(false);
   const renderForm = () => {
@@ -47,6 +51,8 @@ const EditProfile = ({
             setIsEditing={setIsEditing}
             addNew={addNew}
             setAddNew={setAddNew}
+            editingIndex={editingIndex}
+            setEditingIndex={setEditingIndex}
           />
         );
       case 'Education':
@@ -57,6 +63,8 @@ const EditProfile = ({
             setIsEditing={setIsEditing}
             addNew={addNew}
             setAddNew={setAddNew}
+            editingIndex={editingIndex}
+            setEditingIndex={setEditingIndex}
           />
         );
       default:
@@ -68,6 +76,7 @@ const EditProfile = ({
     if (isEditing) {
       setIsEditing(false);
       setAddNew(false);
+      setEditingIndex(null);
     } else {
       onClose();
     }

@@ -59,6 +59,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
   };
 
   useEffect(() => {
+    console.log('UID: ', UID);
+    console.log('UserUID: ', userUID);
+    console.log('equal', UID === userUID);
     const fetchUID = async () => {
       try {
         const fetchedUID = await getUID();
@@ -74,7 +77,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
         setLoading(false);
       }, 3000);
     }
-  }, [user]);
+  }, [user, UID, userUID]);
   return (
     <>
       {loading ? (
@@ -216,11 +219,21 @@ const Profile = ({navigation, route}: ProfileProps) => {
                     ))}
                   </View>
                   <View>
-                    <TouchableOpacity
-                      style={profileStyles.editIcon}
-                      onPress={openBottomSheet}>
-                      <NewChatIcon />
-                    </TouchableOpacity>
+                    {!UID ? (
+                      <TouchableOpacity
+                        style={profileStyles.editIcon}
+                        onPress={openBottomSheet}>
+                        <NewChatIcon />
+                      </TouchableOpacity>
+                    ) : (
+                      UID === userUID && (
+                        <TouchableOpacity
+                          style={profileStyles.editIcon}
+                          onPress={openBottomSheet}>
+                          <NewChatIcon />
+                        </TouchableOpacity>
+                      )
+                    )}
                   </View>
                 </View>
                 <View>

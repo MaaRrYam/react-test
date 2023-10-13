@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {EducationProps} from '@/interfaces';
@@ -13,6 +13,8 @@ interface EditEducationProps {
   setIsEditing: (value: boolean) => void;
   addNew: boolean;
   setAddNew: (value: boolean) => void;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
 }
 
 const EditEducationForm = ({
@@ -46,24 +48,39 @@ const EditEducationForm = ({
     },
   });
 
-  useEffect(() => {
-    if (addNew) {
-      formik.resetForm();
-    } else {
-      const itemToEdit = educationList[0];
-      if (itemToEdit) {
-        const newValues = {
-          instituteName: itemToEdit.instituteName || '',
-          degreeName: itemToEdit.degree || '',
-          startYear: itemToEdit.startYear || '',
-          endYear: itemToEdit.currentlyStudying ? '' : itemToEdit.endYear || '',
-          isCurrentlyStudying: itemToEdit.currentlyStudying || false,
-        };
+  const previousAddNew = useRef(addNew);
+  const previousEditingIndex = useRef(editingIndex);
 
-        formik.setValues(newValues);
+  useEffect(() => {
+    // Check if `addNew` or `editingIndex` have changed
+    if (
+      addNew !== previousAddNew.current ||
+      editingIndex !== previousEditingIndex.current
+    ) {
+      if (addNew) {
+        formik.resetForm();
+      } else {
+        const itemToEdit = educationList[editingIndex];
+        if (itemToEdit) {
+          const newValues = {
+            instituteName: itemToEdit.instituteName || '',
+            degreeName: itemToEdit.degree || '',
+            startYear: itemToEdit.startYear || '',
+            endYear: itemToEdit.currentlyStudying
+              ? ''
+              : itemToEdit.endYear || '',
+            isCurrentlyStudying: itemToEdit.currentlyStudying || false,
+          };
+
+          formik.setValues(newValues);
+        }
       }
     }
-  }, [addNew]);
+
+    // Update the previous values of `addNew` and `editingIndex`
+    previousAddNew.current = addNew;
+    previousEditingIndex.current = editingIndex;
+  }, [addNew, editingIndex, educationList, formik]);
 
   return (
     <ScrollView>
@@ -135,8 +152,8 @@ const EditEducationForm = ({
               endDate={item.currentlyStudying ? 'Present' : item.endYear}
               editable
               key={index}
-              onEdit={() => {
-                ProfileService.editEducation(
+              onEdit={async () => {
+                await ProfileService.editEducation(
                   setIsEditing,
                   setAddNew,
                   isEditing,

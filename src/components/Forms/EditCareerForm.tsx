@@ -1,4 +1,4 @@
-import React, {useState, useEffect, FC} from 'react';
+import React, {useEffect, FC, useRef} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {EmploymentProps} from '@/interfaces';
@@ -13,6 +13,8 @@ interface CareerFormProps {
   setIsEditing: (value: boolean) => void;
   addNew: boolean;
   setAddNew: (value: boolean) => void;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
 }
 
 const EditCareerForm: FC<CareerFormProps> = ({
@@ -21,9 +23,9 @@ const EditCareerForm: FC<CareerFormProps> = ({
   setIsEditing,
   addNew,
   setAddNew,
+  editingIndex,
+  setEditingIndex,
 }) => {
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-
   const formik = useFormik({
     initialValues: {
       companyName: '',
@@ -50,8 +52,16 @@ const EditCareerForm: FC<CareerFormProps> = ({
     },
   });
 
+  const previousAddNew = useRef(addNew);
+  const previousEditingIndex = useRef(editingIndex);
+
   useEffect(() => {
-    if (!addNew && editingIndex !== null) {
+    if (
+      !addNew &&
+      editingIndex !== null &&
+      (addNew !== previousAddNew.current ||
+        editingIndex !== previousEditingIndex.current)
+    ) {
       const itemToEdit = careerList[editingIndex];
       if (itemToEdit) {
         formik.setValues({
@@ -63,8 +73,10 @@ const EditCareerForm: FC<CareerFormProps> = ({
         });
       }
     }
-  }, [addNew,]);
 
+    previousAddNew.current = addNew;
+    previousEditingIndex.current = editingIndex;
+  }, [addNew, editingIndex, careerList, formik]);
   return (
     <View>
       {isEditing ? (

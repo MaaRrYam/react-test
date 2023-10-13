@@ -103,13 +103,13 @@ const ProfileService = {
     setEditingIndex: (value: number | null) => void,
     index: number,
   ) {
+    await setEditingIndex(index);
     await this.toggleCareerEditForm(
       setIsEditing,
       setAddNew,
       isEditing,
       resetForm,
     );
-    await setEditingIndex(index);
   },
   toggleEducationEditForm(
     setIsEditing: (value: boolean) => void,
