@@ -9,17 +9,10 @@ import {
 } from 'react-native';
 import {useFormik} from 'formik';
 import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
-import {UserInterface} from '@/interfaces';
+import {UserInfoProps} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 import {basicInfoSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
-
-interface UserInfoProps {
-  user: UserInterface;
-  onClose: () => void;
-  setIsEdit?: (value: boolean) => void;
-}
-
 const EditBasicInfoForm: React.FC<UserInfoProps> = ({
   user,
   onClose,

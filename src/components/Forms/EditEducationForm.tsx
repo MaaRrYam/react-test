@@ -1,21 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
-import {EducationProps} from '@/interfaces';
+import {EditEducationProps} from '@/interfaces';
 import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
-import {COLORS, FONTS} from '@/constants';
 import {educationSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
-
-interface EditEducationProps {
-  educationList: Array<EducationProps>;
-  isEditing: boolean;
-  setIsEditing: (value: boolean) => void;
-  addNew: boolean;
-  setAddNew: (value: boolean) => void;
-  editingIndex: number | null;
-  setEditingIndex: (value: number | null) => void;
-}
+import {editFormStyles as styles} from '@/components/Forms/styles';
 
 const EditEducationForm = ({
   educationList,
@@ -52,7 +42,6 @@ const EditEducationForm = ({
   const previousEditingIndex = useRef(editingIndex);
 
   useEffect(() => {
-    // Check if `addNew` or `editingIndex` have changed
     if (
       addNew !== previousAddNew.current ||
       editingIndex !== previousEditingIndex.current
@@ -76,8 +65,6 @@ const EditEducationForm = ({
         }
       }
     }
-
-    // Update the previous values of `addNew` and `editingIndex`
     previousAddNew.current = addNew;
     previousEditingIndex.current = editingIndex;
   }, [addNew, editingIndex, educationList, formik]);
@@ -114,7 +101,7 @@ const EditEducationForm = ({
               onChangeText={formik.handleChange('endYear')}
               placeholder="End Year"
               value={formik.values.endYear}
-              style={[styles.yearInput, {marginLeft: 11}]}
+              style={[styles.yearInput, styles.leftMargin]}
               error={formik.errors.endYear}
               keyboardType="numeric"
             />
@@ -138,12 +125,9 @@ const EditEducationForm = ({
             key={index}
             style={[
               styles.careerItem,
-              {
-                borderBottomColor:
-                  index === educationList.length - 1
-                    ? 'transparent'
-                    : COLORS.border,
-              },
+              index === educationList.length - 1
+                ? styles.borderTransparent
+                : styles.borderColored,
             ]}>
             <CareerCard
               title={item.degree}
@@ -173,7 +157,7 @@ const EditEducationForm = ({
           <PrimaryButton
             title={editingIndex !== null ? 'Update' : 'Save'}
             onPress={formik.handleSubmit}
-            style={styles.saveButton}
+            style={styles.educationSaveButton}
             isLoading={formik.isSubmitting}
           />
         </View>
@@ -181,49 +165,5 @@ const EditEducationForm = ({
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  paddedContainer: {
-    paddingHorizontal: 20,
-  },
-  sectionHeader: {
-    color: COLORS.black,
-    marginBottom: 24,
-    fontWeight: 'bold',
-    fontSize: FONTS.largeLabel,
-  },
-  yearInputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  yearInput: {
-    width: 156,
-  },
-  textInput: {
-    width: 323,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkboxText: {
-    color: COLORS.black,
-    marginLeft: 10,
-  },
-  careerItem: {
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-  },
-  footer: {
-    borderTopColor: COLORS.border,
-    borderTopWidth: 1,
-    paddingHorizontal: 20,
-    marginTop: 260,
-  },
-  saveButton: {
-    marginTop: 10,
-  },
-});
 
 export default EditEducationForm;

@@ -8,6 +8,7 @@ import {COLORS} from '@/constants';
 import {EducationState} from '@/interfaces';
 import {commonStyles} from '@/styles/onboarding';
 
+const handleCheckbox = (newValue: boolean) => {};
 const EducationForm = ({
   handleAddNewEducation,
 }: {
@@ -98,8 +99,8 @@ const EducationForm = ({
         />
 
         <Checkbox
-          onPress={(newValue: boolean) =>
-            setFieldValue('currentlyStudying', newValue)
+          onPress={() =>
+            setFieldValue('currentlyStudying', !values.currentlyStudying)
           }
           text="Currently Studying"
           fillColor={COLORS.primary}

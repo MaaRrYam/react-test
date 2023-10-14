@@ -466,3 +466,41 @@ export interface ProfileFeedInterface {
   >;
   uid: string;
 }
+export interface CareerFormProps {
+  careerList: Array<EmploymentProps>;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
+  setAddNew: (value: boolean) => void;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
+}
+
+export interface EditEducationProps {
+  educationList: Array<EducationProps>;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
+  setAddNew: (value: boolean) => void;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
+}
+
+export interface UserInfoProps {
+  user: UserInterface;
+  onClose: () => void;
+  setIsEdit?: (value: boolean) => void;
+}
+
+export interface CheckboxProps {
+  onPress: (value: boolean) => void;
+  isChecked?: boolean;
+  size?: number;
+  color?: string;
+  style?: any;
+  text?: string;
+  fillColor?: string;
+  unfillColor?: string;
+  iconStyle?: any;
+  innerIconStyle?: any;
+}

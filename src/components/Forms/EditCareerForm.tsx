@@ -1,21 +1,11 @@
 import React, {useEffect, FC, useRef} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View} from 'react-native';
 import {useFormik} from 'formik';
-import {EmploymentProps} from '@/interfaces';
-import {COLORS, FONTS} from '@/constants';
+import {CareerFormProps} from '@/interfaces';
 import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
 import {careerSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
-
-interface CareerFormProps {
-  careerList: Array<EmploymentProps>;
-  isEditing: boolean;
-  setIsEditing: (value: boolean) => void;
-  addNew: boolean;
-  setAddNew: (value: boolean) => void;
-  editingIndex: number | null;
-  setEditingIndex: (value: number | null) => void;
-}
+import {editFormStyles as styles} from '@/components/Forms/styles';
 
 const EditCareerForm: FC<CareerFormProps> = ({
   careerList,
@@ -57,12 +47,10 @@ const EditCareerForm: FC<CareerFormProps> = ({
 
   useEffect(() => {
     if (
-      !addNew &&
-      editingIndex !== null &&
-      (addNew !== previousAddNew.current ||
-        editingIndex !== previousEditingIndex.current)
+      addNew !== previousAddNew.current ||
+      editingIndex !== previousEditingIndex.current
     ) {
-      const itemToEdit = careerList[editingIndex];
+      const itemToEdit = careerList[editingIndex as number];
       if (itemToEdit) {
         formik.setValues({
           companyName: itemToEdit.companyName || '',
@@ -112,7 +100,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
               onChangeText={formik.handleChange('endYear')}
               placeholder="End Year"
               value={formik.values.endYear}
-              style={[styles.yearInput, {marginLeft: 11}]}
+              style={[styles.yearInput, styles.leftMargin]}
               setFieldTouched={formik.setFieldTouched}
               error={formik.errors.endYear}
               keyboardType="numeric"
@@ -143,12 +131,9 @@ const EditCareerForm: FC<CareerFormProps> = ({
             key={index}
             style={[
               styles.careerItem,
-              {
-                borderBottomColor:
-                  index === careerList.length - 1
-                    ? 'transparent'
-                    : COLORS.border,
-              },
+              index === careerList.length - 1
+                ? styles.borderTransparent
+                : styles.borderColored,
             ]}>
             <CareerCard
               title={item.role}
@@ -157,14 +142,13 @@ const EditCareerForm: FC<CareerFormProps> = ({
               endDate={item.currentlyWorking ? 'Present' : item.endYear}
               editable
               onEdit={async () => {
-                await ProfileService.editCareer(
+                await ProfileService.toggleCareerEditForm(
                   setIsEditing,
                   setAddNew,
                   isEditing,
                   formik.resetForm,
-                  setEditingIndex,
-                  index,
                 );
+                await setEditingIndex(index);
               }}
               onDelete={() => ProfileService.deleteCareer(index, careerList)}
             />
@@ -174,43 +158,5 @@ const EditCareerForm: FC<CareerFormProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  paddedContainer: {
-    paddingHorizontal: 20,
-  },
-  sectionHeader: {
-    color: COLORS.black,
-    marginBottom: 24,
-    fontWeight: 'bold',
-    fontSize: FONTS.largeLabel,
-  },
-  yearInputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  yearInput: {
-    width: 156,
-  },
-  textInput: {
-    width: 323,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkboxText: {
-    color: COLORS.black,
-    marginLeft: 10,
-  },
-  careerItem: {
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-  },
-  saveButton: {
-    marginTop: 270,
-  },
-});
 
 export default EditCareerForm;
