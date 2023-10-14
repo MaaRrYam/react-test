@@ -1,11 +1,12 @@
 import React, {useEffect, FC, useRef} from 'react';
-import {Text, View} from 'react-native';
+import {KeyboardAvoidingView, Text, View} from 'react-native';
 import {useFormik} from 'formik';
 import {CareerFormProps} from '@/interfaces';
 import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
 import {careerSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
 import {editFormStyles as styles} from '@/components/Forms/styles';
+import { COLORS } from '@/constants';
 
 const EditCareerForm: FC<CareerFormProps> = ({
   careerList,
@@ -66,65 +67,69 @@ const EditCareerForm: FC<CareerFormProps> = ({
     previousEditingIndex.current = editingIndex;
   }, [addNew, editingIndex, careerList, formik]);
   return (
-    <View>
+    <View style={{flex: 1}}>
       {isEditing ? (
-        <View style={styles.paddedContainer}>
-          <Text style={styles.sectionHeader}>Job Details</Text>
-          <Input
-            onChangeText={formik.handleChange('companyName')}
-            placeholder="Current Company"
-            value={formik.values.companyName}
-            setFieldTouched={formik.setFieldTouched}
-            style={styles.textInput}
-            error={formik.errors.companyName}
-          />
-          <Input
-            onChangeText={formik.handleChange('role')}
-            placeholder="Designation"
-            value={formik.values.role}
-            setFieldTouched={formik.setFieldTouched}
-            style={styles.textInput}
-            error={formik.errors.role}
-          />
-          <View style={styles.yearInputContainer}>
+        <>
+          <KeyboardAvoidingView style={styles.paddedContainer}>
+            <Text style={styles.sectionHeader}>Job Details</Text>
             <Input
-              onChangeText={formik.handleChange('startYear')}
-              placeholder="Start Year"
-              value={formik.values.startYear}
+              onChangeText={formik.handleChange('companyName')}
+              placeholder="Current Company"
+              value={formik.values.companyName}
               setFieldTouched={formik.setFieldTouched}
-              style={styles.yearInput}
-              error={formik.errors.startYear}
-              keyboardType="numeric"
+              style={styles.textInput}
+              error={formik.errors.companyName}
             />
             <Input
-              onChangeText={formik.handleChange('endYear')}
-              placeholder="End Year"
-              value={formik.values.endYear}
-              style={[styles.yearInput, styles.leftMargin]}
+              onChangeText={formik.handleChange('role')}
+              placeholder="Designation"
+              value={formik.values.role}
               setFieldTouched={formik.setFieldTouched}
-              error={formik.errors.endYear}
-              keyboardType="numeric"
+              style={styles.textInput}
+              error={formik.errors.role}
             />
-          </View>
-          <View style={styles.checkboxContainer}>
-            <Checkbox
-              onPress={() =>
-                formik.setFieldValue(
-                  'isCurrentlyWorking',
-                  !formik.values.isCurrentlyWorking,
-                )
-              }
-              isChecked={formik.values.isCurrentlyWorking}
-            />
-            <Text style={styles.checkboxText}>Currently Working?</Text>
-          </View>
+            <View style={styles.yearInputContainer}>
+              <Input
+                onChangeText={formik.handleChange('startYear')}
+                placeholder="Start Year"
+                value={formik.values.startYear}
+                setFieldTouched={formik.setFieldTouched}
+                style={styles.yearInput}
+                error={formik.errors.startYear}
+                keyboardType="numeric"
+              />
+              <Input
+                onChangeText={formik.handleChange('endYear')}
+                placeholder="End Year"
+                value={formik.values.endYear}
+                style={[styles.yearInput, styles.leftMargin]}
+                setFieldTouched={formik.setFieldTouched}
+                error={formik.errors.endYear}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.checkboxContainer}>
+              <Checkbox
+                onPress={() =>
+                  formik.setFieldValue(
+                    'isCurrentlyWorking',
+                    !formik.values.isCurrentlyWorking,
+                  )
+                }
+                isChecked={formik.values.isCurrentlyWorking}
+              />
+              <Text style={styles.checkboxText}>Currently Working?</Text>
+            </View>
+          </KeyboardAvoidingView>
+          <View style={styles.footer}>
           <PrimaryButton
             title={editingIndex !== null ? 'Update' : 'Save'}
             onPress={formik.handleSubmit}
-            style={styles.saveButton}
+            style={[styles.saveButton]}
             isLoading={formik.isSubmitting}
           />
-        </View>
+          </View>
+        </>
       ) : (
         careerList?.map((item, index) => (
           <View

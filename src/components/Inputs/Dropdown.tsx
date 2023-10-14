@@ -1,5 +1,5 @@
-import { ArrowDown } from '@/assets/icons';
-import React, { useState } from 'react';
+import {ArrowDown} from '@/assets/icons';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -60,10 +60,12 @@ const Dropdown: React.FC<DropdownProps> = ({
     <ScrollView style={style}>
       <TouchableOpacity onPress={toggleDropdown}>
         <View style={styles.dropdownHeader}>
-          <Text style={{ color: 'black' }}>
+          <Text style={{color: 'black'}}>
             {selectedOption || startingOption}
           </Text>
-          <View><ArrowDown /></View>
+          <View>
+            <ArrowDown />
+          </View>
         </View>
       </TouchableOpacity>
       {isOpen && (
@@ -72,7 +74,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             <TouchableOpacity
               key={option}
               onPress={() => setSelectedOption(option)}>
-              <Text style={{ color: 'black' }}>{option}</Text>
+              <Text style={{color: 'black'}}>{option}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>

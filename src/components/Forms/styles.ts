@@ -4,6 +4,7 @@ import {StyleSheet} from 'react-native';
 export const editFormStyles = StyleSheet.create({
   paddedContainer: {
     paddingHorizontal: 20,
+    flex: 1,
   },
   sectionHeader: {
     color: COLORS.black,
@@ -35,9 +36,6 @@ export const editFormStyles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   saveButton: {
-    marginTop: 270,
-  },
-  educationSaveButton: {
     marginTop: 10,
   },
   leftMargin: {

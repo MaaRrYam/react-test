@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {Text, View, ScrollView, KeyboardAvoidingView} from 'react-native';
 import {useFormik} from 'formik';
 import {EditEducationProps} from '@/interfaces';
 import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
@@ -70,9 +70,9 @@ const EditEducationForm = ({
   }, [addNew, editingIndex, educationList, formik]);
 
   return (
-    <ScrollView>
+    <View style={{flex: 1}}>
       {isEditing ? (
-        <View style={styles.paddedContainer}>
+        <KeyboardAvoidingView style={styles.paddedContainer}>
           <Text style={styles.sectionHeader}>Education Details</Text>
           <Input
             onChangeText={formik.handleChange('instituteName')}
@@ -118,7 +118,7 @@ const EditEducationForm = ({
             />
             <Text style={styles.checkboxText}>Currently Studying?</Text>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       ) : (
         educationList.map((item, index) => (
           <View
@@ -157,12 +157,12 @@ const EditEducationForm = ({
           <PrimaryButton
             title={editingIndex !== null ? 'Update' : 'Save'}
             onPress={formik.handleSubmit}
-            style={styles.educationSaveButton}
+            style={styles.saveButton}
             isLoading={formik.isSubmitting}
           />
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
