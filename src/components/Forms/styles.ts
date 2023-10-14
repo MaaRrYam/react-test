@@ -2,6 +2,9 @@ import {COLORS, FONTS} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const editFormStyles = StyleSheet.create({
+  flexStyle: {
+    flex: 1,
+  },
   paddedContainer: {
     paddingHorizontal: 20,
     flex: 1,
@@ -26,6 +29,7 @@ export const editFormStyles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 10,
   },
   checkboxText: {
     color: COLORS.black,

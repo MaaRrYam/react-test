@@ -1,8 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Text, View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {Text, View, KeyboardAvoidingView} from 'react-native';
 import {useFormik} from 'formik';
 import {EditEducationProps} from '@/interfaces';
-import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
+import {
+  Checkbox,
+  Input,
+  PrimaryButton,
+  CareerCard,
+  YearDropdown,
+} from '@/components';
 import {educationSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
 import {editFormStyles as styles} from '@/components/Forms/styles';
@@ -40,7 +46,10 @@ const EditEducationForm = ({
 
   const previousAddNew = useRef(addNew);
   const previousEditingIndex = useRef(editingIndex);
-
+  const years = Array.from(
+    {length: new Date().getFullYear() - 1999},
+    (_, index) => (2000 + index).toString(),
+  );
   useEffect(() => {
     if (
       addNew !== previousAddNew.current ||
@@ -49,7 +58,7 @@ const EditEducationForm = ({
       if (addNew) {
         formik.resetForm();
       } else {
-        const itemToEdit = educationList[editingIndex];
+        const itemToEdit = educationList[editingIndex || 0];
         if (itemToEdit) {
           const newValues = {
             instituteName: itemToEdit.instituteName || '',
@@ -70,7 +79,7 @@ const EditEducationForm = ({
   }, [addNew, editingIndex, educationList, formik]);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.flexStyle}>
       {isEditing ? (
         <KeyboardAvoidingView style={styles.paddedContainer}>
           <Text style={styles.sectionHeader}>Education Details</Text>
@@ -89,21 +98,22 @@ const EditEducationForm = ({
             error={formik.errors.degreeName}
           />
           <View style={styles.yearInputContainer}>
-            <Input
-              onChangeText={formik.handleChange('startYear')}
-              placeholder="Start Year"
-              value={formik.values.startYear}
-              style={styles.yearInput}
-              error={formik.errors.startYear}
-              keyboardType="numeric"
+            <YearDropdown
+              onYearSelect={formik.handleChange('startYear')}
+              selectedYear={formik.values.startYear}
+              years={years}
+              setFieldTouched={formik.setFieldTouched}
+              name="startYear"
+              label="Start Year"
             />
-            <Input
-              onChangeText={formik.handleChange('endYear')}
-              placeholder="End Year"
-              value={formik.values.endYear}
-              style={[styles.yearInput, styles.leftMargin]}
-              error={formik.errors.endYear}
-              keyboardType="numeric"
+            <YearDropdown
+              onYearSelect={formik.handleChange('endYear')}
+              selectedYear={formik.values.endYear}
+              years={years}
+              setFieldTouched={formik.setFieldTouched}
+              name="endYear"
+              label="End Year"
+              style={{marginLeft: 10}}
             />
           </View>
           <View style={styles.checkboxContainer}>

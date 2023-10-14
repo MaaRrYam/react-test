@@ -118,8 +118,6 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({
             selectedOption={values.tagline}
             onOptionSelect={handleChange('tagline')}
             error={errors.tagline}
-            touched={touched.tagline}
-            setFieldTouched={setFieldTouched}
           />
         </View>
 

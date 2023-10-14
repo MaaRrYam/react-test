@@ -24,7 +24,6 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
-  label,
   startingOption,
   options,
   style,
@@ -32,23 +31,11 @@ const Dropdown: React.FC<DropdownProps> = ({
   selectedOption,
   error,
   touched,
-  onBlur,
-  setFieldTouched,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-  };
-
-  const selectOption = (option: string) => {
-    onOptionSelect?.(option);
-    setIsOpen(false);
-  };
-
-  const handleBlur = () => {
-    setFieldTouched?.(true); // Mark the field as touched when blurred
-    onBlur?.(); // Call the onBlur function if provided
   };
 
   const setSelectedOption = (option: string) => {
@@ -57,7 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <ScrollView style={style}>
+    <View style={[style, {flex: 1}]}>
       <TouchableOpacity onPress={toggleDropdown}>
         <View style={styles.dropdownHeader}>
           <Text style={{color: 'black'}}>
@@ -69,18 +56,22 @@ const Dropdown: React.FC<DropdownProps> = ({
         </View>
       </TouchableOpacity>
       {isOpen && (
-        <ScrollView style={styles.dropdownList}>
-          {options.map(option => (
-            <TouchableOpacity
-              key={option}
-              onPress={() => setSelectedOption(option)}>
-              <Text style={{color: 'black'}}>{option}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        <View style={styles.dropdownListContainer}>
+          <ScrollView style={styles.dropdownList} scrollEnabled>
+            {options.map(option => (
+              <ScrollView scrollEnabled>
+                <TouchableOpacity
+                  key={option}
+                  onPress={() => setSelectedOption(option)}>
+                  <Text style={{color: 'black'}}>{option}</Text>
+                </TouchableOpacity>
+              </ScrollView>
+            ))}
+          </ScrollView>
+        </View>
       )}
       {touched && error && <Text style={styles.errorText}>{error}</Text>}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -96,13 +87,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
   },
-  dropdownList: {
+  dropdownListContainer: {
+    flex: 1, // Make the container flex to enable scrolling
     borderWidth: 1,
     borderColor: '#e4e4e4',
     marginTop: -10,
     borderTopWidth: 0,
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
+  },
+  dropdownList: {
     padding: 5,
   },
   errorText: {

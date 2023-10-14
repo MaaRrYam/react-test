@@ -504,3 +504,12 @@ export interface CheckboxProps {
   iconStyle?: any;
   innerIconStyle?: any;
 }
+export interface YearDropdownProps {
+  selectedYear: string;
+  years: string[];
+  onYearSelect: (year: string) => void;
+  setFieldTouched: (field: string, isTouched?: boolean) => void;
+  name: string;
+  label: string;
+  style?: StyleProp<ViewStyle>;
+}

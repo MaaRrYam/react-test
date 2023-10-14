@@ -20,6 +20,7 @@ import {
   Dropdown,
   LocationDropdown,
   TextArea,
+  YearDropdown,
 } from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
@@ -78,4 +79,5 @@ export {
   Chat,
   NewChat,
   ProfileFeed,
+  YearDropdown,
 };

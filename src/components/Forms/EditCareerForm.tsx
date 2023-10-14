@@ -2,12 +2,16 @@ import React, {useEffect, FC, useRef} from 'react';
 import {KeyboardAvoidingView, Text, View} from 'react-native';
 import {useFormik} from 'formik';
 import {CareerFormProps} from '@/interfaces';
-import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
+import {
+  Input,
+  Checkbox,
+  PrimaryButton,
+  CareerCard,
+  YearDropdown,
+} from '@/components';
 import {careerSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
 import {editFormStyles as styles} from '@/components/Forms/styles';
-import { COLORS } from '@/constants';
-
 const EditCareerForm: FC<CareerFormProps> = ({
   careerList,
   isEditing,
@@ -45,13 +49,16 @@ const EditCareerForm: FC<CareerFormProps> = ({
 
   const previousAddNew = useRef(addNew);
   const previousEditingIndex = useRef(editingIndex);
-
+  const years = Array.from(
+    {length: new Date().getFullYear() - 1999},
+    (_, index) => (2000 + index).toString(),
+  );
   useEffect(() => {
     if (
       addNew !== previousAddNew.current ||
       editingIndex !== previousEditingIndex.current
     ) {
-      const itemToEdit = careerList[editingIndex as number];
+      const itemToEdit = careerList[editingIndex || 0];
       if (itemToEdit) {
         formik.setValues({
           companyName: itemToEdit.companyName || '',
@@ -67,7 +74,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
     previousEditingIndex.current = editingIndex;
   }, [addNew, editingIndex, careerList, formik]);
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.flexStyle}>
       {isEditing ? (
         <>
           <KeyboardAvoidingView style={styles.paddedContainer}>
@@ -89,23 +96,22 @@ const EditCareerForm: FC<CareerFormProps> = ({
               error={formik.errors.role}
             />
             <View style={styles.yearInputContainer}>
-              <Input
-                onChangeText={formik.handleChange('startYear')}
-                placeholder="Start Year"
-                value={formik.values.startYear}
+              <YearDropdown
+                onYearSelect={formik.handleChange('startYear')}
+                selectedYear={formik.values.startYear}
+                years={years}
                 setFieldTouched={formik.setFieldTouched}
-                style={styles.yearInput}
-                error={formik.errors.startYear}
-                keyboardType="numeric"
+                name="startYear"
+                label="Start Year"
               />
-              <Input
-                onChangeText={formik.handleChange('endYear')}
-                placeholder="End Year"
-                value={formik.values.endYear}
-                style={[styles.yearInput, styles.leftMargin]}
+              <YearDropdown
+                onYearSelect={formik.handleChange('endYear')}
+                selectedYear={formik.values.endYear}
+                years={years}
                 setFieldTouched={formik.setFieldTouched}
-                error={formik.errors.endYear}
-                keyboardType="numeric"
+                name="endYear"
+                label="End Year"
+                style={{marginLeft: 10}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -122,12 +128,12 @@ const EditCareerForm: FC<CareerFormProps> = ({
             </View>
           </KeyboardAvoidingView>
           <View style={styles.footer}>
-          <PrimaryButton
-            title={editingIndex !== null ? 'Update' : 'Save'}
-            onPress={formik.handleSubmit}
-            style={[styles.saveButton]}
-            isLoading={formik.isSubmitting}
-          />
+            <PrimaryButton
+              title={editingIndex !== null ? 'Update' : 'Save'}
+              onPress={formik.handleSubmit}
+              style={[styles.saveButton]}
+              isLoading={formik.isSubmitting}
+            />
           </View>
         </>
       ) : (
