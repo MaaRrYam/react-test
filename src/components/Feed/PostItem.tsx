@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Share} from 'react-native';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
-import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
+import {Comment, Dislike, Like, Report, ShareIcon} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import HomeService from '@/services/home';
 import {
@@ -157,9 +157,29 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   };
 
   const sharePost = async () => {
-    const response = await HomeService.sharePost(item._id);
-    if (response) {
-      ToastService.showSuccess('Post shared');
+    // const response = await HomeService.sharePost(item._id);
+    // if (response) {
+    //   ToastService.showSuccess('Post shared');
+    // }
+    const {share, sharedAction, dismissedAction} = Share;
+
+    const appUrl = 'myapp://post/' + item.id;
+    const shareOptions = {
+      title: 'Share a post',
+      message: item.text || 'Check out this post',
+      url: appUrl,
+      ...(item.media && {imageUrl: item.media}),
+    };
+
+    try {
+      const result = await share(shareOptions);
+      if (result.action === sharedAction) {
+        // ToastService.showSuccess('Post shared');
+      } else if (result.action === dismissedAction) {
+        // ToastService.showError('Post sharing dismissed');
+      }
+    } catch (error) {
+      ToastService.showError('Error sharing post');
     }
   };
 
@@ -189,7 +209,7 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
             <Comment />
           </TouchableOpacity>
           <TouchableOpacity onPress={sharePost}>
-            <Share />
+            <ShareIcon />
           </TouchableOpacity>
           <TouchableOpacity onPress={reportPost}>
             <Report />

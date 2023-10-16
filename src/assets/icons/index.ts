@@ -12,7 +12,7 @@ import NewChatIcon from './NewChat';
 import Notifications from './Notifications';
 import Report from './Report';
 import Search from './Search';
-import Share from './Share';
+import ShareIcon from './Share';
 import ThreeDots from './ThreeDots';
 import Empty from './Empty';
 import SendIcon from './Send';
@@ -32,7 +32,7 @@ export {
   Notifications,
   Report,
   Search,
-  Share,
+  ShareIcon,
   ThreeDots,
   Empty,
   SendIcon,
