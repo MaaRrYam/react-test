@@ -1,6 +1,12 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
-
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {signInSchema} from '@/utils/schemas/schemas';
 import {
   getAuth,
@@ -11,10 +17,10 @@ import {useFormik} from 'formik';
 import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
-import SigninService from '@/services/signin';
-import {KeyboardAvoidingView} from 'react-native';
-import {styles} from '@/styles/signinWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
+import {styles} from '@/styles/signinWithEmail';
+
+import SigninService from '@/services/signin';
 import ToastService from '@/services/toast';
 
 const auth = getAuth();
