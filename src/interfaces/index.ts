@@ -432,3 +432,12 @@ export interface SendMessageInterface extends ChatMessageInterface {
   receiver: UserInterface;
   sender: UserInterface;
 }
+
+export interface CareerCardProps {
+  title: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+  editable: boolean;
+  onEdit: () => void;
+}

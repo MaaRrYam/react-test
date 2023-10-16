@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {useFormik} from 'formik';
-
 import {
   createUserWithEmailAndPassword,
   getAuth,
