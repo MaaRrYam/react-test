@@ -41,7 +41,7 @@ const SigninService: SigninServiceProps = {
 
         if (!userData) {
           const userDetails: whiteListedUser = {
-            name: user.displayName!,
+            name: whiteListedUsers[0].name!,
             id: user.uid!,
             email: email!,
             photoUrl: photoUrl,
