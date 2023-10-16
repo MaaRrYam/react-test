@@ -58,21 +58,29 @@ const EditCareerForm: FC<CareerFormProps> = ({
       addNew !== previousAddNew.current ||
       editingIndex !== previousEditingIndex.current
     ) {
-      const itemToEdit = careerList[editingIndex || 0];
-      if (itemToEdit) {
-        formik.setValues({
-          companyName: itemToEdit.companyName || '',
-          role: itemToEdit.role || '',
-          startYear: itemToEdit.startYear || '',
-          endYear: itemToEdit.currentlyWorking ? '' : itemToEdit.endYear || '',
-          isCurrentlyWorking: itemToEdit.currentlyWorking || false,
-        });
+      if (addNew) {
+        formik.resetForm();
+      } else {
+        const itemToEdit = careerList[editingIndex || 0];
+        if (itemToEdit) {
+          const newValues = {
+            companyName: itemToEdit.companyName || '',
+            role: itemToEdit.role || '',
+            startYear: itemToEdit.startYear || years[0],
+            endYear: itemToEdit.currentlyWorking
+              ? ''
+              : itemToEdit.endYear || years[0],
+            isCurrentlyWorking: itemToEdit.currentlyWorking || false,
+          };
+
+          formik.setValues(newValues);
+        }
       }
     }
-
     previousAddNew.current = addNew;
     previousEditingIndex.current = editingIndex;
-  }, [addNew, editingIndex, careerList, formik]);
+  }, [addNew, editingIndex, careerList, formik, years]);
+
   return (
     <View style={styles.flexStyle}>
       {isEditing ? (

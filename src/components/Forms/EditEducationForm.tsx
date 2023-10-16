@@ -63,10 +63,10 @@ const EditEducationForm = ({
           const newValues = {
             instituteName: itemToEdit.instituteName || '',
             degreeName: itemToEdit.degree || '',
-            startYear: itemToEdit.startYear || '',
+            startYear: itemToEdit.startYear || years[0],
             endYear: itemToEdit.currentlyStudying
               ? ''
-              : itemToEdit.endYear || '',
+              : itemToEdit.endYear || years[0],
             isCurrentlyStudying: itemToEdit.currentlyStudying || false,
           };
 
@@ -76,7 +76,7 @@ const EditEducationForm = ({
     }
     previousAddNew.current = addNew;
     previousEditingIndex.current = editingIndex;
-  }, [addNew, editingIndex, educationList, formik]);
+  }, [addNew, editingIndex, educationList, formik, years]);
 
   return (
     <View style={styles.flexStyle}>
