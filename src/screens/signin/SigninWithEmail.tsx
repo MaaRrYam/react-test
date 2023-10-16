@@ -1,9 +1,14 @@
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
+
 import {signInSchema} from '@/utils/schemas/schemas';
-import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  UserCredential,
+} from '@firebase/auth';
 import {useFormik} from 'formik';
-import {Input, PrimaryButton} from '@/components';
+import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
@@ -94,10 +99,9 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
         </View>
-        <PrimaryButton
+        <Button
           title="Sign in"
           onPress={handleSubmit}
-          style={styles.signinPrimaryButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}

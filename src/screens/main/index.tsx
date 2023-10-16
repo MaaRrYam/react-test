@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 
-import {PrimaryButton, SocialLoginButton} from '@/components';
+import {Button, SocialLoginButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {LaunchScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
@@ -64,7 +64,7 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
         </View>
 
         <View>
-          <PrimaryButton
+          <Button
             title="Create Account"
             onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}
             style={{}}
@@ -79,7 +79,7 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
         </View>
 
         <View>
-          <PrimaryButton
+          <Button
             title="Sign In"
             onPress={handleSignButtonClick}
             style={styles.signInButton}

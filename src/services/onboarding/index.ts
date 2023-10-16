@@ -1,17 +1,12 @@
 import {API_GET} from '@/config/api/apiRequests';
 import {SCREEN_NAMES} from '@/constants';
-import {
-  EducationState,
-  EmploymentProps,
-  ExperienceState,
-  UserInterface,
-} from '@/interfaces';
+import {EducationState, ExperienceState, UserInterface} from '@/interfaces';
 import {getUID} from '@/utils/functions';
-import FirebaseService from '../Firebase';
+import FirebaseService from '@/services/Firebase';
 
 let UID: string;
 (async () => {
-  UID = await getUID();
+  UID = (await getUID()) as string;
 })();
 
 const OnboardingService = {
@@ -19,24 +14,18 @@ const OnboardingService = {
     FirebaseService.updateDocument('users', UID, newData);
   },
   setScreen(navigation, setIsLoading: Function, userData: UserInterface) {
-    console.log(userData);
     if (userData?.onboardingStep === 0) {
       setIsLoading(false);
     } else if (userData?.onboardingStep === 1) {
-      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.Education);
     } else if (userData?.onboardingStep === 2) {
-      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.Industry);
     } else if (userData?.onboardingStep === 3) {
-      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.Experience);
     } else if (userData?.onboardingStep === 4) {
-      setIsLoading(false);
       navigation.navigate(SCREEN_NAMES.EmploymentStatus);
-    } else {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   },
   async fetchUserData() {
     try {
@@ -81,7 +70,7 @@ const OnboardingService = {
     await FirebaseService.updateDocument('users', UID, {
       onboarded: true,
     });
-    await API_GET(`email/sendWelcomeEmail`);
+    await API_GET('email/sendWelcomeEmail');
   },
 };
 

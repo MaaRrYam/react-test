@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
-import {BackButton, PrimaryButton, Input} from '@/components';
+import {BackButton, Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
@@ -43,8 +43,8 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
 
   useEffect(() => {
     setInitialValues({
-      minimumSalary: user?.minimumSalary?.toString() || '',
-      totalCompensation: user?.totalCompensation?.toString() || '',
+      minimumSalary: user.minimumSalary?.toString() || '',
+      totalCompensation: user.totalCompensation?.toString() || '',
     });
   }, [user]);
 
@@ -76,7 +76,7 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
         </ScrollView>
       </View>
       <View style={commonStyles.footer}>
-        <PrimaryButton title="Continue" onPress={handleSubmit} />
+        <Button title="Continue" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

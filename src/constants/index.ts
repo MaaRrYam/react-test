@@ -82,8 +82,6 @@ export const employmentStatuses = [
 
 export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
 
-export const PROFILE_TABS = ['Profile', 'Career', 'Education'];
-
 export const NETWORK_REQUESTS = [
   {
     id: 1,

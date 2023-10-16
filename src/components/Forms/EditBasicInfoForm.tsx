@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
+import {Dropdown, Input, Button, TextArea} from '@/components';
 import {UserInterface} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 
@@ -89,11 +89,7 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({user}) => {
         </View>
       </ScrollView>
       <View style={styles.footer}>
-        <PrimaryButton
-          title="Save"
-          onPress={() => {}}
-          style={styles.saveButton}
-        />
+        <Button title="Save" onPress={() => {}} style={styles.saveButton} />
       </View>
     </KeyboardAvoidingView>
   );

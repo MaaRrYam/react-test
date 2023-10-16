@@ -33,8 +33,8 @@ export const addEducationSchema = Yup.object().shape({
 });
 
 export const addExperienceSchema = Yup.object().shape({
-  companyName: Yup.string().required('Current Company is Required'),
-  role: Yup.string().required('Designation is Required'),
+  companyName: Yup.string().required('Company name is Required'),
+  role: Yup.string().required('Role is Required'),
   startYear: Yup.number()
     .min(1950, 'Start Year should be greater than 1950')
     .max(

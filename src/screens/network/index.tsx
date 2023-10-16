@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {PrimaryButton, Header} from '@/components';
+import {Button, Header} from '@/components';
 import {NetworkScreenProps} from '@/types';
 import {COLORS, NETWORK_TABS} from '@/constants';
 import {useAppSelector} from '@/hooks/useAppSelector';
@@ -34,7 +34,7 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
         <Header navigation={navigation} />
 
         <View style={styles.subHeader}>
-          <PrimaryButton
+          <Button
             title={NETWORK_TABS[0]}
             onPress={() => setSelectedTab(NETWORK_TABS[0])}
             backgroundColor={'#F4F4F4'}
@@ -45,7 +45,7 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
                 : styles.buttonStyles
             }
           />
-          <PrimaryButton
+          <Button
             title={NETWORK_TABS[1]}
             onPress={() => setSelectedTab(NETWORK_TABS[1])}
             backgroundColor={'#F4F4F4'}
@@ -56,7 +56,7 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
                 : styles.buttonStyles
             }
           />
-          <PrimaryButton
+          <Button
             title={NETWORK_TABS[2]}
             onPress={() => setSelectedTab(NETWORK_TABS[2])}
             backgroundColor={'#F4F4F4'}

@@ -1,6 +1,6 @@
 import {
   BackButton,
-  PrimaryButton,
+  Button,
   IconButton,
   RoundedButton,
   SecondaryButton,
@@ -41,7 +41,7 @@ import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 
 export {
   BackButton,
-  PrimaryButton,
+  Button,
   RoleCard,
   Link,
   Input,
