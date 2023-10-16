@@ -20,7 +20,7 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
     <BottomSheet
       ref={bottomSheetRef}
       index={isVisible ? 1 : 0}
-      snapPoints={!profilePage ? snapPoints : ['20%', '100%']}
+      snapPoints={snapPoints}
       style={styles.sheetStyles}
       onChange={index => {
         if (index === 0) {
