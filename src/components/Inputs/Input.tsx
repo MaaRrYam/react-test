@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {COLORS, FONTS} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS, MARGINS, PADDING} from '@/constants';
 import {InputProps} from '@/interfaces';
 
 const Input: React.FC<InputProps> = ({
@@ -95,18 +95,18 @@ const Input: React.FC<InputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    marginVertical: MARGINS.general,
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     position: 'relative',
   },
   input: {
-    paddingHorizontal: 12,
-    fontSize: 16,
+    paddingHorizontal: PADDING.general,
+    fontSize: FONTS.text,
     color: COLORS.black,
-    marginTop: 10,
-    marginBottom: -10,
+    marginTop: MARGINS.general,
+    marginBottom: -MARGINS.general / 1.2,
   },
   error: {
     fontSize: FONTS.bodySmall,

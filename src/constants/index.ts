@@ -40,7 +40,7 @@ export const FONTS = {
 };
 
 export const MARGINS = {
-  general: 20,
+  general: Platform.OS === 'ios' ? 20 : 9,
 };
 
 export const PADDING = {
