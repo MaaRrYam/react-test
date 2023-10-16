@@ -5,11 +5,12 @@ import {SigninServiceProps, whiteListedUser} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
 import ToastService from '@/services/toast';
-import {SignInScreenProps} from '@/types';
+import {RootStackParamList} from '@/types';
+import {NavigationProp} from '@react-navigation/native';
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
-    navigation: SignInScreenProps,
+    navigation: NavigationProp<RootStackParamList>,
   ) {
     const user = loggedInUser.user;
     const email = user.email?.toString();
