@@ -7,7 +7,7 @@ import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {requestAccessSchema} from '@/utils/schemas/schemas';
 import {requestAccessFormValues} from '@/interfaces';
-import {submitRequestAccess} from '@/services/requestAccess';
+import {submitRequestAccess} from '@/services/onboarding';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import ToastService from '@/services/toast';
 
@@ -125,7 +125,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
           />
         </ScrollView>
         <View style={commonStyles.footer}>
-          <PrimaryButton
+          <Button
             title="Continue"
             onPress={handleSubmit}
             isLoading={isSubmitting}
