@@ -18,7 +18,7 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: COLORS.border,
     borderBottomWidth: 1,
-    paddingVertical: 5,
+    paddingVertical: 20,
   },
   logo: {
     width: 180,

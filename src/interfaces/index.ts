@@ -10,7 +10,6 @@ export interface EducationCardProps {
   id: number;
   instituteName: string;
   degree: string;
-  cgpa: string;
   startingYear: string;
   endingYear?: string;
   currentlyWorking?: boolean;
@@ -30,7 +29,7 @@ export interface EducationData {
 export interface ButtonProps {
   title: string;
   onPress: () => void;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   backgroundColor?: string;
   textColor?: string;
   borderWidth?: number;
@@ -62,7 +61,7 @@ export interface InputProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   secureTextEntry?: boolean;
   keyboardType?: 'numeric' | 'default' | 'email-address';
   error?: string;
@@ -72,6 +71,7 @@ export interface InputProps {
   setFieldTouched?: any;
   setFieldValue?: any;
   disabled?: boolean;
+  maxLength?: number;
 }
 
 export interface StorageServiceProps {
@@ -93,6 +93,11 @@ export interface FirebaseServiceProps {
     id: string,
     data: DocumentData,
   ): Promise<void>;
+  updateDocument(
+    collectionName: string,
+    documentName: string,
+    data: DocumentData,
+  ): void;
   setDoc(
     collectionName: string,
     docId: string,
@@ -136,20 +141,21 @@ export interface BottomSheetProps {
   children: ReactNode;
   containerStyle?: object;
   contentContainerStyle?: object;
+  profilePage?: boolean;
 }
 
 export interface EducationState {
   id: number;
   instituteName: string;
   degree: string;
-  cgpa: string;
-  startingYear: string;
-  endingYear?: string;
-  currentlyWorking?: boolean;
+  startYear: string;
+  endYear?: string;
+  currentlyStudying?: boolean;
 }
 
 export interface CheckboxProps {
   onPress: (isChecked: boolean) => void;
+  isChecked?: boolean;
   size?: number;
   color?: string;
   style?: any;
@@ -162,10 +168,10 @@ export interface CheckboxProps {
 
 export interface ExperienceState {
   id: number;
-  currentCompany: string;
-  designation: string;
-  startingYear: number;
-  endingYear?: number;
+  companyName: string;
+  role: string;
+  startYear: number;
+  endYear?: number;
   currentlyWorking?: boolean;
 }
 
@@ -196,7 +202,6 @@ export interface EducationProps {
   startYear: string;
   endYear?: string;
   currentlyStudying?: boolean;
-  cgpa?: string;
   educationLevel?: string;
 }
 
@@ -209,7 +214,6 @@ export interface EmploymentProps {
   currentlyWorking?: boolean;
   workEmail?: string;
 }
-
 export interface UserInterface {
   id: string;
   name: string;
@@ -224,6 +228,7 @@ export interface UserInterface {
   selectedRole: string;
   previousRole?: string;
   onboarded: boolean;
+  onboardingStep: number;
   photoUrl?: string;
   department?: string;
   currentCVC?: number;
@@ -245,9 +250,22 @@ export interface UserInterface {
   dateOfBirth?: string;
   phoneNumber?: string;
   currentStatus?: string;
-  minimumSalary?: string;
+  minimumSalary: string;
+  totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
+}
+
+export interface whiteListedUser {
+  name: string;
+  email: string;
+  photoUrl: string;
+  onboarded: boolean;
+  onboardingStep: number;
+  currentCVC: number;
+  totalEarnedCVC: number;
+  selectedRole: string;
+  time: Timestamp;
 }
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
@@ -334,6 +352,18 @@ export interface SearchButtonProps {
   onPress: () => void;
 }
 
+export interface TabDataInterface {
+  bio: string;
+  photo: string;
+}
+
+export interface EducationTabProps {
+  educationList: Array<EducationProps>;
+}
+
+export interface CareerTabProps {
+  careerList: Array<EmploymentProps>;
+}
 export interface CacheServiceInterface {
   set<T>(key: string, data: T): Promise<void>;
   get<T>(key: string): Promise<T | null>;
@@ -400,4 +430,13 @@ export interface GroupedMessage {
 export interface SendMessageInterface extends ChatMessageInterface {
   receiver: UserInterface;
   sender: UserInterface;
+}
+
+export interface CareerCardProps {
+  title: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+  editable: boolean;
+  onEdit: () => void;
 }

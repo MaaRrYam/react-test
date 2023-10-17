@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
+import {COLORS, FONTS} from '../../constants';
 import {InputProps} from '@/interfaces';
 
-const Input: React.FC<InputProps> = ({
+const TextArea: React.FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,
@@ -19,14 +19,14 @@ const Input: React.FC<InputProps> = ({
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
 
-  const handleFocus = useCallback(() => {
+  const handleFocus = () => {
     setIsFocused(true);
     Animated.timing(animatedIsFocused, {
       toValue: 1,
       duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [animatedIsFocused]);
+  };
 
   const handleBlur = () => {
     if (name && setFieldTouched) {
@@ -66,11 +66,6 @@ const Input: React.FC<InputProps> = ({
   const inputContainerStyle = {
     borderColor: touched && error ? 'red' : COLORS.border,
   };
-  useEffect(() => {
-    if (value) {
-      handleFocus();
-    }
-  }, [value, handleFocus]);
 
   return (
     <View>
@@ -79,12 +74,14 @@ const Input: React.FC<InputProps> = ({
         <TextInput
           value={value}
           onChangeText={handleTextChange}
-          style={styles.input}
+          style={[styles.input, styles.textArea]}
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           editable={!disabled}
+          multiline={true}
+          numberOfLines={4}
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}
@@ -95,24 +92,27 @@ const Input: React.FC<InputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    paddingVertical: 10,
-    borderRadius: BORDER_RADIUS.general,
+    paddingVertical: 13,
+    borderRadius: 8,
     borderWidth: 1,
     position: 'relative',
   },
   input: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    fontSize: FONTS.text,
+    fontSize: 16,
     color: COLORS.black,
+  },
+  textArea: {
+    minHeight: 100,
+    textAlignVertical: 'top',
   },
   error: {
     fontSize: FONTS.bodySmall,
     color: 'red',
     marginTop: -10,
     marginLeft: 12,
-    marginBottom: 10,
   },
 });
 
-export default Input;
+export default TextArea;

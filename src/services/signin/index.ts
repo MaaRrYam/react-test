@@ -1,8 +1,7 @@
-import {Alert} from 'react-native';
 import {UserCredential} from 'firebase/auth';
 import FirebaseService from '@/services/Firebase';
 import {auth} from '@/config/firebase';
-import {SigninServiceProps, UserInterface} from '@/interfaces';
+import {SigninServiceProps, whiteListedUser} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {SCREEN_NAMES} from '@/constants';
 import ToastService from '@/services/toast';
@@ -34,34 +33,42 @@ const SigninService: SigninServiceProps = {
           'Your access request is still pending approval.',
         );
       } else {
-        const loggedInUserId: string = user.uid;
-        const userData = await FirebaseService.getDocument(
+        const userData = await FirebaseService.getDocumentsByQuery(
           'users',
-          loggedInUserId,
+          'email',
+          '==',
+          email,
         );
-
-        if (!userData) {
-          const userDetails: UserInterface = {
-            name: user.displayName!,
-            id: user.uid!,
+        if (!userData.length) {
+          const userDetails: whiteListedUser = {
+            name: whiteListedUsers[0].name!,
             email: email!,
             photoUrl: photoUrl,
             onboarded: false,
+            onboardingStep: 0,
             currentCVC: 0,
             totalEarnedCVC: 0,
             selectedRole: whiteListedUsers[0].selectedRole,
             time: FirebaseService.serverTimestamp(),
           };
-          await FirebaseService.addDocument('users', userDetails);
+          const newUserDocId = await FirebaseService.addDocument(
+            'users',
+            userDetails,
+          );
+          await StorageService.setItem<string>('uid', newUserDocId);
+          await FirebaseService.updateDocument('users', newUserDocId, {
+            id: newUserDocId,
+          });
+        } else {
+          await StorageService.setItem<string>('uid', userData[0].id);
         }
-        await StorageService.setItem<string>('uid', user.uid.toString());
         await StorageService.setItem<string>(
           'accessToken',
           (await user.getIdToken()).toString(),
         );
         await ToastService.showSuccess('Successfully signed in');
         navigation.navigate(
-          userData?.onboarded
+          userData[0]?.onboarded
             ? SCREEN_NAMES.BottomNavigator
             : SCREEN_NAMES.Onboarding,
         );

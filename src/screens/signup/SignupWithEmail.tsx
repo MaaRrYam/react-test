@@ -1,4 +1,3 @@
-
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {useFormik} from 'formik';
@@ -110,7 +109,6 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         <Button
           title="Sign up"
           onPress={handleSubmit}
-          style={styles.signUpButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}

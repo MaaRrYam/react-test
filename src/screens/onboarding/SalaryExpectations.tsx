@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
@@ -6,31 +6,47 @@ import {BackButton, Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
-import { SCREEN_NAMES } from '@/constants';
+import {SCREEN_NAMES} from '@/constants';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
 }) => {
+  const {user} = useUserManagement();
+  const [initialValues, setInitialValues] = useState({
+    minimumSalary: '',
+    totalCompensation: '',
+  });
+
   const handleSubmitSalary = (values: {
     minimumSalary: string;
-    baseSalary: string;
     totalCompensation: string;
   }) => {
-    console.log(values);
+    const newData = {
+      minimumSalary: parseInt(values.minimumSalary),
+      totalCompensation: parseInt(values.totalCompensation),
+      onboardingStep: 4,
+    };
+    OnboardingService.SalaryExpectation(newData);
     navigation.navigate(SCREEN_NAMES.OnboardingCompleted);
   };
 
   const {values, touched, handleChange, handleSubmit, errors} = useFormik({
-    initialValues: {
-      minimumSalary: '',
-      baseSalary: '',
-      totalCompensation: '',
-    },
+    initialValues,
+    enableReinitialize: true,
     validationSchema: salaryExpectationsSchema,
     onSubmit: values => {
       handleSubmitSalary(values);
     },
   });
+
+  useEffect(() => {
+    setInitialValues({
+      minimumSalary: user.minimumSalary?.toString() || '',
+      totalCompensation: user.totalCompensation?.toString() || '',
+    });
+  }, [user]);
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -48,14 +64,6 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
             keyboardType="numeric"
             touched={touched.minimumSalary}
             error={errors.minimumSalary}
-          />
-          <Input
-            placeholder="Base Salary"
-            value={values.baseSalary}
-            touched={touched.baseSalary}
-            error={errors.baseSalary}
-            onChangeText={handleChange('baseSalary')}
-            keyboardType="numeric"
           />
           <Input
             placeholder="Total Compensation"

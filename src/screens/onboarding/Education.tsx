@@ -12,12 +12,18 @@ import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
 import {EducationState} from '@/interfaces';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
-  const [education, setEducation] = useState<EducationState[]>([]);
+  const {user} = useUserManagement();
+  const [education, setEducation] = useState<EducationState[]>(
+    user?.educationList || [],
+  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const handleContinue = () => {
+    OnboardingService.education(education);
     navigation.navigate(SCREEN_NAMES.Industry);
   };
 
@@ -39,10 +45,9 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
                 id={item.id}
                 instituteName={item.instituteName}
                 degree={item.degree}
-                cgpa={item.cgpa}
-                startingYear={item.startingYear}
-                endingYear={item.endingYear}
-                currentlyWorking={item.currentlyWorking}
+                startingYear={item.startYear}
+                endingYear={item.endYear}
+                currentlyWorking={item.currentlyStudying}
                 onPress={educationData => {
                   console.log('Education card pressed:', educationData);
                 }}
@@ -59,7 +64,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
             textColor={COLORS.black}
             borderWidth={1}
             borderColor={COLORS.border}
-            disabled={education.length === 3}
+            disabled={education && education.length === 3}
           />
           <Button
             title={education.length ? 'Continue' : 'Skip'}
