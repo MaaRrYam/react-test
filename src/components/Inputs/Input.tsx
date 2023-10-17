@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {BORDER_RADIUS, COLORS, FONTS, MARGINS, PADDING} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
 import {InputProps} from '@/interfaces';
 
 const Input: React.FC<InputProps> = ({
@@ -19,14 +19,14 @@ const Input: React.FC<InputProps> = ({
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setIsFocused(true);
     Animated.timing(animatedIsFocused, {
       toValue: 1,
       duration: 200,
       useNativeDriver: false,
     }).start();
-  };
+  }, [animatedIsFocused]);
 
   const handleBlur = () => {
     if (name && setFieldTouched) {
@@ -51,7 +51,7 @@ const Input: React.FC<InputProps> = ({
     left: 12,
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [22, 13],
+      outputRange: [20, 0],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -66,12 +66,11 @@ const Input: React.FC<InputProps> = ({
   const inputContainerStyle = {
     borderColor: touched && error ? 'red' : COLORS.border,
   };
-
   useEffect(() => {
     if (value) {
       handleFocus();
     }
-  }, [value]);
+  }, [value, handleFocus]);
 
   return (
     <View>
@@ -95,24 +94,24 @@ const Input: React.FC<InputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: MARGINS.general,
+    marginVertical: 10,
     paddingVertical: 10,
     borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     position: 'relative',
   },
   input: {
-    paddingHorizontal: PADDING.general,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     fontSize: FONTS.text,
     color: COLORS.black,
-    marginTop: MARGINS.general,
-    marginBottom: -MARGINS.general / 1.2,
   },
   error: {
     fontSize: FONTS.bodySmall,
     color: 'red',
     marginTop: -10,
     marginLeft: 12,
+    marginBottom: 10,
   },
 });
 
