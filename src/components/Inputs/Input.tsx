@@ -1,6 +1,6 @@
-import React, {useState, useEffect, FC} from 'react';
+import React, {useState, useEffect, useCallback, FC} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {COLORS, FONTS} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
 import {InputProps} from '@/interfaces';
 
 const Input: FC<InputProps> = ({
@@ -19,14 +19,14 @@ const Input: FC<InputProps> = ({
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setIsFocused(true);
     Animated.timing(animatedIsFocused, {
       toValue: 1,
       duration: 200,
       useNativeDriver: false,
     }).start();
-  };
+  }, [animatedIsFocused]);
 
   const handleBlur = () => {
     if (name && setFieldTouched) {
@@ -51,7 +51,7 @@ const Input: FC<InputProps> = ({
     left: 12,
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [22, 13],
+      outputRange: [20, 0],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -66,12 +66,11 @@ const Input: FC<InputProps> = ({
   const inputContainerStyle = {
     borderColor: touched && error ? 'red' : COLORS.border,
   };
-
   useEffect(() => {
     if (value) {
       handleFocus();
     }
-  }, [value]);
+  }, [value, handleFocus]);
 
   return (
     <View>
@@ -97,22 +96,22 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.general,
     borderWidth: 1,
     position: 'relative',
   },
   input: {
     paddingHorizontal: 12,
-    fontSize: 16,
+    paddingVertical: 8,
+    fontSize: FONTS.text,
     color: COLORS.black,
-    marginTop: 10,
-    marginBottom: -10,
   },
   error: {
     fontSize: FONTS.bodySmall,
     color: 'red',
     marginTop: -10,
     marginLeft: 12,
+    marginBottom: 10,
   },
 });
 

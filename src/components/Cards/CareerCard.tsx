@@ -2,16 +2,7 @@ import React from 'react';
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import {Delete, NewChatIcon as NewChat} from '@/assets/icons';
-
-interface CareerCardProps {
-  title?: string;
-  company?: string;
-  startDate?: string;
-  endDate?: string;
-  editable?: boolean;
-  onEdit?: () => void;
-  onDelete?: () => void;
-}
+import {CareerCardProps} from '@/interfaces';
 
 const CareerCard: React.FC<CareerCardProps> = ({
   company = 'Company',

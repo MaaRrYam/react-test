@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
-import {BackButton, PrimaryButton, Link, RoleCard} from '@/components';
+import {BackButton, Button, Link, RoleCard} from '@/components';
 import {ROLES_DATA, SCREEN_NAMES} from '@/constants';
 import {RootStackParamList, SelectRoleScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
@@ -44,7 +44,7 @@ const SelectRole: React.FC<SelectRoleScreenProps> = () => {
         />
       </View>
       <View style={commonStyles.footer}>
-        <PrimaryButton title="Continue" onPress={handleContinue} />
+        <Button title="Continue" onPress={handleContinue} />
         <Link text="Already have an account? Sign In" onPress={handleSignIn} />
       </View>
     </SafeAreaView>

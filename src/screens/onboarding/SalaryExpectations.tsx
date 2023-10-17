@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
-import {BackButton, PrimaryButton, Input} from '@/components';
+import {BackButton, Button, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
@@ -16,18 +16,15 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   const {user} = useUserManagement();
   const [initialValues, setInitialValues] = useState({
     minimumSalary: '',
-    baseSalary: '',
     totalCompensation: '',
   });
 
   const handleSubmitSalary = (values: {
     minimumSalary: string;
-    baseSalary: string;
     totalCompensation: string;
   }) => {
     const newData = {
       minimumSalary: parseInt(values.minimumSalary),
-      baseSalary: parseInt(values.baseSalary),
       totalCompensation: parseInt(values.totalCompensation),
       onboardingStep: 4,
     };
@@ -46,9 +43,8 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
 
   useEffect(() => {
     setInitialValues({
-      minimumSalary: user.minimumSalary.toString(),
-      baseSalary: user.baseSalary.toString(),
-      totalCompensation: user.totalCompensation.toString(),
+      minimumSalary: user.minimumSalary?.toString() || '',
+      totalCompensation: user.totalCompensation?.toString() || '',
     });
   }, [user]);
 
@@ -70,14 +66,6 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
             error={errors.minimumSalary}
           />
           <Input
-            placeholder="Base Salary"
-            value={values.baseSalary}
-            touched={touched.baseSalary}
-            error={errors.baseSalary}
-            onChangeText={handleChange('baseSalary')}
-            keyboardType="numeric"
-          />
-          <Input
             placeholder="Total Compensation"
             value={values.totalCompensation}
             onChangeText={handleChange('totalCompensation')}
@@ -88,7 +76,7 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
         </ScrollView>
       </View>
       <View style={commonStyles.footer}>
-        <PrimaryButton title="Continue" onPress={handleSubmit} />
+        <Button title="Continue" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

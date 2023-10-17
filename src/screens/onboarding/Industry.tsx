@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {BackButton, PrimaryButton} from '@/components';
+import {BackButton, Button} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
@@ -85,7 +85,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
         )}
       </View>
       <View style={commonStyles.footer}>
-        <PrimaryButton
+        <Button
           title="Continue"
           onPress={handleSubmit}
           disabled={!selectedIndustries.length}

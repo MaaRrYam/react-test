@@ -1,9 +1,9 @@
 import {
   BackButton,
-  PrimaryButton,
   IconButton,
   RoundedButton,
   SecondaryButton,
+  PrimaryButton,
 } from '@/components/Buttons';
 import {
   RoleCard,
@@ -36,14 +36,12 @@ import Header from '@/components/Header';
 import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search';
-import EditProfile from '@/components/EditProfile';
 import Feed from '@/components/Feed/Feed';
 import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 import ProfileFeed from '@/components/ProfileFeed';
 export {
   BackButton,
-  PrimaryButton,
   RoleCard,
   Link,
   Input,
@@ -74,10 +72,10 @@ export {
   Dropdown,
   LocationDropdown,
   TextArea,
-  EditProfile,
   ChatsList,
   Chat,
   NewChat,
   ProfileFeed,
   YearDropdown,
+  PrimaryButton,
 };

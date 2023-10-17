@@ -260,7 +260,6 @@ export interface UserInterface {
   phoneNumber?: string;
   currentStatus?: string;
   minimumSalary: string;
-  baseSalary: number;
   totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
@@ -268,7 +267,6 @@ export interface UserInterface {
 
 export interface whiteListedUser {
   name: string;
-  id: string;
   email: string;
   photoUrl: string;
   onboarded: boolean;
@@ -512,4 +510,13 @@ export interface YearDropdownProps {
   name: string;
   label: string;
   style?: StyleProp<ViewStyle>;
+}
+export interface CareerCardProps {
+  title?: string;
+  company?: string;
+  startDate?: string;
+  endDate?: string;
+  editable?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
