@@ -58,7 +58,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
         </View>
         <View style={commonStyles.footer}>
           <Button
-            title={education ? 'Add More' : 'Add Education'}
+            title="Add More"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
@@ -67,7 +67,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
             disabled={education && education.length === 3}
           />
           <Button
-            title={education ? 'Continue' : 'Skip'}
+            title={education.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />
         </View>

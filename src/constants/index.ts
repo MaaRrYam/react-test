@@ -21,6 +21,7 @@ export const COLORS = {
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
   lightGrayBackground: '#F4F4F4',
+  deleteButtonBackground: 'rgba(255, 24, 24, 0.06)',
 };
 
 export const BORDER_RADIUS = {
@@ -39,7 +40,7 @@ export const FONTS = {
 };
 
 export const MARGINS = {
-  general: 20,
+  general: Platform.OS === 'ios' ? 20 : 9,
 };
 
 export const PADDING = {

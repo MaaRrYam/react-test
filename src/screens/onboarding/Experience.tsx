@@ -59,7 +59,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
         </View>
         <View style={commonStyles.footer}>
           <Button
-            title={experience ? 'Add More' : 'Add Experience'}
+            title="Add More"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
@@ -67,7 +67,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
             borderColor={COLORS.border}
           />
           <Button
-            title={experience ? 'Continue' : 'Skip'}
+            title={experience.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />
         </View>

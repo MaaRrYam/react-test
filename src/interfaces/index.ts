@@ -29,7 +29,7 @@ export interface EducationData {
 export interface ButtonProps {
   title: string;
   onPress: () => void;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   backgroundColor?: string;
   textColor?: string;
   borderWidth?: number;
@@ -61,7 +61,7 @@ export interface InputProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   secureTextEntry?: boolean;
   keyboardType?: 'numeric' | 'default' | 'email-address';
   error?: string;
@@ -71,6 +71,7 @@ export interface InputProps {
   setFieldTouched?: any;
   setFieldValue?: any;
   disabled?: boolean;
+  maxLength?: number;
 }
 
 export interface StorageServiceProps {
@@ -158,6 +159,7 @@ export interface BottomSheetProps {
   children: ReactNode;
   containerStyle?: object;
   contentContainerStyle?: object;
+  profilePage?: boolean;
 }
 
 export interface EducationState {
@@ -171,6 +173,7 @@ export interface EducationState {
 
 export interface CheckboxProps {
   onPress: (isChecked: boolean) => void;
+  isChecked?: boolean;
   size?: number;
   color?: string;
   style?: any;
@@ -266,10 +269,21 @@ export interface UserInterface {
   phoneNumber?: string;
   currentStatus?: string;
   minimumSalary: string;
-  baseSalary: number;
   totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
+}
+
+export interface whiteListedUser {
+  name: string;
+  email: string;
+  photoUrl: string;
+  onboarded: boolean;
+  onboardingStep: number;
+  currentCVC: number;
+  totalEarnedCVC: number;
+  selectedRole: string;
+  time: Timestamp;
 }
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
@@ -356,6 +370,18 @@ export interface SearchButtonProps {
   onPress: () => void;
 }
 
+export interface TabDataInterface {
+  bio: string;
+  photo: string;
+}
+
+export interface EducationTabProps {
+  educationList: Array<EducationProps>;
+}
+
+export interface CareerTabProps {
+  careerList: Array<EmploymentProps>;
+}
 export interface CacheServiceInterface {
   set<T>(key: string, data: T): Promise<void>;
   get<T>(key: string): Promise<T | null>;
@@ -484,4 +510,13 @@ export interface CreatePostInterface {
   creationTime: Timestamp;
   edited: boolean;
   editedTime: Timestamp;
+}
+
+export interface CareerCardProps {
+  title: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+  editable: boolean;
+  onEdit: () => void;
 }

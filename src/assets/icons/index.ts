@@ -6,7 +6,7 @@ import Comment from './Comment';
 import ForwardArrow from './ForwardArrow';
 import Home from './Home';
 import Network from './Network';
-import Image from './Image';
+import ImageIcon from './Image';
 import Jobs from './Jobs';
 import NewChatIcon from './NewChat';
 import Notifications from './Notifications';
@@ -15,6 +15,10 @@ import Search from './Search';
 import ShareIcon from './Share';
 import ThreeDots from './ThreeDots';
 import Empty from './Empty';
+import Cross from './Cross';
+import ArrowDown from './ArrowDown';
+import Delete from './Delete';
+import CheckMark from './CheckMark';
 import SendIcon from './Send';
 
 export {
@@ -26,7 +30,7 @@ export {
   ForwardArrow,
   Home,
   Network,
-  Image,
+  ImageIcon,
   Jobs,
   NewChatIcon,
   Notifications,
@@ -35,5 +39,9 @@ export {
   ShareIcon,
   ThreeDots,
   Empty,
+  Cross,
+  ArrowDown,
+  Delete,
+  CheckMark,
   SendIcon,
 };
