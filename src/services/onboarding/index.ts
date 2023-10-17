@@ -4,13 +4,10 @@ import {EducationState, ExperienceState, UserInterface} from '@/interfaces';
 import {getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 
-let UID: string;
-(async () => {
-  UID = (await getUID()) as string;
-})();
-
 const OnboardingService = {
   async getStarted(newData: UserInterface) {
+    const UID = (await getUID()) as string;
+
     FirebaseService.updateDocument('users', UID, newData);
   },
   setScreen(navigation, setIsLoading: Function, userData: UserInterface) {
@@ -41,6 +38,7 @@ const OnboardingService = {
     }
   },
   async education(education: EducationState) {
+    const UID = (await getUID()) as string;
     FirebaseService.updateDocument('users', UID, {
       educationList: education,
       onboardingStep: 1,
@@ -48,28 +46,38 @@ const OnboardingService = {
   },
 
   async industry(selectedIndustries: string[]) {
+    const UID = (await getUID()) as string;
+
     await FirebaseService.updateDocument('users', UID, {
       jobTags: selectedIndustries,
       onboardingStep: 2,
     });
   },
   async experience(experience: ExperienceState) {
+    const UID = (await getUID()) as string;
+
     await FirebaseService.updateDocument('users', UID, {
       employmentList: experience,
       onboardingStep: 3,
     });
   },
   async employmentStatus(employment: string) {
+    const UID = (await getUID()) as string;
+
     FirebaseService.updateDocument('users', UID, {
       currentStatus: employment,
       onboardingStep: 4,
     });
   },
   async SalaryExpectation(newData: UserInterface) {
+    const UID = (await getUID()) as string;
+
     FirebaseService.updateDocument('users', UID, newData);
   },
 
   async onboardingCompleted() {
+    const UID = (await getUID()) as string;
+
     await FirebaseService.updateDocument('users', UID, {
       onboarded: true,
     });

@@ -39,8 +39,6 @@ const SigninService: SigninServiceProps = {
           '==',
           email,
         );
-        console.log(userData[0].id);
-
         if (!userData.length) {
           const userDetails: whiteListedUser = {
             name: whiteListedUsers[0].name!,
@@ -70,7 +68,7 @@ const SigninService: SigninServiceProps = {
         );
         await ToastService.showSuccess('Successfully signed in');
         navigation.navigate(
-          userData?.onboarded
+          userData[0]?.onboarded
             ? SCREEN_NAMES.BottomNavigator
             : SCREEN_NAMES.Onboarding,
         );
