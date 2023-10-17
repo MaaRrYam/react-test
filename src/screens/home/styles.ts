@@ -63,7 +63,6 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 16,
-    elevation: 2,
   },
   feedTitle: {
     fontSize: 18,
