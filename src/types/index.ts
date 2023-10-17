@@ -1,4 +1,4 @@
-import {UserInterface} from '@/interfaces';
+import {FeedItem, UserInterface} from '@/interfaces';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -30,6 +30,9 @@ export type RootStackParamList = {
   Signup: undefined;
   SignupWithEmail: undefined;
   Header: undefined;
+  Article: {
+    article: FeedItem;
+  };
 };
 
 export type LaunchScreenProps = {
@@ -92,6 +95,11 @@ export type NetworkScreenProps = {
 export type ChatDetailsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ChatDetails'>;
   route: RouteProp<RootStackParamList, 'ChatDetails'>;
+};
+
+export type ArticleScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Article'>;
+  route: RouteProp<RootStackParamList, 'Article'>;
 };
 
 export type NotificationsScreenProps = {

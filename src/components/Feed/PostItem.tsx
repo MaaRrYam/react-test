@@ -163,7 +163,7 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     // }
     const {share, sharedAction, dismissedAction} = Share;
 
-    const appUrl = 'myapp://post/' + item.id;
+    const appUrl = 'cnmobile://post/' + item.id;
     const shareOptions = {
       title: 'Share a post',
       message: item.text || 'Check out this post',
