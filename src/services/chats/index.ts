@@ -27,18 +27,27 @@ let UID: string;
 })();
 
 const ChatsService = {
-  async getAllChats() {
-    try {
-      const response = (await FirebaseService.getAllDocuments(
-        `users/${UID}/chats`,
-      )) as ChatsInterface[];
+  async getAllChatsRealtime(updateChats: (chats: ChatsInterface[]) => void) {
+    const db = getFirestore();
+    const chatQuery = query(
+      collection(db, `users/${UID}/chats`),
+      orderBy('time', 'desc'),
+    );
 
-      const result: ChatsInterface[] = await Promise.all(
-        response.map(async item => {
-          const author = (await FirebaseService.getDocument(
-            'users',
-            item.userId,
-          )) as UserInterface;
+    const unsubscribe = onSnapshot(chatQuery, async snapshot => {
+      const chatsData: ChatsInterface[] = await Promise.all(
+        snapshot.docs.map(async doc => {
+          const item = doc.data() as ChatsInterface;
+          let author = {} as UserInterface;
+          if (await Cache.get(`user_${item.userId}`)) {
+            author = (await Cache.get(`user_${item.userId}`)) as UserInterface;
+          } else {
+            author = (await FirebaseService.getDocument(
+              'users',
+              item.userId,
+            )) as UserInterface;
+            await Cache.set(`user_${item.userId}`, author);
+          }
 
           return {
             ...item,
@@ -48,13 +57,13 @@ const ChatsService = {
         }),
       );
 
-      const sortedChats = result.sort(function (a, b) {
-        return ('' + a.time).localeCompare(b.time as string);
-      });
-      return sortedChats;
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
+      const sortedChats = chatsData.sort((a, b) =>
+        ('' + a.time).localeCompare(b.time as string),
+      );
+      updateChats(sortedChats);
+    });
+
+    return unsubscribe;
   },
   groupMessagesByDate(messages: ChatMessageInterface[]) {
     const groupedMessages: GroupedMessage[] = [];

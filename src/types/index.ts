@@ -1,3 +1,4 @@
+import {UserInterface} from '@/interfaces';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   ChatDetails: {
     id: string;
     name: string;
+    user: UserInterface;
   };
   Notifications: undefined;
   Launch: undefined;

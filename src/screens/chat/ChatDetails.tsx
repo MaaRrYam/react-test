@@ -13,13 +13,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {
-  Asset,
-  ChatsInterface,
-  GroupedMessage,
-  UserInterface,
-} from '@/interfaces';
+import {Asset, GroupedMessage, UserInterface} from '@/interfaces';
 import {styles} from './styles';
 import {getUID} from '@/utils/functions';
 import ChatsService from '@/services/chats';
@@ -36,12 +30,8 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const [isMessageSending, setIsMessageSending] = useState<boolean>(false);
 
   const {
-    params: {name, id},
+    params: {name, id, user},
   } = route;
-
-  const chatHead = useAppSelector(state =>
-    state.chats.chats.find(chat => chat.id === id),
-  ) as ChatsInterface;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +63,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       receiverId: id,
       message,
       sender,
-      receiver: chatHead.user,
+      receiver: user,
       fileUrl: '',
     };
     if (selectedImage) {
@@ -124,8 +114,8 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
         <BackButton style={styles.backButton} />
         <Image
           source={
-            chatHead?.user?.photoUrl
-              ? {uri: chatHead.user.photoUrl}
+            user?.photoUrl
+              ? {uri: user.photoUrl}
               : require('@/assets/images/user.png')
           }
           style={styles.userImage}
