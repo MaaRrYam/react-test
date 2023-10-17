@@ -59,12 +59,13 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
 
       console.log('Sign-in successful');
     } catch (error: any) {
-      const errorMessage =
-        error.code && getErrorMessageByCode(error.code)
-          ? getErrorMessageByCode(error.code)
-          : 'An error occurred during sign-in.';
+      // const errorMessage =
+      //   error.code && getErrorMessageByCode(error.code)
+      //     ? getErrorMessageByCode(error.code)
+      //     : 'An error occurred during sign-in.';
 
-      await ToastService.showError(errorMessage);
+      // await ToastService.showError(errorMessage);
+      console.log(error);
     } finally {
       setSubmitting(false);
     }

@@ -258,7 +258,6 @@ export interface UserInterface {
 
 export interface whiteListedUser {
   name: string;
-  id: string;
   email: string;
   photoUrl: string;
   onboarded: boolean;

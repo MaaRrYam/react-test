@@ -15,12 +15,7 @@ const RootNavigation = () => {
       try {
         const uid = await StorageService.getItem('uid');
         if (uid) {
-          const userDoc = await FirebaseService.getDocumentsByQuery(
-            'users',
-            'id',
-            '==',
-            uid,
-          );
+          const userDoc = await FirebaseService.getDocument('users', uid);
           if (userDoc && !userDoc.onboarded) {
             setInitialScreen(SCREEN_NAMES.Onboarding);
           } else {
