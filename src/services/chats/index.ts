@@ -69,7 +69,7 @@ const ChatsService = {
     const groupedMessages: GroupedMessage[] = [];
 
     messages.forEach(message => {
-      const messageDate = new Date(message.time.seconds * 1000);
+      const messageDate = new Date(message.time?.seconds * 1000);
       const formattedDate = `${messageDate.toLocaleDateString('en-US', {
         weekday: 'long',
         day: 'numeric',
