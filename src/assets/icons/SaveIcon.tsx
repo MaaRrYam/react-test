@@ -1,13 +1,13 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Svg, Rect, Path} from 'react-native-svg';
+import {Svg, Rect, Path, Defs, ClipPath} from 'react-native-svg';
 
 const SaveIcon = () => (
   <View style={styles.container}>
-    <Svg width={20} height={20} viewBox="0 0 20 20">
+    <Svg width={28} height={28} viewBox="0 0 24 24">
       <Defs>
         <ClipPath id="clip0_8741_4041">
-          <Rect width={20} height={20} fill="white" />
+          <Rect width={24} height={24} fill="white" />
         </ClipPath>
       </Defs>
       <Path

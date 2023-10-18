@@ -16,6 +16,17 @@ const JobsService = {
   async getAllJobs() {
     return FirebaseService.getAllDocuments('jobs') as JobInterface[];
   },
+  async checkSavedJob(jobId: string) {
+    return FirebaseService.getDocument(`savedItems/${UID}/jobs`, jobId);
+  },
+  async saveJob(jobId: string) {
+    return FirebaseService.setDoc(`savedItems/${UID}/jobs`, jobId, {
+      jobId: jobId,
+    });
+  },
+  async unSaveJob(jobId: string) {
+    return FirebaseService.deleteDocument(`savedItems/${UID}/jobs`, jobId);
+  },
   async getPosterJob(userID: string) {
     let user = {} as UserInterface;
 

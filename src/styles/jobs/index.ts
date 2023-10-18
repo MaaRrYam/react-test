@@ -71,7 +71,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     flex: 1,
   },
   jobTitle: {
-    fontSize: FONTS.heading,
+    fontSize: FONTS.heading / 1.3,
     fontWeight: 'bold',
     paddingLeft: 20,
     marginTop: MARGINS.general,

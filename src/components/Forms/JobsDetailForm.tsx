@@ -7,19 +7,26 @@ import {
   UserInterface,
 } from '@/interfaces';
 import {jobDetailFormStyles} from '@/styles/jobs';
-import {BaseSalary, Compensation, Location} from '@/assets/icons/index';
+import {
+  BaseSalary,
+  Compensation,
+  Location,
+  SaveIcon,
+  UnsaveIcon,
+} from '@/assets/icons/index';
 
 import React from 'react';
 import JobsService from '@/services/jobs';
 import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
 import JobQuestionsForm from '@/components/Forms/JobQuestionsForm';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobsDetailForm = ({
   selectedJob,
   setIsBottomSheetVisible,
 }: JobsDetailFormInterface) => {
-  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>({});
+  const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>();
   const [isQABottomSheetOpen, setIsQABottomSheetOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isBtnDisable, setIsBtnDisable] = useState(false);
@@ -28,6 +35,14 @@ const JobsDetailForm = ({
     ApplicantInterface[]
   >([]);
   const [btnTitle, setBtnTitle] = useState('Apply');
+  const [saved, setSaved] = useState(false);
+  const [isLoadingPosterJob, setIsLoadingPosterJob] = useState(true);
+  const [isLoadingCheckApplied, setIsLoadingCheckApplied] = useState(true);
+  const [
+    isLoadingCheckExistingApplications,
+    setIsLoadingCheckExistingApplications,
+  ] = useState(true);
+  const [isLoadingSaved, setIsLoadingSaved] = useState(true);
 
   const handleOnPress = () => {
     if (checkExisitngApplications.length >= 3) {
@@ -57,24 +72,70 @@ const JobsDetailForm = ({
     }
   };
 
+  const handleSaveJob = async () => {
+    if (saved) {
+      JobsService.unSaveJob(selectedJob?.id)
+        .then(() => {
+          setSaved(false);
+          ToastService.showSuccess('Job unsaved');
+        })
+        .catch(() => {
+          ToastService.showError('Cannot unsave job');
+        });
+    } else {
+      JobsService.saveJob(selectedJob?.id)
+        .then(res => {
+          setSaved(true);
+          ToastService.showSuccess('Job Saved');
+        })
+        .catch(() => {
+          ToastService.showError('Cannot save job');
+        });
+    }
+  };
+
   useEffect(() => {
-    JobsService.getPosterJob(selectedJob?.posterJobID!).then(setPosterJobInfo);
-    JobsService.checkAppliedForJob(selectedJob?.id!).then(setCheckApplied);
-    JobsService.checkExistingJobApplication().then(
-      setCheckExistingApplications,
-    );
+    JobsService.getPosterJob(selectedJob?.posterJobID!).then(data => {
+      setPosterJobInfo(data);
+      setIsLoadingPosterJob(false);
+    });
+
+    JobsService.checkAppliedForJob(selectedJob?.id!).then(data => {
+      setCheckApplied(data);
+      setIsLoadingCheckApplied(false);
+    });
+
+    JobsService.checkExistingJobApplication().then(data => {
+      setCheckExistingApplications(data);
+      setIsLoadingCheckExistingApplications(false);
+    });
+
+    JobsService.checkSavedJob(selectedJob?.id).then(data => {
+      setSaved(data);
+      setIsLoadingSaved(false);
+    });
   }, []);
 
   useEffect(() => {
-    if (checkApplied.length > 0) {
-      setIsBtnDisable(true);
-      setBtnTitle('Applied');
-    }
-
-    if (checkApplied?.length >= 0 || checkExisitngApplications?.length >= 0) {
+    if (
+      !isLoadingPosterJob &&
+      !isLoadingCheckApplied &&
+      !isLoadingCheckExistingApplications &&
+      !isLoadingSaved
+    ) {
+      if (checkApplied.length > 0) {
+        setIsBtnDisable(true);
+        setBtnTitle('Applied');
+      }
       setIsLoading(false);
     }
-  }, [checkApplied, checkExisitngApplications]);
+  }, [
+    isLoadingPosterJob,
+    isLoadingCheckApplied,
+    isLoadingCheckExistingApplications,
+    isLoadingSaved,
+    checkApplied,
+  ]);
 
   return (
     <>
@@ -84,12 +145,27 @@ const JobsDetailForm = ({
         <ScrollView>
           <SafeAreaView style={jobDetailFormStyles.SafeAreaView}>
             <View>
-              <Text style={jobDetailFormStyles.jobTitle}>
-                {selectedJob.jobTitle}
-              </Text>
-              <Text style={jobDetailFormStyles.companyName}>
-                {selectedJob.companyName}
-              </Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <View style={{flex: 1, flexDirection: 'column'}}>
+                  <Text style={jobDetailFormStyles.jobTitle}>
+                    {selectedJob.jobTitle}
+                  </Text>
+                  <Text style={jobDetailFormStyles.companyName}>
+                    {selectedJob.companyName}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={handleSaveJob}
+                  style={{paddingRight: 30}}>
+                  {saved ? <SaveIcon /> : <UnsaveIcon />}
+                </TouchableOpacity>
+              </View>
 
               <View style={jobDetailFormStyles.basicDetails}>
                 <View style={jobDetailFormStyles.basicDetailItem}>

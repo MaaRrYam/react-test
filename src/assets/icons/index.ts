@@ -23,6 +23,8 @@ import SendIcon from './Send';
 import Location from './Location';
 import Compensation from './Compensation';
 import BaseSalary from './BaseSalary';
+import SaveIcon from './SaveIcon';
+import UnsaveIcon from './UnsaveIcon';
 
 export {
   BackArrow,
@@ -50,4 +52,6 @@ export {
   Location,
   Compensation,
   BaseSalary,
+  SaveIcon,
+  UnsaveIcon,
 };
