@@ -92,6 +92,7 @@ export const employmentStatuses = [
 ];
 
 export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
+export const JOBS_TABS = ['Jobs', 'Past Applications', 'Saved'];
 
 export const NETWORK_REQUESTS = [
   {

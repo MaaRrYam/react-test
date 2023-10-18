@@ -11,6 +11,10 @@ import {
 import {StyleSheet} from 'react-native';
 
 export const jobMainStyles = StyleSheet.create({
+  outerContainer: {
+    backgroundColor: COLORS.lightBackground,
+    flex: 1,
+  },
   SafeAreaView: {
     flex: 1,
     backgroundColor: COLORS.white,
@@ -33,6 +37,22 @@ export const jobMainStyles = StyleSheet.create({
     color: COLORS.primary,
     fontWeight: 'bold',
     fontSize: FONTS.text,
+  },
+  subHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  buttonStyles: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  selectedButtonStyles: {
+    paddingHorizontal: 15,
+    backgroundColor: COLORS.lightBlueBackground,
+    color: COLORS.black,
+    paddingVertical: 10,
   },
 });
 
@@ -133,7 +153,6 @@ export const jobDetailFormStyles = StyleSheet.create({
 
 export const jobsFilterFormStyles = StyleSheet.create({
   SafeAreaView: {
-    flex: 1,
     paddingLeft: PADDING.general,
   },
   inputfield: {
