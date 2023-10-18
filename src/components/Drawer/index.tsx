@@ -76,7 +76,7 @@ const Tabs = () => {
       <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
       <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
       <Tab.Screen name={SCREEN_NAMES.Notifications} component={Notifications} />
-      <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
+      <Tab.Screen name={SCREEN_NAMES.Jobs} component={Jobs} />
       <Tab.Screen name={SCREEN_NAMES.Profile} component={SettingsScreen} />
     </Tab.Navigator>
   );

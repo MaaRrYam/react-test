@@ -13,7 +13,7 @@ import {Checkbox} from '@/components/Inputs';
 import {jobsFilterFormStyles} from '@/styles/jobs';
 
 import Input from '@/components/Inputs/Input';
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
+import {Button} from '../Buttons';
 
 const JobsFilterForm = ({
   selectedFilters,
@@ -77,7 +77,7 @@ const JobsFilterForm = ({
           </View>
         </View>
         <View style={jobsFilterFormStyles.applyButtonContainer}>
-          <PrimaryButton title="Apply" onPress={applyFilters} />
+          <Button title="Apply" onPress={applyFilters} />
         </View>
       </SafeAreaView>
     </ScrollView>

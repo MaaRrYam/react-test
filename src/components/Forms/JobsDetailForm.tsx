@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView, Image} from 'react-native';
-import {PrimaryButton, BottomSheet} from '@/components';
+import {Button, BottomSheet} from '@/components';
 import {
   ApplicantInterface,
   JobsDetailFormInterface,
@@ -71,7 +71,7 @@ const JobsDetailForm = ({
       setBtnTitle('Applied');
     }
 
-    if (checkApplied?.length || checkExisitngApplications?.length) {
+    if (checkApplied?.length >= 0 || checkExisitngApplications?.length >= 0) {
       setIsLoading(false);
     }
   }, [checkApplied, checkExisitngApplications]);
@@ -123,7 +123,7 @@ const JobsDetailForm = ({
                 </View>
               )}
               <View style={jobDetailFormStyles.applyButtonContainer}>
-                <PrimaryButton
+                <Button
                   disabled={isBtnDisable}
                   title={btnTitle}
                   onPress={handleOnPress}
