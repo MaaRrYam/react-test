@@ -1,6 +1,5 @@
-
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
+import {View, Text, SafeAreaView, Image} from 'react-native';
 import {useFormik} from 'formik';
 import {
   createUserWithEmailAndPassword,
@@ -15,9 +14,11 @@ import {styles} from '@/styles/signupWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
 import {signUpSchema} from '@/utils/schemas/schemas';
 import ToastService from '@/services/toast';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   const auth = getAuth();
+  const dispatch = useAppDispatch();
   const {
     values,
     touched,
@@ -51,7 +52,11 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
           formValues.password,
         );
 
-      await SigninService.checkIfUserIsWhitelisted(userCredentials, navigation);
+      await SigninService.checkIfUserIsWhitelisted(
+        userCredentials,
+        navigation,
+        dispatch,
+      );
       console.log('Sign-in successful');
     } catch (error: any) {
       const errorMessage =
@@ -110,7 +115,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
         <PrimaryButton
           title="Sign up"
           onPress={handleSubmit}
-          style={styles.signUpPrimaryButtonContainer}
+          style={styles.signUpButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}

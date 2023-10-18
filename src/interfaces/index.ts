@@ -6,6 +6,7 @@ import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import {NavigationStateType, RootStackParamList} from '@/types';
+import { DispatchProp } from 'react-redux';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -132,6 +133,7 @@ export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
     navigation: NavigationProp<RootStackParamList>,
+    dispatch: any,
   ): Promise<void>;
 }
 export interface requestAccessFormValues {

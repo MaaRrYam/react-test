@@ -15,9 +15,11 @@ import {KeyboardAvoidingView} from 'react-native';
 import {styles} from '@/styles/signinWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
 import ToastService from '@/services/toast';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const auth = getAuth();
 const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
   const {
     values,
     touched,
@@ -48,7 +50,11 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
         formValues.password,
       );
 
-      await SigninService.checkIfUserIsWhitelisted(userCredential, navigation);
+      await SigninService.checkIfUserIsWhitelisted(
+        userCredential,
+        navigation,
+        dispatch,
+      );
 
       console.log('Sign-in successful');
     } catch (error: any) {
