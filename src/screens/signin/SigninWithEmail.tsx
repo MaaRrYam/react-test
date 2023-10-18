@@ -1,15 +1,26 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Alert, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {signInSchema} from '@/utils/schemas/schemas';
-import {getAuth, signInWithEmailAndPassword} from '@firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  UserCredential,
+} from '@firebase/auth';
 import {useFormik} from 'formik';
-import {Input, PrimaryButton} from '@/components';
+import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
-import SigninService from '@/services/signin';
-import {KeyboardAvoidingView} from 'react-native';
-import {styles} from '@/styles/signinWithEmail';
 import {getErrorMessageByCode} from '@/utils/functions';
+import {styles} from '@/styles/signinWithEmail';
+
+import SigninService from '@/services/signin';
 import ToastService from '@/services/toast';
 
 const auth = getAuth();
@@ -48,12 +59,13 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
 
       console.log('Sign-in successful');
     } catch (error: any) {
-      const errorMessage =
-        error.code && getErrorMessageByCode(error.code)
-          ? getErrorMessageByCode(error.code)
-          : 'An error occurred during sign-in.';
+      // const errorMessage =
+      //   error.code && getErrorMessageByCode(error.code)
+      //     ? getErrorMessageByCode(error.code)
+      //     : 'An error occurred during sign-in.';
 
-      await ToastService.showError(errorMessage);
+      // await ToastService.showError(errorMessage);
+      console.log(error);
     } finally {
       setSubmitting(false);
     }
@@ -94,10 +106,9 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
         </View>
-        <PrimaryButton
+        <Button
           title="Sign in"
           onPress={handleSubmit}
-          style={styles.signinPrimaryButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}

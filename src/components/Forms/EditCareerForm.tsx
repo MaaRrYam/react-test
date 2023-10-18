@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {EmploymentProps} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
-import {Input, Checkbox, PrimaryButton, CareerCard} from '@/components';
+import {Input, Checkbox, Button, CareerCard} from '@/components';
 
 interface CareerFormProps {
   careerList: Array<EmploymentProps>;
@@ -138,7 +138,7 @@ const EditCareerForm: React.FC<CareerFormProps> = ({
       )}
       {isEditing && (
         <View style={styles.footer}>
-          <PrimaryButton
+          <Button
             title="Save"
             onPress={() => toggleEditForm()}
             style={styles.saveButton}

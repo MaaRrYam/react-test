@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import {EducationProps} from '@/interfaces';
-import {Checkbox, Input, PrimaryButton, CareerCard} from '@/components';
+import {Checkbox, Input, Button, CareerCard} from '@/components';
 import {COLORS, FONTS} from '@/constants';
 
 interface EditEducationProps {
@@ -148,7 +148,7 @@ const EditEducationForm = ({
       )}
       {isEditing && (
         <View style={styles.footer}>
-          <PrimaryButton
+          <Button
             title="Save"
             onPress={() => {
               setIsEditing(false);

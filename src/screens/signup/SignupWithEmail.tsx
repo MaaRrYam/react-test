@@ -1,4 +1,3 @@
-
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import {useFormik} from 'formik';
@@ -7,7 +6,7 @@ import {
   getAuth,
   UserCredential,
 } from '@firebase/auth';
-import {Input, PrimaryButton} from '@/components';
+import {Input, Button} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
@@ -107,10 +106,9 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
         </View>
-        <PrimaryButton
+        <Button
           title="Sign up"
           onPress={handleSubmit}
-          style={styles.signUpPrimaryButtonContainer}
           isLoading={isSubmitting}
           activityIndicatorColor={COLORS.white}
           textColor={COLORS.white}

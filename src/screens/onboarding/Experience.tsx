@@ -3,7 +3,7 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
   BackButton,
-  PrimaryButton,
+  Button,
   ExperienceCard,
   BottomSheet,
   ExperienceForm,
@@ -58,7 +58,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
           />
         </View>
         <View style={commonStyles.footer}>
-          <PrimaryButton
+          <Button
             title="Add More"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
@@ -66,7 +66,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
             borderWidth={1}
             borderColor={COLORS.border}
           />
-          <PrimaryButton
+          <Button
             title={experience.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />

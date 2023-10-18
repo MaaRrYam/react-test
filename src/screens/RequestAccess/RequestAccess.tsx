@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, SafeAreaView, ScrollView, Alert} from 'react-native';
 import {useFormik} from 'formik';
 
-import {BackButton, PrimaryButton, Link, Input} from '@/components';
+import {BackButton, Button, Link, Input} from '@/components';
 import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {requestAccessSchema} from '@/utils/schemas/schemas';
@@ -125,7 +125,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
           />
         </ScrollView>
         <View style={commonStyles.footer}>
-          <PrimaryButton
+          <Button
             title="Continue"
             onPress={handleSubmit}
             isLoading={isSubmitting}

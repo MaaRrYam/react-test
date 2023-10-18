@@ -3,7 +3,7 @@ import {ScrollView, SafeAreaView, View} from 'react-native';
 import {useFormik} from 'formik';
 
 import {addExperienceSchema} from '@/utils/schemas/onboarding';
-import {Input, Checkbox, PrimaryButton} from '@/components';
+import {Input, Checkbox, Button} from '@/components';
 import {COLORS} from '@/constants';
 import {ExperienceState} from '@/interfaces';
 import {commonStyles} from '@/styles/onboarding';
@@ -112,7 +112,7 @@ const ExperienceForm = ({
         />
 
         <View style={commonStyles.footer}>
-          <PrimaryButton title="Add as Work Experience" onPress={handleSubmit} />
+          <Button title="Add as Work Experience" onPress={handleSubmit} />
         </View>
       </ScrollView>
     </SafeAreaView>
