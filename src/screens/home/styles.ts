@@ -40,7 +40,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: PADDING.general - 6,
     marginLeft: 10,
-    alignItems: 'center',
   },
   searchBarText: {
     color: COLORS.text,

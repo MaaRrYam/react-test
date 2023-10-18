@@ -31,7 +31,8 @@ export type RootStackParamList = {
   SignupWithEmail: undefined;
   Header: undefined;
   Article: {
-    article: FeedItem;
+    article?: FeedItem;
+    id?: string;
   };
 };
 

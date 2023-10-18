@@ -1,4 +1,4 @@
-import {CreatePostInterface} from './../../interfaces/index';
+import {CreatePostInterface, UserInterface} from '@/interfaces';
 import {CancelTokenSource} from 'axios';
 import {API_GET} from '@/config/api/apiRequests';
 import {
@@ -8,6 +8,7 @@ import {
 } from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
+import Cache from '@/cache';
 
 const HomeService = {
   async getFeed() {
@@ -299,6 +300,33 @@ const HomeService = {
     } catch (error) {
       console.log(error);
       return false;
+    }
+  },
+  async fetchArticle(articleId: string) {
+    try {
+      const response = (await FirebaseService.getDocument(
+        'articles',
+        articleId,
+      )) as FeedItem;
+      let author = {} as UserInterface;
+
+      if (await Cache.get(`user_${response.authorId}`)) {
+        author = (await Cache.get(
+          `user_${response.authorId}`,
+        )) as UserInterface;
+      } else {
+        author = (await FirebaseService.getDocument(
+          'users',
+          response.authorId,
+        )) as UserInterface;
+        await Cache.set(`user_${response.authorId}`, author);
+      }
+      response.author = author;
+
+      return response;
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   },
 };
