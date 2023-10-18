@@ -13,14 +13,16 @@ import {COLORS, SCREEN_NAMES} from '@/constants';
 import {LaunchScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {styles} from '@/styles/main';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
   const handleSignButtonClick = () => {
     navigation.navigate(SCREEN_NAMES.Signin);
   };
 
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(navigation);
+    await _signInWithGoogle(navigation, dispatch);
   };
   return (
     <KeyboardAvoidingView

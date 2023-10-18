@@ -6,10 +6,12 @@ import {_signInWithGoogle} from '@/services/auth/Google';
 import {SignInScreenProps} from '@/types';
 
 import {styles} from '@/styles/signinScreen';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(navigation);
+    await _signInWithGoogle(navigation, dispatch);
   };
   return (
     <SafeAreaView style={styles.safeArea}>

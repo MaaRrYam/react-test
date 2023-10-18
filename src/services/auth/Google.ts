@@ -4,11 +4,10 @@ import {UserCredential} from 'firebase/auth';
 import SigninService from '@/services/signin';
 import {RootStackParamList} from '@/types';
 import {NavigationProp} from '@react-navigation/native';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
 export const _signInWithGoogle = async (
   navigation: NavigationProp<RootStackParamList>,
+  dispatch: any,
 ) => {
-  const dispatch = useAppDispatch();
   try {
     GoogleSignin.configure({
       offlineAccess: false,
