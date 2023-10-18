@@ -5,7 +5,7 @@ import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '@/types';
+import {NavigationStateType, RootStackParamList} from '@/types';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -519,4 +519,18 @@ export interface CareerCardProps {
   editable?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
+}
+
+export interface DrawerContentProps {
+  state: any;
+  descriptors: any;
+  navigation: any;
+  isVisible: boolean;
+  setIsVisible: (isVisible: boolean) => void;
+  tabItem: string;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
+  user: UserInterface;
+  editingIndex: number;
+  setEditingIndex: Dispatch<SetStateAction<number>>;
 }

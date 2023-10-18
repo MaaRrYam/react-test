@@ -3,7 +3,7 @@ import {ScrollView, SafeAreaView, View} from 'react-native';
 import {useFormik} from 'formik';
 
 import {addEducationSchema} from '@/utils/schemas/onboarding';
-import {Input, Checkbox, Button} from '@/components';
+import {Input, Checkbox, PrimaryButton} from '@/components';
 import {COLORS} from '@/constants';
 import {EducationState} from '@/interfaces';
 import {commonStyles} from '@/styles/onboarding';
@@ -108,7 +108,7 @@ const EducationForm = ({
         />
 
         <View style={commonStyles.footer}>
-          <Button title="Continue" onPress={handleSubmit} />
+          <PrimaryButton title="Continue" onPress={handleSubmit} />
         </View>
       </ScrollView>
     </SafeAreaView>

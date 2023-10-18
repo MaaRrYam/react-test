@@ -18,7 +18,6 @@ interface EditProfileProps {
   tabItem: string;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
-  addNew: boolean;
   editingIndex: number | null;
   setEditingIndex: (value: number | null) => void;
 }

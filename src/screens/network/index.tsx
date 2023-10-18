@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {Button, Header} from '@/components';
+import {PrimaryButton, Header} from '@/components';
 import {NetworkScreenProps} from '@/types';
 import {COLORS, NETWORK_TABS} from '@/constants';
 import {useAppSelector} from '@/hooks/useAppSelector';
@@ -34,37 +34,37 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
         <Header navigation={navigation} />
 
         <View style={styles.subHeader}>
-          <Button
+          <PrimaryButton
             title={NETWORK_TABS[0]}
             onPress={() => setSelectedTab(NETWORK_TABS[0])}
             backgroundColor={'#F4F4F4'}
             textColor={COLORS.black}
             style={
               selectedTab === NETWORK_TABS[0]
-                ? styles.selectedButtonStyles
-                : styles.buttonStyles
+                ? styles.selectedPrimaryButtonStyles
+                : styles.PrimaryButtonStyles
             }
           />
-          <Button
+          <PrimaryButton
             title={NETWORK_TABS[1]}
             onPress={() => setSelectedTab(NETWORK_TABS[1])}
             backgroundColor={'#F4F4F4'}
             textColor={COLORS.black}
             style={
               selectedTab === NETWORK_TABS[1]
-                ? styles.selectedButtonStyles
-                : styles.buttonStyles
+                ? styles.selectedPrimaryButtonStyles
+                : styles.PrimaryButtonStyles
             }
           />
-          <Button
+          <PrimaryButton
             title={NETWORK_TABS[2]}
             onPress={() => setSelectedTab(NETWORK_TABS[2])}
             backgroundColor={'#F4F4F4'}
             textColor={COLORS.black}
             style={
               selectedTab === NETWORK_TABS[2]
-                ? styles.selectedButtonStyles
-                : styles.buttonStyles
+                ? styles.selectedPrimaryButtonStyles
+                : styles.PrimaryButtonStyles
             }
           />
         </View>
@@ -88,11 +88,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 20,
   },
-  buttonStyles: {
+  PrimaryButtonStyles: {
     paddingHorizontal: 15,
     paddingVertical: 10,
   },
-  selectedButtonStyles: {
+  selectedPrimaryButtonStyles: {
     paddingHorizontal: 15,
     backgroundColor: COLORS.lightBlueBackground,
     color: COLORS.black,

@@ -40,6 +40,7 @@ import Feed from '@/components/Feed/Feed';
 import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 import ProfileFeed from '@/components/ProfileFeed';
+import Drawer from '@/components/Drawer';
 export {
   BackButton,
   RoleCard,
@@ -78,4 +79,5 @@ export {
   ProfileFeed,
   YearDropdown,
   PrimaryButton,
+  Drawer,
 };

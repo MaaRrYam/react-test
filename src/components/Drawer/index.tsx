@@ -4,15 +4,16 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {RootState} from '@/store';
-import {listenToUserData, } from '@/store/features/authSlice';
+import {listenToUserData} from '@/store/features/authSlice';
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
-import {getUID} from '@/utils/functions'
+import {getUID} from '@/utils/functions';
+import {DrawerContentProps} from '@/interfaces';
+import { useNavigation } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
-
 function SettingsScreen() {
   return (
     <View>
@@ -33,54 +34,59 @@ function DrawerContent({
   user,
   editingIndex,
   setEditingIndex,
-}) {
+}: DrawerContentProps) {
   return (
     <>
       <View style={styles.tabBarContainer}>
-        {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key];
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel
-              : options.title !== undefined
-              ? options.title
-              : route.name;
+        {state.routes.map(
+          (
+            route: {key: string | number; name: any},
+            index: React.Key | null | undefined,
+          ) => {
+            const {options} = descriptors[route.key];
+            const label =
+              options.tabBarLabel !== undefined
+                ? options.tabBarLabel
+                : options.title !== undefined
+                ? options.title
+                : route.name;
 
-          const isFocused = state.index === index;
+            const isFocused = state.index === index;
 
-          const onPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
+            const onPress = () => {
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({name: route.name, merge: true});
-            }
-          };
+              if (!isFocused && !event.defaultPrevented) {
+                navigation.navigate({name: route.name, merge: true});
+              }
+            };
 
-          const onLongPress = () => {
-            navigation.emit({
-              type: 'tabLongPress',
-              target: route.key,
-            });
-          };
+            const onLongPress = () => {
+              navigation.emit({
+                type: 'tabLongPress',
+                target: route.key,
+              });
+            };
 
-          return (
-            <TouchableOpacity
-              key={index}
-              accessibilityRole="button"
-              accessibilityState={isFocused ? {selected: true} : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={styles.tab}>
-              {getIcon(label, isFocused, navigation, user.photoUrl, user.id)}
-            </TouchableOpacity>
-          );
-        })}
+            return (
+              <TouchableOpacity
+                key={index}
+                accessibilityRole="button"
+                accessibilityState={isFocused ? {selected: true} : {}}
+                accessibilityLabel={options.tabBarAccessibilityLabel}
+                testID={options.tabBarTestID}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={styles.tab}>
+                {getIcon(label, isFocused, navigation, user.photoUrl, user.id)}
+              </TouchableOpacity>
+            );
+          },
+        )}
       </View>
       {isVisible && (
         <EditProfile
@@ -103,10 +109,9 @@ const Tabs = () => {
   const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(0);
-
   const dispatch = useAppDispatch();
   const {user} = useAppSelector((authState: RootState) => authState.auth);
-
+  const navigation = useNavigation();
   useEffect(() => {
     // Start listening to user data updates when the component mounts
     const unsubscribe = dispatch(listenToUserData());
@@ -122,7 +127,7 @@ const Tabs = () => {
   useEffect(() => {
     async function fetchUID() {
       const uid = await getUID();
-      setUID(uid);
+      setUID(uid as string);
     }
 
     fetchUID();

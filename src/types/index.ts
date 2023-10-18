@@ -1,4 +1,8 @@
-import {RouteProp} from '@react-navigation/native';
+import {
+  NavigationState,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
@@ -117,3 +121,4 @@ export type HeaderProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Header'>;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';
+export type NavigationStateType = NavigationState<ParamListBase>;
