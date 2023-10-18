@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
-import {COLORS, jobTypes, workEnviroment} from '@/constants';
-import {CheckMark} from '@/assets/icons';
+import {View, Text, ScrollView, SafeAreaView} from 'react-native';
+import {jobTypes, workEnviroment} from '@/constants';
 import {JobsFilterFormInterface} from '@/interfaces';
 import {Checkbox} from '@/components/Inputs';
 import {jobsFilterFormStyles} from '@/styles/jobs';

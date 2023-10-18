@@ -58,25 +58,25 @@ export const jobDetailFormStyles = StyleSheet.create({
     color: COLORS.black,
   },
   companyName: {
-    fontSize: FONTS.largeLabel,
+    fontSize: FONTS.largeLabel * 1.1,
     fontWeight: 'normal',
     paddingLeft: 20,
-    marginTop: MARGINS.general,
+    marginTop: MARGINS.general / 3,
     color: COLORS.black,
   },
   basicDetails: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general,
-    marginTop: MARGINS.general,
+    marginLeft: MARGINS.general * 2,
+    marginTop: MARGINS.general * 2,
   },
   basicDetailItem: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     fontSize: FONTS.text,
-    marginLeft: 4,
+    marginLeft: MARGINS.general / 2,
     color: COLORS.black,
   },
   recruiterContainer: {
@@ -88,9 +88,10 @@ export const jobDetailFormStyles = StyleSheet.create({
     marginLeft: MARGINS.general,
   },
   recruiterImage: {
-    width: ICON_WIDTH.general,
-    marginTop: MARGINS.general,
-    height: ICON_HEIGHT.general,
+    width: ICON_WIDTH.general / 1.2,
+    marginTop: MARGINS.general * 2.5,
+    marginLeft: MARGINS.general,
+    height: ICON_HEIGHT.general / 1.2,
     resizeMode: 'cover',
     borderRadius: BORDER_RADIUS.recruiterIcon,
   },
@@ -98,34 +99,34 @@ export const jobDetailFormStyles = StyleSheet.create({
     fontSize: FONTS.text,
     fontWeight: 'bold',
     paddingLeft: PADDING.general,
-    marginTop: MARGINS.general,
+    marginTop: MARGINS.general * 2,
     color: COLORS.black,
   },
   applyButtonContainer: {
     flex: 1,
-    paddingLeft: PADDING.general,
-    paddingRight: PADDING.general,
-    marginTop: MARGINS.general,
+    paddingLeft: PADDING.general * 2,
+    paddingRight: PADDING.general * 2,
+    marginTop: MARGINS.general * 3,
   },
   jobDetailContainer: {
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general,
-    marginTop: MARGINS.general,
+    marginLeft: MARGINS.general * 2,
+    marginTop: MARGINS.general * 2,
     color: COLORS.black,
   },
   jobDetailHeading: {
     fontWeight: 'bold',
-    fontSize: FONTS.text * 1.1,
+    fontSize: FONTS.text * 1.2,
     color: COLORS.black,
   },
   JobsDetailText: {
     fontSize: FONTS.text,
     color: COLORS.black,
     marginTop: MARGINS.general / 1.9,
-    marginBottom: MARGINS.general,
+    marginBottom: MARGINS.general * 2,
     paddingRight: PADDING.general * 2.4,
   },
 });
@@ -133,6 +134,7 @@ export const jobDetailFormStyles = StyleSheet.create({
 export const jobsFilterFormStyles = StyleSheet.create({
   SafeAreaView: {
     flex: 1,
+    paddingLeft: PADDING.general,
   },
   inputfield: {
     marginTop: MARGINS.general,
@@ -144,8 +146,7 @@ export const jobsFilterFormStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    marginTop: MARGINS.general,
-    marginBottom: MARGINS.general,
+    marginBottom: MARGINS.general * 3,
   },
   checkbox: {
     borderWidth: BORDER_WIDTH.general,
@@ -156,7 +157,8 @@ export const jobsFilterFormStyles = StyleSheet.create({
     marginTop: MARGINS.general,
   },
   title: {
-    fontSize: FONTS.text,
+    fontSize: FONTS.text * 1.1,
+    marginBottom: MARGINS.general,
     fontWeight: 'bold',
     paddingLeft: PADDING.general,
     marginTop: MARGINS.general,
@@ -171,9 +173,9 @@ export const jobsFilterFormStyles = StyleSheet.create({
   },
   applyButtonContainer: {
     flex: 1,
-    paddingLeft: PADDING.general,
-    paddingRight: PADDING.general,
-    marginTop: MARGINS.general,
+    paddingLeft: PADDING.general * 1.2,
+    paddingRight: PADDING.general * 2,
+    marginTop: MARGINS.general * 5,
   },
 });
 

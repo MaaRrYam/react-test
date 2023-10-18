@@ -111,7 +111,7 @@ const JobsDetailForm = ({
                   </Text>
                 </View>
               </View>
-              {posterJobInfo && (
+              {posterJobInfo?.name && (
                 <View style={jobDetailFormStyles.recruiterContainer}>
                   <Image
                     style={jobDetailFormStyles.recruiterImage}
