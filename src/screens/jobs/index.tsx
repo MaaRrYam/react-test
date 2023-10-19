@@ -109,6 +109,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
             jobFilterBottomSheet={jobFilterBottomSheet}
             setJobsFilterBottomSheet={setJobsFilterBottomSheet}
             allJobs={allJobs}
+            setAllJobs={setAllJobs}
             isLoading={isLoading}
           />
         )}

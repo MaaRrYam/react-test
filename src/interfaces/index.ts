@@ -500,6 +500,7 @@ export interface JobsFilterFormInterface {
 }
 export interface JobsDetailFormInterface {
   selectedJob: JobInterface;
+  setAllJobs: Function;
   setIsBottomSheetVisible: Function;
 }
 
@@ -513,5 +514,6 @@ export interface JobsComponentInterface {
   jobFilterBottomSheet: boolean;
   setJobsFilterBottomSheet: Function;
   allJobs: JobInterface[];
+  setAllJobs: Function;
   isLoading: boolean;
 }

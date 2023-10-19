@@ -9,11 +9,13 @@ import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsCard from '@/components/Cards/JobsCard';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import EmptyComponent from '@/components/NoResults/Empty';
+import JobsService from '@/services/jobs';
 
 const JobsComponent = ({
   jobFilterBottomSheet,
   setJobsFilterBottomSheet,
   allJobs,
+  setAllJobs,
   isLoading,
 }: JobsComponentInterface) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -130,6 +132,7 @@ const JobsComponent = ({
               snapPoints={['60%', '100%']}>
               <JobsDetailForm
                 selectedJob={selectedJob}
+                setAllJobs={setAllJobs}
                 setIsBottomSheetVisible={setIsBottomSheetVisible}
               />
             </BottomSheet>

@@ -24,6 +24,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobsDetailForm = ({
   selectedJob,
+  setAllJobs,
   setIsBottomSheetVisible,
 }: JobsDetailFormInterface) => {
   const [posterJobInfo, setPosterJobInfo] = useState<UserInterface>();
@@ -74,23 +75,19 @@ const JobsDetailForm = ({
 
   const handleSaveJob = async () => {
     if (saved) {
-      JobsService.unSaveJob(selectedJob?.id)
-        .then(() => {
-          setSaved(false);
-          ToastService.showSuccess('Job unsaved');
-        })
-        .catch(() => {
-          ToastService.showError('Cannot unsave job');
+      JobsService.unSaveJob(selectedJob?.id).then(() => {
+        setSaved(false);
+        setAllJobs(prevJobs => {
+          const updatedJobs = prevJobs.filter(
+            job => job?.id !== selectedJob?.id,
+          );
+          return updatedJobs;
         });
+      });
     } else {
-      JobsService.saveJob(selectedJob?.id)
-        .then(res => {
-          setSaved(true);
-          ToastService.showSuccess('Job Saved');
-        })
-        .catch(() => {
-          ToastService.showError('Cannot save job');
-        });
+      JobsService.saveJob(selectedJob?.id).then(res => {
+        setSaved(true);
+      });
     }
   };
 
