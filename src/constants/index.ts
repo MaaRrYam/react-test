@@ -213,4 +213,5 @@ export const SCREEN_NAMES = {
   Notifications: 'Notifications',
   Jobs: 'Jobs',
   Profile: 'Profile',
+  Article: 'Article',
 };

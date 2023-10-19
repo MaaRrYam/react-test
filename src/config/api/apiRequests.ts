@@ -9,7 +9,7 @@ export const API_GET = async (url: string, headers = {}, params = {}) => {
     }
     const {data} = await API.get(url, {headers, params});
     if (isInDevelopment) {
-      console.log(`GET Data at ${url}`, data);
+      // console.log(`GET Data at ${url}`, data);
     }
 
     return data;

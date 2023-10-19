@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Share} from 'react-native';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
-import {Comment, Dislike, Like, Report, Share} from '@/assets/icons';
+import {Comment, Dislike, Like, Report, ShareIcon} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import HomeService from '@/services/home';
 import {
@@ -13,6 +13,7 @@ import {
   addLikeAndRemoveDislike,
   removeDisLike,
   removeLike,
+  removeReportedPostFromFeed,
 } from '@/store/features/homeSlice';
 import FirebaseService from '@/services/Firebase';
 import ToastService from '@/services/toast';
@@ -147,6 +148,41 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     }
   };
 
+  const reportPost = async () => {
+    const response = await HomeService.reportAPost(item._id, item.authorId);
+    if (response) {
+      dispatch(removeReportedPostFromFeed(item._id));
+      ToastService.showSuccess('Post reported');
+    }
+  };
+
+  const sharePost = async () => {
+    // const response = await HomeService.sharePost(item._id);
+    // if (response) {
+    //   ToastService.showSuccess('Post shared');
+    // }
+    const {share, sharedAction, dismissedAction} = Share;
+
+    const appUrl = 'cnmobile://post/' + item.id;
+    const shareOptions = {
+      title: 'Share a post',
+      message: item.text || 'Check out this post',
+      url: appUrl,
+      ...(item.media && {imageUrl: item.media}),
+    };
+
+    try {
+      const result = await share(shareOptions);
+      if (result.action === sharedAction) {
+        // ToastService.showSuccess('Post shared');
+      } else if (result.action === dismissedAction) {
+        // ToastService.showError('Post sharing dismissed');
+      }
+    } catch (error) {
+      ToastService.showError('Error sharing post');
+    }
+  };
+
   useEffect(() => {
     isPostDisLikedByUser();
     isPostLikedByUser();
@@ -172,10 +208,10 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
           <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
             <Comment />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Share />
+          <TouchableOpacity onPress={sharePost}>
+            <ShareIcon />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={reportPost}>
             <Report />
           </TouchableOpacity>
         </View>

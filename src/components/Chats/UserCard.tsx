@@ -4,10 +4,8 @@ import {View, Image, Text} from 'react-native';
 import {ChatsInterface, UserInterface} from '@/interfaces';
 import {styles} from './styles';
 import {RoundedButton} from '../Buttons';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {formatFirebaseTimestamp} from '@/utils';
 import FirebaseService from '@/services/Firebase';
-import {addNewChat} from '@/store/features/chatsSlice';
 import ChatsService from '@/services/chats';
 import {useAppSelector} from '@/hooks/useAppSelector';
 
@@ -19,7 +17,6 @@ const UserCard = ({
   onClose: () => void;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useAppDispatch();
   const {chats} = useAppSelector(state => state.chats);
 
   const handleNewMessage = async () => {
@@ -38,7 +35,6 @@ const UserCard = ({
     const response = await ChatsService.addNewChat(item.id, chat);
     setIsLoading(false);
     if (response) {
-      dispatch(addNewChat(chat));
       onClose();
     }
   };
