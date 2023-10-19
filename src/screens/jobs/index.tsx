@@ -94,16 +94,18 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
             jobFilterBottomSheet={jobFilterBottomSheet}
             setJobsFilterBottomSheet={setJobsFilterBottomSheet}
             allJobs={allJobs}
+            setAllJobs={setAllJobs}
             isLoading={isLoading}
           />
         ) : selectedTab === JOBS_TABS[1] ? (
           // <PastApplications />
-          <JobsComponent
-            jobFilterBottomSheet={jobFilterBottomSheet}
-            setJobsFilterBottomSheet={setJobsFilterBottomSheet}
-            allJobs={allJobs}
-            isLoading={isLoading}
-          />
+          // <JobsComponent
+          //   jobFilterBottomSheet={jobFilterBottomSheet}
+          //   setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+          //   allJobs={allJobs}
+          //   isLoading={isLoading}
+          // />
+          <></>
         ) : (
           <JobsComponent
             jobFilterBottomSheet={jobFilterBottomSheet}

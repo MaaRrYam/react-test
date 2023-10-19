@@ -5,6 +5,7 @@ import {
   ApplicantInterface,
   JobsDetailFormInterface,
   UserInterface,
+  JobInterface,
 } from '@/interfaces';
 import {jobDetailFormStyles} from '@/styles/jobs';
 import {
