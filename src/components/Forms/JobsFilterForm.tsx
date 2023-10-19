@@ -29,7 +29,7 @@ const JobsFilterForm = ({
         selectedFilters.filter((_, index) => index !== filterIndex),
       );
     }
-    setIsResetVisible(selectedFilters.length > 0 || searchTerm !== '');
+    // setIsResetVisible(selectedFilters.length > 0 || searchTerm !== '');
   };
 
   return (

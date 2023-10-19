@@ -21,4 +21,3 @@ export {default as SignupWithEmail} from '@/screens/signup/SignupWithEmail';
 export {default as Jobs} from '@/screens/jobs/index';
 export {default as JobsComponent} from '@/screens/jobs/JobsComponent';
 export {default as PastApplications} from '@/screens/jobs/PastApplications';
-export {default as SavedJobs} from '@/screens/jobs/SavedJobs';

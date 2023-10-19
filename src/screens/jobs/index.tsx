@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {View, SafeAreaView} from 'react-native';
 import {Header, Button} from '@/components';
@@ -7,12 +7,44 @@ import {jobMainStyles} from '@/styles/jobs';
 import {COLORS, JOBS_TABS} from '@/constants';
 import JobsComponent from './JobsComponent';
 import PastApplications from './PastApplications';
-import SavedJobs from './SavedJobs';
-import {ScrollView} from 'react-native-gesture-handler';
+import {JobInterface} from '@/interfaces';
+import JobsService from '@/services/jobs';
+import FirebaseService from '@/services/Firebase';
 
 const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [selectedTab, setSelectedTab] = React.useState<string>(JOBS_TABS[0]);
   const [jobFilterBottomSheet, setJobsFilterBottomSheet] = useState(false);
+  const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (selectedTab === JOBS_TABS[0]) {
+      if (allJobs?.length === 0) {
+        setIsLoading(true);
+        JobsService.getAllJobs().then(setAllJobs);
+      } else {
+        setIsLoading(false);
+      }
+    } else if (selectedTab === JOBS_TABS[1]) {
+      // if (allJobs?.length === 0) {
+      //   setIsLoading(true);
+      //   JobsService.getAllPastApplications().then(setAllJobs);
+      // } else {
+      //   setIsLoading(false);
+      // }
+    } else if (selectedTab === JOBS_TABS[2]) {
+      if (allJobs?.length === 0) {
+        setIsLoading(true);
+        JobsService.getAllSavedJobs().then(setAllJobs);
+      } else {
+        setIsLoading(false);
+      }
+    }
+  }, [allJobs, selectedTab]);
+
+  useEffect(() => {
+    setAllJobs([]);
+  }, [selectedTab]);
 
   return (
     <View style={jobMainStyles.outerContainer}>
@@ -61,11 +93,24 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
           <JobsComponent
             jobFilterBottomSheet={jobFilterBottomSheet}
             setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+            allJobs={allJobs}
+            isLoading={isLoading}
           />
         ) : selectedTab === JOBS_TABS[1] ? (
-          <PastApplications />
+          // <PastApplications />
+          <JobsComponent
+            jobFilterBottomSheet={jobFilterBottomSheet}
+            setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+            allJobs={allJobs}
+            isLoading={isLoading}
+          />
         ) : (
-          <SavedJobs />
+          <JobsComponent
+            jobFilterBottomSheet={jobFilterBottomSheet}
+            setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+            allJobs={allJobs}
+            isLoading={isLoading}
+          />
         )}
       </SafeAreaView>
     </View>

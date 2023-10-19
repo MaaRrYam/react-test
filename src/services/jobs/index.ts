@@ -16,6 +16,57 @@ const JobsService = {
   async getAllJobs() {
     return FirebaseService.getAllDocuments('jobs') as JobInterface[];
   },
+  async getAllSavedJobs() {
+    try {
+      const allJobs: JobInterface[] = [];
+      const allSavedJobId = await FirebaseService.getAllDocuments(
+        `savedItems/${UID}/jobs`,
+      );
+
+      if (allSavedJobId) {
+        const promises = allSavedJobId.map(async job => {
+          const res = await FirebaseService.getDocument('jobs', job.jobId);
+          return res;
+        });
+
+        const savedJobs = await Promise.all(promises);
+        allJobs.push(...savedJobs);
+      }
+
+      return allJobs;
+    } catch (error) {
+      // Handle any errors that may occur during the process
+      console.error('Error fetching saved jobs:', error);
+    }
+  },
+
+  async getAllPastApplications() {
+    try {
+      const allPastApplications: ApplicantInterface[] = [];
+      const allJobs = await FirebaseService.getAllDocuments('jobs');
+
+      if (allJobs) {
+        const promises = allJobs.map(async job => {
+          const res = await FirebaseService.getDocumentsByQuery(
+            `jobs/${job.id}/applications`,
+            'applicantId',
+            '==',
+            UID,
+          );
+          return res;
+        });
+
+        const pastJobs = await Promise.all(promises);
+        allPastApplications.push(...pastJobs);
+      }
+      console.log(allPastApplications);
+      return allPastApplications;
+    } catch (error) {
+      // Handle any errors that may occur during the process
+      console.error('Error fetching saved jobs:', error);
+    }
+  },
+
   async checkSavedJob(jobId: string) {
     return FirebaseService.getDocument(`savedItems/${UID}/jobs`, jobId);
   },

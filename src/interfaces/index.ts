@@ -508,3 +508,10 @@ export interface JobQuestionsFormInterface {
   setIsQABottomSheetOpen: Function;
   setIsBottomSheetVisible: Function;
 }
+
+export interface JobsComponentInterface {
+  jobFilterBottomSheet: boolean;
+  setJobsFilterBottomSheet: Function;
+  allJobs: JobInterface[];
+  isLoading: boolean;
+}

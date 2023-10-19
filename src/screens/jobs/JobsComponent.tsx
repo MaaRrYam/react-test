@@ -1,25 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {View, SafeAreaView, ScrollView, FlatList, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, FlatList, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {BottomSheet, Loading} from '@/components';
 import {jobMainStyles} from '@/styles/jobs';
-import {JobInterface} from '@/interfaces';
+import {JobInterface, JobsComponentInterface} from '@/interfaces';
 
 import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsCard from '@/components/Cards/JobsCard';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import EmptyComponent from '@/components/NoResults/Empty';
-import JobsService from '@/services/jobs';
 
-const JobsComponent = ({jobFilterBottomSheet, setJobsFilterBottomSheet}) => {
+const JobsComponent = ({
+  jobFilterBottomSheet,
+  setJobsFilterBottomSheet,
+  allJobs,
+  isLoading,
+}: JobsComponentInterface) => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
   const [selectedJob, setSelectedJob] = useState<JobInterface>({});
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredJobs, setFilteredJobs] = useState<JobInterface[]>([]);
   const [isResetVisible, setIsResetVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [filtersApplied, setFiltersApplied] = useState(false);
 
   const handleJobPress = (item: JobInterface) => {
     setSelectedJob(item);
@@ -46,6 +49,7 @@ const JobsComponent = ({jobFilterBottomSheet, setJobsFilterBottomSheet}) => {
     });
     setIsResetVisible(selectedFilters.length > 0 || searchTerm !== '');
     setFilteredJobs(filteredJobsWithSearch);
+    setFiltersApplied(true);
   };
 
   const resetFilters = () => {
@@ -54,16 +58,8 @@ const JobsComponent = ({jobFilterBottomSheet, setJobsFilterBottomSheet}) => {
     setIsResetVisible(false);
     setFilteredJobs([]);
     setJobsFilterBottomSheet(false);
+    setFiltersApplied(false);
   };
-
-  useEffect(() => {
-    if (allJobs.length === 0) {
-      setIsLoading(true);
-      JobsService.getAllJobs().then(setAllJobs);
-    } else {
-      setIsLoading(false);
-    }
-  }, [allJobs]);
 
   return (
     <>
@@ -81,30 +77,29 @@ const JobsComponent = ({jobFilterBottomSheet, setJobsFilterBottomSheet}) => {
               </View>
             </>
           )}
-          {allJobs && selectedFilters.length <= 0 && !searchTerm && (
-            <FlatList
-              data={allJobs}
-              renderItem={({item}) => (
-                <JobsCard
-                  jobTitle={item?.jobTitle!}
-                  companyName={item?.companyName!}
-                  companyLogo={item?.companyLogo}
-                  jobLocation={item?.workplaceType!}
-                  companyLocation={item?.companyLocation!}
-                  onPress={() => handleJobPress(item)}
-                />
-              )}
-              keyExtractor={item => item?.id?.toString()!}
-            />
-          )}
-
-          {!allJobs && selectedFilters.length <= 0 && !searchTerm && (
-            <View style={jobMainStyles.emptyContainer}>
-              <EmptyComponent />
-            </View>
-          )}
+          {!filtersApplied &&
+            allJobs &&
+            filteredJobs.length <= 0 &&
+            !searchTerm && (
+              // Render the "All Jobs" section
+              <FlatList
+                data={allJobs}
+                renderItem={({item}) => (
+                  <JobsCard
+                    jobTitle={item?.jobTitle!}
+                    companyName={item?.companyName!}
+                    companyLogo={item?.companyLogo}
+                    jobLocation={item?.workplaceType!}
+                    companyLocation={item?.companyLocation!}
+                    onPress={() => handleJobPress(item)}
+                  />
+                )}
+                keyExtractor={item => item?.id?.toString()!}
+              />
+            )}
 
           {filteredJobs.length > 0 && (
+            // Render the filtered jobs
             <FlatList
               data={filteredJobs}
               renderItem={({item}) => (
@@ -127,6 +122,7 @@ const JobsComponent = ({jobFilterBottomSheet, setJobsFilterBottomSheet}) => {
                 <EmptyComponent />
               </View>
             )}
+
           {isBottomSheetVisible && (
             <BottomSheet
               isVisible={isBottomSheetVisible}
@@ -142,7 +138,7 @@ const JobsComponent = ({jobFilterBottomSheet, setJobsFilterBottomSheet}) => {
             <BottomSheet
               isVisible={isBottomSheetVisible}
               onClose={() => setIsBottomSheetVisible(false)}
-              snapPoints={['60%', '100%']}>
+              snapPoints={['90%', '100%']}>
               <JobsFilterForm
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
