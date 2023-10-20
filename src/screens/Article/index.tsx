@@ -98,6 +98,7 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
               <RenderHtml
                 contentWidth={WINDOW_WIDTH}
                 source={{html: articleData.content || ''}}
+                baseStyle={{color: COLORS.black}}
               />
             </View>
           </View>
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: COLORS.black,
   },
 });
 
