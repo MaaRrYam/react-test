@@ -3,6 +3,7 @@ import {
   ParamListBase,
   RouteProp,
 } from '@react-navigation/native';
+import {FeedItem, UserInterface} from '@/interfaces';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
@@ -25,6 +26,7 @@ export type RootStackParamList = {
   ChatDetails: {
     id: string;
     name: string;
+    user: UserInterface;
   };
   Notifications: undefined;
   Launch: undefined;
@@ -34,6 +36,14 @@ export type RootStackParamList = {
   Header: undefined;
   Profile: {
     uid: string;
+    Article: {
+      article?: FeedItem;
+      id?: string;
+    };
+  };
+  Article: {
+    article?: FeedItem;
+    id?: string;
   };
 };
 
@@ -97,6 +107,11 @@ export type NetworkScreenProps = {
 export type ChatDetailsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ChatDetails'>;
   route: RouteProp<RootStackParamList, 'ChatDetails'>;
+};
+
+export type ArticleScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Article'>;
+  route: RouteProp<RootStackParamList, 'Article'>;
 };
 
 export type NotificationsScreenProps = {

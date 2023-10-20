@@ -37,6 +37,7 @@ import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search';
 import Feed from '@/components/Feed/Feed';
+import NewPost from '@/components/Feed/NewPost';
 import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 import ProfileFeed from '@/components/ProfileFeed';
@@ -80,4 +81,5 @@ export {
   YearDropdown,
   PrimaryButton,
   Drawer,
+  NewPost,
 };

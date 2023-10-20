@@ -1,5 +1,4 @@
-import {FirebaseServiceProps} from '@/interfaces';
-import {formatFirebaseTimestamp} from '@/utils';
+import {Platform} from 'react-native';
 import {
   getFirestore,
   collection,
@@ -19,6 +18,10 @@ import {
   onSnapshot,
   Unsubscribe,
 } from 'firebase/firestore';
+import storage from '@react-native-firebase/storage';
+
+import {FirebaseServiceProps, Asset} from '@/interfaces';
+import {formatFirebaseTimestamp} from '@/utils';
 
 const db = getFirestore();
 
@@ -148,6 +151,33 @@ const FirebaseService: FirebaseServiceProps = {
       );
       throw error;
     }
+  },
+
+  async uploadToStorage(file: Asset) {
+    try {
+      const {uri} = file;
+      if (uri) {
+        const filename = this.generateUniqueFilename();
+        const uploadUri =
+          Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+        const task = storage().ref(filename).putFile(uploadUri);
+        await task;
+
+        const imageURL = await storage().ref(filename).getDownloadURL();
+        return imageURL;
+      }
+      return '';
+    } catch (error) {
+      console.error('Error uploading file to storage: ', error);
+      throw error;
+    }
+  },
+
+  generateUniqueFilename() {
+    const timestamp = new Date().getTime();
+    const randomString = Math.random().toString(36).substring(7);
+    return `${timestamp}_${randomString}`;
   },
 
   serverTimestamp() {
