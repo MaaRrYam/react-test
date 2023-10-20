@@ -29,17 +29,22 @@ import {getUID} from '@/utils/functions';
 import ProfileService from '@/services/profile';
 import NetworkService from '@/services/network';
 import {
+  ChatsInterface,
   EducationProps,
   EmploymentProps,
-  FeedComment,
+  FeedCommentsResponse,
   ProfileProps,
 } from '@/interfaces';
 import {SCREEN_NAMES} from '@/constants';
 import {styles} from '@/screens/home/styles';
 import profileStyles from '@/styles/profile';
 import PostComments from '@/components/Feed/PostComments';
+import ChatsService from '@/services/chats';
+import {useAppSelector} from '@/hooks/useAppSelector';
 
 const Profile = ({navigation, route}: ProfileProps) => {
+  const [filteredChats, setFilteredChats] = useState<ChatsInterface[]>([]);
+  const {chats, isChatsFetched} = useAppSelector(state => state.chats);
   const {setIsVisible, setTabItem, UID} = route.params;
   const [userUID, setUserUID] = useState<string>('');
   const [loading, setLoading] = useState(true);
@@ -50,8 +55,9 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [comments, setComments] = useState({
+    postId: '',
     loading: false,
-    comments: [] as FeedComment[],
+    comments: [] as FeedCommentsResponse[],
     showComments: false,
   });
   const openBottomSheet = () => {
@@ -59,9 +65,6 @@ const Profile = ({navigation, route}: ProfileProps) => {
   };
 
   useEffect(() => {
-    console.log('UID: ', UID);
-    console.log('UserUID: ', userUID);
-    console.log('equal', UID === userUID);
     const fetchUID = async () => {
       try {
         const fetchedUID = await getUID();
@@ -78,6 +81,21 @@ const Profile = ({navigation, route}: ProfileProps) => {
       }, 3000);
     }
   }, [user, UID, userUID]);
+
+  useEffect(() => {
+    setFilteredChats(chats);
+
+    if (user.name) {
+      setFilteredChats(
+        chats.filter(chat =>
+          chat.name.toLowerCase().includes(user.name.toLowerCase()),
+        ),
+      );
+    } else {
+      setFilteredChats(chats);
+    }
+  }, [chats, isChatsFetched, user]);
+
   return (
     <>
       {loading ? (
@@ -176,11 +194,18 @@ const Profile = ({navigation, route}: ProfileProps) => {
                                 connections.some(conn => conn.id === userUID) &&
                                 profileStyles.messageMargin,
                             ]}
-                            onPress={() => {
-                              navigation.navigate(SCREEN_NAMES.ChatDetails, {
-                                id: userUID,
-                                id: user.name,
-                              });
+                            onPress={async () => {
+                              const response = await ChatsService.addNewChat(
+                                user.id,
+                                filteredChats[0],
+                              );
+                              if (response) {
+                                navigation.navigate(SCREEN_NAMES.ChatDetails, {
+                                  id: user.id,
+                                  name: user?.name,
+                                  user: user,
+                                });
+                              }
                             }}
                           />
                         </>
@@ -271,6 +296,8 @@ const Profile = ({navigation, route}: ProfileProps) => {
                   showComments={comments.showComments}
                   comments={comments.comments}
                   loading={comments.loading}
+                  setComments={setComments}
+                  postId={comments.postId}
                 />
               </BottomSheet>
             )}

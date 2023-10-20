@@ -22,7 +22,7 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   }, [fetchData]);
 
   const fetchPostComments = async (postId: string) => {
-    setComments(prev => ({...prev, loading: true, showComments: true}));
+    setComments(prev => ({...prev, loading: true, showComments: true, postId}));
     const response = await HomeService.fetchPostComments(postId);
     setComments(prev => ({...prev, loading: false, comments: response}));
   };

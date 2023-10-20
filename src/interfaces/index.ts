@@ -538,6 +538,7 @@ export interface ProfileProps {
 export interface ProfileFeedInterface {
   setComments: Dispatch<
     SetStateAction<{
+      postId: string;
       loading: boolean;
       comments: FeedCommentsResponse[];
       showComments: boolean;
