@@ -214,4 +214,5 @@ export const SCREEN_NAMES = {
   Jobs: 'Jobs',
   Profile: 'Profile',
   Article: 'Article',
+  Post: 'Post',
 };

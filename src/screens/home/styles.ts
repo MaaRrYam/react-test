@@ -150,6 +150,9 @@ export const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.general,
     padding: PADDING.general / 2,
   },
+  commentFromPost: {
+    backgroundColor: COLORS.white,
+  },
   commentImage: {
     width: 34,
     height: 34,
@@ -183,6 +186,9 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.border,
     padding: 0,
     marginTop: 5,
+  },
+  reactionButtonFromPost: {
+    backgroundColor: COLORS.white,
   },
   postReactionsForComments: {
     alignItems: 'center',
@@ -232,5 +238,8 @@ export const styles = StyleSheet.create({
   reply: {
     fontSize: FONTS.bodyRegular,
     color: COLORS.black,
+  },
+  inputFromPost: {
+    backgroundColor: COLORS.white,
   },
 });

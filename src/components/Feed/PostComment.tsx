@@ -107,7 +107,12 @@ const RepliesContainer = ({
   );
 };
 
-const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
+const PostComment = ({
+  item,
+  setComments,
+  postId,
+  isFromPost,
+}: PostCommentInterface) => {
   const [reactions, setReactions] = useState({
     like: false,
     dislike: false,
@@ -253,7 +258,7 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
   };
 
   return (
-    <View style={styles.comment}>
+    <View style={[styles.comment, isFromPost && styles.commentFromPost]}>
       <View style={styles.author}>
         <Image
           source={
@@ -275,7 +280,11 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
         <Text style={styles.commentText}>{item.text}</Text>
         <View style={[styles.postReactions, styles.postReactionsForComments]}>
           <TouchableOpacity
-            style={[styles.reactionButton, styles.reactionButtonsBordered]}
+            style={[
+              styles.reactionButton,
+              styles.reactionButtonsBordered,
+              isFromPost && styles.reactionButtonFromPost,
+            ]}
             onPress={likeAComment}>
             <Like isLiked={reactions.like} />
           </TouchableOpacity>
@@ -283,7 +292,11 @@ const PostComment = ({item, setComments, postId}: PostCommentInterface) => {
             {item.likes.length - item.dislikes.length}
           </Text>
           <TouchableOpacity
-            style={[styles.reactionButton, styles.reactionButtonsBordered]}
+            style={[
+              styles.reactionButton,
+              styles.reactionButtonsBordered,
+              isFromPost && styles.reactionButtonFromPost,
+            ]}
             onPress={dislikeAComment}>
             <Dislike isLiked={reactions.dislike} />
           </TouchableOpacity>
