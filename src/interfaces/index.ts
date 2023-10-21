@@ -432,6 +432,7 @@ export interface PostCommentsProps {
       postId: string;
     }>
   >;
+  isFromPost?: boolean;
 }
 
 export interface PostCommentInterface {
@@ -445,6 +446,7 @@ export interface PostCommentInterface {
       showComments: boolean;
     }>
   >;
+  isFromPost?: boolean;
 }
 
 export interface ChatsInterface {

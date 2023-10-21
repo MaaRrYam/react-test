@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, FlatList, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 import {
   FeedCommentsResponse,
@@ -16,14 +22,24 @@ import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
 import StorageService from '@/services/Storage';
 import HomeService from '@/services/home';
+import {COLORS, MARGINS} from '@/constants';
 
 const PostComments = ({
   postId,
   comments,
   loading,
   setComments,
+  isFromPost,
 }: PostCommentsProps) => {
   const [comment, setComment] = useState('');
+
+  if (loading && isFromPost) {
+    return (
+      <View style={{marginTop: MARGINS.general}}>
+        <ActivityIndicator color={COLORS.primary} size="large" />
+      </View>
+    );
+  }
 
   if (loading) {
     return <Loading />;
@@ -53,12 +69,16 @@ const PostComments = ({
 
   return (
     <>
-      <View style={styles.commentFieldContainer}>
+      <View
+        style={[
+          styles.commentFieldContainer,
+          isFromPost && styles.inputFromPost,
+        ]}>
         <TextInput
           placeholder="Add a comment"
           value={comment}
           onChangeText={setComment}
-          style={styles.input}
+          style={[styles.input]}
         />
         {comment && (
           <TouchableOpacity onPress={handleAddNewComment}>
@@ -76,6 +96,7 @@ const PostComments = ({
                   item={item}
                   setComments={setComments}
                   postId={postId}
+                  isFromPost={isFromPost}
                 />
               )}
             />

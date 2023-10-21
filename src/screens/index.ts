@@ -19,3 +19,4 @@ export {default as SigninScreen} from '@/screens/signin/SigninScreen';
 export {default as SigninWithEmail} from '@/screens/signin/SigninWithEmail';
 export {default as SignupWithEmail} from '@/screens/signup/SignupWithEmail';
 export {default as Article} from '@/screens/Article';
+export {default as Post} from '@/screens/Post';
