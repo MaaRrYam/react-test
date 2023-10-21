@@ -42,6 +42,9 @@ import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 import ProfileFeed from '@/components/ProfileFeed';
 import Drawer from '@/components/Drawer';
+
+import {About, ProfileTabs} from '@/components/Profile';
+
 export {
   BackButton,
   RoleCard,
@@ -82,4 +85,6 @@ export {
   PrimaryButton,
   Drawer,
   NewPost,
+  About,
+  ProfileTabs,
 };

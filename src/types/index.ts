@@ -133,7 +133,7 @@ export type SignupWithEmailProps = {
 };
 
 export type HeaderProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Header'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';
 export type NavigationStateType = NavigationState<ParamListBase>;

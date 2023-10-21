@@ -3,7 +3,6 @@ import {View, Image, TouchableOpacity} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
 import {Chats} from '@/assets/icons';
-import {SCREEN_NAMES} from '@/constants';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
@@ -13,7 +12,7 @@ const Header = ({navigation}: HeaderProps) => {
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logOut());
-    navigation.navigate(SCREEN_NAMES.Launch);
+    navigation.navigate('Launch');
   };
   return (
     <View style={homeStyles.header}>

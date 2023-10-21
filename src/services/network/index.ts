@@ -10,10 +10,10 @@ let UID: string;
 })();
 
 const NetworkService = {
-  async getAllConnections() {
+  async getAllConnections(id = UID) {
     try {
       const response = await FirebaseService.getAllDocuments(
-        `users/${UID}/connections`,
+        `users/${id}/connections`,
       );
 
       const result: NetworkResponse[] = await Promise.all(
@@ -186,17 +186,24 @@ const NetworkService = {
       return false;
     }
   },
-  async getPendingConnectionRequests() {
+  async getPendingConnectionRequests(id: string = UID) {
     const response = await FirebaseService.getAllDocuments(
-      `users/${UID}/requests`,
+      `users/${id}/requests`,
     );
 
     const result: NetworkResponse[] = await Promise.all(
       response.map(async item => {
-        const request = (await FirebaseService.getDocument(
-          'users',
-          item.id,
-        )) as UserInterface;
+        let request = {} as UserInterface;
+
+        if (await Cache.get(`user_${item.senderId}`)) {
+          request = (await Cache.get(`user_${item.id}`)) as UserInterface;
+        } else {
+          request = (await FirebaseService.getDocument(
+            'users',
+            item.id,
+          )) as UserInterface;
+          await Cache.set(`user_${item.id}`, request);
+        }
 
         return {
           ...request,
@@ -226,6 +233,39 @@ const NetworkService = {
     } catch (error) {
       console.log(error);
       return false;
+    }
+  },
+  async getPendingRequests(userId: string = UID) {
+    try {
+      const response = await FirebaseService.getAllDocuments(
+        `users/${userId}/pendingRequests`,
+      );
+
+      const result: NetworkResponse[] = await Promise.all(
+        response.map(async item => {
+          let request = {} as UserInterface;
+
+          if (await Cache.get(`user_${item.senderId}`)) {
+            request = (await Cache.get(`user_${item.id}`)) as UserInterface;
+          } else {
+            request = (await FirebaseService.getDocument(
+              'users',
+              item.id,
+            )) as UserInterface;
+            await Cache.set(`user_${item.id}`, request);
+          }
+
+          return {
+            ...request,
+            requestTime: item.time,
+          };
+        }),
+      );
+
+      return result;
+    } catch (error) {
+      console.log(error);
+      return [] as NetworkResponse[];
     }
   },
 };

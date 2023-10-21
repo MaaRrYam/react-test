@@ -1,9 +1,15 @@
 import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
-import {EmploymentProps, EducationProps, FeedItem} from '@/interfaces';
+import {
+  EmploymentProps,
+  EducationProps,
+  FeedItem,
+  UserInterface,
+} from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
 import ToastService from '@/services/toast';
 import {API_GET} from '@/config/api/apiRequests';
+import Cache from '@/cache';
 const ProfileService = {
   async handleSaveBasicInformation(
     formValues: {
@@ -256,6 +262,21 @@ const ProfileService = {
       } else {
         throw new Error(message);
       }
+    } catch (error) {
+      console.error('Error fetching followers:', error);
+      throw error;
+    }
+  },
+  async getUsersProfile(id: string) {
+    try {
+      const user = (await FirebaseService.getDocument(
+        'users',
+        id,
+      )) as UserInterface;
+
+      Cache.set(`user_${id}`, user);
+
+      return user;
     } catch (error) {
       console.error('Error fetching followers:', error);
       throw error;
