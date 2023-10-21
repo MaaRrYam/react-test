@@ -4,7 +4,6 @@ import {
   Image,
   ScrollView,
   Text,
-  StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   Share,
@@ -13,11 +12,15 @@ import RenderHtml from 'react-native-render-html';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {WINDOW_WIDTH} from '@gorhom/bottom-sheet';
-import {COLORS} from '@/constants';
 import {ArticleScreenProps, RootStackParamList} from '@/types';
 import HomeService from '@/services/home';
-import {FeedItem} from '@/interfaces';
-import {Loading} from '@/components';
+import {FeedItem, UserInterface} from '@/interfaces';
+import {Button, Loading} from '@/components';
+import {CloseIcon} from '@/assets/icons';
+import FirebaseService from '@/services/Firebase';
+import {formatFirebaseTimestamp} from '@/utils';
+import {Timestamp} from 'firebase/firestore';
+import {styles} from './styles';
 const Article: React.FC<ArticleScreenProps> = ({route}) => {
   const {
     params: {id, article},
@@ -25,6 +28,7 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [loading, setLoading] = useState(false);
   const [articleData, setArticleData] = useState(article);
+  const [authorData, setAuthorData] = useState<UserInterface>();
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -45,6 +49,17 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
 
     fetchArticle();
   }, [articleData, id]);
+
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      const data = await FirebaseService.getDocument(
+        'users',
+        articleData?.authorId as string,
+      );
+      setAuthorData(data as UserInterface);
+    };
+    fetchAuthor();
+  }, [articleData]);
 
   const handleBack = () => {
     navigation.goBack();
@@ -74,88 +89,70 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
         {articleData && (
-          <View>
-            <Image
-              source={{uri: articleData.coverImage}}
-              style={styles.media}
-            />
-            <View style={styles.headerContainer}>
-              <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                <Image
-                  source={require('@/assets/images/back.png')}
-                  style={styles.backButtonText}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.shareButton}
-                onPress={handleShare}>
-                <Text style={styles.shareButtonText}>Share</Text>
-              </TouchableOpacity>
+          <>
+            <View style={styles.header}>
+              <View style={styles.headerButtonsContainer}>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleBack();
+                  }}
+                  style={styles.closeButton}>
+                  <CloseIcon />
+                </TouchableOpacity>
+                <View>
+                  <Button
+                    title="Share"
+                    onPress={() => {
+                      handleShare();
+                    }}
+                    style={styles.shareButton}
+                    textColor="black"
+                  />
+                </View>
+              </View>
             </View>
-            <View style={styles.articleContent}>
-              <Text style={styles.articleTitle}>{articleData.title}</Text>
+            <View style={styles.articleContainer}>
+              <Text style={styles.articleTitle}>{article?.title}</Text>
+              <Image
+                source={{uri: articleData.coverImage}}
+                style={styles.media}
+              />
+              <View>
+                <View style={styles.userInfoContainer}>
+                  <Image
+                    source={{uri: authorData?.photoUrl}}
+                    style={styles.userImage}
+                  />
+                  <View style={styles.userInfoTextContainer}>
+                    <Text style={styles.userName}>{authorData?.name}</Text>
+                    <Text style={styles.userSubData}>
+                      {authorData?.tagline}
+                    </Text>
+                    <Text style={styles.userSubData}>
+                      {!article?.edited
+                        ? formatFirebaseTimestamp(
+                            article?.timestamp as Timestamp,
+                            'date',
+                          )
+                        : formatFirebaseTimestamp(
+                            article?.editedTime,
+                            'dateTime',
+                          )}
+                    </Text>
+                  </View>
+                </View>
+              </View>
               <RenderHtml
                 contentWidth={WINDOW_WIDTH}
                 source={{html: articleData.content || ''}}
+                baseStyle={styles.articleContent}
               />
             </View>
-          </View>
+          </>
         )}
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.lightBlueBackground,
-  },
-  media: {
-    width: '100%',
-    height: 300,
-  },
-  loadingIndicator: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-  },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  backButtonText: {
-    marginLeft: 5,
-    color: COLORS.primary,
-  },
-  shareButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  shareButtonText: {
-    color: COLORS.primary,
-    fontWeight: 'bold',
-    marginLeft: 5,
-  },
-  articleContent: {
-    padding: 20,
-  },
-  articleTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
 
 export default Article;
