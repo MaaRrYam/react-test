@@ -4,7 +4,6 @@ import {
   Image,
   ScrollView,
   Text,
-  StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   Share,
@@ -13,7 +12,6 @@ import RenderHtml from 'react-native-render-html';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {WINDOW_WIDTH} from '@gorhom/bottom-sheet';
-import {COLORS, FONTS} from '@/constants';
 import {ArticleScreenProps, RootStackParamList} from '@/types';
 import HomeService from '@/services/home';
 import {FeedItem, UserInterface} from '@/interfaces';
@@ -22,6 +20,7 @@ import {CloseIcon} from '@/assets/icons';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
 import {Timestamp} from 'firebase/firestore';
+import {styles} from './styles';
 const Article: React.FC<ArticleScreenProps> = ({route}) => {
   const {
     params: {id, article},
@@ -155,74 +154,5 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.lightBlueBackground,
-  },
-  media: {
-    width: '100%',
-    height: 275,
-    borderRadius: 5,
-    objectFit: 'contain',
-    marginTop: 20,
-  },
-  loadingIndicator: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingTop: 44,
-    paddingBottom: 8,
-  },
-  headerButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  closeButton: {
-    backgroundColor: COLORS.lightGrayBackground,
-    width: 41,
-    height: 41,
-    borderRadius: 9999,
-  },
-  shareButton: {
-    backgroundColor: COLORS.lightGrayBackground,
-    paddingHorizontal: 28,
-    paddingVertical: 11,
-    borderRadius: 9999,
-  },
-  articleContainer: {paddingHorizontal: 19, paddingTop: 23},
-  articleTitle: {
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: FONTS.heading,
-    alignItems: 'center',
-    maxWidth: 346,
-  },
-  userInfoContainer: {
-    marginVertical: 35,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userImage: {
-    width: 43,
-    height: 43,
-    objectFit: 'contain',
-    borderRadius: 10,
-  },
-  userInfoTextContainer: {marginLeft: 12},
-  userName: {
-    color: 'black',
-    fontSize: FONTS.largeLabel,
-    fontWeight: 'bold',
-  },
-  userSubData: {color: COLORS.text, fontSize: FONTS.bodyRegular},
-  articleContent: {color: 'black'},
-});
 
 export default Article;
