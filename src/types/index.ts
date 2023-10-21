@@ -45,6 +45,10 @@ export type RootStackParamList = {
     article?: FeedItem;
     id?: string;
   };
+  Post: {
+    id?: string;
+    item: FeedItem;
+  };
 };
 
 export type LaunchScreenProps = {
@@ -112,6 +116,11 @@ export type ChatDetailsScreenProps = {
 export type ArticleScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Article'>;
   route: RouteProp<RootStackParamList, 'Article'>;
+};
+
+export type PostScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Post'>;
+  route: RouteProp<RootStackParamList, 'Post'>;
 };
 
 export type NotificationsScreenProps = {

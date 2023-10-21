@@ -20,7 +20,7 @@ import ArrowDown from './ArrowDown';
 import Delete from './Delete';
 import CheckMark from './CheckMark';
 import SendIcon from './Send';
-
+import CloseIcon from './CloseIcon';
 export {
   BackArrow,
   Dislike,
@@ -44,4 +44,5 @@ export {
   Delete,
   CheckMark,
   SendIcon,
+  CloseIcon,
 };
