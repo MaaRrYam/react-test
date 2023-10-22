@@ -1,9 +1,21 @@
 import React, {FC} from 'react';
-import {Image, Text, TextInput, View} from 'react-native';
-import {COLORS} from '@/constants';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+
+import {NewPost} from '@/components';
 import {TabDataInterface} from '@/interfaces';
 import {profileTabStyles as styles} from './styles';
+
 const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
+  const [isNewPostClicked, setIsNewPostClicked] =
+    React.useState<boolean>(false);
+
+  const handleOpen = () => {
+    setIsNewPostClicked(true);
+  };
+
+  const handleClose = () => {
+    setIsNewPostClicked(false);
+  };
   return (
     <>
       <View style={styles.container}>
@@ -16,14 +28,14 @@ const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
             style={styles.userImage}
           />
 
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Start a Post"
-            editable={false}
-            placeholderTextColor={COLORS.black}
-          />
+          <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
+            <Text style={styles.searchBarText}>Start a Post</Text>
+          </TouchableOpacity>
         </View>
       </View>
+      {isNewPostClicked && (
+        <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
+      )}
     </>
   );
 };

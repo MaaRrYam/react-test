@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 
 import FeedItem from '@/components/Feed/FeedItem';
 import {FeedItem as FeedInterface, ProfileFeedInterface} from '@/interfaces';
@@ -11,10 +11,10 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   const [feedData, setFeedData] = useState<FeedInterface[]>([]);
   const [loading, setLoading] = useState(false);
   const fetchData = useCallback(async () => {
-    await setLoading(true);
+    setLoading(true);
     const data = await ProfileService.getFeed(uid);
-    await setFeedData(data);
-    await setLoading(false);
+    setFeedData(data);
+    setLoading(false);
   }, [uid]);
 
   useEffect(() => {
@@ -28,7 +28,11 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   };
 
   if (loading) {
-    return <Loading />;
+    return (
+      <View style={{height: 200}}>
+        <Loading />
+      </View>
+    );
   }
   return (
     <>
@@ -39,9 +43,6 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
         )}
         keyExtractor={item => item._id}
       />
-      {/* {!isFeedFetched && feed.length && (
-        <ActivityIndicator color={COLORS.primary} size="large" />
-      )} */}
     </>
   );
 };

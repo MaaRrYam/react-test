@@ -1,4 +1,4 @@
-import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS, PADDING} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const profileTabStyles = StyleSheet.create({
@@ -38,6 +38,10 @@ export const profileTabStyles = StyleSheet.create({
     padding: 0,
     maxHeight: 100,
     marginTop: 20,
+  },
+  searchBarText: {
+    color: COLORS.text,
+    fontSize: FONTS.bodyRegular,
   },
 });
 
