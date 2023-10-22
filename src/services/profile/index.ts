@@ -252,7 +252,7 @@ const ProfileService = {
       id: userId,
       time: Timestamp.now(),
     });
-    await ToastService.showSuccess('You are now Following this user');
+    ToastService.showSuccess('You are now Following this user');
   },
   async getFeed(uid: string) {
     try {

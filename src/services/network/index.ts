@@ -225,13 +225,23 @@ const NetworkService = {
   },
   async connectWithSomeone(userId: string) {
     try {
-      await FirebaseService.addDocument(`users/${userId}/requests`, {
+      await FirebaseService.setDoc(`users/${userId}/requests`, UID, {
         id: UID,
         time: FirebaseService.serverTimestamp(),
       });
       return true;
     } catch (error) {
       console.log(error);
+      return false;
+    }
+  },
+  async removeConnectionRequest(userId: string) {
+    try {
+      await FirebaseService.deleteDocument(`users/${userId}/requests`, UID);
+
+      return true;
+    } catch (error) {
+      console.error('Error accepting connection:', error);
       return false;
     }
   },

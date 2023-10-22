@@ -1,47 +1,44 @@
-import React, {useState} from 'react';
-import {View, Image, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 
-import {Header, PrimaryButton, SecondaryButton} from '@/components';
+import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
 import {RootStackParamList} from '@/types';
 import profileStyles from '@/styles/profile';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import ProfileService from '@/services/profile';
 import {ThreeDots} from '@/assets/icons';
-import NetworkService from '@/services/network';
-import {NetworkResponse, UserInterface} from '@/interfaces';
+import {UserInterface} from '@/interfaces';
 import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
+import useProfile from '@/hooks/useProfile';
 
 const About = ({
   navigation,
   usersProfileID,
-  pendingRequests,
-  sentRequests,
-  connections,
   user,
 }: {
   navigation: NavigationProp<RootStackParamList, 'Profile'>;
   usersProfileID: string;
-  connections: NetworkResponse[];
-  pendingRequests: NetworkResponse[];
-  sentRequests: NetworkResponse[];
   user: UserInterface;
 }) => {
-  const loggedInUser = useAppSelector(state => state.auth.user);
-  const [buttonLoading, setButtonLoading] = useState(false);
-
-  const handleConnect = async () => {
-    setButtonLoading(true);
-    await NetworkService.connectWithSomeone(usersProfileID);
-    setButtonLoading(false);
-  };
-
-  const handleAcceptConnection = async () => {
-    setButtonLoading(true);
-    await ProfileService.acceptRequest(usersProfileID, loggedInUser.id);
-    setButtonLoading(false);
-  };
+  const {
+    loading,
+    buttonLoading,
+    isAlreadyPendingRequest,
+    isConnectionRequestReceived,
+    isAlreadyConnected,
+    handleConnect,
+    handleRemoveConnectionRequest,
+    handleAcceptConnection,
+    loggedInUser,
+    connections,
+  } = useProfile(usersProfileID, user);
+  const {width, height} = useWindowDimensions();
 
   const handleMessage = async () => {
     const chatPayload = {
@@ -66,6 +63,14 @@ const About = ({
       });
     }
   };
+
+  if (loading) {
+    return (
+      <View style={{width, height}}>
+        <Loading />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -110,44 +115,35 @@ const About = ({
             {!usersProfileID ||
               (usersProfileID !== loggedInUser.id && (
                 <>
-                  {!connections.some(conn => conn.id === loggedInUser.id) &&
-                  !pendingRequests.some(conn => conn.id === loggedInUser.id) &&
-                  !sentRequests.some(conn => conn.id === loggedInUser.id) ? (
+                  {!isAlreadyConnected &&
+                  !isAlreadyPendingRequest &&
+                  !isConnectionRequestReceived ? (
                     <PrimaryButton
                       title="Connect"
                       style={[profileStyles.connectButton]}
                       isLoading={buttonLoading}
                       onPress={handleConnect}
                     />
-                  ) : pendingRequests.some(
-                      conn => conn.id === loggedInUser.id,
-                    ) ? (
+                  ) : isConnectionRequestReceived ? (
                     <PrimaryButton
                       title="Accept"
                       style={profileStyles.connectButton}
                       onPress={handleAcceptConnection}
                       isLoading={buttonLoading}
                     />
-                  ) : sentRequests.some(conn => conn.id === loggedInUser.id) &&
-                    !connections.some(conn => conn.id === loggedInUser.id) ? (
+                  ) : isAlreadyPendingRequest && !isAlreadyConnected ? (
                     <SecondaryButton
                       title="Request Sent"
                       style={profileStyles.messageButton}
-                      onPress={async () => {
-                        await ProfileService.acceptRequest(
-                          usersProfileID,
-                          loggedInUser.id,
-                        );
-                      }}
+                      onPress={handleRemoveConnectionRequest}
+                      isLoading={buttonLoading}
                     />
                   ) : null}
                   <SecondaryButton
                     title="Message"
                     style={[
                       profileStyles.messageButton,
-                      connections.some(conn => conn.id === loggedInUser.id) &&
-                        connections.some(conn => conn.id === loggedInUser.id) &&
-                        profileStyles.messageMargin,
+                      isAlreadyConnected && profileStyles.messageMargin,
                     ]}
                     onPress={handleMessage}
                   />
