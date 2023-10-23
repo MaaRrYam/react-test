@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
 import {
@@ -87,7 +87,7 @@ const EditProfile = ({
       onClose={onClose}
       indicatorVisible={false}
       snapPoints={['20%', '100%']}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.closeButtonContainer}>
             <TouchableOpacity
@@ -112,7 +112,7 @@ const EditProfile = ({
           </View>
         </View>
         <View style={styles.contentContainer}>{renderForm()}</View>
-      </View>
+      </SafeAreaView>
     </BottomSheet>
   );
 };

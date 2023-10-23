@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,37 +8,19 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useFormik} from 'formik';
+
 import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
 import {UserInfoProps} from '@/interfaces';
 import {COLORS, FONTS} from '@/constants';
 import {basicInfoSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
-const EditBasicInfoForm: React.FC<UserInfoProps> = ({
-  user,
-  onClose,
-  setIsEdit,
-}) => {
-  const [editedValues, setEditedValues] = useState({
-    name: '',
-    about: '',
-    tagline: '',
-    country: '',
-    city: '',
-    state: '',
-  });
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {updateUserData} from '@/store/features/authSlice';
 
-  useEffect(() => {
-    if (setIsEdit) {
-      setEditedValues({
-        name: user.name || '',
-        about: user.description || '',
-        tagline: user.tagline || '',
-        country: user.country || '',
-        city: user.city || '',
-        state: user.state || '',
-      });
-    }
-  }, [user, setIsEdit]);
+const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
+  const {user} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
 
   const {
     values,
@@ -50,22 +32,24 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({
     isSubmitting,
     setSubmitting,
   } = useFormik({
-    initialValues: setIsEdit
-      ? {...editedValues}
-      : {
-          name: user.name || '',
-          about: user.description || '',
-          tagline: user.tagline || '',
-          country: user.country || '',
-          city: user.city || '',
-          state: user.state || '',
-        },
+    initialValues: {
+      name: user.name || '',
+      about: user.description || '',
+      tagline: user.tagline || '',
+      country: user.country || '',
+      city: user.city || '',
+      state: user.state || '',
+    },
     validationSchema: basicInfoSchema,
     onSubmit: async formValues => {
-      await ProfileService.handleSaveBasicInformation(
-        formValues,
-        setSubmitting,
+      await ProfileService.handleSaveBasicInformation(formValues);
+      dispatch(
+        updateUserData({
+          ...user,
+          ...formValues,
+        }),
       );
+      setSubmitting(false);
       onClose();
     },
   });
@@ -114,7 +98,6 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({
           <Dropdown
             options={employmentOptions || []}
             style={styles.dropdown}
-            startingOption={values.tagline || 'Select an option'}
             selectedOption={values.tagline}
             onOptionSelect={handleChange('tagline')}
             error={errors.tagline}

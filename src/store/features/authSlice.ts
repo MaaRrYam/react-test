@@ -3,7 +3,7 @@ import FirebaseService from '@/services/Firebase';
 import {UserInterface} from '@/interfaces';
 import {DocumentData} from 'firebase/firestore';
 import StorageService from '@/services/Storage';
-import { getUID } from '@/utils/functions';
+import {getUID} from '@/utils/functions';
 
 interface AuthState {
   user: UserInterface;

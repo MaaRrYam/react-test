@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Image,
@@ -21,10 +21,12 @@ const About = ({
   navigation,
   usersProfileID,
   user,
+  setUser,
 }: {
   navigation: NavigationProp<RootStackParamList, 'Profile'>;
   usersProfileID: string;
   user: UserInterface;
+  setUser: React.Dispatch<React.SetStateAction<UserInterface>>;
 }) => {
   const {
     loading,
@@ -63,6 +65,12 @@ const About = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (usersProfileID === loggedInUser.id) {
+      setUser(loggedInUser);
+    }
+  }, [loggedInUser, setUser, usersProfileID]);
 
   if (loading) {
     return (

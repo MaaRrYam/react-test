@@ -1,4 +1,4 @@
-import {areCareersEqual, areEducationsEqual, getUID} from '@/utils/functions';
+import {areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 import {
   EmploymentProps,
@@ -11,111 +11,42 @@ import ToastService from '@/services/toast';
 import {API_GET} from '@/config/api/apiRequests';
 import Cache from '@/cache';
 const ProfileService = {
-  async handleSaveBasicInformation(
-    formValues: {
-      name: string;
-      about: string;
-      tagline: string;
-      country: string;
-      state: string;
-      city: string;
-    },
-    setSubmitting: (value: boolean) => void,
-  ) {
-    await setSubmitting(true);
+  async handleSaveBasicInformation({
+    name,
+    about,
+    tagline,
+    country,
+    state,
+    city,
+  }: {
+    name: string;
+    about: string;
+    tagline: string;
+    country: string;
+    state: string;
+    city: string;
+  }) {
     const uid = await getUID();
     await FirebaseService.updateDocument('users', uid as string, {
-      name: formValues.name,
-      description: formValues.about,
-      tagline: formValues.tagline,
-      country: formValues.country,
-      state: formValues.state,
-      city: formValues.city,
+      name,
+      description: about,
+      tagline,
+      country,
+      state,
+      city,
     });
-    await setSubmitting(false);
   },
-  async handleCareerInfoEdit(
-    values: {
-      companyName: string;
-      role: string;
-      startYear: string;
-      isCurrentlyWorking: boolean;
-      endYear: string;
-    },
-    setSubmitting: (value: boolean) => void,
-    setEditingIndex: (value: number | null) => void,
-    editingIndex: number | null,
-    careerList: EmploymentProps[],
-  ) {
-    await setSubmitting(true);
-    console.log('Form submitted with values:', values);
-    const uid = await getUID();
-    const newEmployment: EmploymentProps = {
-      companyName: values.companyName,
-      role: values.role,
-      startYear: values.startYear,
-      endYear: values.isCurrentlyWorking
-        ? new Date().getFullYear().toString()
-        : values.endYear,
-      currentlyWorking: values.isCurrentlyWorking,
-      id: FirebaseService.generateUniqueId(),
-    };
-
-    if (editingIndex !== null) {
-      const updatedExperience = [...careerList];
-      updatedExperience[editingIndex] = newEmployment;
-      setEditingIndex(null);
-
-      await FirebaseService.updateDocument('users', uid as string, {
-        employmentList: updatedExperience,
-      });
-    } else {
-      const isDuplicate = careerList.some(career =>
-        areCareersEqual(career, newEmployment),
-      );
-      if (!isDuplicate) {
-        await FirebaseService.updateDocument('users', uid as string, {
-          employmentList: [...careerList, newEmployment],
-        });
-      }
-    }
-    await setSubmitting(false);
-  },
-  async deleteCareer(indexToRemove: number, careerList: EmploymentProps[]) {
-    const updatedCareerList = [...careerList];
-    updatedCareerList.splice(indexToRemove, 1);
-    const uid = await getUID();
-    if (uid) {
+  async updateEmployment(updatedCareerList: EmploymentProps[]) {
+    try {
+      const uid = (await getUID()) as string;
       FirebaseService.updateDocument('users', uid as string, {
         employmentList: updatedCareerList,
       });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
-  },
-  toggleCareerEditForm(
-    setIsEditing: (value: boolean) => void,
-    setAddNew: (value: boolean) => void,
-    isEditing: boolean,
-    resetForm: Function,
-  ) {
-    setIsEditing(!isEditing);
-    setAddNew(false);
-    resetForm();
-  },
-  async editCareer(
-    setIsEditing: (value: boolean) => void,
-    setAddNew: (value: boolean) => void,
-    isEditing: boolean,
-    resetForm: Function,
-    setEditingIndex: (value: number | null) => void,
-    index: number,
-  ) {
-    await setEditingIndex(index);
-    await this.toggleCareerEditForm(
-      setIsEditing,
-      setAddNew,
-      isEditing,
-      resetForm,
-    );
   },
   toggleEducationEditForm(
     setIsEditing: (value: boolean) => void,

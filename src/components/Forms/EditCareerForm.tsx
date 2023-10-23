@@ -1,7 +1,7 @@
-import React, {useEffect, FC, useRef} from 'react';
+import React, {useEffect, FC, useRef, useCallback, useMemo} from 'react';
 import {KeyboardAvoidingView, Text, View} from 'react-native';
 import {useFormik} from 'formik';
-import {CareerFormProps} from '@/interfaces';
+import {CareerFormProps, EmploymentProps} from '@/interfaces';
 import {
   Input,
   Checkbox,
@@ -12,8 +12,12 @@ import {
 import {careerSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
 import {editFormStyles as styles} from '@/components/Forms/styles';
+import ToastService from '@/services/toast';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {updateUserData} from '@/store/features/authSlice';
+import FirebaseService from '@/services/Firebase';
 const EditCareerForm: FC<CareerFormProps> = ({
-  careerList,
   isEditing,
   setIsEditing,
   addNew,
@@ -21,8 +25,27 @@ const EditCareerForm: FC<CareerFormProps> = ({
   editingIndex,
   setEditingIndex,
 }) => {
-  const formik = useFormik({
+  const {user} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+
+  const careerList = useMemo(() => {
+    return (user.employmentList || []) as EmploymentProps[];
+  }, [user.employmentList]);
+
+  const {
+    values,
+    isSubmitting,
+    setSubmitting,
+    resetForm,
+    handleChange,
+    errors,
+    handleSubmit,
+    setFieldValue,
+    setValues,
+    setFieldTouched,
+  } = useFormik({
     initialValues: {
+      id: '',
       companyName: '',
       role: '',
       startYear: '',
@@ -30,22 +53,83 @@ const EditCareerForm: FC<CareerFormProps> = ({
       isCurrentlyWorking: false,
     },
     validationSchema: careerSchema,
-    onSubmit: async formValues => {
-      await ProfileService.handleCareerInfoEdit(
-        formValues,
-        formik.setSubmitting,
-        setEditingIndex,
-        editingIndex,
-        careerList,
-      );
-      ProfileService.toggleCareerEditForm(
-        setIsEditing,
-        setAddNew,
-        isEditing,
-        formik.resetForm,
-      );
+    onSubmit: async () => {
+      if (values.id) {
+        await updateCareer(values.id);
+      } else {
+        await addCareer();
+      }
+      setSubmitting(false);
     },
   });
+
+  const deleteCareer = useCallback(
+    async (id: string) => {
+      const updatedCareers = careerList.filter(career => career.id !== id);
+      const response = await ProfileService.updateEmployment(updatedCareers);
+      if (response) {
+        ToastService.showSuccess('Career Deleted');
+        dispatch(updateUserData({...user, employmentList: updatedCareers}));
+      }
+    },
+    [careerList, dispatch, user],
+  );
+
+  const addCareer = useCallback(async () => {
+    const updatedCareers = [
+      ...careerList,
+      {
+        id: FirebaseService.generateUniqueId(),
+        companyName: values.companyName,
+        role: values.role,
+        startYear: values.startYear,
+        endYear: values.endYear,
+        currentlyWorking: values.isCurrentlyWorking,
+      },
+    ];
+
+    const response = await ProfileService.updateEmployment(updatedCareers);
+    if (response) {
+      ToastService.showSuccess('Employment Added Successfully');
+      dispatch(
+        updateUserData({
+          ...user,
+          employmentList: updatedCareers,
+        }),
+      );
+    }
+  }, [careerList, dispatch, user, values]);
+
+  const updateCareer = useCallback(
+    async (id: string) => {
+      const updatedCareers = careerList.map(career => {
+        if (career.id === id) {
+          return {
+            ...career,
+            companyName: values.companyName,
+            role: values.role,
+            startYear: values.startYear,
+            endYear: values.endYear,
+            currentlyWorking: values.isCurrentlyWorking,
+          };
+        }
+
+        return career;
+      });
+
+      const response = await ProfileService.updateEmployment(updatedCareers);
+      if (response) {
+        ToastService.showSuccess('Employment Updated Successfully');
+        dispatch(
+          updateUserData({
+            ...user,
+            employmentList: updatedCareers,
+          }),
+        );
+      }
+    },
+    [careerList, dispatch, user, values],
+  );
 
   const previousAddNew = useRef(addNew);
   const previousEditingIndex = useRef(editingIndex);
@@ -59,11 +143,12 @@ const EditCareerForm: FC<CareerFormProps> = ({
       editingIndex !== previousEditingIndex.current
     ) {
       if (addNew) {
-        formik.resetForm();
+        resetForm();
       } else {
         const itemToEdit = careerList[editingIndex || 0];
         if (itemToEdit) {
           const newValues = {
+            id: itemToEdit.id,
             companyName: itemToEdit.companyName || '',
             role: itemToEdit.role || '',
             startYear: itemToEdit.startYear || years[0],
@@ -73,13 +158,15 @@ const EditCareerForm: FC<CareerFormProps> = ({
             isCurrentlyWorking: itemToEdit.currentlyWorking || false,
           };
 
-          formik.setValues(newValues);
+          setValues(newValues);
         }
       }
     }
     previousAddNew.current = addNew;
     previousEditingIndex.current = editingIndex;
-  }, [addNew, editingIndex, careerList, formik, years]);
+  }, [addNew, editingIndex, careerList, years, resetForm, setValues]);
+
+  console.log(values.id, 'ID');
 
   return (
     <View style={styles.flexStyle}>
@@ -88,35 +175,35 @@ const EditCareerForm: FC<CareerFormProps> = ({
           <KeyboardAvoidingView style={styles.paddedContainer}>
             <Text style={styles.sectionHeader}>Job Details</Text>
             <Input
-              onChangeText={formik.handleChange('companyName')}
+              onChangeText={handleChange('companyName')}
               placeholder="Current Company"
-              value={formik.values.companyName}
-              setFieldTouched={formik.setFieldTouched}
+              value={values.companyName}
+              setFieldTouched={setFieldTouched}
               style={styles.textInput}
-              error={formik.errors.companyName}
+              error={errors.companyName}
             />
             <Input
-              onChangeText={formik.handleChange('role')}
+              onChangeText={handleChange('role')}
               placeholder="Designation"
-              value={formik.values.role}
-              setFieldTouched={formik.setFieldTouched}
+              value={values.role}
+              setFieldTouched={setFieldTouched}
               style={styles.textInput}
-              error={formik.errors.role}
+              error={errors.role}
             />
             <View style={styles.yearInputContainer}>
               <YearDropdown
-                onYearSelect={formik.handleChange('startYear')}
-                selectedYear={formik.values.startYear}
+                onYearSelect={handleChange('startYear')}
+                selectedYear={values.startYear}
                 years={years}
-                setFieldTouched={formik.setFieldTouched}
+                setFieldTouched={setFieldTouched}
                 name="startYear"
                 label="Start Year"
               />
               <YearDropdown
-                onYearSelect={formik.handleChange('endYear')}
-                selectedYear={formik.values.endYear}
+                onYearSelect={handleChange('endYear')}
+                selectedYear={values.endYear}
                 years={years}
-                setFieldTouched={formik.setFieldTouched}
+                setFieldTouched={setFieldTouched}
                 name="endYear"
                 label="End Year"
                 style={{marginLeft: 10}}
@@ -125,12 +212,12 @@ const EditCareerForm: FC<CareerFormProps> = ({
             <View style={styles.checkboxContainer}>
               <Checkbox
                 onPress={() =>
-                  formik.setFieldValue(
+                  setFieldValue(
                     'isCurrentlyWorking',
-                    !formik.values.isCurrentlyWorking,
+                    !values.isCurrentlyWorking,
                   )
                 }
-                isChecked={formik.values.isCurrentlyWorking}
+                isChecked={values.isCurrentlyWorking}
               />
               <Text style={styles.checkboxText}>Currently Working?</Text>
             </View>
@@ -138,9 +225,9 @@ const EditCareerForm: FC<CareerFormProps> = ({
           <View style={styles.footer}>
             <PrimaryButton
               title={editingIndex !== null ? 'Update' : 'Save'}
-              onPress={formik.handleSubmit}
+              onPress={handleSubmit}
               style={[styles.saveButton]}
-              isLoading={formik.isSubmitting}
+              isLoading={isSubmitting}
             />
           </View>
         </>
@@ -161,15 +248,12 @@ const EditCareerForm: FC<CareerFormProps> = ({
               endDate={item.currentlyWorking ? 'Present' : item.endYear}
               editable
               onEdit={async () => {
-                await ProfileService.toggleCareerEditForm(
-                  setIsEditing,
-                  setAddNew,
-                  isEditing,
-                  formik.resetForm,
-                );
-                await setEditingIndex(index);
+                setIsEditing(!isEditing);
+                setAddNew(false);
+                resetForm();
+                setEditingIndex(index);
               }}
-              onDelete={() => ProfileService.deleteCareer(index, careerList)}
+              onDelete={() => deleteCareer(item.id)}
             />
           </View>
         ))

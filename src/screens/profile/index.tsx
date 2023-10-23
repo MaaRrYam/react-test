@@ -32,7 +32,12 @@ const Profile = ({navigation, route}: ProfileProps) => {
   return (
     <SafeAreaView style={profileStyles.safeArea}>
       <ScrollView>
-        <About navigation={navigation} usersProfileID={UID} user={user} />
+        <About
+          navigation={navigation}
+          usersProfileID={UID}
+          user={user}
+          setUser={setUser}
+        />
         <ProfileTabs
           setTabItem={setTabItem}
           setIsVisible={setIsVisible}

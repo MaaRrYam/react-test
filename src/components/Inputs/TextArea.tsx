@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   textArea: {
     minHeight: 100,
     textAlignVertical: 'top',
+    marginTop: 10,
   },
   error: {
     fontSize: FONTS.bodySmall,
