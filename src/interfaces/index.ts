@@ -517,3 +517,19 @@ export interface JobsComponentInterface {
   setAllJobs: Function;
   isLoading: boolean;
 }
+
+export interface allPastApplicationsAndJobsInterface {
+  application: ApplicantInterface[];
+  job: JobInterface;
+}
+
+export interface PastApplicationCardInterface {
+  jobTitle: string;
+  companyLogo: string;
+  isAccepted: boolean;
+  isPending: boolean;
+  starred: boolean;
+  feedback: string;
+  rating: number;
+  onPress: () => void;
+}

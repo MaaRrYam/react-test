@@ -9,7 +9,6 @@ import JobsComponent from './JobsComponent';
 import PastApplications from './PastApplications';
 import {JobInterface} from '@/interfaces';
 import JobsService from '@/services/jobs';
-import FirebaseService from '@/services/Firebase';
 
 const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [selectedTab, setSelectedTab] = React.useState<string>(JOBS_TABS[0]);
@@ -26,12 +25,12 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
         setIsLoading(false);
       }
     } else if (selectedTab === JOBS_TABS[1]) {
-      // if (allJobs?.length === 0) {
-      //   setIsLoading(true);
-      //   JobsService.getAllPastApplications().then(setAllJobs);
-      // } else {
-      //   setIsLoading(false);
-      // }
+      if (allJobs?.length === 0) {
+        setIsLoading(true);
+        JobsService.getAllPastApplicationsAndJobs().then(setAllJobs);
+      } else {
+        setIsLoading(false);
+      }
     } else if (selectedTab === JOBS_TABS[2]) {
       if (allJobs?.length === 0) {
         setIsLoading(true);
@@ -98,14 +97,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
             isLoading={isLoading}
           />
         ) : selectedTab === JOBS_TABS[1] ? (
-          // <PastApplications />
-          // <JobsComponent
-          //   jobFilterBottomSheet={jobFilterBottomSheet}
-          //   setJobsFilterBottomSheet={setJobsFilterBottomSheet}
-          //   allJobs={allJobs}
-          //   isLoading={isLoading}
-          // />
-          <></>
+          <PastApplications allJobs={allJobs} />
         ) : (
           <JobsComponent
             jobFilterBottomSheet={jobFilterBottomSheet}

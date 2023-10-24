@@ -45,7 +45,7 @@ export const requestAccessSchema = Yup.object().shape({
 });
 
 export const jobCustomQuestionSchema = Yup.object().shape({
-  questionOne: Yup.string(),
-  questionTwo: Yup.string(),
-  questionThree: Yup.string(),
+  questionOne: Yup.string().required('Answer Required'),
+  questionTwo: Yup.string().required('Answer Required'),
+  questionThree: Yup.string().required('Answer Required'),
 });

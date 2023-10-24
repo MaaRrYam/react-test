@@ -248,3 +248,43 @@ export const jobCardStyles = StyleSheet.create({
     color: COLORS.text,
   },
 });
+export const pastApplicationCardStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    marginTop: MARGINS.general,
+    borderBottomWidth: BORDER_WIDTH.general,
+    borderBottomColor: COLORS.border,
+    paddingHorizontal: PADDING.general,
+    paddingVertical: PADDING.general,
+  },
+  iconContainer: {
+    width: ICON_WIDTH.general,
+    height: ICON_HEIGHT.general,
+    alignItems: 'center',
+    marginLeft: MARGINS.general,
+    justifyContent: 'center',
+    backgroundColor: COLORS.lightGrayBackground,
+    borderRadius: BORDER_RADIUS.general,
+  },
+  icon: {
+    width: ICON_WIDTH.general / 1.3,
+    height: ICON_HEIGHT.general / 1.3,
+  },
+  textContainer: {
+    flex: 1,
+    marginLeft: MARGINS.general,
+  },
+  title: {
+    color: COLORS.black,
+    fontWeight: 'bold',
+  },
+  company: {
+    color: COLORS.text,
+  },
+  dateContainer: {
+    flexDirection: 'row',
+  },
+  date: {
+    color: COLORS.text,
+  },
+});

@@ -9,7 +9,6 @@ import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsCard from '@/components/Cards/JobsCard';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import EmptyComponent from '@/components/NoResults/Empty';
-import JobsService from '@/services/jobs';
 
 const JobsComponent = ({
   jobFilterBottomSheet,

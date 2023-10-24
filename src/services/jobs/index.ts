@@ -1,6 +1,7 @@
 import {getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 import {
+  allPastApplicationsAndJobsInterface,
   ApplicantInterface,
   JobInterface,
   UserInterface,
@@ -40,33 +41,45 @@ const JobsService = {
     }
   },
 
-  async getAllPastApplications() {
+  async getAllPastApplicationsAndJobs() {
     try {
-      const allPastApplications: ApplicantInterface[] = [];
+      const allPastApplicationsAndJobs = [];
       const allJobs = await FirebaseService.getAllDocuments('jobs');
 
       if (allJobs) {
         const promises = allJobs.map(async job => {
-          const res = await FirebaseService.getDocumentsByQuery(
+          const applications = await FirebaseService.getDocumentsByQuery(
             `jobs/${job.id}/applications`,
             'applicantId',
             '==',
             UID,
           );
-          return res;
-        });
 
-        const pastJobs = await Promise.all(promises);
-        allPastApplications.push(...pastJobs);
+          if (applications.length > 0) {
+            const jobTitle = job.jobTitle;
+            const jobId = job.id;
+            const companyLogo = job?.companyLogo || '';
+
+            const applicationsWithJobInfo = applications.map(application => ({
+              ...application,
+              jobTitle,
+              jobId,
+              companyLogo,
+            }));
+
+            allPastApplicationsAndJobs.push(...applicationsWithJobInfo);
+          }
+
+          return applications;
+        });
+        await Promise.all(promises);
       }
-      console.log(allPastApplications);
-      return allPastApplications;
+      return allPastApplicationsAndJobs;
     } catch (error) {
       // Handle any errors that may occur during the process
-      console.error('Error fetching saved jobs:', error);
+      console.error('Error fetching past applications and jobs:', error);
     }
   },
-
   async checkSavedJob(jobId: string) {
     return FirebaseService.getDocument(`savedItems/${UID}/jobs`, jobId);
   },
