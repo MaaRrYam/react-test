@@ -48,6 +48,18 @@ const ProfileService = {
       return false;
     }
   },
+  async updateEducation(updatedEducationList: EducationProps[]) {
+    try {
+      const uid = (await getUID()) as string;
+      FirebaseService.updateDocument('users', uid as string, {
+        educationList: updatedEducationList,
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
   toggleEducationEditForm(
     setIsEditing: (value: boolean) => void,
     setAddNew: (value: boolean) => void,

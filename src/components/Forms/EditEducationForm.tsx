@@ -1,48 +1,137 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Text, View, KeyboardAvoidingView} from 'react-native';
+import React, {useEffect, FC, useRef, useCallback, useMemo} from 'react';
+import {KeyboardAvoidingView, Text, View} from 'react-native';
 import {useFormik} from 'formik';
-import {EditEducationProps} from '@/interfaces';
+import {EditEducationProps, EducationProps} from '@/interfaces';
 import {
-  Checkbox,
   Input,
+  Checkbox,
   PrimaryButton,
   CareerCard,
   YearDropdown,
 } from '@/components';
-import {educationSchema} from '@/utils/schemas/profile';
+import {careerSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
 import {editFormStyles as styles} from '@/components/Forms/styles';
-
-const EditEducationForm = ({
-  educationList,
+import ToastService from '@/services/toast';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {updateUserData} from '@/store/features/authSlice';
+import FirebaseService from '@/services/Firebase';
+const EditEducationForm: FC<EditEducationProps> = ({
   isEditing,
   setIsEditing,
   addNew,
   setAddNew,
-}: EditEducationProps) => {
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const formik = useFormik({
+  editingIndex,
+  setEditingIndex,
+}) => {
+  const {user} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+
+  const educationList = useMemo(() => {
+    return (user.educationList || []) as EducationProps[];
+  }, [user.educationList]);
+
+  const {
+    values,
+    isSubmitting,
+    setSubmitting,
+    resetForm,
+    handleChange,
+    errors,
+    handleSubmit,
+    setFieldValue,
+    setValues,
+    setFieldTouched,
+  } = useFormik({
     initialValues: {
+      id: '',
       instituteName: '',
-      degreeName: '',
+      degree: '',
       startYear: '',
       endYear: '',
       isCurrentlyStudying: false,
     },
-    validationSchema: educationSchema,
-    onSubmit: async values => {
-      await ProfileService.handleEducationEdit(
-        values,
-        formik.setSubmitting,
-        editingIndex,
-        educationList,
-        setEditingIndex,
-        setAddNew,
-        setIsEditing,
-        isEditing,
-      );
+    validationSchema: careerSchema,
+    onSubmit: async () => {
+      if (values.id) {
+        await updateCareer(values.id);
+      } else {
+        await addCareer();
+      }
+      setSubmitting(false);
     },
   });
+
+  const deleteCareer = useCallback(
+    async (id: string) => {
+      const updatedEducation = educationList.filter(
+        education => education.id !== id,
+      );
+      const response = await ProfileService.updateEducation(updatedEducation);
+      if (response) {
+        ToastService.showSuccess('Career Deleted');
+        dispatch(updateUserData({...user, educationList: updatedEducation}));
+      }
+    },
+    [educationList, dispatch, user],
+  );
+
+  const addCareer = useCallback(async () => {
+    const updatedEducations = [
+      ...educationList,
+      {
+        id: FirebaseService.generateUniqueId(),
+        instituteName: values.instituteName,
+        degree: values.degree,
+        startYear: values.startYear,
+        endYear: values.endYear,
+        currentlyStudying: values.isCurrentlyStudying,
+      },
+    ];
+
+    const response = await ProfileService.updateEducation(updatedEducations);
+    if (response) {
+      ToastService.showSuccess('Employment Added Successfully');
+      dispatch(
+        updateUserData({
+          ...user,
+          educationList: updatedEducations,
+        }),
+      );
+    }
+  }, [educationList, dispatch, user, values]);
+
+  const updateCareer = useCallback(
+    async (id: string) => {
+      const updatedEducations = educationList.map(education => {
+        if (education.id === id) {
+          return {
+            ...education,
+            instituteName: values.instituteName,
+            degree: values.degree,
+            startYear: values.startYear,
+            endYear: values.endYear,
+            currentlyStudying: values.isCurrentlyStudying,
+          };
+        }
+
+        return education;
+      });
+
+      const response = await ProfileService.updateEducation(updatedEducations);
+      if (response) {
+        ToastService.showSuccess('Employment Updated Successfully');
+        dispatch(
+          updateUserData({
+            ...user,
+            educationList: updatedEducations,
+          }),
+        );
+      }
+    },
+    [educationList, dispatch, user, values],
+  );
 
   const previousAddNew = useRef(addNew);
   const previousEditingIndex = useRef(editingIndex);
@@ -56,13 +145,14 @@ const EditEducationForm = ({
       editingIndex !== previousEditingIndex.current
     ) {
       if (addNew) {
-        formik.resetForm();
+        resetForm();
       } else {
         const itemToEdit = educationList[editingIndex || 0];
         if (itemToEdit) {
           const newValues = {
+            id: itemToEdit.id,
             instituteName: itemToEdit.instituteName || '',
-            degreeName: itemToEdit.degree || '',
+            degree: itemToEdit.degree || '',
             startYear: itemToEdit.startYear || years[0],
             endYear: itemToEdit.currentlyStudying
               ? ''
@@ -70,67 +160,81 @@ const EditEducationForm = ({
             isCurrentlyStudying: itemToEdit.currentlyStudying || false,
           };
 
-          formik.setValues(newValues);
+          setValues(newValues);
         }
       }
     }
     previousAddNew.current = addNew;
     previousEditingIndex.current = editingIndex;
-  }, [addNew, editingIndex, educationList, formik, years]);
+  }, [addNew, editingIndex, educationList, years, resetForm, setValues]);
+
+  console.log(values.id, 'ID');
 
   return (
     <View style={styles.flexStyle}>
       {isEditing ? (
-        <KeyboardAvoidingView style={styles.paddedContainer}>
-          <Text style={styles.sectionHeader}>Education Details</Text>
-          <Input
-            onChangeText={formik.handleChange('instituteName')}
-            placeholder="Institute Name"
-            value={formik.values.instituteName}
-            style={styles.textInput}
-            error={formik.errors.instituteName}
-          />
-          <Input
-            onChangeText={formik.handleChange('degreeName')}
-            placeholder="Degree Name"
-            value={formik.values.degreeName}
-            style={styles.textInput}
-            error={formik.errors.degreeName}
-          />
-          <View style={styles.yearInputContainer}>
-            <YearDropdown
-              onYearSelect={formik.handleChange('startYear')}
-              selectedYear={formik.values.startYear}
-              years={years}
-              setFieldTouched={formik.setFieldTouched}
-              name="startYear"
-              label="Start Year"
+        <>
+          <KeyboardAvoidingView style={styles.paddedContainer}>
+            <Text style={styles.sectionHeader}>Job Details</Text>
+            <Input
+              onChangeText={handleChange('instituteName')}
+              placeholder="Institution Name"
+              value={values.instituteName}
+              setFieldTouched={setFieldTouched}
+              style={styles.textInput}
+              error={errors.instituteName}
             />
-            <YearDropdown
-              onYearSelect={formik.handleChange('endYear')}
-              selectedYear={formik.values.endYear}
-              years={years}
-              setFieldTouched={formik.setFieldTouched}
-              name="endYear"
-              label="End Year"
-              style={{marginLeft: 10}}
+            <Input
+              onChangeText={handleChange('degree')}
+              placeholder="Degree Name"
+              value={values.degree}
+              setFieldTouched={setFieldTouched}
+              style={styles.textInput}
+              error={errors.degree}
+            />
+            <View style={styles.yearInputContainer}>
+              <YearDropdown
+                onYearSelect={handleChange('startYear')}
+                selectedYear={values.startYear}
+                years={years}
+                setFieldTouched={setFieldTouched}
+                name="startYear"
+                label="Start Year"
+              />
+              <YearDropdown
+                onYearSelect={handleChange('endYear')}
+                selectedYear={values.endYear}
+                years={years}
+                setFieldTouched={setFieldTouched}
+                name="endYear"
+                label="End Year"
+                style={{marginLeft: 10}}
+              />
+            </View>
+            <View style={styles.checkboxContainer}>
+              <Checkbox
+                onPress={() =>
+                  setFieldValue(
+                    'isCurrentlyWorking',
+                    !values.isCurrentlyStudying,
+                  )
+                }
+                isChecked={values.isCurrentlyStudying}
+              />
+              <Text style={styles.checkboxText}>I currently study here?</Text>
+            </View>
+          </KeyboardAvoidingView>
+          <View style={styles.footer}>
+            <PrimaryButton
+              title={editingIndex !== null ? 'Update' : 'Save'}
+              onPress={handleSubmit}
+              style={[styles.saveButton]}
+              isLoading={isSubmitting}
             />
           </View>
-          <View style={styles.checkboxContainer}>
-            <Checkbox
-              onPress={() =>
-                formik.setFieldValue(
-                  'isCurrentlyStudying',
-                  !formik.values.isCurrentlyStudying,
-                )
-              }
-              isChecked={formik.values.isCurrentlyStudying}
-            />
-            <Text style={styles.checkboxText}>Currently Studying?</Text>
-          </View>
-        </KeyboardAvoidingView>
+        </>
       ) : (
-        educationList.map((item, index) => (
+        educationList?.map((item, index) => (
           <View
             key={index}
             style={[
@@ -145,32 +249,16 @@ const EditEducationForm = ({
               startDate={item.startYear}
               endDate={item.currentlyStudying ? 'Present' : item.endYear}
               editable
-              key={index}
               onEdit={async () => {
-                await ProfileService.editEducation(
-                  setIsEditing,
-                  setAddNew,
-                  isEditing,
-                  setEditingIndex,
-                  index,
-                );
+                setIsEditing(!isEditing);
+                setAddNew(false);
+                resetForm();
+                setEditingIndex(index);
               }}
-              onDelete={() => {
-                ProfileService.deleteEducation(index, educationList);
-              }}
+              onDelete={() => deleteCareer(item.id)}
             />
           </View>
         ))
-      )}
-      {isEditing && (
-        <View style={styles.footer}>
-          <PrimaryButton
-            title={editingIndex !== null ? 'Update' : 'Save'}
-            onPress={formik.handleSubmit}
-            style={styles.saveButton}
-            isLoading={formik.isSubmitting}
-          />
-        </View>
       )}
     </View>
   );
