@@ -219,7 +219,9 @@ const EditCareerForm: FC<CareerFormProps> = ({
                 }
                 isChecked={values.isCurrentlyWorking}
               />
-              <Text style={styles.checkboxText}>I currently work here?</Text>
+              <Text style={styles.checkboxText}>
+                I currently work in this role?
+              </Text>
             </View>
           </KeyboardAvoidingView>
           <View style={styles.footer}>
