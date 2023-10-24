@@ -22,6 +22,7 @@ import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
 import JobQuestionsForm from '@/components/Forms/JobQuestionsForm';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {homeStyles} from '@/styles/home';
 
 const JobsDetailForm = ({
   selectedJob,
@@ -158,11 +159,6 @@ const JobsDetailForm = ({
                     {selectedJob.companyName}
                   </Text>
                 </View>
-                <TouchableOpacity
-                  onPress={handleSaveJob}
-                  style={{paddingRight: 30}}>
-                  {saved ? <SaveIcon /> : <UnsaveIcon />}
-                </TouchableOpacity>
               </View>
 
               <View style={jobDetailFormStyles.basicDetails}>
@@ -197,11 +193,18 @@ const JobsDetailForm = ({
                 </View>
               )}
               <View style={jobDetailFormStyles.applyButtonContainer}>
-                <Button
-                  disabled={isBtnDisable}
-                  title={btnTitle}
-                  onPress={handleOnPress}
-                />
+                <View style={{flex: 1, flexDirection: 'column'}}>
+                  <Button
+                    disabled={isBtnDisable}
+                    title={btnTitle}
+                    onPress={handleOnPress}
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={handleSaveJob}
+                  style={jobDetailFormStyles.saveButtonContainer}>
+                  {saved ? <SaveIcon /> : <UnsaveIcon />}
+                </TouchableOpacity>
               </View>
               <View style={jobDetailFormStyles.jobDetailContainer}>
                 <Text style={jobDetailFormStyles.jobDetailHeading}>

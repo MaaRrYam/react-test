@@ -124,9 +124,18 @@ export const jobDetailFormStyles = StyleSheet.create({
   },
   applyButtonContainer: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
     paddingLeft: PADDING.general * 2,
     paddingRight: PADDING.general * 2,
     marginTop: MARGINS.general * 3,
+  },
+  saveButtonContainer: {
+    backgroundColor: COLORS.lightGrayBackground,
+    padding: PADDING.general,
+    borderRadius: 1000,
+    marginLeft: MARGINS.general,
+    borderBlockColor: 'red',
   },
   jobDetailContainer: {
     flex: 1,
