@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
-import {SCREEN_NAMES} from '@/constants';
 import {RootStackParamList} from '@/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ChatsInterface} from '@/interfaces';
@@ -16,9 +15,10 @@ const ChatItem = ({
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate(SCREEN_NAMES.ChatDetails, {
+        navigation.navigate('ChatDetails', {
           id: item.userId,
-          name: item.user.name,
+          name: item.user?.name,
+          user: item.user,
         })
       }>
       <View style={styles.chatItem}>

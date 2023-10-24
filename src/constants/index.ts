@@ -225,6 +225,8 @@ export const SCREEN_NAMES = {
   Notifications: 'Notifications',
   Jobs: 'Jobs',
   Profile: 'Profile',
+  Article: 'Article',
+  Post: 'Post',
 };
 
 export const jobTypes = ['Full-time', 'Part-time', 'Temporary', 'Intern'];

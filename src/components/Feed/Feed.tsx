@@ -6,13 +6,14 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {
   getFeed,
+  refreshFeed,
   setFeedFetchedToFalse,
   setFeedFromCache,
 } from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
 import PostComments from './PostComments';
-import {FeedComment} from '@/interfaces';
 import HomeService from '@/services/home';
+import {FeedCommentsResponse} from '@/interfaces';
 
 const Feed = () => {
   const {feed, isFeedFetched, isFeedFirstRequest} = useAppSelector(
@@ -22,13 +23,14 @@ const Feed = () => {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [comments, setComments] = useState({
+    postId: '',
     loading: false,
-    comments: [] as FeedComment[],
+    comments: [] as FeedCommentsResponse[],
     showComments: false,
   });
 
   const handleRefresh = () => {
-    dispatch(getFeed());
+    dispatch(refreshFeed());
     dispatch(setFeedFetchedToFalse());
     setIsRefreshing(true);
   };
@@ -54,7 +56,7 @@ const Feed = () => {
   }, [dispatch]);
 
   const fetchPostComments = async (postId: string) => {
-    setComments(prev => ({...prev, loading: true, showComments: true}));
+    setComments(prev => ({...prev, loading: true, showComments: true, postId}));
     const response = await HomeService.fetchPostComments(postId);
     setComments(prev => ({...prev, loading: false, comments: response}));
   };
@@ -87,6 +89,8 @@ const Feed = () => {
             showComments={comments.showComments}
             comments={comments.comments}
             loading={comments.loading}
+            setComments={setComments}
+            postId={comments.postId}
           />
         </BottomSheet>
       )}

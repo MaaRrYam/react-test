@@ -1,20 +1,28 @@
 import React from 'react';
 import {View, Image, TouchableOpacity, useWindowDimensions} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
 import RenderHtml from 'react-native-render-html';
 
 import {FeedItem} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
+import {RootStackParamList} from '@/types';
 
 const ArticleItem = ({item}: {item: FeedItem}) => {
   const {width} = useWindowDimensions();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const source = {
     html: `
 ${item.content!.substring(0, 300) + '....'}`,
   };
 
+  const handleNavigate = () => {
+    navigation.navigate('Article', {article: item});
+  };
+
   return (
-    <TouchableOpacity onPress={() => console.log('article Pressed')}>
+    <TouchableOpacity onPress={handleNavigate}>
       <View style={styles.articleContainer}>
         <RenderHtml contentWidth={width} source={source} />
         <Image source={{uri: item.coverImage}} style={styles.media} />

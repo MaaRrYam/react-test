@@ -1,11 +1,13 @@
+import {CreatePostInterface, UserInterface} from '@/interfaces';
+import {CancelTokenSource} from 'axios';
 import {API_GET} from '@/config/api/apiRequests';
 import {
-  FeedComment,
   FeedCommentsResponse,
   FeedItem,
-  UserInterface,
+  ReplyCommentInterface,
 } from '@/interfaces';
-import FirebaseService from '../Firebase';
+import FirebaseService from '@/services/Firebase';
+import {getUID} from '@/utils/functions';
 import Cache from '@/cache';
 
 const HomeService = {
@@ -21,6 +23,9 @@ const HomeService = {
       console.error('Error fetching followers:', error);
       throw error;
     }
+  },
+  cancelRequest(source: CancelTokenSource) {
+    source.cancel('Request cancelled by user');
   },
   async likeAPost(postId: string, likedBy: string) {
     try {
@@ -96,35 +101,232 @@ const HomeService = {
   },
   async fetchPostComments(postId: string) {
     try {
-      const response = (await FirebaseService.getAllDocuments(
-        `posts/${postId}/comments`,
-      )) as FeedCommentsResponse[];
-
-      const result: FeedComment[] = await Promise.all(
-        response.map(async item => {
-          let user = {} as UserInterface;
-
-          if (await Cache.get(`user_${item.userId}`)) {
-            user = (await Cache.get(`user_${item.userId}`)) as UserInterface;
-          } else {
-            user = (await FirebaseService.getDocument(
-              'users',
-              item.userId,
-            )) as UserInterface;
-            await Cache.set(`user_${item.userId}`, user);
-          }
-
-          return {
-            ...item,
-            user,
-          };
-        }),
-      );
-
-      return result;
+      const {data, status} = await API_GET(`/feed/${postId}/comments`);
+      if (status) {
+        return this.sortComments(data);
+      } else {
+        return [] as FeedCommentsResponse[];
+      }
     } catch (error) {
       console.log(error);
-      return [] as FeedComment[];
+      return [] as FeedCommentsResponse[];
+    }
+  },
+  sortComments(comments: FeedCommentsResponse[]) {
+    const sortedComments = comments
+      .map((post: FeedCommentsResponse) => {
+        const likes = post.likes ? post.likes.length : 0;
+        const dislikes = post.dislikes ? post.dislikes.length : 0;
+        const difference = likes - dislikes;
+
+        return {
+          ...post,
+          difference,
+        };
+      })
+      .sort((a: any, b: any) => b.difference - a.difference);
+    return sortedComments;
+  },
+  async addComment(postId: string, payload: FeedCommentsResponse) {
+    try {
+      await FirebaseService.addDocument(`posts/${postId}/comments`, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async addReply(
+    postId: string,
+    commentId: string,
+    payload: ReplyCommentInterface,
+  ) {
+    try {
+      await FirebaseService.addDocument(
+        `posts/${postId}/comments/${commentId}/replies`,
+        payload,
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async reportAPost(postId: string, postAuthorId: string) {
+    const UID = await getUID();
+    const data = {
+      reportText: 'Post is inappropriate',
+      reportedBy: UID,
+      postId: postId,
+      authorId: postAuthorId,
+      timestamp: FirebaseService.serverTimestamp(),
+    };
+    try {
+      await FirebaseService.addDocument('postReports', data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async sharePost(postId: string) {
+    try {
+      const data = {
+        text: postId,
+        type: 'shared',
+        hashtag: 'shared',
+        creationTime: FirebaseService.serverTimestamp(),
+        authorId: await getUID(),
+      };
+      await FirebaseService.addDocument('posts', data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async likeComment(postId: string, commentId: string) {
+    try {
+      const UID = (await getUID()) as string;
+      await FirebaseService.setDoc(
+        `posts/${postId}/comments/${commentId}/likes`,
+        UID,
+        {
+          likedBy: UID,
+          timestamp: FirebaseService.serverTimestamp(),
+        },
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async dislikeComment(postId: string, commentId: string) {
+    try {
+      const UID = (await getUID()) as string;
+      await FirebaseService.setDoc(
+        `posts/${postId}/comments/${commentId}/dislikes`,
+        UID,
+        {
+          likedBy: UID,
+          timestamp: FirebaseService.serverTimestamp(),
+        },
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async removeLikeAndDislikeComment(postId: string, commentId: string) {
+    try {
+      const UID = (await getUID()) as string;
+      await Promise.all([
+        FirebaseService.setDoc(
+          `posts/${postId}/comments/${commentId}/dislikes`,
+          UID,
+          {
+            likedBy: UID,
+            timestamp: FirebaseService.serverTimestamp(),
+          },
+        ),
+        FirebaseService.deleteDocument(
+          `posts/${postId}/comments/${commentId}/likes`,
+          UID,
+        ),
+      ]);
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async removeDislikeAndLikeComment(postId: string, commentId: string) {
+    try {
+      const UID = (await getUID()) as string;
+      await Promise.all([
+        FirebaseService.setDoc(
+          `posts/${postId}/comments/${commentId}/likes`,
+          UID,
+          {
+            likedBy: UID,
+            timestamp: FirebaseService.serverTimestamp(),
+          },
+        ),
+        FirebaseService.deleteDocument(
+          `posts/${postId}/comments/${commentId}/dislikes`,
+          UID,
+        ),
+      ]);
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async removeLikeComment(postId: string, commentId: string) {
+    try {
+      const UID = (await getUID()) as string;
+      await FirebaseService.deleteDocument(
+        `posts/${postId}/comments/${commentId}/likes`,
+        UID,
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async removeDislikeComment(postId: string, commentId: string) {
+    try {
+      const UID = (await getUID()) as string;
+      await FirebaseService.deleteDocument(
+        `posts/${postId}/comments/${commentId}/dislikes`,
+        UID,
+      );
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async createPost(payload: CreatePostInterface) {
+    try {
+      await FirebaseService.setDoc('posts', payload.id, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async fetchArticle(articleId: string) {
+    try {
+      const response = (await FirebaseService.getDocument(
+        'articles',
+        articleId,
+      )) as FeedItem;
+      let author = {} as UserInterface;
+
+      if (await Cache.get(`user_${response.authorId}`)) {
+        author = (await Cache.get(
+          `user_${response.authorId}`,
+        )) as UserInterface;
+      } else {
+        author = (await FirebaseService.getDocument(
+          'users',
+          response.authorId,
+        )) as UserInterface;
+        await Cache.set(`user_${response.authorId}`, author);
+      }
+      response.author = author;
+
+      return response;
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   },
 };

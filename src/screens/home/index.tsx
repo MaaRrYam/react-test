@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, SafeAreaView, Image, TextInput} from 'react-native';
+import {View, SafeAreaView, Image, Text, TouchableOpacity} from 'react-native';
 
-import {Header, Feed} from '@/components';
+import {Header, Feed, NewPost} from '@/components';
 import {HomeScreenProps} from '@/types';
 import {homeStyles} from '@/styles/home';
 import {styles} from './styles';
@@ -11,8 +11,19 @@ import {useAppSelector} from '@/hooks/useAppSelector';
 import {useFocusEffect} from '@react-navigation/native';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+  const [isNewPostClicked, setIsNewPostClicked] =
+    React.useState<boolean>(false);
+
   const {user} = useUserManagement();
   const {feed} = useAppSelector(state => state.home);
+
+  const handleOpen = () => {
+    setIsNewPostClicked(true);
+  };
+
+  const handleClose = () => {
+    setIsNewPostClicked(false);
+  };
 
   useFocusEffect(() => {
     return () => {
@@ -38,7 +49,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
               style={styles.userImage}
             />
 
-            <TextInput style={styles.searchBar} placeholder="Start a Post" />
+            <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
+              <Text style={styles.searchBarText}>Start a Post</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -46,6 +59,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <Feed />
         </View>
       </SafeAreaView>
+      {isNewPostClicked && (
+        <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
+      )}
     </View>
   );
 };

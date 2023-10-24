@@ -1,30 +1,48 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image, Share} from 'react-native';
-
-import {FeedItemProps} from '@/interfaces';
-import {styles} from '@/screens/home/styles';
-import {Comment, Dislike, Like, Report, ShareIcon} from '@/assets/icons';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import HomeService from '@/services/home';
 import {
-  addDislike,
-  addDislikeAndRemoveLike,
-  addLike,
-  addLikeAndRemoveDislike,
-  removeDisLike,
-  removeLike,
-  removeReportedPostFromFeed,
-} from '@/store/features/homeSlice';
-import FirebaseService from '@/services/Firebase';
-import ToastService from '@/services/toast';
-import {getUID} from '@/utils/functions';
-import {RootStackParamList} from '@/types';
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Share,
+  SafeAreaView,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Dislike, Like, Report, ShareIcon} from '@/assets/icons';
+import {PostScreenProps, RootStackParamList} from '@/types';
+import {getUID} from '@/utils/functions';
+import ToastService from '@/services/toast';
+import styles from './styles';
+import FirebaseService from '@/services/Firebase';
+import HomeService from '@/services/home';
+import {
+  removeLike,
+  addLikeAndRemoveDislike,
+  addLike,
+  removeDisLike,
+  addDislikeAndRemoveLike,
+  addDislike,
+  removeReportedPostFromFeed,
+} from '@/store/features/homeSlice';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {FeedCommentsResponse, ReactionInterface} from '@/interfaces';
+import PostComments from '@/components/Feed/PostComments';
 
-const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
+const PostScreen: React.FC<PostScreenProps> = ({route}) => {
+  const {
+    params: {item},
+  } = route;
+
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const [comments, setComments] = useState({
+    postId: '',
+    loading: false,
+    comments: [] as FeedCommentsResponse[],
+    showComments: false,
+  });
+
   const [reactions, setReactions] = useState({
     like: false,
     dislike: false,
@@ -33,15 +51,17 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   const isPostLikedByUser = async () => {
     const UID = await getUID();
     const response =
-      item.postLikes?.some(like => like.likedBy === UID) || false;
-
+      item.postLikes?.some((like: ReactionInterface) => like.likedBy === UID) ||
+      false;
     setReactions(prev => ({...prev, like: response}));
   };
 
   const isPostDisLikedByUser = async () => {
     const UID = await getUID();
     const response =
-      item.postDislikes?.some(like => like.likedBy === UID) || false;
+      item.postDislikes?.some(
+        (like: ReactionInterface) => like.likedBy === UID,
+      ) || false;
     setReactions(prev => ({...prev, dislike: response}));
   };
 
@@ -190,41 +210,73 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('Post', {
-          id: item._id,
-          item,
-        })
-      }>
-      <Text style={styles.feedContent}>{item.text}</Text>
-      {item.media && <Image source={{uri: item.media}} style={styles.media} />}
-      <View style={styles.postReactions}>
-        <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
-          <Like isLiked={reactions.like} />
-        </TouchableOpacity>
-        <Text style={styles.like}>
-          {item?.postLikes!.length - item?.postDislikes!.length}
-        </Text>
-        <TouchableOpacity style={styles.reactionButton} onPress={disLikeAPost}>
-          <Dislike isLiked={reactions.dislike} />
-        </TouchableOpacity>
+  useEffect(() => {
+    setComments(prev => ({
+      ...prev,
+      loading: true,
+      showComments: true,
+      postId: item._id,
+    }));
+    HomeService.fetchPostComments(item._id).then(response => {
+      if (response) {
+        setComments(prev => ({...prev, loading: false, comments: response}));
+      }
+    });
+  }, [item._id]);
 
-        <View style={styles.iconsContainer}>
-          <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
-            <Comment />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={sharePost}>
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <Image
+            source={require('@/assets/images/back.png')}
+            style={styles.backIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity onPress={sharePost} style={styles.shareButton}>
             <ShareIcon />
           </TouchableOpacity>
-          <TouchableOpacity onPress={reportPost}>
+          <TouchableOpacity onPress={reportPost} style={styles.report}>
             <Report />
           </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
+      <View style={styles.postInfo}>
+        {item.media && (
+          <Image source={{uri: item.media}} style={styles.media} />
+        )}
+        <Text style={styles.feedContent}>{item.text}</Text>
+        <View style={styles.postReactions}>
+          <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
+            <Like isLiked={reactions.like} />
+          </TouchableOpacity>
+          <Text style={styles.like}>
+            {item?.postLikes!.length - item?.postDislikes!.length}
+          </Text>
+          <TouchableOpacity
+            style={styles.reactionButton}
+            onPress={disLikeAPost}>
+            <Dislike isLiked={reactions.dislike} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <PostComments
+        postId={item._id}
+        comments={comments.comments}
+        loading={comments.loading}
+        showComments={comments.showComments}
+        setComments={setComments}
+        isFromPost={true}
+      />
+    </SafeAreaView>
   );
 };
 
-export default PostItem;
+export default PostScreen;

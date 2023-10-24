@@ -24,7 +24,6 @@ const NotificationService = {
 
           let author = {} as UserInterface;
 
-          console.log(item.senderId);
           if (await Cache.get(`user_${item.senderId}`)) {
             author = (await Cache.get(
               `user_${item.senderId}`,

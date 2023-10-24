@@ -12,7 +12,7 @@ import NewChatIcon from './NewChat';
 import Notifications from './Notifications';
 import Report from './Report';
 import Search from './Search';
-import Share from './Share';
+import ShareIcon from './Share';
 import ThreeDots from './ThreeDots';
 import Empty from './Empty';
 import Cross from './Cross';
@@ -20,6 +20,7 @@ import ArrowDown from './ArrowDown';
 import Delete from './Delete';
 import CheckMark from './CheckMark';
 import SendIcon from './Send';
+import CloseIcon from './CloseIcon';
 import Location from './Location';
 import Compensation from './Compensation';
 import BaseSalary from './BaseSalary';
@@ -41,7 +42,7 @@ export {
   Notifications,
   Report,
   Search,
-  Share,
+  ShareIcon,
   ThreeDots,
   Empty,
   Cross,
@@ -49,6 +50,7 @@ export {
   Delete,
   CheckMark,
   SendIcon,
+  CloseIcon,
   Location,
   Compensation,
   BaseSalary,

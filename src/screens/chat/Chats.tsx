@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
@@ -6,30 +6,39 @@ import {BackButton, ChatsList, Loading, NewChat} from '@/components';
 import {ChatsScreenProps} from '@/types';
 import {styles} from './styles';
 import {NewChatIcon} from '@/assets/icons';
-import {useAppSelector} from '@/hooks/useAppSelector';
+import ChatsService from '@/services/chats';
+import {ChatsInterface} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {getAllChats} from '@/store/features/chatsSlice';
+import {setChatsToStore} from '@/store/features/chatsSlice';
 
 const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [isNewChatClicked, setIsNewChatClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [chats, setChats] = useState<ChatsInterface[]>([]);
 
-  const {isChatsFetched, isChatsFirstRequest} = useAppSelector(
-    state => state.chats,
-  );
   const dispatch = useAppDispatch();
 
-  const fetchData = useCallback(() => {
-    if (!isChatsFetched) {
-      dispatch(getAllChats());
-    }
-  }, [dispatch, isChatsFetched]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const unSub = await ChatsService.getAllChatsRealtime(setChats);
+      setLoading(false);
+
+      return () => {
+        if (unSub) {
+          unSub();
+        }
+      };
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData, isChatsFetched]);
+    dispatch(setChatsToStore(chats));
+  }, [chats, dispatch]);
 
-  if (isChatsFirstRequest) {
+  if (loading) {
     return <Loading />;
   }
 

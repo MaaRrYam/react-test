@@ -115,10 +115,28 @@ export interface FirebaseServiceProps {
     fieldName: string,
     value: any,
   ): Promise<boolean>;
+  uploadToStorage(
+    file: Asset | ImageInterface,
+    mime?: string,
+  ): Promise<string | null>;
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
+  generateUniqueFilename(): string;
 }
+
+export interface ImageInterface {
+  filename: string | null;
+  filepath: string | null;
+  extension: string | null;
+  uri: string;
+  height: number;
+  width: number;
+  fileSize: number | null;
+  playableDuration: number;
+  orientation: number | null;
+}
+
 export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
@@ -351,7 +369,7 @@ export interface NetworkItemProps {
   isFollowing?: boolean;
 }
 
-interface ReactionInterface {
+export interface ReactionInterface {
   likedBy: string;
   timestamp: Timestamp;
 }
@@ -424,14 +442,25 @@ export interface CacheItem<T> {
   timestamp: number;
 }
 
-export interface FeedCommentsResponse {
+export interface ReplyCommentInterface {
+  dislikes: ReactionInterface[];
+  likes: ReactionInterface[];
+  id: string;
   text: string;
-  timestamp: string;
+  timestamp: Timestamp;
+  user: UserInterface;
   userId: string;
 }
 
-export interface FeedComment extends FeedCommentsResponse {
+export interface FeedCommentsResponse {
+  dislikes: ReactionInterface[];
+  id: string;
+  likes: ReactionInterface[];
+  replies: ReplyCommentInterface[];
   user: UserInterface;
+  userId: string;
+  text: string;
+  timestamp: Timestamp;
 }
 
 export interface FeedItemProps {
@@ -440,10 +469,35 @@ export interface FeedItemProps {
 }
 
 export interface PostCommentsProps {
+  postId: string;
   loading: boolean;
-  comments: FeedComment[];
+  comments: FeedCommentsResponse[];
   showComments: boolean;
+  setComments: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      comments: FeedCommentsResponse[];
+      showComments: boolean;
+      postId: string;
+    }>
+  >;
+  isFromPost?: boolean;
 }
+
+export interface PostCommentInterface {
+  postId: string;
+  item: FeedCommentsResponse;
+  setComments: React.Dispatch<
+    React.SetStateAction<{
+      postId: string;
+      loading: boolean;
+      comments: FeedCommentsResponse[];
+      showComments: boolean;
+    }>
+  >;
+  isFromPost?: boolean;
+}
+
 export interface ChatsInterface {
   id: string;
   userId: string;
@@ -473,12 +527,40 @@ export interface GroupedMessage {
     message: string;
     sender: string;
     time: string;
+    fileUrl: string;
   }[];
 }
 
 export interface SendMessageInterface extends ChatMessageInterface {
   receiver: UserInterface;
   sender: UserInterface;
+}
+export interface Asset {
+  base64?: string;
+  uri?: string;
+  width?: number;
+  height?: number;
+  originalPath?: string;
+  fileSize?: number;
+  type?: string;
+  fileName?: string;
+  duration?: number;
+  bitrate?: number;
+  timestamp?: string;
+  id?: string;
+}
+
+export interface CreatePostInterface {
+  id: string;
+  authorId: string;
+  media: string;
+  mediaType: string | null;
+  text: string;
+  type: string;
+  hashtag: string;
+  creationTime: Timestamp;
+  edited: boolean;
+  editedTime: Timestamp;
 }
 
 export interface CareerCardProps {

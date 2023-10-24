@@ -97,6 +97,15 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     width: '70%',
   },
+  myMessageWithFile: {
+    padding: 0,
+    paddingBottom: 20,
+  },
+  withFileMessage: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+  },
+  file: {flex: 1, height: 250, borderRadius: 10},
   otherMessage: {
     backgroundColor: COLORS.lightGrayBackground,
     padding: 20,
@@ -127,6 +136,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingRight: PADDING.general,
   },
   input: {
     padding: 10,
@@ -138,5 +148,32 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     backgroundColor: COLORS.lightGrayBackground,
     padding: 20,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    marginVertical: 5,
+  },
+  selectedImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+  },
+  crossButton: {
+    position: 'absolute',
+    left: 65,
+    top: -8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  crossText: {
+    color: 'white',
+    fontSize: FONTS.bodySmall,
   },
 });
