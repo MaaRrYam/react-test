@@ -617,4 +617,5 @@ export interface DrawerContentProps {
   user: UserInterface;
   editingIndex: number;
   setEditingIndex: Dispatch<SetStateAction<number>>;
+  uid: string;
 }

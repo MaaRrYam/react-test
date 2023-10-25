@@ -59,6 +59,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
       } else {
         await addCareer();
       }
+      setIsEditing(false);
       setSubmitting(false);
     },
   });

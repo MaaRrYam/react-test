@@ -11,8 +11,10 @@ import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
 import {getUID} from '@/utils/functions';
-import {DrawerContentProps} from '@/interfaces';
-import { useNavigation } from '@react-navigation/native';
+import {DrawerContentProps, UserInterface} from '@/interfaces';
+import {useNavigation} from '@react-navigation/native';
+import useUserManagement from '@/hooks/useUserManagement';
+import StorageService from '@/services/Storage';
 const Tab = createBottomTabNavigator();
 function SettingsScreen() {
   return (
@@ -34,6 +36,7 @@ function DrawerContent({
   user,
   editingIndex,
   setEditingIndex,
+  uid,
 }: DrawerContentProps) {
   return (
     <>
@@ -82,7 +85,13 @@ function DrawerContent({
                 onPress={onPress}
                 onLongPress={onLongPress}
                 style={styles.tab}>
-                {getIcon(label, isFocused, navigation, user.photoUrl, user.id)}
+                {getIcon(
+                  label,
+                  isFocused,
+                  navigation,
+                  user.photoUrl,
+                  uid as string,
+                )}
               </TouchableOpacity>
             );
           },
@@ -109,21 +118,19 @@ const Tabs = () => {
   const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(0);
+  const [user, setUser] = useState<UserInterface>({});
   const dispatch = useAppDispatch();
-  const {user} = useAppSelector((authState: RootState) => authState.auth);
+  // const {user} = useAppSelector((authState: RootState) => authState.auth);
   const navigation = useNavigation();
-  useEffect(() => {
-    // Start listening to user data updates when the component mounts
-    const unsubscribe = dispatch(listenToUserData());
-
-    // Unsubscribe from updates when the component unmounts
-    return () => {
-      unsubscribe();
-    };
-  }, [dispatch]);
-
+  // const {user} = useUserManagement();
   const [UID, setUID] = useState('');
-
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await StorageService.getItem('user');
+      setUser(user as UserInterface);
+    };
+    fetchUser();
+  }, []);
   useEffect(() => {
     async function fetchUID() {
       const uid = await getUID();
@@ -148,6 +155,7 @@ const Tabs = () => {
             user={user}
             editingIndex={editingIndex}
             setEditingIndex={setEditingIndex}
+            uid={UID}
           />
         )}>
         <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />

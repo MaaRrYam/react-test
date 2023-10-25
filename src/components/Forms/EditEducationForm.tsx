@@ -1,7 +1,7 @@
 import React, {useEffect, FC, useRef, useCallback, useMemo} from 'react';
 import {KeyboardAvoidingView, Text, View} from 'react-native';
 import {useFormik} from 'formik';
-import {EditEducationProps, EducationProps} from '@/interfaces';
+import {CareerFormProps, EducationProps, EmploymentProps} from '@/interfaces';
 import {
   Input,
   Checkbox,
@@ -17,7 +17,7 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {updateUserData} from '@/store/features/authSlice';
 import FirebaseService from '@/services/Firebase';
-const EditEducationForm: FC<EditEducationProps> = ({
+const EditEducationForm: FC<CareerFormProps> = ({
   isEditing,
   setIsEditing,
   addNew,
@@ -28,7 +28,7 @@ const EditEducationForm: FC<EditEducationProps> = ({
   const {user} = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
 
-  const educationList = useMemo(() => {
+  const careerList = useMemo(() => {
     return (user.educationList || []) as EducationProps[];
   }, [user.educationList]);
 
@@ -48,38 +48,38 @@ const EditEducationForm: FC<EditEducationProps> = ({
       id: '',
       instituteName: '',
       degree: '',
-      startYear: '',
-      endYear: '',
+      startYear: '2010',
+      endYear: '2000',
       isCurrentlyStudying: false,
     },
     validationSchema: careerSchema,
     onSubmit: async () => {
+      await console.log('Submit');
       if (values.id) {
         await updateCareer(values.id);
       } else {
         await addCareer();
       }
+      setIsEditing(false);
       setSubmitting(false);
     },
   });
 
   const deleteCareer = useCallback(
     async (id: string) => {
-      const updatedEducation = educationList.filter(
-        education => education.id !== id,
-      );
-      const response = await ProfileService.updateEducation(updatedEducation);
+      const updatedCareers = careerList.filter(career => career.id !== id);
+      const response = await ProfileService.updateEducation(updatedCareers);
       if (response) {
-        ToastService.showSuccess('Career Deleted');
-        dispatch(updateUserData({...user, educationList: updatedEducation}));
+        ToastService.showSuccess('Education Deleted');
+        dispatch(updateUserData({...user, educationList: updatedCareers}));
       }
     },
-    [educationList, dispatch, user],
+    [careerList, dispatch, user],
   );
 
   const addCareer = useCallback(async () => {
-    const updatedEducations = [
-      ...educationList,
+    const updatedCareers = [
+      ...careerList,
       {
         id: FirebaseService.generateUniqueId(),
         instituteName: values.instituteName,
@@ -90,24 +90,24 @@ const EditEducationForm: FC<EditEducationProps> = ({
       },
     ];
 
-    const response = await ProfileService.updateEducation(updatedEducations);
+    const response = await ProfileService.updateEducation(updatedCareers);
     if (response) {
       ToastService.showSuccess('Employment Added Successfully');
       dispatch(
         updateUserData({
           ...user,
-          educationList: updatedEducations,
+          educationList: updatedCareers,
         }),
       );
     }
-  }, [educationList, dispatch, user, values]);
+  }, [careerList, dispatch, user, values]);
 
   const updateCareer = useCallback(
     async (id: string) => {
-      const updatedEducations = educationList.map(education => {
-        if (education.id === id) {
+      const updatedCareers = careerList.map(career => {
+        if (career.id === id) {
           return {
-            ...education,
+            ...career,
             instituteName: values.instituteName,
             degree: values.degree,
             startYear: values.startYear,
@@ -116,21 +116,21 @@ const EditEducationForm: FC<EditEducationProps> = ({
           };
         }
 
-        return education;
+        return career;
       });
 
-      const response = await ProfileService.updateEducation(updatedEducations);
+      const response = await ProfileService.updateEducation(updatedCareers);
       if (response) {
-        ToastService.showSuccess('Employment Updated Successfully');
+        ToastService.showSuccess('Education Updated Successfully');
         dispatch(
           updateUserData({
             ...user,
-            educationList: updatedEducations,
+            educationList: updatedCareers,
           }),
         );
       }
     },
-    [educationList, dispatch, user, values],
+    [careerList, dispatch, user, values],
   );
 
   const previousAddNew = useRef(addNew);
@@ -147,7 +147,7 @@ const EditEducationForm: FC<EditEducationProps> = ({
       if (addNew) {
         resetForm();
       } else {
-        const itemToEdit = educationList[editingIndex || 0];
+        const itemToEdit = careerList[editingIndex || 0];
         if (itemToEdit) {
           const newValues = {
             id: itemToEdit.id,
@@ -156,7 +156,7 @@ const EditEducationForm: FC<EditEducationProps> = ({
             startYear: itemToEdit.startYear || years[0],
             endYear: itemToEdit.currentlyStudying
               ? ''
-              : itemToEdit.endYear || years[0],
+              : itemToEdit.endYear || years[3],
             isCurrentlyStudying: itemToEdit.currentlyStudying || false,
           };
 
@@ -166,9 +166,9 @@ const EditEducationForm: FC<EditEducationProps> = ({
     }
     previousAddNew.current = addNew;
     previousEditingIndex.current = editingIndex;
-  }, [addNew, editingIndex, educationList, years, resetForm, setValues]);
+  }, [addNew, editingIndex, careerList, years, resetForm, setValues]);
 
-  console.log(values.id, 'ID');
+  // console.log(values.id, 'ID');
 
   return (
     <View style={styles.flexStyle}>
@@ -215,31 +215,34 @@ const EditEducationForm: FC<EditEducationProps> = ({
               <Checkbox
                 onPress={() =>
                   setFieldValue(
-                    'isCurrentlyWorking',
+                    'isCurrentlyStudying',
                     !values.isCurrentlyStudying,
                   )
                 }
                 isChecked={values.isCurrentlyStudying}
               />
-              <Text style={styles.checkboxText}>I currently study here?</Text>
+              <Text style={styles.checkboxText}>I currently study here ?</Text>
             </View>
           </KeyboardAvoidingView>
           <View style={styles.footer}>
             <PrimaryButton
               title={editingIndex !== null ? 'Update' : 'Save'}
-              onPress={handleSubmit}
+              onPress={() => {
+                handleSubmit();
+                console.log('Hello from  Button');
+              }}
               style={[styles.saveButton]}
               isLoading={isSubmitting}
             />
           </View>
         </>
       ) : (
-        educationList?.map((item, index) => (
+        careerList?.map((item, index) => (
           <View
             key={index}
             style={[
               styles.careerItem,
-              index === educationList.length - 1
+              index === careerList.length - 1
                 ? styles.borderTransparent
                 : styles.borderColored,
             ]}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {View, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
@@ -19,7 +19,7 @@ interface EditProfileProps {
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
   editingIndex: number | null;
-  setEditingIndex: (value: number | null) => void;
+  setEditingIndex: Dispatch<SetStateAction<number>>;
 }
 
 const EditProfile = ({
