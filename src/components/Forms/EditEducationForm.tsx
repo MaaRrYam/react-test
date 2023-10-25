@@ -167,8 +167,6 @@ const EditEducationForm: FC<CareerFormProps> = ({
     previousEditingIndex.current = editingIndex;
   }, [addNew, editingIndex, careerList, years, resetForm, setValues]);
 
-  // console.log(values.id, 'ID');
-
   return (
     <View style={styles.flexStyle}>
       {isEditing ? (
