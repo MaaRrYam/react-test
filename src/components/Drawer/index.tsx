@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {RootState} from '@/store';
-import {listenToUserData} from '@/store/features/authSlice';
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
@@ -12,8 +9,6 @@ import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
 import {getUID} from '@/utils/functions';
 import {DrawerContentProps, UserInterface} from '@/interfaces';
-import {useNavigation} from '@react-navigation/native';
-import useUserManagement from '@/hooks/useUserManagement';
 import StorageService from '@/services/Storage';
 const Tab = createBottomTabNavigator();
 function SettingsScreen() {
@@ -118,11 +113,8 @@ const Tabs = () => {
   const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(0);
-  const [user, setUser] = useState<UserInterface>({});
+  const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const dispatch = useAppDispatch();
-  // const {user} = useAppSelector((authState: RootState) => authState.auth);
-  const navigation = useNavigation();
-  // const {user} = useUserManagement();
   const [UID, setUID] = useState('');
   useEffect(() => {
     const fetchUser = async () => {

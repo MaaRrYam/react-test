@@ -48,8 +48,8 @@ const EditEducationForm: FC<CareerFormProps> = ({
       id: '',
       instituteName: '',
       degree: '',
-      startYear: '2010',
-      endYear: '2000',
+      startYear: '2000',
+      endYear: '2010',
       isCurrentlyStudying: false,
     },
     validationSchema: careerSchema,
@@ -92,7 +92,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
 
     const response = await ProfileService.updateEducation(updatedCareers);
     if (response) {
-      ToastService.showSuccess('Employment Added Successfully');
+      ToastService.showSuccess('Education Added Successfully');
       dispatch(
         updateUserData({
           ...user,
@@ -147,7 +147,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
       if (addNew) {
         resetForm();
       } else {
-        const itemToEdit = careerList[editingIndex || 0];
+        const itemToEdit = careerList[editingIndex as number];
         if (itemToEdit) {
           const newValues = {
             id: itemToEdit.id,
@@ -226,11 +226,8 @@ const EditEducationForm: FC<CareerFormProps> = ({
           </KeyboardAvoidingView>
           <View style={styles.footer}>
             <PrimaryButton
-              title={editingIndex !== null ? 'Update' : 'Save'}
-              onPress={() => {
-                handleSubmit();
-                console.log('Hello from  Button');
-              }}
+              title={editingIndex ? 'Update' : 'Save'}
+              onPress={handleSubmit}
               style={[styles.saveButton]}
               isLoading={isSubmitting}
             />
