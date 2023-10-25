@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
   userName: {
     flex: 1,
     fontSize: 18,
+    color: COLORS.black,
   },
   chatsContainer: {
     flex: 1,

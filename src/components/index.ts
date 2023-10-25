@@ -1,9 +1,9 @@
 import {
   BackButton,
-  Button,
   IconButton,
   RoundedButton,
   SecondaryButton,
+  PrimaryButton,
 } from '@/components/Buttons';
 import {
   RoleCard,
@@ -20,6 +20,7 @@ import {
   Dropdown,
   LocationDropdown,
   TextArea,
+  YearDropdown,
 } from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
@@ -39,10 +40,13 @@ import Feed from '@/components/Feed/Feed';
 import NewPost from '@/components/Feed/NewPost';
 import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
+import ProfileFeed from '@/components/ProfileFeed';
+import Drawer from '@/components/Drawer';
+
+import {About, ProfileTabs} from '@/components/Profile';
 
 export {
   BackButton,
-  Button,
   RoleCard,
   Link,
   Input,
@@ -76,5 +80,11 @@ export {
   ChatsList,
   Chat,
   NewChat,
+  ProfileFeed,
+  YearDropdown,
+  PrimaryButton,
+  Drawer,
   NewPost,
+  About,
+  ProfileTabs,
 };

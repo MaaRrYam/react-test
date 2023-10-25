@@ -1,15 +1,17 @@
 import React, {FC} from 'react';
 import {View, Text, Image, SafeAreaView} from 'react-native';
-import {Button, SocialLoginButton} from '@/components';
+import {PrimaryButton, SocialLoginButton} from '@/components';
 import {SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {SignInScreenProps} from '@/types';
 
 import {styles} from '@/styles/signinScreen';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(navigation);
+    await _signInWithGoogle(navigation, dispatch);
   };
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -47,7 +49,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
         </View>
 
         <View>
-          <Button
+          <PrimaryButton
             onPress={() => navigation.navigate(SCREEN_NAMES.SigninWithEmail)}
             title="Sign in with email"
             textColor="white"

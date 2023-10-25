@@ -23,7 +23,6 @@ export const signUpSchema = Yup.object().shape({
     .required('Confirm Password is required'),
 });
 
-
 export const requestAccessSchema = Yup.object().shape({
   name: Yup.string().required('Name is Required'),
   linkedInUrl: Yup.string()

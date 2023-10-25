@@ -15,7 +15,7 @@ import {WINDOW_WIDTH} from '@gorhom/bottom-sheet';
 import {ArticleScreenProps, RootStackParamList} from '@/types';
 import HomeService from '@/services/home';
 import {FeedItem, UserInterface} from '@/interfaces';
-import {Button, Loading} from '@/components';
+import {PrimaryButton, Loading} from '@/components';
 import {CloseIcon} from '@/assets/icons';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
@@ -100,7 +100,7 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
                   <CloseIcon />
                 </TouchableOpacity>
                 <View>
-                  <Button
+                  <PrimaryButton
                     title="Share"
                     onPress={() => {
                       handleShare();

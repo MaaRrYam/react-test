@@ -1,92 +1,91 @@
-import {ArrowDown, ArrowUp} from '@/assets/icons';
 import React, {useState} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   StyleProp,
   ViewStyle,
-  ScrollView,
+  Dimensions,
 } from 'react-native';
+import SelectDropdown from 'react-native-select-dropdown';
 
+import {ArrowDown} from '@/assets/icons';
+import {COLORS, FONTS} from '@/constants';
 interface DropdownProps {
   label?: string;
   options: string[];
   style: StyleProp<ViewStyle>;
-  startingOption: string;
   selectedOption?: string | null;
-  onOptionSelect?: (option: string) => void;
+  onOptionSelect: (option: string) => void;
+  error?: string;
+  touched?: boolean;
+  onBlur?: Function;
+  setFieldTouched?: any;
+  setFieldValue?: any;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
-  label,
-  startingOption,
   options,
   style,
   onOptionSelect,
   selectedOption,
+  error,
+  touched,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  // const [selectedOption, setSelectedOption] = useState<string | null>(
-  //   startingOption,
-  // );
+  const [value, setValue] = useState(selectedOption);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const selectOption = (option: string) => {
+  const setSelectedOption = (option: string) => {
+    setValue(option);
     onOptionSelect(option);
-    console.log(option);
-    setIsOpen(false);
   };
 
   return (
-    <ScrollView style={style}>
-      <TouchableOpacity onPress={toggleDropdown}>
-        <View style={styles.dropdownHeader}>
-          <Text style={{color: 'black'}}>
-            {selectedOption || startingOption}
-          </Text>
+    <View style={[style, styles.container]}>
+      <SelectDropdown
+        data={options}
+        onSelect={selectedItem => {
+          setSelectedOption(selectedItem);
+        }}
+        buttonTextAfterSelection={selectedItem => selectedItem}
+        rowTextForSelection={item => item}
+        buttonStyle={styles.dropdownStyle}
+        buttonTextStyle={styles.dropdownText}
+        renderDropdownIcon={() => (
           <View>
             <ArrowDown />
           </View>
-        </View>
-      </TouchableOpacity>
-      {isOpen && (
-        <ScrollView style={styles.dropdownList}>
-          {options.map(option => (
-            <TouchableOpacity key={option} onPress={() => selectOption(option)}>
-              <Text style={{color: 'black'}}>{option}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </ScrollView>
+        )}
+        dropdownIconPosition="right"
+        defaultValue={value}
+      />
+      {touched && error && <Text style={styles.errorText}>{error}</Text>}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  dropdownHeader: {
-    borderWidth: 1,
-    borderColor: '#E4E4E4',
-    borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+  container: {
+    flex: 1,
+    marginBottom: 5,
   },
-  dropdownList: {
+  errorText: {
+    color: 'red',
+    marginTop: 5,
+  },
+  dropdownStyle: {
+    height: 50,
+    borderRadius: 10,
+    borderColor: COLORS.border,
     borderWidth: 1,
-    borderColor: '#e4e4e4',
-    marginTop: -10,
-    borderTopWidth: 0,
-    borderBottomEndRadius: 10,
-    borderBottomStartRadius: 10,
-    padding: 5,
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 10,
+    width: Dimensions.get('window').width - 40,
+    textAlign: 'left',
+  },
+  dropdownText: {
+    fontSize: FONTS.bodyRegular,
+    color: COLORS.black,
+    textAlign: 'left',
   },
 });
 

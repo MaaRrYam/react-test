@@ -51,7 +51,7 @@ const TextArea: React.FC<InputProps> = ({
     left: 12,
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 0],
+      outputRange: [22, 8],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   textArea: {
     minHeight: 100,
     textAlignVertical: 'top',
+    marginTop: 10,
   },
   error: {
     fontSize: FONTS.bodySmall,

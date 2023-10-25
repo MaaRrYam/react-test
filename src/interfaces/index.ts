@@ -1,6 +1,6 @@
-import {UserCredential} from 'firebase/auth';
+import {Unsubscribe, UserCredential} from 'firebase/auth';
 import {DocumentData, Timestamp, WhereFilterOp} from 'firebase/firestore';
-import {ReactNode} from 'react';
+import {Dispatch, ReactNode, SetStateAction} from 'react';
 import {ImageSourcePropType, TextStyle} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
@@ -122,6 +122,15 @@ export interface FirebaseServiceProps {
   serverTimestamp(): Timestamp;
   generateUniqueId(): string;
   getDocument(collectionName: string, id: string): Promise<DocumentData | null>;
+  listenToDocument(
+    collectionName: string,
+    documentId: string,
+    callback: (document: DocumentData | null) => void,
+  ): Unsubscribe;
+  listenToAllDocuments(
+    collectionName: string,
+    callback: (documents: DocumentData[]) => void,
+  ): Promise<Unsubscribe>;
   generateUniqueFilename(): string;
 }
 
@@ -141,6 +150,7 @@ export interface SigninServiceProps {
   checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
     navigation: NavigationProp<RootStackParamList>,
+    dispatch: any,
   ): Promise<void>;
 }
 export interface requestAccessFormValues {
@@ -159,7 +169,7 @@ export interface BottomSheetProps {
   children: ReactNode;
   containerStyle?: object;
   contentContainerStyle?: object;
-  profilePage?: boolean;
+  indicatorVisible?: boolean;
 }
 
 export interface EducationState {
@@ -214,7 +224,7 @@ export interface ReactionIconProps extends SvgProps {
 }
 
 export interface EducationProps {
-  id: number;
+  id: string;
   instituteName: string;
   degree: string;
   startYear: string;
@@ -224,7 +234,7 @@ export interface EducationProps {
 }
 
 export interface EmploymentProps {
-  id: number;
+  id: string;
   companyName: string;
   role: string;
   startYear: string;
@@ -382,6 +392,7 @@ export interface EducationTabProps {
 export interface CareerTabProps {
   careerList: Array<EmploymentProps>;
 }
+
 export interface CacheServiceInterface {
   set<T>(key: string, data: T): Promise<void>;
   get<T>(key: string): Promise<T | null>;
@@ -514,11 +525,97 @@ export interface CreatePostInterface {
   editedTime: Timestamp;
 }
 
+export interface ProfileProps {
+  navigation: NavigationProp<RootStackParamList, 'Profile'>;
+  route: {
+    params: {
+      setTabItem: React.Dispatch<React.SetStateAction<string>>;
+      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+      tabItem: string;
+      isEditing: boolean;
+      UID: string;
+    };
+  };
+}
+export interface ProfileFeedInterface {
+  setComments: Dispatch<
+    SetStateAction<{
+      postId: string;
+      loading: boolean;
+      comments: FeedCommentsResponse[];
+      showComments: boolean;
+    }>
+  >;
+  uid: string;
+}
+export interface CareerFormProps {
+  careerList: Array<EmploymentProps>;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
+  setAddNew: (value: boolean) => void;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
+}
+
+export interface EditEducationProps {
+  educationList: Array<EducationProps>;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  addNew: boolean;
+  setAddNew: (value: boolean) => void;
+  editingIndex: number | null;
+  setEditingIndex: (value: number | null) => void;
+}
+
+export interface UserInfoProps {
+  user: UserInterface;
+  onClose: () => void;
+  setIsEdit?: (value: boolean) => void;
+}
+
+export interface CheckboxProps {
+  onPress: (value: boolean) => void;
+  isChecked?: boolean;
+  size?: number;
+  color?: string;
+  style?: any;
+  text?: string;
+  fillColor?: string;
+  unfillColor?: string;
+  iconStyle?: any;
+  innerIconStyle?: any;
+}
+export interface YearDropdownProps {
+  selectedYear: string;
+  years: string[];
+  onYearSelect: (year: string) => void;
+  setFieldTouched: (field: string, isTouched?: boolean) => void;
+  name: string;
+  label: string;
+  style?: StyleProp<ViewStyle>;
+}
 export interface CareerCardProps {
-  title: string;
-  company: string;
-  startDate: string;
-  endDate: string;
-  editable: boolean;
-  onEdit: () => void;
+  title?: string;
+  company?: string;
+  startDate?: string;
+  endDate?: string;
+  editable?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
+}
+
+export interface DrawerContentProps {
+  state: any;
+  descriptors: any;
+  navigation: any;
+  isVisible: boolean;
+  setIsVisible: (isVisible: boolean) => void;
+  tabItem: string;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
+  user: UserInterface;
+  editingIndex: number;
+  setEditingIndex: Dispatch<SetStateAction<number>>;
+  uid: string;
 }

@@ -12,6 +12,7 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
   children,
   containerStyle,
   contentContainerStyle,
+  indicatorVisible = true,
 }) => {
   const bottomSheetRef = useRef<BottomSheet | null>(null);
 
@@ -25,7 +26,8 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
         if (index === 0) {
           onClose();
         }
-      }}>
+      }}
+      handleIndicatorStyle={!indicatorVisible && {display: 'none'}}>
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           {children}

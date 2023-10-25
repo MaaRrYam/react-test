@@ -11,6 +11,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
   title = 'Title',
   editable = false,
   onEdit,
+  onDelete,
 }) => {
   return (
     <View style={styles.container}>
@@ -31,7 +32,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
       </View>
       {editable && (
         <View style={styles.editableContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onDelete}>
             <View style={styles.deleteButton}>
               <Delete />
             </View>

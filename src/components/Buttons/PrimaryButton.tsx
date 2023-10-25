@@ -13,7 +13,7 @@ import {COLORS} from '../../constants';
 import {ButtonProps} from 'interfaces';
 import {ForwardArrow} from '@/assets/icons';
 
-const Button: React.FC<ButtonProps> = ({
+const PrimaryButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   style,
@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   isLoading = false,
   activityIndicatorSize = 'small',
-  activityIndicatorColor = COLORS.primary,
+  activityIndicatorColor = COLORS.white,
 }) => {
   const renderButtonContent = () => {
     if (isLoading) {
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default PrimaryButton;

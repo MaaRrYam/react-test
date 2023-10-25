@@ -1,21 +1,9 @@
-import { CheckMark } from '@/assets/icons';
+import {CheckMark} from '@/assets/icons';
 import {COLORS} from '@/constants';
 import React from 'react';
-import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-interface CheckboxProps {
-  onPress: (isChecked: boolean) => void;
-  isChecked?: boolean;
-  size?: number;
-  color?: string;
-  style?: any;
-  text?: string;
-  fillColor?: string;
-  unfillColor?: string;
-  iconStyle?: any;
-  innerIconStyle?: any;
-}
+import {TouchableOpacity, View} from 'react-native';
+import {checkBoxStyles as styles} from '@/components/Inputs/styles';
+import {CheckboxProps} from '@/interfaces';
 
 const Checkbox: React.FC<CheckboxProps> = ({
   onPress,
@@ -23,19 +11,13 @@ const Checkbox: React.FC<CheckboxProps> = ({
   size = 24,
   color = COLORS.white,
   style,
-  text,
   fillColor = COLORS.primary,
   unfillColor = COLORS.lightGrayBackground,
   iconStyle,
-  innerIconStyle,
 }) => {
-  const toggleCheckbox = () => {
-    onPress(!isChecked);
-  };
-
   return (
     <TouchableOpacity
-      onPress={() => onPress(!isChecked)}
+      onPress={onPress}
       style={[styles.checkboxContainer, style]}>
       <View
         style={[
@@ -54,22 +36,4 @@ const Checkbox: React.FC<CheckboxProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkbox: {
-    borderWidth: 2,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  checkIcon: {
-    position: 'absolute',
-  },
-  checkText: {
-    marginLeft: 8,
-  },
-});
 export default Checkbox;

@@ -15,6 +15,8 @@ import {
   deleteDoc,
   updateDoc,
   setDoc,
+  onSnapshot,
+  Unsubscribe,
 } from 'firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
@@ -192,6 +194,73 @@ const FirebaseService: FirebaseServiceProps = {
     }
 
     return autoId;
+  },
+  listenToDocument: (
+    collectionName: string,
+    documentId: string,
+    callback: (document: DocumentData | null) => void,
+  ): Unsubscribe => {
+    const docRef = doc(db, collectionName, documentId);
+
+    // Set up a listener to watch for changes to the document
+    const unsubscribe = onSnapshot(docRef, docSnapshot => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
+        // Invoke the provided callback with the updated document
+        callback(document);
+      } else {
+        // The document no longer exists
+        callback(null);
+      }
+    });
+
+    return unsubscribe;
+  },
+  listenToAllDocuments: async (
+    collectionName: string,
+    callback: (documents: DocumentData[]) => void,
+  ): Promise<Unsubscribe> => {
+    const colRef = collection(db, collectionName);
+
+    // Set up a listener to watch for changes to the entire collection
+    const unsubscribe = onSnapshot(colRef, async querySnapshot => {
+      const documents: DocumentData[] = [];
+      for (const docSnapshot of querySnapshot.docs) {
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
+        documents.push(document);
+      }
+
+      // Invoke the provided callback with the updated list of documents
+      callback(documents);
+    });
+
+    return unsubscribe;
   },
 };
 
