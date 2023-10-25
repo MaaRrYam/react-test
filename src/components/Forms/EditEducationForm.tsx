@@ -54,7 +54,6 @@ const EditEducationForm: FC<CareerFormProps> = ({
     },
     validationSchema: careerSchema,
     onSubmit: async () => {
-      await console.log('Submit');
       if (values.id) {
         await updateCareer(values.id);
       } else {
