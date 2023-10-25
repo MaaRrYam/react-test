@@ -1,7 +1,7 @@
 import React, {useEffect, FC, useRef, useCallback, useMemo} from 'react';
 import {KeyboardAvoidingView, Text, View} from 'react-native';
 import {useFormik} from 'formik';
-import {CareerFormProps, EducationProps, EmploymentProps} from '@/interfaces';
+import {CareerFormProps, EducationProps} from '@/interfaces';
 import {
   Input,
   Checkbox,
@@ -9,7 +9,7 @@ import {
   CareerCard,
   YearDropdown,
 } from '@/components';
-import {careerSchema} from '@/utils/schemas/profile';
+import {educationSchema} from '@/utils/schemas/profile';
 import ProfileService from '@/services/profile';
 import {editFormStyles as styles} from '@/components/Forms/styles';
 import ToastService from '@/services/toast';
@@ -47,12 +47,12 @@ const EditEducationForm: FC<CareerFormProps> = ({
     initialValues: {
       id: '',
       instituteName: '',
-      degree: '',
+      degreeName: '',
       startYear: '2000',
       endYear: '2010',
       isCurrentlyStudying: false,
     },
-    validationSchema: careerSchema,
+    validationSchema: educationSchema,
     onSubmit: async () => {
       if (values.id) {
         await updateCareer(values.id);
@@ -82,7 +82,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
       {
         id: FirebaseService.generateUniqueId(),
         instituteName: values.instituteName,
-        degree: values.degree,
+        degree: values.degreeName,
         startYear: values.startYear,
         endYear: values.endYear,
         currentlyStudying: values.isCurrentlyStudying,
@@ -108,7 +108,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
           return {
             ...career,
             instituteName: values.instituteName,
-            degree: values.degree,
+            degree: values.degreeName,
             startYear: values.startYear,
             endYear: values.endYear,
             currentlyStudying: values.isCurrentlyStudying,
@@ -151,7 +151,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
           const newValues = {
             id: itemToEdit.id,
             instituteName: itemToEdit.instituteName || '',
-            degree: itemToEdit.degree || '',
+            degreeName: itemToEdit.degree || '',
             startYear: itemToEdit.startYear || years[0],
             endYear: itemToEdit.currentlyStudying
               ? ''
@@ -182,12 +182,12 @@ const EditEducationForm: FC<CareerFormProps> = ({
               error={errors.instituteName}
             />
             <Input
-              onChangeText={handleChange('degree')}
+              onChangeText={handleChange('degreeName')}
               placeholder="Degree Name"
-              value={values.degree}
+              value={values.degreeName}
               setFieldTouched={setFieldTouched}
               style={styles.textInput}
-              error={errors.degree}
+              error={errors.degreeName}
             />
             <View style={styles.yearInputContainer}>
               <YearDropdown
