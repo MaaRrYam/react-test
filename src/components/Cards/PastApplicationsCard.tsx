@@ -1,9 +1,8 @@
 import React from 'react';
-
-import {PastApplicationCardInterface} from '@/interfaces';
 import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {PastApplicationCardInterface} from '@/interfaces';
 import {pastApplicationCardStyles} from '@/styles/jobs/index';
-import {COLORS, FONTS} from '@/constants';
+import {FONTS} from '@/constants';
 
 const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
   jobTitle = 'Job Title',
@@ -33,29 +32,9 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
         )}
       </View>
       <View style={pastApplicationCardStyles.textContainer}>
-        <Text
-          style={{
-            fontSize: FONTS.largeLabel,
-            color: COLORS.black,
-            fontWeight: 'bold',
-          }}>
-          {jobTitle}
-        </Text>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            marginTop: 2,
-          }}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: FONTS.largeLabel,
-              color: COLORS.black,
-            }}>
-            Status:
-          </Text>
+        <Text style={pastApplicationCardStyles.textStyles}>{jobTitle}</Text>
+        <View style={pastApplicationCardStyles.pastDetails}>
+          <Text style={pastApplicationCardStyles.textStyles}>Status:</Text>
 
           {isAccepted && !isPending && !starred ? (
             <Text style={{fontSize: FONTS.text}}>Application accepted</Text>
@@ -70,39 +49,13 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
           )}
         </View>
         {feedback && (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              marginTop: 2,
-            }}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: FONTS.largeLabel,
-                color: COLORS.black,
-              }}>
-              Feedback
-            </Text>
+          <View style={pastApplicationCardStyles.pastDetails}>
+            <Text style={pastApplicationCardStyles.textStyles}>Feedback</Text>
             {feedback}
           </View>
         )}
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            marginTop: 2,
-          }}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: FONTS.largeLabel,
-              color: COLORS.black,
-            }}>
-            Rating{' '}
-          </Text>
+        <View style={pastApplicationCardStyles.pastDetails}>
+          <Text style={pastApplicationCardStyles.textStyles}>Rating </Text>
           <Text style={{fontSize: FONTS.text}}>{rating} / 10</Text>
         </View>
       </View>

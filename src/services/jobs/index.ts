@@ -1,11 +1,6 @@
 import {getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
-import {
-  allPastApplicationsAndJobsInterface,
-  ApplicantInterface,
-  JobInterface,
-  UserInterface,
-} from '@/interfaces/index';
+import {ApplicantInterface, JobInterface, UserInterface} from '@/interfaces';
 import Cache from '@/cache';
 
 let UID: string;
@@ -36,8 +31,8 @@ const JobsService = {
 
       return allJobs;
     } catch (error) {
-      // Handle any errors that may occur during the process
       console.error('Error fetching saved jobs:', error);
+      return [] as JobInterface;
     }
   },
 
@@ -55,7 +50,7 @@ const JobsService = {
             UID,
           );
 
-          if (applications.length > 0) {
+          if (applications.length) {
             const jobTitle = job.jobTitle;
             const jobId = job.id;
             const companyLogo = job?.companyLogo || '';
@@ -76,8 +71,8 @@ const JobsService = {
       }
       return allPastApplicationsAndJobs;
     } catch (error) {
-      // Handle any errors that may occur during the process
       console.error('Error fetching past applications and jobs:', error);
+      return [] as ApplicantInterface;
     }
   },
   async checkSavedJob(jobId: string) {

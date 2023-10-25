@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, FlatList} from 'react-native';
 import {PastApplicationCardInterface} from '@/interfaces';
-import PastApplicationsCard from '../../components/Cards/PastApplicationsCard';
+import PastApplicationsCard from '@/components/Cards/PastApplicationsCard';
 import {Loading} from '@/components';
 import EmptyComponent from '@/components/NoResults/Empty';
 import {jobMainStyles} from '@/styles/jobs';

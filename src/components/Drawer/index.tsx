@@ -5,7 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, Network, Notifications} from '@/screens';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
-import Jobs from '@/screens/jobs';
+import {Jobs} from '@/screens/index';
 
 const Tab = createBottomTabNavigator();
 

@@ -1,11 +1,10 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView, Image} from 'react-native';
 import {Button, BottomSheet} from '@/components';
 import {
   ApplicantInterface,
   JobsDetailFormInterface,
   UserInterface,
-  JobInterface,
 } from '@/interfaces';
 import {jobDetailFormStyles} from '@/styles/jobs';
 import {
@@ -14,15 +13,13 @@ import {
   Location,
   SaveIcon,
   UnsaveIcon,
-} from '@/assets/icons/index';
+} from '@/assets/icons';
 
-import React from 'react';
 import JobsService from '@/services/jobs';
 import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
 import JobQuestionsForm from '@/components/Forms/JobQuestionsForm';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {homeStyles} from '@/styles/home';
 
 const JobsDetailForm = ({
   selectedJob,
@@ -94,6 +91,13 @@ const JobsDetailForm = ({
   };
 
   useEffect(() => {
+    if (checkExisitngApplications.length >= 3) {
+      ToastService.showError('Cannot Apply to more than 3 jobs');
+      setIsBtnDisable(true);
+    }
+  }, [checkExisitngApplications]);
+
+  useEffect(() => {
     JobsService.getPosterJob(selectedJob?.posterJobID!).then(data => {
       setPosterJobInfo(data);
       setIsLoadingPosterJob(false);
@@ -144,14 +148,8 @@ const JobsDetailForm = ({
         <ScrollView>
           <SafeAreaView style={jobDetailFormStyles.SafeAreaView}>
             <View>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <View style={{flex: 1, flexDirection: 'column'}}>
+              <View style={jobDetailFormStyles.jobTitlesContainer}>
+                <View style={jobDetailFormStyles.someContainer}>
                   <Text style={jobDetailFormStyles.jobTitle}>
                     {selectedJob.jobTitle}
                   </Text>
@@ -193,7 +191,7 @@ const JobsDetailForm = ({
                 </View>
               )}
               <View style={jobDetailFormStyles.applyButtonContainer}>
-                <View style={{flex: 1, flexDirection: 'column'}}>
+                <View style={jobDetailFormStyles.someContainer}>
                   <Button
                     disabled={isBtnDisable}
                     title={btnTitle}

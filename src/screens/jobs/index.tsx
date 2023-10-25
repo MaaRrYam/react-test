@@ -5,8 +5,8 @@ import {Header, Button} from '@/components';
 import {JobsScreenProps} from '@/types';
 import {jobMainStyles} from '@/styles/jobs';
 import {COLORS, JOBS_TABS} from '@/constants';
-import JobsComponent from './JobsComponent';
-import PastApplications from './PastApplications';
+import JobsComponent from '@/screens/jobs/JobsComponent';
+import PastApplications from '@/screens/jobs/PastApplications';
 import {JobInterface} from '@/interfaces';
 import JobsService from '@/services/jobs';
 
@@ -18,21 +18,21 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
 
   useEffect(() => {
     if (selectedTab === JOBS_TABS[0]) {
-      if (allJobs?.length === 0) {
+      if (!allJobs?.length) {
         setIsLoading(true);
         JobsService.getAllJobs().then(setAllJobs);
       } else {
         setIsLoading(false);
       }
     } else if (selectedTab === JOBS_TABS[1]) {
-      if (allJobs?.length === 0) {
+      if (!allJobs?.length) {
         setIsLoading(true);
         JobsService.getAllPastApplicationsAndJobs().then(setAllJobs);
       } else {
         setIsLoading(false);
       }
     } else if (selectedTab === JOBS_TABS[2]) {
-      if (allJobs?.length === 0) {
+      if (!allJobs?.length) {
         setIsLoading(true);
         JobsService.getAllSavedJobs().then(setAllJobs);
       } else {
@@ -46,18 +46,17 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   }, [selectedTab]);
 
   return (
-    <View style={jobMainStyles.outerContainer}>
-      <SafeAreaView style={jobMainStyles.SafeAreaView}>
+    <SafeAreaView style={jobMainStyles.outerContainer}>
+      <View style={jobMainStyles.SafeAreaView}>
         <Header
           navigation={navigation}
-          jobs={true}
           setJobsFilterBottomSheet={setJobsFilterBottomSheet}
         />
         <View style={jobMainStyles.subHeader}>
           <Button
             title={JOBS_TABS[0]}
             onPress={() => setSelectedTab(JOBS_TABS[0])}
-            backgroundColor={'#F4F4F4'}
+            backgroundColor={COLORS.lightBackground}
             textColor={COLORS.black}
             style={
               selectedTab === JOBS_TABS[0]
@@ -68,7 +67,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
           <Button
             title={JOBS_TABS[1]}
             onPress={() => setSelectedTab(JOBS_TABS[1])}
-            backgroundColor={'#F4F4F4'}
+            backgroundColor={COLORS.lightBackground}
             textColor={COLORS.black}
             style={
               selectedTab === JOBS_TABS[1]
@@ -79,7 +78,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
           <Button
             title={JOBS_TABS[2]}
             onPress={() => setSelectedTab(JOBS_TABS[2])}
-            backgroundColor={'#F4F4F4'}
+            backgroundColor={COLORS.lightBackground}
             textColor={COLORS.black}
             style={
               selectedTab === JOBS_TABS[2]
@@ -107,8 +106,8 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
             isLoading={isLoading}
           />
         )}
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 export default Jobs;

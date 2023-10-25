@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {View, FlatList, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+
 import {BottomSheet, Loading} from '@/components';
 import {jobMainStyles} from '@/styles/jobs';
 import {JobInterface, JobsComponentInterface} from '@/interfaces';
-
 import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsCard from '@/components/Cards/JobsCard';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
@@ -80,9 +80,8 @@ const JobsComponent = ({
           )}
           {!filtersApplied &&
             allJobs &&
-            filteredJobs.length <= 0 &&
+            !filteredJobs.length &&
             !searchTerm && (
-              // Render the "All Jobs" section
               <FlatList
                 data={allJobs}
                 renderItem={({item}) => (
@@ -100,7 +99,6 @@ const JobsComponent = ({
             )}
 
           {filteredJobs.length > 0 && (
-            // Render the filtered jobs
             <FlatList
               data={filteredJobs}
               renderItem={({item}) => (
@@ -118,7 +116,7 @@ const JobsComponent = ({
           )}
 
           {filteredJobs.length <= 0 &&
-            (selectedFilters.length > 0 || searchTerm !== '') && (
+            (selectedFilters.length || searchTerm) && (
               <View style={jobMainStyles.emptyContainer}>
                 <EmptyComponent />
               </View>

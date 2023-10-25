@@ -26,6 +26,7 @@ import Compensation from './Compensation';
 import BaseSalary from './BaseSalary';
 import SaveIcon from './SaveIcon';
 import UnsaveIcon from './UnsaveIcon';
+import Filter from './Filter';
 
 export {
   BackArrow,
@@ -56,4 +57,5 @@ export {
   BaseSalary,
   SaveIcon,
   UnsaveIcon,
+  Filter,
 };

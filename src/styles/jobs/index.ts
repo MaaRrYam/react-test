@@ -77,6 +77,16 @@ export const jobDetailFormStyles = StyleSheet.create({
     marginTop: MARGINS.general,
     color: COLORS.black,
   },
+  jobTitlesContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  someContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   companyName: {
     fontSize: FONTS.largeLabel * 1.1,
     fontWeight: 'normal',
@@ -273,6 +283,17 @@ export const pastApplicationCardStyles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginLeft: MARGINS.general,
+  },
+  textStyles: {
+    fontSize: FONTS.largeLabel,
+    color: COLORS.black,
+    fontWeight: 'bold',
+  },
+  pastDetails: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginTop: 2,
   },
   title: {
     color: COLORS.black,

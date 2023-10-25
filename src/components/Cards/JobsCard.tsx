@@ -1,7 +1,6 @@
 import React from 'react';
-
-import {JobsCardProps} from '@/interfaces';
 import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {JobsCardProps} from '@/interfaces';
 import {jobCardStyles} from '@/styles/jobs/index';
 
 const JobsCard: React.FC<JobsCardProps> = ({

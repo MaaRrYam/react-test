@@ -2,11 +2,9 @@ import React from 'react';
 import {View, Text, ScrollView, SafeAreaView} from 'react-native';
 import {jobTypes, workEnviroment} from '@/constants';
 import {JobsFilterFormInterface} from '@/interfaces';
-import {Checkbox} from '@/components/Inputs';
+import {Checkbox, Input} from '@/components/Inputs';
 import {jobsFilterFormStyles} from '@/styles/jobs';
-
-import Input from '@/components/Inputs/Input';
-import {Button} from '../Buttons';
+import {Button} from '@/components/Buttons';
 
 const JobsFilterForm = ({
   selectedFilters,
@@ -29,12 +27,11 @@ const JobsFilterForm = ({
         selectedFilters.filter((_, index) => index !== filterIndex),
       );
     }
-    // setIsResetVisible(selectedFilters.length > 0 || searchTerm !== '');
   };
 
   return (
-    <ScrollView>
-      <SafeAreaView style={jobsFilterFormStyles.SafeAreaView}>
+    <SafeAreaView style={jobsFilterFormStyles.SafeAreaView}>
+      <ScrollView>
         <View>
           <Text style={jobsFilterFormStyles.title}>Location</Text>
           <Input
@@ -72,8 +69,8 @@ const JobsFilterForm = ({
         <View style={jobsFilterFormStyles.applyButtonContainer}>
           <Button title="Apply" onPress={applyFilters} />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
