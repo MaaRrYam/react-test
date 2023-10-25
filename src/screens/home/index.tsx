@@ -35,12 +35,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     };
   });
 
-  useEffect(() => {
-    const fetchUID = async () => {
-      console.log(await getUID());
-    };
-    fetchUID();
-  }, []);
 
   return (
     <View style={homeStyles.outerContainer}>
