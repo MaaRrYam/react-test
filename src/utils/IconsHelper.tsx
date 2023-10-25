@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Home, Network, Notifications, Jobs, ImageIcon} from '@/assets/icons';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '@/constants';
-import {useNavigation} from '@react-navigation/native';
-import {getUID} from './functions'; // Import your getUID function
 
 export const getIcon = (
   label: string,
