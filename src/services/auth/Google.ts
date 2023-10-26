@@ -6,6 +6,7 @@ import {RootStackParamList} from '@/types';
 import {NavigationProp} from '@react-navigation/native';
 export const _signInWithGoogle = async (
   navigation: NavigationProp<RootStackParamList>,
+  dispatch: any,
 ) => {
   try {
     GoogleSignin.configure({
@@ -25,6 +26,7 @@ export const _signInWithGoogle = async (
         await SigninService.checkIfUserIsWhitelisted(
           userCredential,
           navigation,
+          dispatch,
         );
       });
 

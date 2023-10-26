@@ -205,7 +205,7 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
           <Like isLiked={reactions.like} />
         </TouchableOpacity>
         <Text style={styles.like}>
-          {item?.postLikes!.length - item?.postDislikes!.length}
+          {(item?.postLikes?.length - item?.postDislikes?.length) }
         </Text>
         <TouchableOpacity style={styles.reactionButton} onPress={disLikeAPost}>
           <Dislike isLiked={reactions.dislike} />

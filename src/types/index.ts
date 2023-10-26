@@ -1,5 +1,9 @@
+import {
+  NavigationState,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
 import {FeedItem, UserInterface} from '@/interfaces';
-import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
@@ -31,6 +35,13 @@ export type RootStackParamList = {
   Signup: undefined;
   SignupWithEmail: undefined;
   Header: undefined;
+  Profile: {
+    uid: string;
+    Article: {
+      article?: FeedItem;
+      id?: string;
+    };
+  };
   Article: {
     article?: FeedItem;
     id?: string;
@@ -135,8 +146,9 @@ export type SignupWithEmailProps = {
 };
 
 export type HeaderProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Header'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
   jobs: boolean;
   setJobsFilterBottomSheet: Function;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';
+export type NavigationStateType = NavigationState<ParamListBase>;

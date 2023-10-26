@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, FC} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
 import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
 import {InputProps} from '@/interfaces';
 
-const Input: React.FC<InputProps> = ({
+const Input: FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,

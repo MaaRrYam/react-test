@@ -8,19 +8,21 @@ import {
   Text,
 } from 'react-native';
 
-import {Button, SocialLoginButton} from '@/components';
+import {PrimaryButton, SocialLoginButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {LaunchScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {styles} from '@/styles/main';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
   const handleSignButtonClick = () => {
     navigation.navigate(SCREEN_NAMES.Signin);
   };
 
   const handleGoogleSign = async () => {
-    await _signInWithGoogle(navigation);
+    await _signInWithGoogle(navigation, dispatch);
   };
   return (
     <KeyboardAvoidingView
@@ -64,7 +66,7 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
         </View>
 
         <View>
-          <Button
+          <PrimaryButton
             title="Create Account"
             onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}
             style={{}}
@@ -79,7 +81,7 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
         </View>
 
         <View>
-          <Button
+          <PrimaryButton
             title="Sign In"
             onPress={handleSignButtonClick}
             style={styles.signInButton}

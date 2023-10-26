@@ -28,7 +28,7 @@ const NotificationsList = () => {
 
   return (
     <>
-      {notifications.length ? (
+      {notifications?.length ? (
         <FlatList
           data={notifications}
           keyExtractor={item => item.id.toString()}

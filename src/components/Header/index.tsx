@@ -4,7 +4,6 @@ import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
 import {Chats, Filter} from '@/assets/icons';
-import {SCREEN_NAMES} from '@/constants';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
@@ -15,7 +14,7 @@ const Header = ({navigation, setJobsFilterBottomSheet}: HeaderProps) => {
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logOut());
-    navigation.navigate(SCREEN_NAMES.Launch);
+    navigation.navigate('Launch');
   };
   return (
     <View style={homeStyles.header}>

@@ -44,7 +44,7 @@ export const FONTS = {
 };
 
 export const MARGINS = {
-  general: Platform.OS === 'ios' ? 20 : 9,
+  general: 20,
 };
 
 export const PADDING = {
@@ -93,6 +93,8 @@ export const employmentStatuses = [
 
 export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
 export const JOBS_TABS = ['Jobs', 'Past Applications', 'Saved'];
+
+export const PROFILE_TABS = ['Profile', 'Career', 'Education'];
 
 export const NETWORK_REQUESTS = [
   {
