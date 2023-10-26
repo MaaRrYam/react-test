@@ -145,82 +145,78 @@ const JobsDetailForm = ({
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <ScrollView>
-          <SafeAreaView style={jobDetailFormStyles.SafeAreaView}>
-            <View>
-              <View style={jobDetailFormStyles.jobTitlesContainer}>
-                <View style={jobDetailFormStyles.someContainer}>
-                  <Text style={jobDetailFormStyles.jobTitle}>
-                    {selectedJob.jobTitle}
-                  </Text>
-                  <Text style={jobDetailFormStyles.companyName}>
-                    {selectedJob.companyName}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={jobDetailFormStyles.basicDetails}>
-                <View style={jobDetailFormStyles.basicDetailItem}>
-                  <Location />
-                  <Text style={jobDetailFormStyles.basicDetailItem}>
-                    {selectedJob?.workplaceType}: {selectedJob?.companyLocation}
-                  </Text>
-                </View>
-                <View style={jobDetailFormStyles.basicDetailItem}>
-                  <Compensation />
-                  <Text style={jobDetailFormStyles.basicDetailItem}>
-                    Total Compensation: ${selectedJob?.jobCompensation}
-                  </Text>
-                </View>
-                <View style={jobDetailFormStyles.basicDetailItem}>
-                  <BaseSalary />
-                  <Text style={jobDetailFormStyles.basicDetailItem}>
-                    Base Salary: ${selectedJob?.baseSalary}
-                  </Text>
-                </View>
-              </View>
-              {posterJobInfo?.name && (
-                <View style={jobDetailFormStyles.recruiterContainer}>
-                  <Image
-                    style={jobDetailFormStyles.recruiterImage}
-                    source={{uri: posterJobInfo?.photoUrl}}
-                  />
-                  <Text style={jobDetailFormStyles.recruiterDetail}>
-                    {posterJobInfo?.name} is hiring for this position
-                  </Text>
-                </View>
-              )}
-              <View style={jobDetailFormStyles.applyButtonContainer}>
-                <View style={jobDetailFormStyles.someContainer}>
-                  <PrimaryButton
-                    disabled={isBtnDisable}
-                    title={btnTitle}
-                    onPress={handleOnPress}
-                  />
-                </View>
-                <TouchableOpacity
-                  onPress={handleSaveJob}
-                  style={jobDetailFormStyles.saveButtonContainer}>
-                  {saved ? <SaveIcon /> : <UnsaveIcon />}
-                </TouchableOpacity>
-              </View>
-              <View style={jobDetailFormStyles.jobDetailContainer}>
-                <Text style={jobDetailFormStyles.jobDetailHeading}>
-                  Summary
+        <SafeAreaView style={jobDetailFormStyles.SafeAreaView}>
+          <ScrollView>
+            <View style={jobDetailFormStyles.jobTitlesContainer}>
+              <View style={jobDetailFormStyles.someContainer}>
+                <Text style={jobDetailFormStyles.jobTitle}>
+                  {selectedJob.jobTitle}
                 </Text>
-                <Text style={jobDetailFormStyles.JobsDetailText}>
-                  {selectedJob.jobSummary}
-                </Text>
-                <Text style={jobDetailFormStyles.jobDetailHeading}>
-                  Responsibilites
-                </Text>
-                <Text style={jobDetailFormStyles.JobsDetailText}>
-                  {selectedJob.responsibilities}
+                <Text style={jobDetailFormStyles.companyName}>
+                  {selectedJob.companyName}
                 </Text>
               </View>
             </View>
-          </SafeAreaView>
-        </ScrollView>
+
+            <View style={jobDetailFormStyles.basicDetails}>
+              <View style={jobDetailFormStyles.basicDetailItem}>
+                <Location />
+                <Text style={jobDetailFormStyles.basicDetailItem}>
+                  {selectedJob?.workplaceType}: {selectedJob?.companyLocation}
+                </Text>
+              </View>
+              <View style={jobDetailFormStyles.basicDetailItem}>
+                <Compensation />
+                <Text style={jobDetailFormStyles.basicDetailItem}>
+                  Total Compensation: ${selectedJob?.jobCompensation}
+                </Text>
+              </View>
+              <View style={jobDetailFormStyles.basicDetailItem}>
+                <BaseSalary />
+                <Text style={jobDetailFormStyles.basicDetailItem}>
+                  Base Salary: ${selectedJob?.baseSalary}
+                </Text>
+              </View>
+            </View>
+            {posterJobInfo?.name && (
+              <View style={jobDetailFormStyles.recruiterContainer}>
+                <Image
+                  style={jobDetailFormStyles.recruiterImage}
+                  source={{uri: posterJobInfo?.photoUrl}}
+                />
+                <Text style={jobDetailFormStyles.recruiterDetail}>
+                  {posterJobInfo?.name} is hiring for this position
+                </Text>
+              </View>
+            )}
+            <View style={jobDetailFormStyles.applyButtonContainer}>
+              <View style={jobDetailFormStyles.someContainer}>
+                <PrimaryButton
+                  disabled={isBtnDisable}
+                  title={btnTitle}
+                  onPress={handleOnPress}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={handleSaveJob}
+                style={jobDetailFormStyles.saveButtonContainer}>
+                {saved ? <SaveIcon /> : <UnsaveIcon />}
+              </TouchableOpacity>
+            </View>
+            <View style={jobDetailFormStyles.jobDetailContainer}>
+              <Text style={jobDetailFormStyles.jobDetailHeading}>Summary</Text>
+              <Text style={jobDetailFormStyles.JobsDetailText}>
+                {selectedJob.jobSummary}
+              </Text>
+              <Text style={jobDetailFormStyles.jobDetailHeading}>
+                Responsibilites
+              </Text>
+              <Text style={jobDetailFormStyles.JobsDetailText}>
+                {selectedJob.responsibilities}
+              </Text>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       )}
       {isQABottomSheetOpen && (
         <BottomSheet
