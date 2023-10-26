@@ -6,11 +6,14 @@ import {Loading} from '@/components';
 import EmptyComponent from '@/components/NoResults/Empty';
 import {jobMainStyles} from '@/styles/jobs';
 
-const PastApplications = ({allJobs}: PastApplicationCardInterface[]) => {
+const PastApplications = ({
+  allJobs,
+  isDataFetched,
+}: PastApplicationCardInterface[]) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    allJobs && setIsLoading(false);
-  }, [allJobs]);
+    isDataFetched === true && setIsLoading(false);
+  }, [isDataFetched]);
   return (
     <>
       {isLoading ? (
@@ -33,9 +36,12 @@ const PastApplications = ({allJobs}: PastApplicationCardInterface[]) => {
           keyExtractor={item => item?.id?.toString()!}
         />
       ) : (
-        <View style={jobMainStyles.emptyContainer}>
-          <EmptyComponent />
-        </View>
+        !isDataFetched &&
+        allJobs.length && (
+          <View style={jobMainStyles.emptyContainer}>
+            <EmptyComponent />
+          </View>
+        )
       )}
     </>
   );

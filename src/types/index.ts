@@ -147,7 +147,6 @@ export type SignupWithEmailProps = {
 
 export type HeaderProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
-  jobs: boolean;
   setJobsFilterBottomSheet: Function;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';

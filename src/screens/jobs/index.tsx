@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import {View, SafeAreaView} from 'react-native';
-import {Header, Button} from '@/components';
+import {Header, PrimaryButton} from '@/components';
 import {JobsScreenProps} from '@/types';
 import {jobMainStyles} from '@/styles/jobs';
 import {COLORS, JOBS_TABS} from '@/constants';
@@ -15,6 +15,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [jobFilterBottomSheet, setJobsFilterBottomSheet] = useState(false);
   const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   useEffect(() => {
     if (selectedTab === JOBS_TABS[0]) {
@@ -27,7 +28,10 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
     } else if (selectedTab === JOBS_TABS[1]) {
       if (!allJobs?.length) {
         setIsLoading(true);
-        JobsService.getAllPastApplicationsAndJobs().then(setAllJobs);
+        JobsService.getAllPastApplicationsAndJobs().then(response => {
+          setAllJobs(response);
+          setIsDataFetched(true);
+        });
       } else {
         setIsLoading(false);
       }
@@ -53,7 +57,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
           setJobsFilterBottomSheet={setJobsFilterBottomSheet}
         />
         <View style={jobMainStyles.subHeader}>
-          <Button
+          <PrimaryButton
             title={JOBS_TABS[0]}
             onPress={() => setSelectedTab(JOBS_TABS[0])}
             backgroundColor={COLORS.lightBackground}
@@ -64,7 +68,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
                 : jobMainStyles.buttonStyles
             }
           />
-          <Button
+          <PrimaryButton
             title={JOBS_TABS[1]}
             onPress={() => setSelectedTab(JOBS_TABS[1])}
             backgroundColor={COLORS.lightBackground}
@@ -75,7 +79,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
                 : jobMainStyles.buttonStyles
             }
           />
-          <Button
+          <PrimaryButton
             title={JOBS_TABS[2]}
             onPress={() => setSelectedTab(JOBS_TABS[2])}
             backgroundColor={COLORS.lightBackground}
@@ -96,7 +100,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
             isLoading={isLoading}
           />
         ) : selectedTab === JOBS_TABS[1] ? (
-          <PastApplications allJobs={allJobs} />
+          <PastApplications allJobs={allJobs} isDataFetched={isDataFetched} />
         ) : (
           <JobsComponent
             jobFilterBottomSheet={jobFilterBottomSheet}

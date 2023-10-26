@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView, Image} from 'react-native';
-import {Button, BottomSheet} from '@/components';
+import {PrimaryButton, BottomSheet} from '@/components';
 import {
   ApplicantInterface,
   JobsDetailFormInterface,
@@ -192,7 +192,7 @@ const JobsDetailForm = ({
               )}
               <View style={jobDetailFormStyles.applyButtonContainer}>
                 <View style={jobDetailFormStyles.someContainer}>
-                  <Button
+                  <PrimaryButton
                     disabled={isBtnDisable}
                     title={btnTitle}
                     onPress={handleOnPress}

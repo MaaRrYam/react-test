@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
-import {Button, Input} from '@/components';
+import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {JobQuestionsFormInterface} from '@/interfaces';
 import {jobCustomQuestionSchema} from '@/utils/schemas/schemas';
@@ -122,7 +122,7 @@ const JobQuestionsForm = ({
         </ScrollView>
       </View>
       <View style={commonStyles.footer}>
-        <Button title="Apply" onPress={handleSubmit} />
+        <PrimaryButton title="Apply" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

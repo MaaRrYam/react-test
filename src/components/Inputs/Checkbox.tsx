@@ -1,8 +1,14 @@
-import {CheckMark} from '@/assets/icons';
-import {COLORS} from '@/constants';
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {checkBoxStyles as styles} from '@/components/Inputs/styles';
+import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
+import {CheckMark} from '@/assets/icons';
+import {
+  BORDER_RADIUS,
+  BORDER_WIDTH,
+  COLORS,
+  FONTS,
+  MARGINS,
+  PADDING,
+} from '@/constants';
 import {CheckboxProps} from '@/interfaces';
 
 const Checkbox: React.FC<CheckboxProps> = ({
@@ -11,6 +17,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   size = 24,
   color = COLORS.white,
   style,
+  text,
   fillColor = COLORS.primary,
   unfillColor = COLORS.lightGrayBackground,
   iconStyle,
