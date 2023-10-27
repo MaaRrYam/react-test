@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, SafeAreaView, Image, Text, TouchableOpacity} from 'react-native';
 
 import {Header, Feed, NewPost} from '@/components';
@@ -9,11 +9,9 @@ import useUserManagement from '@/hooks/useUserManagement';
 import Cache from '@/cache';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useFocusEffect} from '@react-navigation/native';
-import {getUID} from '@/utils/functions';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
-  const [isNewPostClicked, setIsNewPostClicked] =
-    React.useState<boolean>(false);
+  const [isNewPostClicked, setIsNewPostClicked] = useState<boolean>(false);
 
   const {user} = useUserManagement();
   const {feed} = useAppSelector(state => state.home);
@@ -34,7 +32,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       })();
     };
   });
-
 
   return (
     <View style={homeStyles.outerContainer}>
