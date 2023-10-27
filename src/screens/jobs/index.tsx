@@ -28,10 +28,14 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
     } else if (selectedTab === JOBS_TABS[1]) {
       if (!allJobs?.length) {
         setIsLoading(true);
-        JobsService.getAllPastApplicationsAndJobs().then(response => {
-          setAllJobs(response);
-          setIsDataFetched(true);
-        });
+        JobsService.getAllPastApplicationsAndJobs()
+          .then(response => {
+            setAllJobs(response);
+            setIsDataFetched(true);
+          })
+          .catch(() => {
+            setIsDataFetched(false);
+          });
       } else {
         setIsLoading(false);
       }

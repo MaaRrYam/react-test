@@ -11,12 +11,21 @@ const PastApplications = ({
   isDataFetched,
 }: PastApplicationCardInterface[]) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isFlatListRendered, setIsFlatListRendered] = useState(false);
+
   useEffect(() => {
     isDataFetched === true && setIsLoading(false);
   }, [isDataFetched]);
+
+  useEffect(() => {
+    if (isFlatListRendered && !isLoading) {
+      setIsLoading(false);
+    }
+  }, [isFlatListRendered, isLoading]);
+
   return (
     <>
-      {isLoading ? (
+      {isLoading && !isFlatListRendered ? (
         <Loading />
       ) : allJobs.length ? (
         <FlatList

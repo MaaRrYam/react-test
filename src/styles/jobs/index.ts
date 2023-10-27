@@ -173,6 +173,8 @@ export const jobDetailFormStyles = StyleSheet.create({
 export const jobsFilterFormStyles = StyleSheet.create({
   SafeAreaView: {
     paddingLeft: PADDING.general,
+    paddingRight: PADDING.general,
+    marginBottom: MARGINS.general * 4,
   },
   inputfield: {
     marginTop: MARGINS.general,
@@ -213,7 +215,6 @@ export const jobsFilterFormStyles = StyleSheet.create({
     flex: 1,
     paddingLeft: PADDING.general * 1.2,
     paddingRight: PADDING.general * 2,
-    marginTop: MARGINS.general * 5,
   },
 });
 

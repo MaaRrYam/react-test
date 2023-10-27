@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, FlatList, Text} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {BottomSheet, Loading} from '@/components';
 import {jobMainStyles} from '@/styles/jobs';
@@ -116,7 +116,8 @@ const JobsComponent = ({
           )}
 
           {filteredJobs.length <= 0 &&
-            (selectedFilters.length || searchTerm) && (
+            (selectedFilters.length || searchTerm) &&
+            filtersApplied && (
               <View style={jobMainStyles.emptyContainer}>
                 <EmptyComponent />
               </View>
@@ -127,11 +128,13 @@ const JobsComponent = ({
               isVisible={isBottomSheetVisible}
               onClose={() => setIsBottomSheetVisible(false)}
               snapPoints={['60%', '100%']}>
-              <JobsDetailForm
-                selectedJob={selectedJob}
-                setAllJobs={setAllJobs}
-                setIsBottomSheetVisible={setIsBottomSheetVisible}
-              />
+              <ScrollView>
+                <JobsDetailForm
+                  selectedJob={selectedJob}
+                  setAllJobs={setAllJobs}
+                  setIsBottomSheetVisible={setIsBottomSheetVisible}
+                />
+              </ScrollView>
             </BottomSheet>
           )}
           {jobFilterBottomSheet && (
@@ -139,14 +142,16 @@ const JobsComponent = ({
               isVisible={isBottomSheetVisible}
               onClose={() => setIsBottomSheetVisible(false)}
               snapPoints={['90%', '100%']}>
-              <JobsFilterForm
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
-                applyFilters={applyFilters}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                setIsResetVisible={setIsResetVisible}
-              />
+              <ScrollView>
+                <JobsFilterForm
+                  selectedFilters={selectedFilters}
+                  setSelectedFilters={setSelectedFilters}
+                  applyFilters={applyFilters}
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  setIsResetVisible={setIsResetVisible}
+                />
+              </ScrollView>
             </BottomSheet>
           )}
         </View>
