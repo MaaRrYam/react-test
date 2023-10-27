@@ -21,3 +21,6 @@ export {default as SignupWithEmail} from '@/screens/signup/SignupWithEmail';
 export {default as Profile} from '@/screens/profile';
 export {default as Article} from '@/screens/Article';
 export {default as Post} from '@/screens/Post';
+export {default as Jobs} from '@/screens/jobs/index';
+export {default as JobsComponent} from '@/screens/jobs/JobsComponent';
+export {default as PastApplications} from '@/screens/jobs/PastApplications';

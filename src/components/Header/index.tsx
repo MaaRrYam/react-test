@@ -1,14 +1,16 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
-import {Chats} from '@/assets/icons';
+import {Chats, Filter} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
 
-const Header = ({navigation}: HeaderProps) => {
+const Header = ({navigation, setJobsFilterBottomSheet}: HeaderProps) => {
+  const route = useRoute();
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logOut());
@@ -24,11 +26,19 @@ const Header = ({navigation}: HeaderProps) => {
       </TouchableOpacity>
       <View style={homeStyles.headerIcons}>
         <SearchButton onPress={() => {}} style={homeStyles.searchIcon} />
-        <TouchableOpacity
-          style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-          onPress={() => navigation.navigate('Chats')}>
-          <Chats />
-        </TouchableOpacity>
+        {route.name === 'Jobs' ? (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
+            <Filter />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => navigation.navigate('Chats')}>
+            <Chats />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

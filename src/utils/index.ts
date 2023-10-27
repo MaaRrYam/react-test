@@ -15,7 +15,7 @@ export const formatFirebaseTimestamp = (
       month: 'long',
       day: 'numeric',
     };
-    return date.toLocaleDateString(undefined, options);
+    return date?.toLocaleDateString(undefined, options);
   }
 
   if (formatOption === 'dateTime') {
@@ -26,7 +26,7 @@ export const formatFirebaseTimestamp = (
       hour: '2-digit',
       minute: '2-digit',
     };
-    return date.toLocaleString(undefined, options);
+    return date?.toLocaleString(undefined, options);
   }
 
   if (formatOption === 'time') {
@@ -34,7 +34,7 @@ export const formatFirebaseTimestamp = (
       hour: '2-digit',
       minute: '2-digit',
     };
-    return date.toLocaleTimeString('en-US', options);
+    return date?.toLocaleTimeString('en-US', options);
   }
 
   throw new Error(

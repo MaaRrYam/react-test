@@ -10,6 +10,8 @@ import EditProfile from '@/components/EditProfile';
 import {getUID} from '@/utils/functions';
 import {DrawerContentProps, UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
+import {Jobs} from '@/screens/index';
+
 const Tab = createBottomTabNavigator();
 function SettingsScreen() {
   return (
@@ -156,7 +158,7 @@ const Tabs = () => {
           name={SCREEN_NAMES.Notifications}
           component={Notifications}
         />
-        <Tab.Screen name={SCREEN_NAMES.Jobs} component={SettingsScreen} />
+        <Tab.Screen name={SCREEN_NAMES.Jobs} component={Jobs} />
         <Tab.Screen
           name={SCREEN_NAMES.Profile}
           component={Profile}
