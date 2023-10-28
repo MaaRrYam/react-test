@@ -5,7 +5,6 @@ import {
 } from '@react-navigation/native';
 import {FeedItem, UserInterface} from '@/interfaces';
 import {StackNavigationProp} from '@react-navigation/stack';
-import { Dispatch, SetStateAction } from 'react';
 
 export type RootStackParamList = {
   Signin: undefined;

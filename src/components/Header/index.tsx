@@ -24,7 +24,7 @@ const Header = ({
   };
   const [searchVisible, setSearchVisible] = useState(false);
   const handleSearchTextChange = (text: string) => {
-    setSearchText(text);
+    setSearchText!(text);
   };
   return (
     <View style={homeStyles.header}>
