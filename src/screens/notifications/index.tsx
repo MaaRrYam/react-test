@@ -28,7 +28,7 @@ const Notifications: React.FC<NotificationsScreenProps> = ({navigation}) => {
   return (
     <View style={homeStyles.outerContainer}>
       <SafeAreaView style={homeStyles.container}>
-        <Header navigation={navigation} />
+        <Header navigation={navigation} setSearchText={() => {}} />
 
         {isNotificationsFirstRequest ? <Loading /> : <NotificationsList />}
       </SafeAreaView>

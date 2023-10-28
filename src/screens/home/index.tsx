@@ -37,7 +37,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     <View style={homeStyles.outerContainer}>
       <SafeAreaView style={homeStyles.container}>
         <View>
-          <Header navigation={navigation} />
+          <Header navigation={navigation} setSearchText={() => {}} />
           <View style={homeStyles.subheader}>
             <Image
               source={

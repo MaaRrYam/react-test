@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Image, TouchableOpacity, TextInput} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
@@ -15,27 +15,44 @@ const Header = ({
   setSearchVisible,
   setSearchText,
   searchText,
+  isSearchEnabled,
 }: HeaderProps) => {
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logOut());
     navigation.navigate('Launch');
   };
+  const handleSearchTextChange = (text: string) => {
+    setSearchText(text);
+  };
+  useEffect(() => {
+    console.log(searchText);
+  }, [searchText]);
   return (
     <View style={homeStyles.header}>
-      <TouchableOpacity onPress={handleLogout}>
+      <TouchableOpacity>
         {!searchVisible ? (
-          <Image
-            source={require('@/assets/images/logo.png')}
-            style={homeStyles.logo}
-          />
+          <TouchableOpacity onPress={handleLogout}>
+            <Image
+              source={require('@/assets/images/logo.png')}
+              style={homeStyles.logo}
+            />
+          </TouchableOpacity>
         ) : (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <BackArrow />
-            <Input
+            <TextInput
               placeholder="Search People"
-              onChange={setSearchText}
-              value={searchText as string}
+              onChangeText={handleSearchTextChange}
+              value={searchText}
+              style={{
+                width: 230,
+                borderWidth: 1,
+                borderColor: COLORS.border,
+                borderRadius: 10,
+                color: COLORS.text
+              }}
+              placeholderTextColor={COLORS.text}
             />
           </View>
         )}
@@ -43,7 +60,9 @@ const Header = ({
       <View style={homeStyles.headerIcons}>
         <SearchButton
           onPress={() => {
-            setSearchVisible(true);
+            if (isSearchEnabled) {
+              setSearchVisible(!searchVisible);
+            }
           }}
           style={homeStyles.searchIcon}
         />

@@ -36,6 +36,7 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
           navigation={navigation}
           searchVisible={searchVisible}
           setSearchVisible={setSearchVisible}
+          isSearchEnabled
         />
 
         <View style={styles.subHeader}>
