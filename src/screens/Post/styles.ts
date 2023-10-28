@@ -12,13 +12,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     paddingBottom: 0,
+    backgroundColor: COLORS.white,
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 20,
+    backgroundColor: COLORS.lightGrayBackground,
+    justifyContent: 'center',
+    padding: 7,
+    borderRadius: 9999,
   },
   backIcon: {
     marginLeft: 5,
+    marginHorizontal: 20,
     color: COLORS.primary,
   },
   backButtonText: {
@@ -29,16 +36,14 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
   },
-  shareButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+  shareButton: {},
   postInfo: {
     padding: 16,
   },
   feedContent: {
-    fontSize: FONTS.largeLabel,
+    fontSize: FONTS.regularLabel,
     marginVertical: MARGINS.general,
+    color: COLORS.black,
   },
   media: {
     width: '100%',
@@ -46,22 +51,36 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: BORDER_RADIUS.general,
   },
-  postReactions: {
+  reactionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  actionContainer: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  commentsContainer: {
+    backgroundColor: 'white',
+    marginVertical: 10,
+    paddingBottom: 10,
   },
   reactionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff40',
-    paddingHorizontal: PADDING.general,
+    justifyContent: 'center',
+    backgroundColor: COLORS.lightBackground,
+    borderRadius: 9999,
     paddingVertical: 5,
-    borderRadius: BORDER_RADIUS.general,
+    paddingHorizontal: 19,
   },
   like: {
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontWeight: '400',
+    fontSize: FONTS.regularLabel,
+    color: COLORS.text,
+    marginHorizontal: 10,
   },
   iconsContainer: {
     flexDirection: 'row',
@@ -69,8 +88,32 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   report: {
-    marginLeft: 10 * 3,
+    marginLeft: 0,
   },
+  postContainer: {
+    backgroundColor: COLORS.white,
+    borderTopColor: COLORS.border,
+    borderTopWidth: 1,
+    paddingHorizontal: 20,
+  },
+  userInfoContainer: {
+    marginVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userImage: {
+    width: 43,
+    height: 43,
+    objectFit: 'contain',
+    borderRadius: 10,
+  },
+  userInfoTextContainer: {marginLeft: 12},
+  userName: {
+    color: 'black',
+    fontSize: FONTS.largeLabel,
+    fontWeight: 'bold',
+  },
+  userSubData: {color: COLORS.text, fontSize: FONTS.bodyRegular},
 });
 
 export default styles;

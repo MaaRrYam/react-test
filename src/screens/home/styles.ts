@@ -68,6 +68,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: COLORS.black,
   },
   feedContent: {
     fontSize: 13,
@@ -149,6 +150,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGrayBackground,
     borderRadius: BORDER_RADIUS.general,
     padding: PADDING.general / 2,
+    color: COLORS.black,
   },
   commentFromPost: {
     backgroundColor: COLORS.white,
@@ -166,6 +168,7 @@ export const styles = StyleSheet.create({
     fontSize: FONTS.bodyRegular,
     color: COLORS.black,
     marginLeft: 15,
+    color: COLORS.black,
   },
   commentAuthorName: {
     fontSize: FONTS.bodySmall,
@@ -219,10 +222,13 @@ export const styles = StyleSheet.create({
     marginVertical: MARGINS.general / 2,
     padding: 8,
     marginHorizontal: MARGINS.general,
+    borderColor: COLORS.border,
+    borderWidth: 1,
   },
   input: {
     padding: 10,
     flex: 1,
+    color: COLORS.black,
   },
   replyContainer: {
     flexDirection: 'row',

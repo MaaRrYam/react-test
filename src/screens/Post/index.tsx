@@ -9,7 +9,14 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Dislike, Like, Report, ShareIcon} from '@/assets/icons';
+import {
+  BackArrow,
+  Comment,
+  Dislike,
+  Like,
+  Report,
+  ShareIcon,
+} from '@/assets/icons';
 import {PostScreenProps, RootStackParamList} from '@/types';
 import {getUID} from '@/utils/functions';
 import ToastService from '@/services/toast';
@@ -26,8 +33,16 @@ import {
   removeReportedPostFromFeed,
 } from '@/store/features/homeSlice';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {FeedCommentsResponse, ReactionInterface} from '@/interfaces';
+import {
+  FeedCommentsResponse,
+  ReactionInterface,
+  UserInterface,
+} from '@/interfaces';
 import PostComments from '@/components/Feed/PostComments';
+import {COLORS} from '@/constants';
+import {formatFirebaseTimestamp} from '@/utils';
+import {Timestamp} from 'react-native-reanimated';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
@@ -36,6 +51,8 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const [authorData, setAuthorData] = useState<UserInterface>();
+  const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState({
     postId: '',
     loading: false,
@@ -55,6 +72,17 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       false;
     setReactions(prev => ({...prev, like: response}));
   };
+
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      const data = await FirebaseService.getDocument(
+        'users',
+        item?.authorId as string,
+      );
+      setAuthorData(data as UserInterface);
+    };
+    fetchAuthor();
+  }, [item]);
 
   const isPostDisLikedByUser = async () => {
     const UID = await getUID();
@@ -230,51 +258,89 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Image
-            source={require('@/assets/images/back.png')}
-            style={styles.backIcon}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity onPress={sharePost} style={styles.shareButton}>
-            <ShareIcon />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={reportPost} style={styles.report}>
-            <Report />
+      <ScrollView scrollEnabled>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <BackArrow />
           </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.postInfo}>
-        {item.media && (
-          <Image source={{uri: item.media}} style={styles.media} />
-        )}
-        <Text style={styles.feedContent}>{item.text}</Text>
-        <View style={styles.postReactions}>
-          <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
-            <Like isLiked={reactions.like} />
-          </TouchableOpacity>
-          <Text style={styles.like}>
-            {item?.postLikes!.length - item?.postDislikes!.length}
-          </Text>
-          <TouchableOpacity
-            style={styles.reactionButton}
-            onPress={disLikeAPost}>
-            <Dislike isLiked={reactions.dislike} />
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      <PostComments
-        postId={item._id}
-        comments={comments.comments}
-        loading={comments.loading}
-        showComments={comments.showComments}
-        setComments={setComments}
-        isFromPost={true}
-      />
+        <View style={styles.postContainer}>
+          <View style={styles.userInfoContainer}>
+            <Image
+              source={{uri: authorData?.photoUrl}}
+              style={styles.userImage}
+            />
+            <View style={styles.userInfoTextContainer}>
+              <Text style={styles.userName}>{authorData?.name}</Text>
+              <Text style={styles.userSubData}>{authorData?.tagline}</Text>
+              <Text style={styles.userSubData}>
+                {!item?.edited
+                  ? formatFirebaseTimestamp(
+                      item?.creationTime as Timestamp,
+                      'date',
+                    )
+                  : formatFirebaseTimestamp(item?.editedTime, 'dateTime')}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.feedContent}>{item.text}</Text>
+            {item.media && (
+              <Image source={{uri: item.media}} style={styles.media} />
+            )}
+            <View style={styles.actionContainer}>
+              <View style={styles.reactionContainer}>
+                <TouchableOpacity
+                  style={styles.reactionButton}
+                  onPress={likeAPost}>
+                  <Like isLiked={reactions.like} />
+                </TouchableOpacity>
+                <Text style={styles.like}>
+                  {item?.postLikes!.length - item?.postDislikes!.length}
+                </Text>
+                <TouchableOpacity
+                  style={styles.reactionButton}
+                  onPress={disLikeAPost}>
+                  <Dislike isLiked={reactions.dislike} />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setShowComments(!showComments);
+                }}
+                style={styles.shareButton}>
+                <Comment />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={sharePost}>
+                <ShareIcon />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={reportPost}>
+                <Report />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {showComments && (
+          <View
+            style={{
+              backgroundColor: 'white',
+              marginVertical: 10,
+              paddingBottom: 10,
+            }}>
+            <PostComments
+              postId={item._id}
+              comments={comments.comments}
+              loading={comments.loading}
+              showComments={comments.showComments}
+              setComments={setComments}
+              isFromPost={true}
+            />
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
