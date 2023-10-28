@@ -297,7 +297,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                   <Like isLiked={reactions.like} />
                 </TouchableOpacity>
                 <Text style={styles.like}>
-                  {item?.postLikes!.length - item?.postDislikes!.length}
+                  {item?.postLikes?.length - item?.postDislikes?.length}
                 </Text>
                 <TouchableOpacity
                   style={styles.reactionButton}
@@ -316,7 +316,9 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               <TouchableOpacity onPress={sharePost} style={styles.actionButton}>
                 <ShareIcon />
               </TouchableOpacity>
-              <TouchableOpacity onPress={reportPost} style={styles.actionButton}>
+              <TouchableOpacity
+                onPress={reportPost}
+                style={styles.actionButton}>
                 <Report />
               </TouchableOpacity>
             </View>
