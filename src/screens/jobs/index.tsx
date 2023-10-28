@@ -16,12 +16,14 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDataFetched, setIsDataFetched] = useState(false);
-
+  const [searchText, setSearchText] = useState('');
+  const [searchFilteredJobs, setSearchFilteredJobs] = useState(allJobs)
   useEffect(() => {
     if (selectedTab === JOBS_TABS[0]) {
       if (!allJobs?.length) {
         setIsLoading(true);
         JobsService.getAllJobs().then(setAllJobs);
+        JobsService.getAllJobs().then(setSearchFilteredJobs);
       } else {
         setIsLoading(false);
       }
@@ -53,12 +55,27 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
     setAllJobs([]);
   }, [selectedTab]);
 
+  useEffect(() => {
+    if (searchText.trim() === '') {
+      setSearchFilteredJobs(allJobs);
+    } else {
+      const filteredItems = allJobs.filter(item => {
+        if (typeof item.jobTitle === 'string') {
+          return item.jobTitle.toLowerCase().includes(searchText.toLowerCase());
+        }
+      });
+      setSearchFilteredJobs(filteredItems);
+    }
+  }, [allJobs, searchText]);
+
   return (
     <SafeAreaView style={jobMainStyles.outerContainer}>
       <View style={jobMainStyles.SafeAreaView}>
         <Header
           navigation={navigation}
           setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
         <View style={jobMainStyles.subHeader}>
           <PrimaryButton
@@ -99,7 +116,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
           <JobsComponent
             jobFilterBottomSheet={jobFilterBottomSheet}
             setJobsFilterBottomSheet={setJobsFilterBottomSheet}
-            allJobs={allJobs}
+            allJobs={searchFilteredJobs}
             setAllJobs={setAllJobs}
             isLoading={isLoading}
           />

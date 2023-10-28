@@ -15,7 +15,6 @@ import Explore from '@/screens/network/Explore';
 const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
   const [selectedTab, setSelectedTab] = useState<string>(NETWORK_TABS[0]);
   const {isRecommendationsFetched} = useAppSelector(state => state.network);
-  const [searchVisible, setSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
   const dispatch = useAppDispatch();
 
@@ -34,11 +33,8 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
       <SafeAreaView style={homeStyles.container}>
         <Header
           navigation={navigation}
-          searchVisible={searchVisible}
-          setSearchVisible={setSearchVisible}
           searchText={searchText}
           setSearchText={setSearchText}
-          isSearchEnabled
         />
 
         <View style={styles.subHeader}>

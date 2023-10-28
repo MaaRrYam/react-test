@@ -1,33 +1,31 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Image, TouchableOpacity, TextInput} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {BackArrow, Chats} from '@/assets/icons';
+import {BackArrow, Chats, Filter} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
 import {COLORS} from '@/constants';
+import {useRoute} from '@react-navigation/native';
 
 const Header = ({
   navigation,
-  searchVisible,
-  setSearchVisible,
   setSearchText,
   searchText,
-  isSearchEnabled,
+  setJobsFilterBottomSheet,
 }: HeaderProps) => {
   const dispatch = useAppDispatch();
+  const route = useRoute();
   const handleLogout = () => {
     dispatch(logOut());
     navigation.navigate('Launch');
   };
+  const [searchVisible, setSearchVisible] = useState(false);
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
   };
-  useEffect(() => {
-    console.log(searchText);
-  }, [searchText]);
   return (
     <View style={homeStyles.header}>
       <TouchableOpacity>
@@ -42,23 +40,19 @@ const Header = ({
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() => {
-                if (isSearchEnabled) {
+                if (route.name === 'Jobs' || route.name === 'Network') {
                   setSearchVisible(false);
                 }
               }}>
               <BackArrow />
             </TouchableOpacity>
             <TextInput
-              placeholder="Search People"
+              placeholder={`Search ${
+                route.name === 'Jobs' ? 'Jobs' : 'People'
+              }`}
               onChangeText={handleSearchTextChange}
               value={searchText}
-              style={{
-                width: 230,
-                borderWidth: 1,
-                borderColor: COLORS.border,
-                borderRadius: 10,
-                color: COLORS.text,
-              }}
+              style={homeStyles.searchBar}
               placeholderTextColor={COLORS.text}
             />
           </View>
@@ -67,17 +61,25 @@ const Header = ({
       <View style={homeStyles.headerIcons}>
         <SearchButton
           onPress={() => {
-            if (isSearchEnabled) {
+            if (route.name === 'Jobs' || route.name === 'Network') {
               setSearchVisible(true);
             }
           }}
           style={homeStyles.searchIcon}
         />
-        <TouchableOpacity
-          style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-          onPress={() => navigation.navigate('Chats')}>
-          <Chats />
-        </TouchableOpacity>
+        {route.name === 'Jobs' ? (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
+            <Filter />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => navigation.navigate('Chats')}>
+            <Chats />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

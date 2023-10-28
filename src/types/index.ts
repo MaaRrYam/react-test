@@ -148,11 +148,9 @@ export type SignupWithEmailProps = {
 
 export type HeaderProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
-  setSearchVisible?: Dispatch<SetStateAction<boolean>>;
-  searchVisible?: boolean;
   setSearchText?: (text: string) => void;
   searchText?: string;
-  isSearchEnabled?: boolean;
+  setJobsFilterBottomSheet?: Function;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';
 export type NavigationStateType = NavigationState<ParamListBase>;

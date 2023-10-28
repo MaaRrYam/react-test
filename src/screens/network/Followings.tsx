@@ -25,11 +25,9 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
       setFilteredList(following);
     } else {
       const filteredItems = following.filter(item => {
-        // Check if 'name' is a string before using toLowerCase
         if (typeof item.name === 'string') {
           return item.name.toLowerCase().includes(searchText.toLowerCase());
         }
-        return false; // or handle this scenario accordingly based on your data
       });
       setFilteredList(filteredItems);
     }

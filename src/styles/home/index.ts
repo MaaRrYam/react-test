@@ -45,4 +45,11 @@ export const homeStyles = StyleSheet.create({
   messageIcon: {
     marginLeft: MARGINS.general / 2,
   },
+  searchBar: {
+    width: 230,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 10,
+    color: COLORS.text,
+  },
 });
