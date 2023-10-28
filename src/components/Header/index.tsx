@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View, Image, TouchableOpacity, TextInput} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
@@ -6,7 +6,7 @@ import {BackArrow, Chats} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
-import {Input, SearchButton} from '@/components';
+import {SearchButton} from '@/components';
 import {COLORS} from '@/constants';
 
 const Header = ({
@@ -40,7 +40,14 @@ const Header = ({
           </TouchableOpacity>
         ) : (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <BackArrow />
+            <TouchableOpacity
+              onPress={() => {
+                if (isSearchEnabled) {
+                  setSearchVisible(false);
+                }
+              }}>
+              <BackArrow />
+            </TouchableOpacity>
             <TextInput
               placeholder="Search People"
               onChangeText={handleSearchTextChange}
@@ -50,7 +57,7 @@ const Header = ({
                 borderWidth: 1,
                 borderColor: COLORS.border,
                 borderRadius: 10,
-                color: COLORS.text
+                color: COLORS.text,
               }}
               placeholderTextColor={COLORS.text}
             />
@@ -61,7 +68,7 @@ const Header = ({
         <SearchButton
           onPress={() => {
             if (isSearchEnabled) {
-              setSearchVisible(!searchVisible);
+              setSearchVisible(true);
             }
           }}
           style={homeStyles.searchIcon}

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
@@ -13,10 +13,10 @@ import Followings from '@/screens/network/Followings';
 import Explore from '@/screens/network/Explore';
 
 const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
-  const [selectedTab, setSelectedTab] = React.useState<string>(NETWORK_TABS[0]);
+  const [selectedTab, setSelectedTab] = useState<string>(NETWORK_TABS[0]);
   const {isRecommendationsFetched} = useAppSelector(state => state.network);
-  const [searchVisible, setSearchVisible] = React.useState(false);
-
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
   const dispatch = useAppDispatch();
 
   const fetchData = useCallback(() => {
@@ -36,6 +36,8 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
           navigation={navigation}
           searchVisible={searchVisible}
           setSearchVisible={setSearchVisible}
+          searchText={searchText}
+          setSearchText={setSearchText}
           isSearchEnabled
         />
 
@@ -76,11 +78,11 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
         </View>
 
         {selectedTab === NETWORK_TABS[0] ? (
-          <Explore />
+          <Explore searchText={searchText} />
         ) : selectedTab === NETWORK_TABS[1] ? (
-          <Connections />
+          <Connections searchText={searchText} />
         ) : (
-          <Followings />
+          <Followings searchText={searchText} />
         )}
       </SafeAreaView>
     </View>

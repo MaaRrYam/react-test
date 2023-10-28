@@ -9,14 +9,30 @@ import {
   refetchConnections,
 } from '@/store/features/networkSlice';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {LocalizedSearchProps} from '@/interfaces';
 
-const Connections = () => {
+const Connections = ({searchText}: LocalizedSearchProps) => {
   const {connections, isConnectionsFetched, isConnectionsFirstRequest} =
     useAppSelector(state => state.network);
   const dispatch = useAppDispatch();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [filteredList, setFilteredList] = useState(connections);
 
+  useEffect(() => {
+    if (searchText.trim() === '') {
+      setFilteredList(connections);
+    } else {
+      const filteredItems = connections.filter(item => {
+        // Check if 'name' is a string before using toLowerCase
+        if (typeof item.name === 'string') {
+          return item.name.toLowerCase().includes(searchText.toLowerCase());
+        }
+        return false; // or handle this scenario accordingly based on your data
+      });
+      setFilteredList(filteredItems);
+    }
+  }, [connections, searchText]);
   const fetchData = useCallback(() => {
     if (!isConnectionsFetched) {
       dispatch(getConnections());
@@ -44,7 +60,7 @@ const Connections = () => {
     <>
       {connections.length ? (
         <FlatList
-          data={connections}
+          data={filteredList}
           keyExtractor={item => item.id?.toString()}
           renderItem={({item}) => (
             <NetworkItem item={item} isConnection={true} />

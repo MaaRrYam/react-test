@@ -82,7 +82,7 @@ const About = ({
 
   return (
     <>
-      <Header navigation={navigation} setSearchText={() => {}} />
+      <Header navigation={navigation} />
       <View>
         <Image
           source={{

@@ -150,7 +150,7 @@ export type HeaderProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
   setSearchVisible?: Dispatch<SetStateAction<boolean>>;
   searchVisible?: boolean;
-  setSearchText: (text: string) => void;
+  setSearchText?: (text: string) => void;
   searchText?: string;
   isSearchEnabled?: boolean;
 };
