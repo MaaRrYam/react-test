@@ -310,13 +310,13 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                 onPress={() => {
                   setShowComments(!showComments);
                 }}
-                style={styles.shareButton}>
+                style={styles.actionButton}>
                 <Comment />
               </TouchableOpacity>
-              <TouchableOpacity onPress={sharePost}>
+              <TouchableOpacity onPress={sharePost} style={styles.actionButton}>
                 <ShareIcon />
               </TouchableOpacity>
-              <TouchableOpacity onPress={reportPost}>
+              <TouchableOpacity onPress={reportPost} style={styles.actionButton}>
                 <Report />
               </TouchableOpacity>
             </View>

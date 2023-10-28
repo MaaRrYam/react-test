@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
   },
   media: {
     width: '100%',
-    height: 300,
+    height: 275,
     marginBottom: 12,
-    borderRadius: BORDER_RADIUS.general,
+    borderRadius: 5,
   },
   reactionContainer: {
     flexDirection: 'row',
@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
     marginTop: 10,
@@ -87,8 +86,8 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
     justifyContent: 'flex-end',
   },
-  report: {
-    marginLeft: 0,
+  actionButton: {
+    marginLeft: 29,
   },
   postContainer: {
     backgroundColor: COLORS.white,
