@@ -30,6 +30,7 @@ export type RootStackParamList = {
     user: UserInterface;
   };
   Notifications: undefined;
+  Jobs: undefined;
   Launch: undefined;
   SigninWithEmail: undefined;
   Signup: undefined;
@@ -126,6 +127,9 @@ export type PostScreenProps = {
 
 export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
+};
+export type JobsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Jobs'>;
 };
 
 export type SignInScreenProps = {

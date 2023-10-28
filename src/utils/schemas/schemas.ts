@@ -43,3 +43,9 @@ export const requestAccessSchema = Yup.object().shape({
       'Please Enter a valid Phone Number',
     ),
 });
+
+export const jobCustomQuestionSchema = Yup.object().shape({
+  questionOne: Yup.string(),
+  questionTwo: Yup.string(),
+  questionThree: Yup.string(),
+});
