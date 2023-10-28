@@ -52,4 +52,5 @@ export const homeStyles = StyleSheet.create({
     borderRadius: 10,
     color: COLORS.text,
   },
+  flexRow: {flexDirection: 'row', alignItems: 'center'}
 });

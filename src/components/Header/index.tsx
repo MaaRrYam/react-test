@@ -37,7 +37,7 @@ const Header = ({
             />
           </TouchableOpacity>
         ) : (
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={homeStyles.flexRow}>
             <TouchableOpacity
               onPress={() => {
                 if (route.name === 'Jobs' || route.name === 'Network') {
