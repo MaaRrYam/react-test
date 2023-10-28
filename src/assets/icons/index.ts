@@ -21,6 +21,13 @@ import Delete from './Delete';
 import CheckMark from './CheckMark';
 import SendIcon from './Send';
 import CloseIcon from './CloseIcon';
+import Location from './Location';
+import Compensation from './Compensation';
+import BaseSalary from './BaseSalary';
+import SaveIcon from './SaveIcon';
+import UnsaveIcon from './UnsaveIcon';
+import Filter from './Filter';
+
 export {
   BackArrow,
   Dislike,
@@ -45,4 +52,10 @@ export {
   CheckMark,
   SendIcon,
   CloseIcon,
+  Location,
+  Compensation,
+  BaseSalary,
+  SaveIcon,
+  UnsaveIcon,
+  Filter,
 };

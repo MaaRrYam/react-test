@@ -29,6 +29,7 @@ export type RootStackParamList = {
     user: UserInterface;
   };
   Notifications: undefined;
+  Jobs: undefined;
   Launch: undefined;
   SigninWithEmail: undefined;
   Signup: undefined;
@@ -126,6 +127,9 @@ export type PostScreenProps = {
 export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };
+export type JobsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Jobs'>;
+};
 
 export type SignInScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Signin'>;
@@ -143,6 +147,7 @@ export type SignupWithEmailProps = {
 
 export type HeaderProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
+  setJobsFilterBottomSheet: Function;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';
 export type NavigationStateType = NavigationState<ParamListBase>;

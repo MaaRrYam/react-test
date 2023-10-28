@@ -25,7 +25,11 @@ export const COLORS = {
 };
 
 export const BORDER_RADIUS = {
-  general: 10,
+  general: 5,
+  recruiterIcon: 20,
+};
+export const BORDER_WIDTH = {
+  general: 2,
 };
 
 export const FONTS = {
@@ -45,6 +49,13 @@ export const MARGINS = {
 
 export const PADDING = {
   general: Platform.OS === 'ios' ? 20 : 12,
+};
+
+export const ICON_WIDTH = {
+  general: 50,
+};
+export const ICON_HEIGHT = {
+  general: 50,
 };
 
 export const ROLES_DATA = [
@@ -81,6 +92,7 @@ export const employmentStatuses = [
 ];
 
 export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
+export const JOBS_TABS = ['Jobs', 'Past Applications', 'Saved'];
 
 export const PROFILE_TABS = ['Profile', 'Career', 'Education'];
 
@@ -218,3 +230,6 @@ export const SCREEN_NAMES = {
   Article: 'Article',
   Post: 'Post',
 };
+
+export const jobTypes = ['Full-time', 'Part-time', 'Temporary', 'Intern'];
+export const workEnviroment = ['In-office', 'Remote', 'Hybrid'];

@@ -295,6 +295,55 @@ export interface whiteListedUser {
   selectedRole: string;
   time: Timestamp;
 }
+
+export interface JobInterface {
+  baseSalary: string;
+  employmentType: string;
+  jobCompensation: string;
+  jobLocation: string;
+  jobSummary: string;
+  jobTitle: string;
+  keyQualifications: string;
+  posterJobID: string;
+  responsibilities: string;
+  companyName?: string;
+  companyLocation?: string;
+  companyLogo?: string;
+  skills?: Array<string>;
+  customQuestions?: Array<string>;
+  timeStamp: string;
+  contributors?: Array<string>;
+  workplaceType: string;
+  isFeatured: boolean;
+  id: string;
+  isSaved: boolean;
+}
+export interface ApplicantInterface {
+  applicantId: string;
+  timeStamp: ResponseTimeStamp;
+  isAccepted: boolean;
+  isPending: boolean;
+  feedback: string;
+  customQuestions: Array<Object>;
+  starred: boolean;
+  rating: number;
+  notes: string;
+}
+
+export interface JobsCardProps {
+  jobTitle: string;
+  companyName: string;
+  companyLogo?: string;
+  jobLocation: string;
+  companyLocation: string;
+  onPress: () => void;
+}
+
+interface ResponseTimeStamp {
+  _seconds: number;
+  _nanoseconds: number;
+}
+
 export interface NetworkResponse extends UserInterface {
   requestTime: string;
 }
@@ -618,4 +667,48 @@ export interface DrawerContentProps {
   editingIndex: number;
   setEditingIndex: Dispatch<SetStateAction<number>>;
   uid: string;
+}
+
+export interface JobsFilterFormInterface {
+  selectedFilters: Array<String>;
+  setSelectedFilters: Function;
+  applyFilters: () => void;
+  searchTerm: string;
+  setSearchTerm: Function;
+  setIsResetVisible: Function;
+}
+export interface JobsDetailFormInterface {
+  selectedJob: JobInterface;
+  setAllJobs: Function;
+  setIsBottomSheetVisible: Function;
+}
+
+export interface JobQuestionsFormInterface {
+  selectedJob: JobInterface;
+  setIsQABottomSheetOpen: Function;
+  setIsBottomSheetVisible: Function;
+}
+
+export interface JobsComponentInterface {
+  jobFilterBottomSheet: boolean;
+  setJobsFilterBottomSheet: Function;
+  allJobs: JobInterface[];
+  setAllJobs: Function;
+  isLoading: boolean;
+}
+
+export interface allPastApplicationsAndJobsInterface {
+  application: ApplicantInterface[];
+  job: JobInterface;
+}
+
+export interface PastApplicationCardInterface {
+  jobTitle: string;
+  companyLogo: string;
+  isAccepted: boolean;
+  isPending: boolean;
+  starred: boolean;
+  feedback: string;
+  rating: number;
+  onPress: () => void;
 }
