@@ -89,6 +89,8 @@ const Tabs = ({
             <ProfileTab
               bio={user?.description as string}
               photo={user?.photoUrl as string}
+              id={user?.id}
+              loggedInID={loggedInUser.id}
             />
           ) : selectedTab === PROFILE_TABS[1] ? (
             <CareerTab careerList={user?.employmentList as EmploymentProps[]} />

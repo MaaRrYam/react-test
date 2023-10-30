@@ -5,7 +5,7 @@ import {NewPost} from '@/components';
 import {TabDataInterface} from '@/interfaces';
 import {profileTabStyles as styles} from './styles';
 
-const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
+const ProfileTab: FC<TabDataInterface> = ({bio, photo, id, loggedInID}) => {
   const [isNewPostClicked, setIsNewPostClicked] =
     React.useState<boolean>(false);
 
@@ -22,16 +22,21 @@ const ProfileTab: FC<TabDataInterface> = ({bio, photo}) => {
         <Text style={styles.heading}>About</Text>
         <Text style={styles.text}>{bio}</Text>
 
-        <View style={styles.subheader}>
-          <Image
-            source={photo ? {uri: photo} : require('@/assets/images/user.png')}
-            style={styles.userImage}
-          />
+        {id === '' ||
+          (id === loggedInID && (
+            <View style={styles.subheader}>
+              <Image
+                source={
+                  photo ? {uri: photo} : require('@/assets/images/user.png')
+                }
+                style={styles.userImage}
+              />
 
-          <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
-            <Text style={styles.searchBarText}>Start a Post</Text>
-          </TouchableOpacity>
-        </View>
+              <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
+                <Text style={styles.searchBarText}>Start a Post</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
       </View>
       {isNewPostClicked && (
         <NewPost isVisible={isNewPostClicked} onClose={handleClose} />

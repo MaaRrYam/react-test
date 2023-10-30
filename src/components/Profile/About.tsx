@@ -82,7 +82,7 @@ const About = ({
 
   return (
     <>
-      <Header navigation={navigation} />
+      <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
       <View>
         <Image
           source={{

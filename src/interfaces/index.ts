@@ -432,6 +432,8 @@ export interface SearchButtonProps {
 export interface TabDataInterface {
   bio: string;
   photo: string;
+  id?: string;
+  loggedInID?: string;
 }
 
 export interface EducationTabProps {
