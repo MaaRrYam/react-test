@@ -89,17 +89,17 @@ const Tabs = ({
         <View>
           {selectedTab === PROFILE_TABS[0] ? (
             <ProfileTab
-              bio={user?.description as string}
-              photo={user?.photoUrl as string}
-              id={user?.id}
+              bio={user.description as string}
+              photo={user.photoUrl as string}
+              id={user.id}
               loggedInID={loggedInUser.id}
               handleOpen={handleOpen}
             />
           ) : selectedTab === PROFILE_TABS[1] ? (
-            <CareerTab careerList={user?.employmentList as EmploymentProps[]} />
+            <CareerTab careerList={user.employmentList as EmploymentProps[]} />
           ) : (
             <EducationTab
-              educationList={user?.educationList as EducationProps[]}
+              educationList={user.educationList as EducationProps[]}
             />
           )}
         </View>
