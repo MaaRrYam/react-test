@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {BORDER_RADIUS, COLORS, FONTS, MARGINS, PADDING} from '@/constants';
+import {COLORS, FONTS, MARGINS} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {

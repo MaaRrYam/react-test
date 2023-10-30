@@ -43,7 +43,6 @@ import {formatFirebaseTimestamp} from '@/utils';
 import {Timestamp} from 'react-native-reanimated';
 import {ScrollView} from 'react-native-gesture-handler';
 import Cache from '@/cache';
-import PostService from '@/services/post';
 import {styles as userDataStyles} from '@/screens/Article/styles';
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
@@ -72,13 +71,14 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
         (await Cache.get(`user_${item.authorId}`)) as UserInterface,
       );
     } else {
-      setAuthorData(await PostService.getAuthor(item.authorId));
+      setAuthorData(await HomeService.getAuthor(item.authorId));
     }
   }, [item]);
 
   useEffect(() => {
     fetchAuthorData();
   }, [fetchAuthorData]);
+
   const isPostLikedByUser = async () => {
     const UID = await getUID();
     const response =
