@@ -434,6 +434,7 @@ export interface TabDataInterface {
   photo: string;
   id?: string;
   loggedInID?: string;
+  handleOpen: () => void;
 }
 
 export interface EducationTabProps {

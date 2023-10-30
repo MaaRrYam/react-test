@@ -21,7 +21,7 @@ import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
 
-const NewChat = ({
+const NewPost = ({
   isVisible,
   onClose,
 }: {
@@ -211,4 +211,4 @@ const NewChat = ({
   );
 };
 
-export default NewChat;
+export default NewPost;

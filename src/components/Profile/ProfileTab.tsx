@@ -1,21 +1,16 @@
 import React, {FC} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
-import {NewPost} from '@/components';
 import {TabDataInterface} from '@/interfaces';
 import {profileTabStyles as styles} from './styles';
 
-const ProfileTab: FC<TabDataInterface> = ({bio, photo, id, loggedInID}) => {
-  const [isNewPostClicked, setIsNewPostClicked] =
-    React.useState<boolean>(false);
-
-  const handleOpen = () => {
-    setIsNewPostClicked(true);
-  };
-
-  const handleClose = () => {
-    setIsNewPostClicked(false);
-  };
+const ProfileTab: FC<TabDataInterface> = ({
+  bio,
+  photo,
+  id,
+  loggedInID,
+  handleOpen,
+}) => {
   return (
     <>
       <View style={styles.container}>
@@ -38,9 +33,6 @@ const ProfileTab: FC<TabDataInterface> = ({bio, photo, id, loggedInID}) => {
             </View>
           ))}
       </View>
-      {isNewPostClicked && (
-        <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
-      )}
     </>
   );
 };

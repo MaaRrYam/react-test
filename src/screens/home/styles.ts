@@ -168,7 +168,6 @@ export const styles = StyleSheet.create({
     fontSize: FONTS.bodyRegular,
     color: COLORS.black,
     marginLeft: 15,
-    color: COLORS.black,
   },
   commentAuthorName: {
     fontSize: FONTS.bodySmall,

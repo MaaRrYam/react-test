@@ -23,11 +23,13 @@ const Tabs = ({
   setIsVisible,
   user,
   usersProfileID,
+  handleOpen,
 }: {
   setTabItem: React.Dispatch<React.SetStateAction<string>>;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   user: UserInterface;
   usersProfileID: string;
+  handleOpen: () => void;
 }) => {
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
   const [comments, setComments] = useState({
@@ -91,6 +93,7 @@ const Tabs = ({
               photo={user?.photoUrl as string}
               id={user?.id}
               loggedInID={loggedInUser.id}
+              handleOpen={handleOpen}
             />
           ) : selectedTab === PROFILE_TABS[1] ? (
             <CareerTab careerList={user?.employmentList as EmploymentProps[]} />
