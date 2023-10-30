@@ -95,24 +95,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     paddingHorizontal: 20,
   },
-  userInfoContainer: {
-    marginVertical: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userImage: {
-    width: 43,
-    height: 43,
-    objectFit: 'contain',
-    borderRadius: 10,
-  },
-  userInfoTextContainer: {marginLeft: 12},
-  userName: {
-    color: COLORS.black,
-    fontSize: FONTS.largeLabel,
-    fontWeight: 'bold',
-  },
-  userSubData: {color: COLORS.text, fontSize: FONTS.bodyRegular},
 });
 
 export default styles;

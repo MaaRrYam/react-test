@@ -39,13 +39,12 @@ import {
   UserInterface,
 } from '@/interfaces';
 import PostComments from '@/components/Feed/PostComments';
-import {COLORS} from '@/constants';
 import {formatFirebaseTimestamp} from '@/utils';
 import {Timestamp} from 'react-native-reanimated';
 import {ScrollView} from 'react-native-gesture-handler';
 import Cache from '@/cache';
 import PostService from '@/services/post';
-
+import {styles as userDataStyles} from '@/screens/Article/styles';
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
     params: {item},
@@ -53,7 +52,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [authorData, setAuthorData] = useState<UserInterface>({});
+  const [authorData, setAuthorData] = useState<UserInterface>();
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState({
     postId: '',
@@ -270,15 +269,17 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
         </View>
 
         <View style={styles.postContainer}>
-          <View style={styles.userInfoContainer}>
+          <View style={userDataStyles.userInfoContainer}>
             <Image
               source={{uri: authorData?.photoUrl}}
-              style={styles.userImage}
+              style={userDataStyles.userImage}
             />
-            <View style={styles.userInfoTextContainer}>
-              <Text style={styles.userName}>{authorData?.name}</Text>
-              <Text style={styles.userSubData}>{authorData?.tagline}</Text>
-              <Text style={styles.userSubData}>
+            <View style={userDataStyles.userInfoTextContainer}>
+              <Text style={userDataStyles.userName}>{authorData?.name}</Text>
+              <Text style={userDataStyles.userSubData}>
+                {authorData?.tagline}
+              </Text>
+              <Text style={userDataStyles.userSubData}>
                 {!item?.edited
                   ? formatFirebaseTimestamp(
                       item?.creationTime as Timestamp,
