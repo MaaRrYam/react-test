@@ -120,8 +120,8 @@ const Tabs = () => {
   const [UID, setUID] = useState('');
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await StorageService.getItem('user');
-      setUser(user as UserInterface);
+      const userStorage = await StorageService.getItem('user');
+      setUser(userStorage as UserInterface);
     };
     fetchUser();
   }, []);

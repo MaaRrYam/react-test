@@ -79,6 +79,7 @@ const PostComments = ({
           value={comment}
           onChangeText={setComment}
           style={[styles.input]}
+          placeholderTextColor={COLORS.text}
         />
         {comment && (
           <TouchableOpacity onPress={handleAddNewComment}>

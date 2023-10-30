@@ -35,12 +35,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     };
   });
 
-
   return (
     <View style={homeStyles.outerContainer}>
       <SafeAreaView style={homeStyles.container}>
         <View>
-          <Header navigation={navigation} />
+          <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
           <View style={homeStyles.subheader}>
             <Image
               source={

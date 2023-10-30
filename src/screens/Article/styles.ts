@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     paddingHorizontal: 20,
     paddingTop: 44,
     paddingBottom: 8,
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
   },
   articleContainer: {paddingHorizontal: 19, paddingTop: 23},
   articleTitle: {
-    color: 'black',
+    color: COLORS.black,
     fontWeight: 'bold',
     fontSize: FONTS.heading,
     alignItems: 'center',
@@ -62,10 +62,10 @@ export const styles = StyleSheet.create({
   },
   userInfoTextContainer: {marginLeft: 12},
   userName: {
-    color: 'black',
+    color: COLORS.black,
     fontSize: FONTS.largeLabel,
     fontWeight: 'bold',
   },
   userSubData: {color: COLORS.text, fontSize: FONTS.bodyRegular},
-  articleContent: {color: 'black'},
+  articleContent: {color: COLORS.black},
 });

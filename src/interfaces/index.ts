@@ -432,6 +432,9 @@ export interface SearchButtonProps {
 export interface TabDataInterface {
   bio: string;
   photo: string;
+  id?: string;
+  loggedInID?: string;
+  handleOpen: () => void;
 }
 
 export interface EducationTabProps {
