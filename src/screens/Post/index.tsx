@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -43,6 +43,8 @@ import {COLORS} from '@/constants';
 import {formatFirebaseTimestamp} from '@/utils';
 import {Timestamp} from 'react-native-reanimated';
 import {ScrollView} from 'react-native-gesture-handler';
+import Cache from '@/cache';
+import PostService from '@/services/post';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
@@ -51,7 +53,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [authorData, setAuthorData] = useState<UserInterface>();
+  const [authorData, setAuthorData] = useState<UserInterface>({});
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState({
     postId: '',
@@ -65,6 +67,19 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
     dislike: false,
   });
 
+  const fetchAuthorData = useCallback(async () => {
+    if (await Cache.get(`user_${item.authorId}`)) {
+      setAuthorData(
+        (await Cache.get(`user_${item.authorId}`)) as UserInterface,
+      );
+    } else {
+      setAuthorData(await PostService.getAuthor(item.authorId));
+    }
+  }, [item]);
+
+  useEffect(() => {
+    fetchAuthorData();
+  }, [fetchAuthorData]);
   const isPostLikedByUser = async () => {
     const UID = await getUID();
     const response =
@@ -72,17 +87,6 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       false;
     setReactions(prev => ({...prev, like: response}));
   };
-
-  useEffect(() => {
-    const fetchAuthor = async () => {
-      const data = await FirebaseService.getDocument(
-        'users',
-        item?.authorId as string,
-      );
-      setAuthorData(data as UserInterface);
-    };
-    fetchAuthor();
-  }, [item]);
 
   const isPostDisLikedByUser = async () => {
     const UID = await getUID();
@@ -326,12 +330,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
         </View>
 
         {showComments && (
-          <View
-            style={{
-              backgroundColor: 'white',
-              marginVertical: 10,
-              paddingBottom: 10,
-            }}>
+          <View style={styles.commentsContainer}>
             <PostComments
               postId={item._id}
               comments={comments.comments}

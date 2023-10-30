@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   commentsContainer: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     marginVertical: 10,
     paddingBottom: 10,
   },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   userInfoTextContainer: {marginLeft: 12},
   userName: {
-    color: 'black',
+    color: COLORS.black,
     fontSize: FONTS.largeLabel,
     fontWeight: 'bold',
   },
