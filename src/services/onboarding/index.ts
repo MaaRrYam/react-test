@@ -1,14 +1,29 @@
 import {API_GET} from '@/config/api/apiRequests';
 import {SCREEN_NAMES} from '@/constants';
-import {EducationState, ExperienceState, UserInterface} from '@/interfaces';
+import {
+  Asset,
+  EducationState,
+  ExperienceState,
+  UserInterface,
+} from '@/interfaces';
 import {getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 
 const OnboardingService = {
-  async getStarted(newData: UserInterface) {
+  async getStarted(newData: UserInterface, profilePic: Asset) {
     const UID = (await getUID()) as string;
+    console.log(profilePic);
+    if (profilePic) {
+      const downloadURL = await FirebaseService.uploadToStorage(profilePic);
+      const newDataObj = {
+        ...newData,
+        photoUrl: downloadURL,
+      };
 
-    FirebaseService.updateDocument('users', UID, newData);
+      FirebaseService.updateDocument('users', UID, newDataObj);
+    } else {
+      FirebaseService.updateDocument('users', UID, newData);
+    }
   },
   setScreen(navigation, setIsLoading: Function, userData: UserInterface) {
     if (!userData?.onboarded) {
