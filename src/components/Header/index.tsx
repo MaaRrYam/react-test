@@ -9,7 +9,11 @@ import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
 
-const Header = ({navigation, setJobsFilterBottomSheet}: HeaderProps) => {
+const Header = ({
+  navigation,
+  setJobsFilterBottomSheet,
+  setIsSettingsClicked,
+}: HeaderProps) => {
   const route = useRoute();
   const dispatch = useAppDispatch();
   const handleLogout = () => {
@@ -31,6 +35,12 @@ const Header = ({navigation, setJobsFilterBottomSheet}: HeaderProps) => {
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
             onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
             <Filter />
+          </TouchableOpacity>
+        ) : route.name === 'Profile' ? (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => setIsSettingsClicked(true)}>
+            <Chats />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity

@@ -22,11 +22,13 @@ const About = ({
   usersProfileID,
   user,
   setUser,
+  setIsSettingsClicked,
 }: {
   navigation: NavigationProp<RootStackParamList, 'Profile'>;
   usersProfileID: string;
   user: UserInterface;
   setUser: React.Dispatch<React.SetStateAction<UserInterface>>;
+  setIsSettingsClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const {
     loading,
@@ -82,7 +84,11 @@ const About = ({
 
   return (
     <>
-      <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
+      <Header
+        navigation={navigation}
+        setJobsFilterBottomSheet={() => {}}
+        setIsSettingsClicked={setIsSettingsClicked}
+      />
       <View>
         <Image
           source={{

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SafeAreaView, ScrollView} from 'react-native';
-import {Loading, About, ProfileTabs, NewPost} from '@/components';
+import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {Loading, About, ProfileTabs, NewPost, BottomSheet} from '@/components';
 import ProfileService from '@/services/profile';
 import {ProfileProps, UserInterface} from '@/interfaces';
 import profileStyles from '@/styles/profile';
@@ -11,6 +11,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
 
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const [isNewPostClicked, setIsNewPostClicked] = useState(false);
+  const [isSettingsClicked, setIsSettingsClicked] = useState(false);
   const handleClose = () => {
     setIsNewPostClicked(false);
   };
@@ -44,6 +45,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
             usersProfileID={UID}
             user={user}
             setUser={setUser}
+            setIsSettingsClicked={setIsSettingsClicked}
           />
           <ProfileTabs
             setTabItem={setTabItem}
@@ -56,6 +58,17 @@ const Profile = ({navigation, route}: ProfileProps) => {
       </SafeAreaView>
       {isNewPostClicked && (
         <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
+      )}
+      {isSettingsClicked && (
+        <BottomSheet
+          isVisible={isSettingsClicked}
+          onClose={() => setIsSettingsClicked(false)}
+          snapPoints={['10%', '100%']}
+          indicatorVisible={false}>
+          <View>
+            <Text style={{color: 'black'}}>HELOO</Text>
+          </View>
+        </BottomSheet>
       )}
     </>
   );
