@@ -233,3 +233,4 @@ export const SCREEN_NAMES = {
 
 export const jobTypes = ['Full-time', 'Part-time', 'Temporary', 'Intern'];
 export const workEnviroment = ['In-office', 'Remote', 'Hybrid'];
+export const SETTINGS_TABS = ['Basic Info', 'Account Preferences', 'Feedback'];

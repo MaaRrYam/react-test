@@ -206,7 +206,7 @@ export interface ExperienceState {
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   isLoading?: boolean;
 }
 
