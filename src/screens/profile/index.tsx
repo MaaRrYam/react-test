@@ -4,6 +4,7 @@ import {Loading, About, ProfileTabs, NewPost, BottomSheet} from '@/components';
 import ProfileService from '@/services/profile';
 import {ProfileProps, UserInterface} from '@/interfaces';
 import profileStyles from '@/styles/profile';
+import Settings from '../settings';
 
 const Profile = ({navigation, route}: ProfileProps) => {
   const {setIsVisible, setTabItem, UID} = route.params;
@@ -14,6 +15,10 @@ const Profile = ({navigation, route}: ProfileProps) => {
   const [isSettingsClicked, setIsSettingsClicked] = useState(false);
   const handleClose = () => {
     setIsNewPostClicked(false);
+  };
+
+  const handleSettingsClose = () => {
+    setIsSettingsClicked(false);
   };
   const handleOpen = () => {
     setIsNewPostClicked(true);
@@ -60,15 +65,7 @@ const Profile = ({navigation, route}: ProfileProps) => {
         <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
       )}
       {isSettingsClicked && (
-        <BottomSheet
-          isVisible={isSettingsClicked}
-          onClose={() => setIsSettingsClicked(false)}
-          snapPoints={['10%', '100%']}
-          indicatorVisible={false}>
-          <View>
-            <Text style={{color: 'black'}}>HELOO</Text>
-          </View>
-        </BottomSheet>
+        <Settings isVisible={isSettingsClicked} onClose={handleSettingsClose} />
       )}
     </>
   );

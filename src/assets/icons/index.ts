@@ -27,7 +27,7 @@ import BaseSalary from './BaseSalary';
 import SaveIcon from './SaveIcon';
 import UnsaveIcon from './UnsaveIcon';
 import Filter from './Filter';
-
+import SettingsIcon from './SettingsIcon';
 export {
   BackArrow,
   Dislike,
@@ -58,4 +58,5 @@ export {
   SaveIcon,
   UnsaveIcon,
   Filter,
+  SettingsIcon,
 };

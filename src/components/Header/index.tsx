@@ -3,7 +3,7 @@ import {View, Image, TouchableOpacity} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
-import {Chats, Filter} from '@/assets/icons';
+import {Chats, Filter, SettingsIcon} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
@@ -40,7 +40,7 @@ const Header = ({
           <TouchableOpacity
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
             onPress={() => setIsSettingsClicked(true)}>
-            <Chats />
+            <SettingsIcon />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
