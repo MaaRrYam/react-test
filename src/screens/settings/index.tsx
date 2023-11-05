@@ -6,7 +6,7 @@ import {
   BottomSheet,
   Feedback,
   RoundedButton,
-} from '@/components'; // Import relevant components for each setting tab
+} from '@/components';
 import {BackArrow} from '@/assets/icons';
 import {COLORS, SETTINGS_TABS} from '@/constants';
 interface SettingsProps {
@@ -39,7 +39,8 @@ const Settings = ({isVisible, onClose}: SettingsProps) => {
       isVisible={isVisible}
       onClose={onClose}
       snapPoints={['10%', '100%']}
-      indicatorVisible={false}>
+      indicatorVisible={false}
+      containerStyle={{}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose} style={styles.backButton}>
@@ -54,19 +55,15 @@ const Settings = ({isVisible, onClose}: SettingsProps) => {
                 onPress={() => handleButtonPress(item)}
                 style={[
                   styles.roundedButton,
-                  {
-                    backgroundColor:
-                      selectedButton === item
-                        ? COLORS.lightBlueBackground
-                        : COLORS.lightBackground,
-                  },
+                  selectedButton === item && styles.bgLightBlue,
+                  item !== SETTINGS_TABS[0] && styles.ml10,
                 ]}
                 text={item}
               />
             </View>
           ))}
         </ScrollView>
-        <View style={{}}>
+        <View style={styles.componentContainer}>
           {selectedButton && renderSettingsComponent(selectedButton)}
         </View>
       </View>
@@ -102,11 +99,23 @@ const styles = StyleSheet.create({
   },
   roundedButton: {
     borderRadius: 12,
-    marginLeft: 10,
     paddingHorizontal: 10,
     paddingVertical: 6,
     justifyContent: 'center',
     alignItems: 'center',
     height: 36,
+  },
+  bgLight: {
+    backgroundColor: COLORS.lightBackground,
+  },
+  bgLightBlue: {
+    backgroundColor: COLORS.lightBlueBackground,
+  },
+  ml10: {
+    marginLeft: 10,
+  },
+  componentContainer: {
+    paddingHorizontal: 20,
+    marginTop: 30,
   },
 });
