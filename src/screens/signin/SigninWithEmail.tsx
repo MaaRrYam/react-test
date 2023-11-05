@@ -69,10 +69,10 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     }
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.mainContainer}>
-      <SafeAreaView>
+    <SafeAreaView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.mainContainer}>
         <Image
           source={require('@/assets/images/logo.png')}
           style={styles.logo}
@@ -121,8 +121,8 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
             Sign up
           </Text>
         </View>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

@@ -66,8 +66,8 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <KeyboardAvoidingView style={commonStyles.container}>
-      <SafeAreaView>
+    <SafeAreaView>
+      <KeyboardAvoidingView style={commonStyles.container}>
         <View>
           <Text style={commonStyles.title}>Let's get you started,</Text>
           <Input
@@ -110,8 +110,8 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
         <View style={commonStyles.footer}>
           <PrimaryButton title="Continue" onPress={handleSubmit} />
         </View>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
