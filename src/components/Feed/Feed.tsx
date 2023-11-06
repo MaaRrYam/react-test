@@ -9,6 +9,7 @@ import {
   refreshFeed,
   setFeedFetchedToFalse,
   setFeedFromCache,
+  setIsRefreshingToFalse,
 } from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
 import PostComments from './PostComments';
@@ -16,12 +17,10 @@ import HomeService from '@/services/home';
 import {FeedCommentsResponse} from '@/interfaces';
 
 const Feed = () => {
-  const {feed, isFeedFetched, isFeedFirstRequest} = useAppSelector(
-    state => state.home,
-  );
+  const {feed, isFeedFetched, isFeedFirstRequest, isRefreshing} =
+    useAppSelector(state => state.home);
   const dispatch = useAppDispatch();
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [comments, setComments] = useState({
     postId: '',
     loading: false,
@@ -32,7 +31,6 @@ const Feed = () => {
   const handleRefresh = () => {
     dispatch(refreshFeed());
     dispatch(setFeedFetchedToFalse());
-    setIsRefreshing(true);
   };
 
   const fetchData = useCallback(() => {
@@ -47,9 +45,9 @@ const Feed = () => {
 
   useEffect(() => {
     if (isFeedFetched) {
-      setIsRefreshing(false);
+      dispatch(setIsRefreshingToFalse());
     }
-  }, [isFeedFetched]);
+  }, [dispatch, isFeedFetched]);
 
   useEffect(() => {
     dispatch(setFeedFromCache());
