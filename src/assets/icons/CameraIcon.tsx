@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import Svg, { Path, Defs, ClipPath, Rect, G } from 'react-native-svg';
+import {View} from 'react-native';
+import Svg, {Path, Defs, ClipPath, Rect, G} from 'react-native-svg';
 
 const CameraIcon = () => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Svg width={30} height={30} viewBox="0 0 30 30">
         <Defs>
           <ClipPath id="clip0">
