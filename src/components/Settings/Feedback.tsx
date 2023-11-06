@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Dropdown, TextArea} from '../Inputs';
 import {COLORS} from '@/constants';
-import {Chats} from '@/assets/icons';
+import {CameraIcon} from '@/assets/icons';
 import {PrimaryButton} from '../Buttons';
 const Feedback = () => {
   const [issueType, setIssueType] = useState('Select a type of Issue');
@@ -39,7 +39,7 @@ const Feedback = () => {
           alignItems: 'center',
           marginTop: 10,
         }}>
-        <Chats />
+        <CameraIcon />
       </View>
       <View style={{marginTop: 120}}>
         <PrimaryButton title="Submit" onPress={() => {}} />

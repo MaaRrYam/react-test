@@ -38,6 +38,10 @@ const AccountPreferences = () => {
           value={connectionsVisibleEnabled}
         />
       </View>
+      <View style={styles.PPTOS}>
+        <Text style={styles.text}>Privacy Policy</Text>
+        <Text style={[styles.text, styles.PPtext]}>Terms of Use</Text>
+      </View>
       <View style={styles.logOutButtonContainer}>
         <PrimaryButton title="Log out" onPress={() => {}} />
       </View>
@@ -50,6 +54,7 @@ export default AccountPreferences;
 const styles = StyleSheet.create({
   text: {
     color: 'black',
+    textDecorationLine: 'underline',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -57,6 +62,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logOutButtonContainer: {
-    marginTop: height - 400,
+    marginTop: 20,
+  },
+  PPTOS: {
+    marginTop: height - 460,
+    alignItems: 'center',
+  },
+  PPtext: {
+    marginTop: 10,
   },
 });
