@@ -39,7 +39,7 @@
     "react-native-screens": "^3.24.0",
     "react-native-select-dropdown": "^3.4.0",
     "react-native-svg": "^13.13.0",
-    "react-native-toast-message": "^2.1.6",
+    "react-native-toast-notifications": "^3.4.0",
     "react-native-vector-icons": "^10.0.0",
     "react-redux": "^8.1.2",
     "yup": "^1.2.0"
