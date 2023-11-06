@@ -3,10 +3,11 @@ import {Provider} from 'react-redux';
 import '@/config/firebase';
 import 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {ToastProvider} from 'react-native-toast-notifications';
+
 import store from '@/store';
 import {Splash} from '@/screens';
 import RootNavigation from '@/navigation';
-import ToastProvider from 'react-native-toast-message';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -18,10 +19,11 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <Provider store={store}>
-        {showSplash ? <Splash /> : <RootNavigation />}
-      </Provider>
-      <ToastProvider bottomOffset={50} position="bottom" />
+      <ToastProvider placement="bottom" offsetBottom={50} r>
+        <Provider store={store}>
+          {showSplash ? <Splash /> : <RootNavigation />}
+        </Provider>
+      </ToastProvider>
     </GestureHandlerRootView>
   );
 };
