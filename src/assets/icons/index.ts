@@ -27,10 +27,12 @@ import BaseSalary from './BaseSalary';
 import SaveIcon from './SaveIcon';
 import UnsaveIcon from './UnsaveIcon';
 import Filter from './Filter';
+import CameraSvg from './Camera';
 
 export {
   BackArrow,
   Dislike,
+  CameraSvg,
   Like,
   Chats,
   Comment,
