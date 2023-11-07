@@ -4,15 +4,15 @@ import {Svg, Rect, Path, Mask, G} from 'react-native-svg';
 
 const Location = () => (
   <View style={styles.container}>
-    <Svg width={17} height={17} viewBox="0 0 17 17" fill="none">
+    <Svg width={24} height={24} viewBox="0 0 17 17" fill="none">
       <Mask
         id="mask0"
         maskType="alpha"
         maskUnits="userSpaceOnUse"
         x="0"
         y="0"
-        width={17}
-        height={17}>
+        width={24}
+        height={24}>
         <Rect width={16.5601} height={16.5601} fill="#D9D9D9" />
       </Mask>
       <G mask="url(#mask0)">
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 4,
   },
 });
 
