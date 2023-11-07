@@ -40,7 +40,8 @@ export const jobMainStyles = StyleSheet.create({
   },
   subHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
+    gap: 8,
     marginTop: 20,
     paddingHorizontal: 20,
   },
@@ -177,8 +178,8 @@ export const jobsFilterFormStyles = StyleSheet.create({
     marginBottom: MARGINS.general * 4,
   },
   inputfield: {
-    marginTop: MARGINS.general,
-    marginLeft: MARGINS.general,
+    marginTop: MARGINS.general / 1.5,
+    marginLeft: MARGINS.general / 2,
     marginRight: MARGINS.general,
   },
   checkboxContainer: {
@@ -186,7 +187,7 @@ export const jobsFilterFormStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    marginBottom: MARGINS.general * 3,
+    marginBottom: MARGINS.general,
   },
   checkbox: {
     borderWidth: BORDER_WIDTH.general,
@@ -198,7 +199,6 @@ export const jobsFilterFormStyles = StyleSheet.create({
   },
   title: {
     fontSize: FONTS.text * 1.1,
-    marginBottom: MARGINS.general,
     fontWeight: 'bold',
     paddingLeft: PADDING.general,
     marginTop: MARGINS.general,
@@ -213,6 +213,7 @@ export const jobsFilterFormStyles = StyleSheet.create({
   },
   applyButtonContainer: {
     flex: 1,
+    marginTop: MARGINS.general,
     paddingLeft: PADDING.general * 1.2,
     paddingRight: PADDING.general * 2,
   },
