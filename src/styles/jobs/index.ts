@@ -92,15 +92,15 @@ export const jobDetailFormStyles = StyleSheet.create({
     fontSize: FONTS.largeLabel * 1.1,
     fontWeight: 'normal',
     paddingLeft: 20,
-    marginTop: MARGINS.general / 3,
+    marginTop: MARGINS.general / 3.5,
     color: COLORS.black,
   },
   basicDetails: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general * 2,
-    marginTop: MARGINS.general * 2,
+    marginLeft: MARGINS.general / 2,
+    marginTop: MARGINS.general,
   },
   basicDetailItem: {
     flex: 1,
@@ -108,6 +108,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     fontSize: FONTS.text,
     marginLeft: MARGINS.general / 2,
+    marginTop: MARGINS.general / 6,
     color: COLORS.black,
   },
   recruiterContainer: {
@@ -116,7 +117,6 @@ export const jobDetailFormStyles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general,
   },
   recruiterImage: {
     width: ICON_WIDTH.general / 1.2,
@@ -130,7 +130,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     fontSize: FONTS.text,
     fontWeight: 'bold',
     paddingLeft: PADDING.general,
-    marginTop: MARGINS.general * 2,
+    marginTop: MARGINS.general * 2.3,
     color: COLORS.black,
   },
   applyButtonContainer: {
@@ -139,7 +139,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: PADDING.general * 2,
     paddingRight: PADDING.general * 2,
-    marginTop: MARGINS.general * 3,
+    marginTop: MARGINS.general * 1.5,
   },
   saveButtonContainer: {
     backgroundColor: COLORS.lightGrayBackground,
@@ -153,8 +153,8 @@ export const jobDetailFormStyles = StyleSheet.create({
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general * 2,
-    marginTop: MARGINS.general * 2,
+    marginLeft: MARGINS.general,
+    marginTop: MARGINS.general,
     color: COLORS.black,
   },
   jobDetailHeading: {
@@ -165,8 +165,8 @@ export const jobDetailFormStyles = StyleSheet.create({
   JobsDetailText: {
     fontSize: FONTS.text,
     color: COLORS.black,
-    marginTop: MARGINS.general / 1.9,
-    marginBottom: MARGINS.general * 2,
+    marginTop: MARGINS.general / 2,
+    marginBottom: MARGINS.general * 1.5,
     paddingRight: PADDING.general * 2.4,
   },
 });
