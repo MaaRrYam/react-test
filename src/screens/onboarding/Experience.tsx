@@ -59,7 +59,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
         </View>
         <View style={commonStyles.footer}>
           <PrimaryButton
-            title="Add More"
+            title="Add"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
