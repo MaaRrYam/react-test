@@ -12,7 +12,6 @@ import FirebaseService from '@/services/Firebase';
 const OnboardingService = {
   async getStarted(newData: UserInterface, profilePic: Asset) {
     const UID = (await getUID()) as string;
-    console.log(profilePic);
     if (profilePic) {
       const downloadURL = await FirebaseService.uploadToStorage(profilePic);
       const newDataObj = {
