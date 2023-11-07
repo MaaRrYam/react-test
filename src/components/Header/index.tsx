@@ -4,11 +4,12 @@ import {View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {homeStyles} from '@/styles/home';
 import {BackArrow, Chats, Filter} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
 import {COLORS} from '@/constants';
 import {useRoute} from '@react-navigation/native';
+import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
+import {logOut} from '@/store/features/authSlice';
 
 const Header = ({
   navigation,
@@ -21,6 +22,14 @@ const Header = ({
   const handleLogout = () => {
     dispatch(logOut());
     navigation.navigate('Launch');
+  };
+  const handleClick = () => {
+    if (route.name === 'Home') {
+      dispatch(refreshFeed());
+      dispatch(setFeedFetchedToFalse());
+    } else {
+      navigation.navigate('Home');
+    }
   };
   const [searchVisible, setSearchVisible] = useState(false);
   const handleSearchTextChange = (text: string) => {

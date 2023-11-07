@@ -6,11 +6,12 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-import {BottomSheet, Button} from '@/components';
+import {BottomSheet, PrimaryButton} from '@/components';
 import {styles} from './styles';
 import useUserManagement from '@/hooks/useUserManagement';
 import {Asset, ImageInterface} from '@/interfaces';
@@ -20,7 +21,7 @@ import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
 
-const NewChat = ({
+const NewPost = ({
   isVisible,
   onClose,
 }: {
@@ -83,7 +84,9 @@ const NewChat = ({
   };
 
   useEffect(() => {
-    handleButtonPress();
+    if (Platform.OS === 'ios') {
+      handleButtonPress();
+    }
   }, []);
 
   const handleImagePress = (image: ImageInterface) => {
@@ -134,7 +137,7 @@ const NewChat = ({
     <BottomSheet
       isVisible={isVisible}
       onClose={onClose}
-      snapPoints={['20%', '70%']}>
+      snapPoints={['20%', '90%']}>
       <View style={styles.container}>
         <View>
           <Text style={styles.createPostText}>Create a New Post</Text>
@@ -195,7 +198,7 @@ const NewChat = ({
               )}
             />
           </View>
-          <Button
+          <PrimaryButton
             disabled={!text}
             title="Post"
             isLoading={isLoading}
@@ -208,4 +211,4 @@ const NewChat = ({
   );
 };
 
-export default NewChat;
+export default NewPost;

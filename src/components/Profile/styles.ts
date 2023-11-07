@@ -42,6 +42,7 @@ export const profileTabStyles = StyleSheet.create({
   searchBarText: {
     color: COLORS.text,
     fontSize: FONTS.bodyRegular,
+    alignItems: 'center',
   },
 });
 

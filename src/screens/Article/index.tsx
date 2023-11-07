@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -17,10 +17,10 @@ import HomeService from '@/services/home';
 import {FeedItem, UserInterface} from '@/interfaces';
 import {PrimaryButton, Loading} from '@/components';
 import {CloseIcon} from '@/assets/icons';
-import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
 import {Timestamp} from 'firebase/firestore';
 import {styles} from './styles';
+import Cache from '@/cache';
 const Article: React.FC<ArticleScreenProps> = ({route}) => {
   const {
     params: {id, article},
@@ -50,17 +50,21 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
     fetchArticle();
   }, [articleData, id]);
 
-  useEffect(() => {
-    const fetchAuthor = async () => {
-      const data = await FirebaseService.getDocument(
-        'users',
-        articleData?.authorId as string,
+  const fetchAuthorData = useCallback(async () => {
+    if (await Cache.get(`user_${articleData?.authorId}`)) {
+      setAuthorData(
+        (await Cache.get(`user_${articleData?.authorId}`)) as UserInterface,
       );
-      setAuthorData(data as UserInterface);
-    };
-    fetchAuthor();
+    } else {
+      setAuthorData(
+        await HomeService.getAuthor(articleData?.authorId as string),
+      );
+    }
   }, [articleData]);
 
+  useEffect(() => {
+    fetchAuthorData();
+  }, [fetchAuthorData]);
   const handleBack = () => {
     navigation.goBack();
   };

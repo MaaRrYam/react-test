@@ -329,6 +329,19 @@ const HomeService = {
       return null;
     }
   },
+  async getAuthor(authorId: string) {
+    let author = {} as UserInterface;
+    if (await Cache.get(`user_${authorId}`)) {
+      author = (await Cache.get(`user_${authorId}`)) as UserInterface;
+    } else {
+      author = (await FirebaseService.getDocument(
+        'users',
+        authorId,
+      )) as UserInterface;
+      await Cache.set(`user_${authorId}`, author);
+    }
+    return author;
+  },
 };
 
 export default HomeService;

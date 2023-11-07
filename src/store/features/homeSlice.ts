@@ -14,6 +14,7 @@ const initialState = {
   feed: [] as FeedItem[],
   isFeedFetched: false,
   isFeedFirstRequest: true,
+  isRefreshing: false,
 };
 
 export const getFeed = createAsyncThunk('home/getFeed', async () => {
@@ -57,6 +58,9 @@ export const homeSlice = createSlice({
     },
     setFeedFetchedToFalse(state) {
       state.isFeedFetched = false;
+    },
+    setIsRefreshingToFalse(state) {
+      state.isRefreshing = false;
     },
     addLike(state, {payload}: {payload: ReactionPayload}) {
       state.feed = state.feed.map(post => {
@@ -168,6 +172,7 @@ export const homeSlice = createSlice({
     });
     builder.addCase(refreshFeed.pending, state => {
       state.isFeedFetched = false;
+      state.isRefreshing = true;
     });
     builder.addCase(refreshFeed.fulfilled, (state, {payload}) => {
       state.feed = payload;
@@ -186,6 +191,7 @@ export const {
   setFeedFromCache,
   setFeedFetchedToFalse,
   removeReportedPostFromFeed,
+  setIsRefreshingToFalse,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;
