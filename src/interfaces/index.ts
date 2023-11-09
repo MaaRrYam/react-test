@@ -72,6 +72,7 @@ export interface InputProps {
   setFieldValue?: any;
   disabled?: boolean;
   maxLength?: number;
+  onPress?: () => void;
 }
 
 export interface StorageServiceProps {
@@ -714,4 +715,12 @@ export interface PastApplicationCardInterface {
   feedback: string;
   rating: number;
   onPress: () => void;
+}
+export interface FeedbackInterface {
+  id: string;
+  applicantId?: string;
+  experience?: string;
+  feedbackCategory?: string;
+  referenceImage?: string;
+  timeStamp: Timestamp;
 }

@@ -150,7 +150,7 @@ const Tabs = () => {
   const {width, height} = Dimensions.get('window');
 
   return (
-    <View style={{width, height, paddingBottom: 20}}>
+    <View style={{width, height, paddingBottom: 3}}>
       <Tab.Navigator
         screenOptions={{headerShown: false, tabBarHideOnKeyboard: true}}
         tabBar={props => (
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    paddingBottom: 20,
   },
   tab: {
     flex: 1,

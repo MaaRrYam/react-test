@@ -3,12 +3,14 @@ import React, {useState} from 'react';
 import {Input} from '../Inputs';
 import {PrimaryButton} from '../Buttons';
 import {getScreenDimensions} from '@/utils/functions';
+import DatePicker from 'react-native-date-picker';
 
 const {height} = getScreenDimensions();
 const BasicInfo = () => {
   const [email, setEmail] = useState('');
   const [contactNumber, setContactNumber] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
+  const [open, setOpen] = useState(false);
   return (
     <View style={styles.container}>
       <View style={{}}>
@@ -24,8 +26,21 @@ const BasicInfo = () => {
         />
         <Input
           placeholder="Date of Birth"
-          onChangeText={setDateOfBirth}
-          value={dateOfBirth}
+          onChangeText={() => {}}
+          value={dateOfBirth.toDateString()}
+          onPress={() => setOpen(true)}
+        />
+        <DatePicker
+          modal
+          open={open}
+          date={dateOfBirth}
+          onConfirm={date => {
+            setOpen(false);
+            setDateOfBirth(date);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
         />
       </View>
       <View style={styles.saveButton}>

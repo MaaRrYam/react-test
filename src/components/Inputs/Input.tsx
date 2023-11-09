@@ -15,6 +15,7 @@ const Input: FC<InputProps> = ({
   name,
   setFieldTouched,
   disabled,
+  onPress,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -85,6 +86,7 @@ const Input: FC<InputProps> = ({
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           editable={!disabled}
+          onPressIn={onPress}
         />
       </View>
       {touched && error && <Text style={styles.error}>{error}</Text>}

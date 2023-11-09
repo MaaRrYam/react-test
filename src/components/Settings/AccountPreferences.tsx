@@ -39,8 +39,10 @@ const AccountPreferences = () => {
         />
       </View>
       <View style={styles.PPTOS}>
-        <Text style={styles.text}>Privacy Policy</Text>
-        <Text style={[styles.text, styles.PPtext]}>Terms of Use</Text>
+        <Text style={[styles.text, styles.underline]}>Privacy Policy</Text>
+        <Text style={[styles.text, styles.PPtext, styles.underline]}>
+          Terms of Use
+        </Text>
       </View>
       <View style={styles.logOutButtonContainer}>
         <PrimaryButton title="Log out" onPress={() => {}} />
@@ -54,7 +56,6 @@ export default AccountPreferences;
 const styles = StyleSheet.create({
   text: {
     color: 'black',
-    textDecorationLine: 'underline',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -70,5 +71,8 @@ const styles = StyleSheet.create({
   },
   PPtext: {
     marginTop: 10,
+  },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });

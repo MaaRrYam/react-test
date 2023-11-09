@@ -5,6 +5,7 @@ import {
   EducationProps,
   FeedItem,
   UserInterface,
+  FeedbackInterface,
 } from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
 import ToastService from '@/services/toast';
@@ -223,6 +224,15 @@ const ProfileService = {
     } catch (error) {
       console.error('Error fetching followers:', error);
       throw error;
+    }
+  },
+  async createFeedback(payload: FeedbackInterface) {
+    try {
+      await FirebaseService.setDoc('feedback', payload.id, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   },
 };
