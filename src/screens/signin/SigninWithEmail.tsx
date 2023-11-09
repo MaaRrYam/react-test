@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Platform} from 'react-native';
+import {View, Text, SafeAreaView, Image} from 'react-native';
 import {signInSchema} from '@/utils/schemas/schemas';
 import {
   getAuth,
