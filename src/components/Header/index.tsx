@@ -33,7 +33,7 @@ const Header = ({
         {route.name === 'Jobs' ? (
           <TouchableOpacity
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-            onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
+            onPress={() => setJobsFilterBottomSheet((prev: any) => !prev)}>
             <Filter />
           </TouchableOpacity>
         ) : route.name === 'Profile' ? (
