@@ -1,14 +1,15 @@
 import React from 'react';
-import {View, Text, SafeAreaView, ScrollView, Alert} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 
-import {BackButton, PrimaryButton, Link, Input} from '@/components';
+import {BackButton, PrimaryButton, Input} from '@/components';
 import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {requestAccessSchema} from '@/utils/schemas/schemas';
 import {requestAccessFormValues} from '@/interfaces';
 import {submitRequestAccess} from '@/services/requestAccess';
 import {COLORS, SCREEN_NAMES} from '@/constants';
+import {styles} from '@/styles/signinScreen';
 import ToastService from '@/services/toast';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({
@@ -50,7 +51,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
       selectedRole: role,
     };
     const data = await submitRequestAccess(payload);
-    await ToastService.showSuccess(data.message);
+    ToastService.showSuccess(data.message);
     setSubmitting(false);
     if (data.success) {
       navigation.navigate(SCREEN_NAMES.Signin);
@@ -131,10 +132,12 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
             isLoading={isSubmitting}
             activityIndicatorColor={COLORS.white}
           />
-          <Link
-            text="Already have an account? Sign In"
-            onPress={handleSignInClick}
-          />
+          <View style={[styles.alreadyHaveAnAccount, {marginTop: 0}]}>
+            <Text style={styles.text}>Already have an account? </Text>
+            <Text style={styles.signUpText} onPress={handleSignInClick}>
+              Sign In
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>

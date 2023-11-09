@@ -28,10 +28,13 @@ import SaveIcon from './SaveIcon';
 import UnsaveIcon from './UnsaveIcon';
 import Filter from './Filter';
 import SettingsIcon from './SettingsIcon';
-import CameraIcon from './CameraIcon'
+import CameraIcon from './CameraIcon';
+import CameraSvg from './Camera';
+
 export {
   BackArrow,
   Dislike,
+  CameraSvg,
   Like,
   Chats,
   Comment,

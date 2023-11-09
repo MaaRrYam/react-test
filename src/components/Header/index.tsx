@@ -5,9 +5,9 @@ import {useRoute} from '@react-navigation/native';
 import {homeStyles} from '@/styles/home';
 import {Chats, Filter, SettingsIcon} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {logOut} from '@/store/features/authSlice';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
+import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 
 const Header = ({
   navigation,
@@ -16,13 +16,17 @@ const Header = ({
 }: HeaderProps) => {
   const route = useRoute();
   const dispatch = useAppDispatch();
-  const handleLogout = () => {
-    dispatch(logOut());
-    navigation.navigate('Launch');
+  const handleClick = () => {
+    if (route.name === 'Home') {
+      dispatch(refreshFeed());
+      dispatch(setFeedFetchedToFalse());
+    } else {
+      navigation.navigate('Home');
+    }
   };
   return (
     <View style={homeStyles.header}>
-      <TouchableOpacity onPress={handleLogout}>
+      <TouchableOpacity onPress={handleClick}>
         <Image
           source={require('@/assets/images/logo.png')}
           style={homeStyles.logo}

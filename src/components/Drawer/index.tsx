@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {Home, Network, Notifications} from '@/screens';
+import {Home, Network, Notifications, Jobs} from '@/screens';
 import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
@@ -10,7 +16,7 @@ import EditProfile from '@/components/EditProfile';
 import {getUID} from '@/utils/functions';
 import {DrawerContentProps, UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
-import {Jobs} from '@/screens/index';
+import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 
 const Tab = createBottomTabNavigator();
 function SettingsScreen() {
@@ -35,6 +41,8 @@ function DrawerContent({
   setEditingIndex,
   uid,
 }: DrawerContentProps) {
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <View style={styles.tabBarContainer}>
@@ -54,6 +62,12 @@ function DrawerContent({
             const isFocused = state.index === index;
 
             const onPress = () => {
+              if (isFocused && route.name === 'Home') {
+                dispatch(refreshFeed());
+                dispatch(setFeedFetchedToFalse());
+                return;
+              }
+
               const event = navigation.emit({
                 type: 'tabPress',
                 target: route.key,
@@ -86,7 +100,7 @@ function DrawerContent({
                   label,
                   isFocused,
                   navigation,
-                  user.photoUrl,
+                  user?.photoUrl,
                   uid as string,
                 )}
               </TouchableOpacity>
@@ -133,11 +147,12 @@ const Tabs = () => {
 
     fetchUID();
   }, [dispatch]);
+  const {width, height} = Dimensions.get('window');
 
   return (
-    <>
+    <View style={{width, height, paddingBottom: 20}}>
       <Tab.Navigator
-        screenOptions={{headerShown: false}}
+        screenOptions={{headerShown: false, tabBarHideOnKeyboard: true}}
         tabBar={props => (
           <DrawerContent
             {...props}
@@ -172,7 +187,7 @@ const Tabs = () => {
           }}
         />
       </Tab.Navigator>
-    </>
+    </View>
   );
 };
 
