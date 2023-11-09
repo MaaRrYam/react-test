@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -139,10 +140,8 @@ const NewPost = ({
       isVisible={isVisible}
       snapPoints={['20%', '80%']}
       onClose={onClose}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
-        <View>
+      <KeyboardAvoidingView behavior={'padding'} style={styles.container}>
+        <ScrollView>
           <Text style={styles.createPostText}>Create a New Post</Text>
 
           <View style={styles.authorContainer}>
@@ -182,7 +181,7 @@ const NewPost = ({
               </TouchableOpacity>
             )}
           </View>
-        </View>
+        </ScrollView>
 
         <View>
           <View style={styles.imageListContainer}>
