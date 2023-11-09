@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -136,9 +137,11 @@ const NewPost = ({
   return (
     <BottomSheet
       isVisible={isVisible}
-      onClose={onClose}
-      snapPoints={['20%', '90%']}>
-      <View style={styles.container}>
+      snapPoints={['20%', '80%']}
+      onClose={onClose}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
         <View>
           <Text style={styles.createPostText}>Create a New Post</Text>
 
@@ -206,7 +209,7 @@ const NewPost = ({
             onPress={handlePost}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </BottomSheet>
   );
 };
