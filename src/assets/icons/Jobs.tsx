@@ -5,11 +5,11 @@ import {IconProps} from '@/interfaces';
 const Jobs = (props: IconProps) => (
   <>
     {props.isFocused ? (
-      <Svg width={24} height={24} fill="none" {...props}>
+      <Svg width={30} height={30} fill="none" {...props}>
         <Mask
           id="a"
-          width={33}
-          height={32}
+          width={24}
+          height={24}
           x={0}
           y={0}
           maskUnits="userSpaceOnUse">

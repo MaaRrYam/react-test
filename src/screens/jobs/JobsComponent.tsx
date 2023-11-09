@@ -127,7 +127,7 @@ const JobsComponent = ({
             <BottomSheet
               isVisible={isBottomSheetVisible}
               onClose={() => setIsBottomSheetVisible(false)}
-              snapPoints={['60%', '100%']}>
+              snapPoints={['90%', '98%']}>
               <ScrollView>
                 <JobsDetailForm
                   selectedJob={selectedJob}
