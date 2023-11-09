@@ -63,16 +63,14 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
           ? getErrorMessageByCode(error.code)
           : 'An error occurred during sign-in.';
 
-      await ToastService.showError(errorMessage);
+      ToastService.showError(errorMessage);
     } finally {
       setSubmitting(false);
     }
   };
   return (
-    <SafeAreaView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.mainContainer}>
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView behavior={'padding'} style={styles.mainContainer}>
         <Image
           source={require('@/assets/images/logo.png')}
           style={styles.logo}
