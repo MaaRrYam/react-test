@@ -25,7 +25,7 @@ const BasicInfo = () => {
       id: UID as string,
       recoverEmail: email,
       phoneNumber: contactNumber,
-      dateOfBirth: dateOfBirth as unknown as Timestamp,
+      dateOfBirth: dateOfBirth.toDateString(),
     };
 
     const response = await ProfileService.updateSettingsBasicInfo(payload);

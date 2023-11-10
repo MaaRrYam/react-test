@@ -276,7 +276,7 @@ export interface UserInterface {
   tagline?: string;
   description?: string;
   jobTags: string[];
-  dateOfBirth?: Timestamp;
+  dateOfBirth?: string;
   phoneNumber?: string;
   currentStatus?: string;
   minimumSalary: string;
@@ -730,5 +730,5 @@ export interface SettingBasicInfoUpdateInterface {
   id: string;
   recoverEmail?: string;
   phoneNumber?: string;
-  dateOfBirth?: Timestamp;
+  dateOfBirth?: string;
 }
