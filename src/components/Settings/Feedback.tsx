@@ -26,9 +26,6 @@ const Feedback = () => {
   const [selectedImage, setSelectedImage] = useState<
     ImageInterface | Asset | null
   >(null);
-  useEffect(() => {
-    console.log(issueType);
-  }, [issueType]);
 
   const openImagePicker = () => {
     launchImageLibrary(
