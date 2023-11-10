@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Dropdown, TextArea} from '../Inputs';
 import {
@@ -14,10 +14,11 @@ import {Asset, FeedbackInterface, ImageInterface} from '@/interfaces';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native';
 import ToastService from '@/services/toast';
-import { getUID } from '@/utils/functions';
+import {getScreenDimensions, getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
-import HomeService from '@/services/home';
 import ProfileService from '@/services/profile';
+import Loading from '../Loading';
+const {height} = getScreenDimensions();
 const Feedback = () => {
   const [issueType, setIssueType] = useState('Select a type of Issue');
   const [feedback, setFeedback] = useState('');
@@ -53,7 +54,6 @@ const Feedback = () => {
   const handleSubmitFeedback = async () => {
     setLoading(true);
     const UID = (await getUID()) as string;
-
     let imageUrl = '';
     if (selectedImage?.uri) {
       imageUrl = (await FirebaseService.uploadToStorage(
@@ -81,51 +81,62 @@ const Feedback = () => {
     }
   };
   return (
-    <View>
-      <View>
-        <Dropdown
-          options={feedbackCategories}
-          onOptionSelect={option => setIssueType(option)}
-          selectedOption={issueType ? issueType : 'Select type of issue'}
-        />
-      </View>
-      <View style={styles.feedbackTextContainer}>
-        <TextArea
-          onChangeText={setFeedback}
-          placeholder="Write Feedback"
-          value={feedback}
-        />
-      </View>
-      <View>
-        <Text style={styles.text}>Attach Screenshot (optional)</Text>
-      </View>
-      <View>
-        {selectedImage && (
-          <Image
-            style={styles.selectedImage}
-            source={{uri: selectedImage.uri}}
-            resizeMode="cover"
-          />
-        )}
-        {selectedImage && (
-          <TouchableOpacity
-            onPress={() => setSelectedImage(null)}
-            style={styles.crossButton}>
-            <Text style={styles.crossText}>X</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-      {!selectedImage && (
-        <TouchableOpacity
-          style={styles.cameraIconContainer}
-          onPress={() => openImagePicker()}>
-          <CameraIcon />
-        </TouchableOpacity>
+    <>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <Loading />
+        </View>
+      ) : (
+        <View>
+          <View>
+            <Dropdown
+              options={feedbackCategories}
+              onOptionSelect={option => setIssueType(option)}
+              selectedOption={issueType ? issueType : 'Select type of issue'}
+            />
+          </View>
+          <View style={styles.feedbackTextContainer}>
+            <TextArea
+              onChangeText={setFeedback}
+              placeholder="Write Feedback"
+              value={feedback}
+            />
+          </View>
+          <View>
+            <Text style={styles.text}>Attach Screenshot (optional)</Text>
+          </View>
+          <View>
+            {selectedImage && (
+              <Image
+                style={styles.selectedImage}
+                source={{uri: selectedImage.uri}}
+                resizeMode="cover"
+              />
+            )}
+            {selectedImage && (
+              <TouchableOpacity
+                onPress={() => setSelectedImage(null)}
+                style={styles.crossButton}>
+                <Text style={styles.crossText}>X</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          {!selectedImage && (
+            <TouchableOpacity
+              style={styles.cameraIconContainer}
+              onPress={() => openImagePicker()}>
+              <CameraIcon />
+            </TouchableOpacity>
+          )}
+          <View style={styles.buttonContainer}>
+            <PrimaryButton
+              title="Submit"
+              onPress={() => handleSubmitFeedback()}
+            />
+          </View>
+        </View>
       )}
-      <View style={styles.buttonContainer}>
-        <PrimaryButton title="Submit" onPress={() => handleSubmitFeedback()} />
-      </View>
-    </View>
+    </>
   );
 };
 
@@ -170,5 +181,10 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: BORDER_RADIUS.general,
     marginTop: MARGINS.general,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: height - 300,
   },
 });
