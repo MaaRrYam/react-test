@@ -6,6 +6,7 @@ import {
   FeedItem,
   UserInterface,
   FeedbackInterface,
+  SettingBasicInfoUpdateInterface,
 } from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
 import ToastService from '@/services/toast';
@@ -229,6 +230,15 @@ const ProfileService = {
   async createFeedback(payload: FeedbackInterface) {
     try {
       await FirebaseService.setDoc('feedback', payload.id, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async updateSettingsBasicInfo(payload: SettingBasicInfoUpdateInterface) {
+    try {
+      await FirebaseService.updateDocument('users', payload.id, payload);
       return true;
     } catch (error) {
       console.log(error);

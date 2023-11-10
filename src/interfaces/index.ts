@@ -276,13 +276,15 @@ export interface UserInterface {
   tagline?: string;
   description?: string;
   jobTags: string[];
-  dateOfBirth?: string;
+  dateOfBirth?: Timestamp;
   phoneNumber?: string;
   currentStatus?: string;
   minimumSalary: string;
   totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
+  contactNumber?: string;
+  recoveryEmail?: string;
 }
 
 export interface whiteListedUser {
@@ -723,4 +725,10 @@ export interface FeedbackInterface {
   feedbackCategory?: string;
   referenceImage?: string;
   timeStamp: Timestamp;
+}
+export interface SettingBasicInfoUpdateInterface {
+  id: string;
+  recoverEmail?: string;
+  phoneNumber?: string;
+  dateOfBirth?: Timestamp;
 }

@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Dropdown, TextArea} from '../Inputs';
 import {
   BORDER_RADIUS,
