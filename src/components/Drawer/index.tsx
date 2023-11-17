@@ -9,7 +9,7 @@ import {
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {Home, Network, Notifications, Jobs} from '@/screens';
-import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
+import {COLORS, SCREEN_NAMES, PROFILE_TABS, PADDING} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
@@ -150,7 +150,7 @@ const Tabs = () => {
   const {width, height} = Dimensions.get('window');
 
   return (
-    <View style={{width, height, paddingBottom: 20}}>
+    <View style={{width, height}}>
       <Tab.Navigator
         screenOptions={{headerShown: false, tabBarHideOnKeyboard: true}}
         tabBar={props => (
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    paddingBottom: 20,
+    paddingBottom: 5,
   },
   tab: {
     flex: 1,
