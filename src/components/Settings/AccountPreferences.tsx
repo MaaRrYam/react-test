@@ -1,11 +1,21 @@
 import {StyleSheet, Switch, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {PrimaryButton} from '../Buttons';
 import {getScreenDimensions} from '@/utils/functions';
+import StorageService from '@/services/Storage';
+import {useNavigation} from '@react-navigation/native';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { RootState } from '@/store';
+import { logOut } from '@/store/features/authSlice';
+import { auth } from '@/config/firebase';
 
 const {height} = getScreenDimensions();
 const AccountPreferences = () => {
+  const navigation = useNavigation();
+  const {user} = useAppSelector((state: RootState) => state.auth)
+  const dispatch = useAppDispatch();
   const [messagingEnabled, setMessagingEnabled] = useState(false);
   const [connectionsVisibleEnabled, setConnectionsVisibleEnabled] =
     useState(false);
@@ -16,6 +26,12 @@ const AccountPreferences = () => {
     setConnectionsVisibleEnabled(!connectionsVisibleEnabled);
   };
 
+  const handleLogout = async () => {
+    await StorageService.nuke();
+    await dispatch(logOut());
+    await auth.signOut();
+    navigation.navigate(SCREEN_NAMES.Launch);
+  };
   return (
     <View>
       <View style={styles.buttonContainer}>
@@ -45,7 +61,7 @@ const AccountPreferences = () => {
         </Text>
       </View>
       <View style={styles.logOutButtonContainer}>
-        <PrimaryButton title="Log out" onPress={() => {}} />
+        <PrimaryButton title="Log out" onPress={handleLogout} />
       </View>
     </View>
   );
