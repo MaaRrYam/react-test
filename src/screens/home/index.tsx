@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
-import {View, SafeAreaView, Image, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {View, SafeAreaView, Text, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {Header, Feed, NewPost} from '@/components';
 import {HomeScreenProps} from '@/types';
@@ -9,7 +10,6 @@ import useUserManagement from '@/hooks/useUserManagement';
 import Cache from '@/cache';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useFocusEffect} from '@react-navigation/native';
-import {getUID} from '@/utils/functions';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [isNewPostClicked, setIsNewPostClicked] =
@@ -41,12 +41,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <View>
           <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
           <View style={homeStyles.subheader}>
-            <Image
-              source={
-                user?.photoUrl
-                  ? {uri: user.photoUrl}
-                  : require('@/assets/images/user.png')
-              }
+            <FastImage
+              source={{
+                uri: user?.photoUrl
+                  ? user.photoUrl
+                  : require('@/assets/images/user.png'),
+                priority: 'normal',
+              }}
+              resizeMode={FastImage.resizeMode.cover}
               style={styles.userImage}
             />
 

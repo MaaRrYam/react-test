@@ -1,12 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, FlatList} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {styles} from '@/screens/home/styles';
 import {
@@ -90,12 +84,13 @@ const RepliesContainer = ({
         data={replies}
         renderItem={({item}) => (
           <View style={styles.replyContainer}>
-            <Image
-              source={
-                item?.user?.photoUrl
-                  ? {uri: item.user.photoUrl}
-                  : require('@/assets/images/user.png')
-              }
+            <FastImage
+              source={{
+                uri:
+                  item?.user?.photoUrl || require('@/assets/images/user.png'),
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
               style={styles.commentImage}
             />
             <Text style={styles.replyAuthor}>{item.user.name}</Text>
@@ -260,10 +255,14 @@ const PostComment = ({
   return (
     <View style={[styles.comment, isFromPost && styles.commentFromPost]}>
       <View style={styles.author}>
-        <Image
+        <FastImage
           source={
             item?.user?.photoUrl
-              ? {uri: item.user.photoUrl}
+              ? {
+                  uri: item.user.photoUrl,
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }
               : require('@/assets/images/user.png')
           }
           style={styles.commentImage}

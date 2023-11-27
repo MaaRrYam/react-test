@@ -1,6 +1,8 @@
-import {COLORS} from '@/constants';
 import React from 'react';
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
+import {COLORS} from '@/constants';
 
 interface IconButtonProps {
   imageSource: number;
@@ -17,7 +19,11 @@ const IconButton = ({
 }: IconButtonProps) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      <Image source={imageSource} style={{width: iconSize, height: iconSize}} />
+      <FastImage
+        resizeMode="cover"
+        source={imageSource}
+        style={{width: iconSize, height: iconSize}}
+      />
     </TouchableOpacity>
   );
 };

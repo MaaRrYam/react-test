@@ -1,12 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Share,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Share, SafeAreaView} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {
@@ -40,10 +34,10 @@ import {
 } from '@/interfaces';
 import PostComments from '@/components/Feed/PostComments';
 import {formatFirebaseTimestamp} from '@/utils';
-import {Timestamp} from 'react-native-reanimated';
 import {ScrollView} from 'react-native-gesture-handler';
 import Cache from '@/cache';
 import {styles as userDataStyles} from '@/screens/Article/styles';
+import {Timestamp} from 'firebase/firestore';
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
     params: {item},
@@ -270,8 +264,8 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
         <View style={styles.postContainer}>
           <View style={userDataStyles.userInfoContainer}>
-            <Image
-              source={{uri: authorData?.photoUrl}}
+            <FastImage
+              source={{uri: authorData?.photoUrl, priority: 'normal'}}
               style={userDataStyles.userImage}
             />
             <View style={userDataStyles.userInfoTextContainer}>
@@ -292,7 +286,11 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
           <View>
             <Text style={styles.feedContent}>{item.text}</Text>
             {item.media && (
-              <Image source={{uri: item.media}} style={styles.media} />
+              <FastImage
+                source={{uri: item.media, priority: 'normal'}}
+                style={styles.media}
+                resizeMode={FastImage.resizeMode.cover}
+              />
             )}
             <View style={styles.actionContainer}>
               <View style={styles.reactionContainer}>
@@ -302,7 +300,9 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
                   <Like isLiked={reactions.like} />
                 </TouchableOpacity>
                 <Text style={styles.like}>
-                  {item?.postLikes?.length - item?.postDislikes?.length}
+                  {item?.postLikes &&
+                    item?.postDislikes &&
+                    item?.postLikes?.length - item?.postDislikes?.length}
                 </Text>
                 <TouchableOpacity
                   style={styles.reactionButton}

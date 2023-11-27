@@ -1,5 +1,7 @@
 import React from 'react';
-import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {JobsCardProps} from '@/interfaces';
 import {jobCardStyles} from '@/styles/jobs/index';
 
@@ -15,10 +17,23 @@ const JobsCard: React.FC<JobsCardProps> = ({
     <TouchableOpacity style={jobCardStyles.container} onPress={onPress}>
       <View style={jobCardStyles.iconContainer}>
         {companyLogo ? (
-          <Image source={{uri: companyLogo}} style={jobCardStyles.icon} />
+          <FastImage
+            resizeMode="cover"
+            source={{
+              uri: companyLogo,
+              priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            style={jobCardStyles.icon}
+          />
         ) : (
-          <Image
-            source={require('@/assets/images/emblem.png')}
+          <FastImage
+            resizeMode="cover"
+            source={{
+              uri: require('@/assets/images/emblem.png'),
+              priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
+            }}
             style={jobCardStyles.icon}
           />
         )}

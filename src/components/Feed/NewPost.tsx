@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
-  Image,
   FlatList,
   TextInput,
   TouchableOpacity,
@@ -10,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
 
@@ -145,15 +145,13 @@ const NewPost = ({
           <Text style={styles.createPostText}>Create a New Post</Text>
 
           <View style={styles.authorContainer}>
-            <Image
+            <FastImage
               style={styles.avatar}
-              source={
-                user?.photoUrl
-                  ? {
-                      uri: user.photoUrl,
-                    }
-                  : require('@/assets/images/user.png')
-              }
+              source={{
+                uri: user?.photoUrl || require('@/assets/images/user.png'),
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
             />
             <Text style={styles.authorName}>{user?.name}</Text>
           </View>
@@ -167,9 +165,13 @@ const NewPost = ({
             />
 
             {selectedImage && (
-              <Image
+              <FastImage
                 style={styles.selectedImage}
-                source={{uri: selectedImage.uri}}
+                source={{
+                  uri: selectedImage.uri,
+                  priority: FastImage.priority.normal,
+                  cache: FastImage.cacheControl.web,
+                }}
                 resizeMode="cover"
               />
             )}
@@ -191,9 +193,13 @@ const NewPost = ({
               horizontal
               renderItem={({item}) => (
                 <TouchableOpacity onPress={() => handleImagePress(item)}>
-                  <Image
+                  <FastImage
                     style={styles.image}
-                    source={{uri: item.uri}}
+                    source={{
+                      uri: item.uri,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }}
                     resizeMode="cover"
                   />
                 </TouchableOpacity>

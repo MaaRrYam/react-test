@@ -5,11 +5,11 @@ import {
   TextInput,
   FlatList,
   SafeAreaView,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import FastImage from 'react-native-fast-image';
 
 import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
@@ -112,12 +112,13 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <BackButton style={styles.backButton} />
-        <Image
-          source={
-            user?.photoUrl
-              ? {uri: user.photoUrl}
-              : require('@/assets/images/user.png')
-          }
+        <FastImage
+          source={{
+            uri: user?.photoUrl || require('@/assets/images/user.png'),
+            priority: 'high',
+            cache: 'immutable',
+          }}
+          resizeMode="cover"
           style={styles.userImage}
         />
         <Text style={styles.userName}>{name || 'Some User'}</Text>
@@ -146,8 +147,13 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
 
       <View style={styles.imageContainer}>
         {selectedImage && (
-          <Image
-            source={{uri: selectedImage.uri || ''}}
+          <FastImage
+            source={{
+              uri: selectedImage.uri || '',
+              priority: 'high',
+              cache: 'web',
+            }}
+            resizeMode="cover"
             style={styles.selectedImage}
           />
         )}

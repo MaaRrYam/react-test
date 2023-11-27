@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   View,
-  Image,
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Text,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {PrimaryButton, SocialLoginButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
@@ -30,15 +30,21 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.imagesContainer}>
-          <Image
-            source={require('@/assets/images/logo.png')}
+          <FastImage
+            source={{
+              uri: require('@/assets/images/logo.png'),
+              priority: 'normal',
+            }}
             style={styles.logo}
-            resizeMode="contain"
+            resizeMode={FastImage.resizeMode.cover}
           />
-          <Image
-            source={require('@/assets/images/people.png')}
+          <FastImage
+            source={{
+              uri: require('@/assets/images/people.png'),
+              priority: 'normal',
+            }}
             style={styles.peopleImage}
-            resizeMode="contain"
+            resizeMode={FastImage.resizeMode.cover}
           />
         </View>
 

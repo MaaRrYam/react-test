@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
-import {View, Text, Image, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {PrimaryButton, SocialLoginButton} from '@/components';
 import {SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {SignInScreenProps} from '@/types';
-
 import {styles} from '@/styles/signinScreen';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 
@@ -16,10 +17,14 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainContainer}>
-        <Image
-          source={require('@/assets/images/logo.png')}
+        <FastImage
+          source={{
+            uri: require('@/assets/images/logo.png'),
+            priority: 'normal',
+            cache: 'immutable',
+          }}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode="cover"
         />
 
         <View>

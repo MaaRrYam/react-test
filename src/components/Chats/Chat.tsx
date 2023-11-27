@@ -1,5 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {styles} from '@/screens/chat/styles';
 import {getUID} from '@/utils/functions';
@@ -41,7 +42,15 @@ const Chat = ({
             : styles.otherMessage,
         ]}>
         {message.fileUrl && (
-          <Image source={{uri: message.fileUrl}} style={styles.file} />
+          <FastImage
+            resizeMode="cover"
+            source={{
+              uri: message.fileUrl,
+              priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            style={styles.file}
+          />
         )}
         <View style={message.fileUrl ? styles.withFileMessage : null}>
           <Text style={styles.messageText}>{message.message}</Text>

@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import {useFormik} from 'formik';
+import FastImage from 'react-native-fast-image';
+
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -71,10 +73,14 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   return (
     <SafeAreaView>
       <View style={styles.mainContainer}>
-        <Image
-          source={require('@/assets/images/logo.png')}
+        <FastImage
+          source={{
+            uri: require('@/assets/images/logo.png'),
+            priority: 'normal',
+            cache: 'immutable',
+          }}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode="cover"
         />
 
         <View>

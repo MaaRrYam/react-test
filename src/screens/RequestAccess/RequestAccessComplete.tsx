@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  Dimensions,
-} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useFocusEffect} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import {PADDING, SCREEN_NAMES} from '@/constants';
 import {RequestAccessCompleteScreenProps} from '@/types';
@@ -42,10 +36,14 @@ const RequestAccessComplete: React.FC<RequestAccessCompleteScreenProps> = ({
         </View>
 
         <View style={styles.imgContainer}>
-          <Image
-            source={require('@/assets/images/requestSuccess.png')}
+          <FastImage
+            source={{
+              uri: require('@/assets/images/requestSuccess.png'),
+              priority: 'normal',
+              cache: 'immutable',
+            }}
             style={styles.logo}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
       </SafeAreaView>

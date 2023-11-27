@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
@@ -23,8 +24,13 @@ const Header = ({navigation, setJobsFilterBottomSheet}: HeaderProps) => {
   return (
     <View style={homeStyles.header}>
       <TouchableOpacity onPress={handleClick}>
-        <Image
-          source={require('@/assets/images/logo.png')}
+        <FastImage
+          source={{
+            uri: require('@/assets/images/logo.png'),
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          resizeMode={FastImage.resizeMode.cover}
           style={homeStyles.logo}
         />
       </TouchableOpacity>
@@ -33,7 +39,7 @@ const Header = ({navigation, setJobsFilterBottomSheet}: HeaderProps) => {
         {route.name === 'Jobs' ? (
           <TouchableOpacity
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-            onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
+            onPress={() => setJobsFilterBottomSheet((prev: boolean) => !prev)}>
             <Filter />
           </TouchableOpacity>
         ) : (

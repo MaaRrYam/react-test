@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {FONTS, COLORS, SCREEN_NAMES} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NetworkItemProps} from '@/interfaces';
@@ -90,12 +92,13 @@ const NetworkItem = ({
     <TouchableOpacity>
       <View style={styles.networkItem}>
         <View style={styles.networkItemImage}>
-          <Image
-            source={
-              item.photoUrl
-                ? {uri: item.photoUrl}
-                : require('@/assets/images/user.png')
-            }
+          <FastImage
+            resizeMode="cover"
+            source={{
+              uri: item.photoUrl || require('@/assets/images/user.png'),
+              priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
+            }}
             style={styles.networkItemImage}
           />
         </View>

@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  Dimensions,
-} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import FastImage from 'react-native-fast-image';
 
 import {PrimaryButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
-import useUserManagement from '@/hooks/useUserManagement';
 import OnboardingService from '@/services/onboarding';
 
 const windowWidth = Dimensions.get('window').width;
@@ -20,8 +13,6 @@ const windowHeight = Dimensions.get('window').height;
 const containerWidth = windowWidth - 50;
 
 const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
-  const {user} = useUserManagement();
-
   const handleOnboardingCompleted = async () => {
     OnboardingService.onboardingCompleted();
     navigation.navigate(SCREEN_NAMES.BottomNavigator);
@@ -31,19 +22,25 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
     <LinearGradient colors={['#2356F6', '#6EF0D3']} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.imagesContainer}>
-          <Image
-            source={require('assets/images/whiteLogo.png')}
+          <FastImage
+            source={{
+              uri: require('assets/images/whiteLogo.png'),
+              priority: 'normal',
+            }}
             style={styles.logo}
-            resizeMode="contain"
+            resizeMode="cover"
           />
           <Text style={styles.welcome}>Welcome Onboard!</Text>
         </View>
 
         <View style={styles.middleImageContainer}>
-          <Image
-            source={require('assets/images/completeOnboarding.png')}
+          <FastImage
+            source={{
+              uri: require('assets/images/completeOnboarding.png'),
+              priority: 'normal',
+            }}
             style={styles.middleImage}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
 

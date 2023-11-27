@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     fontSize: FONTS.bodyRegular,
-    color: COLORS.text,
+    color: COLORS.black,
     textAlignVertical: 'top',
   },
   selectedImage: {

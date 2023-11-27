@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NotificationInterface} from '@/interfaces';
@@ -19,12 +21,13 @@ const NotificationItem = ({
           item?.isUnRead && styles.unReadNotificationItem,
         ]}>
         <View style={styles.notificationItemImage}>
-          <Image
-            source={
-              item.sender && item.sender.photoUrl
-                ? {uri: item.sender?.photoUrl}
-                : require('@/assets/images/user.png')
-            }
+          <FastImage
+            source={{
+              uri: item.sender?.photoUrl || require('@/assets/images/user.png'),
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
             style={styles.notificationItemImage}
           />
         </View>

@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Image,
-} from 'react-native';
+import {View, Text, SafeAreaView, KeyboardAvoidingView} from 'react-native';
 import {useFormik} from 'formik';
+import FastImage from 'react-native-fast-image';
+
 import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
@@ -108,15 +104,19 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
             style={commonStyles.imageContainer}
             onPress={() => openImagePicker()}>
             {selectedImage?.uri ? (
-              <Image
+              <FastImage
                 style={commonStyles.image}
                 source={{uri: selectedImage?.uri}}
                 resizeMode="cover"
               />
             ) : selectedImage ? (
-              <Image
+              <FastImage
                 style={commonStyles.image}
-                source={{uri: selectedImage}}
+                source={{
+                  uri: selectedImage,
+                  priority: 'normal',
+                  cache: FastImage.cacheControl.immutable,
+                }}
                 resizeMode="cover"
               />
             ) : (

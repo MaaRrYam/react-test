@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {TabDataInterface} from '@/interfaces';
 import {profileTabStyles as styles} from './styles';
@@ -20,10 +21,13 @@ const ProfileTab: FC<TabDataInterface> = ({
         {id === '' ||
           (id === loggedInID && (
             <View style={styles.subheader}>
-              <Image
-                source={
-                  photo ? {uri: photo} : require('@/assets/images/user.png')
-                }
+              <FastImage
+                source={{
+                  uri: photo || require('@/assets/images/user.png'),
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
                 style={styles.userImage}
               />
 
