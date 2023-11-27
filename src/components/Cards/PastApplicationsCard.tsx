@@ -63,4 +63,4 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
   );
 };
 
-export default PastApplicationsCard;
+export default React.memo(PastApplicationsCard);

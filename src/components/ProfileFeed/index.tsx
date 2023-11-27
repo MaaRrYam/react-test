@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 
 import FeedItem from '@/components/Feed/FeedItem';
 import {FeedItem as FeedInterface, ProfileFeedInterface} from '@/interfaces';
 import HomeService from '@/services/home';
 import ProfileService from '@/services/profile';
 import Loading from '../Loading';
+import {FlashList} from '@shopify/flash-list';
 
 const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   const [feedData, setFeedData] = useState<FeedInterface[]>([]);
@@ -36,12 +37,13 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   }
   return (
     <>
-      <FlatList
+      <FlashList
         data={feedData}
         renderItem={({item}) => (
           <FeedItem item={item} fetchPostComments={fetchPostComments} />
         )}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.id}
+        estimatedItemSize={100}
       />
     </>
   );

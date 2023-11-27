@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {
   BackButton,
@@ -39,7 +40,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
           <BackButton onPress={() => console.log('Back button pressed')} />
           <Text style={commonStyles.title}>Your Experience</Text>
 
-          <FlatList
+          <FlashList
             data={experience}
             renderItem={({item}) => (
               <ExperienceCard
@@ -55,6 +56,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
               />
             )}
             keyExtractor={item => item.id.toString()}
+            estimatedItemSize={10}
           />
         </View>
         <View style={commonStyles.footer}>

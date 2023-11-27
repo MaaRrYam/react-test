@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 
 import {styles} from '@/screens/home/styles';
 import {
@@ -23,6 +16,7 @@ import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
+import {FlashList} from '@shopify/flash-list';
 
 const RepliesContainer = ({
   replies,
@@ -86,7 +80,7 @@ const RepliesContainer = ({
           </TouchableOpacity>
         )}
       </View>
-      <FlatList
+      <FlashList
         data={replies}
         renderItem={({item}) => (
           <View style={styles.replyContainer}>
@@ -102,6 +96,8 @@ const RepliesContainer = ({
             <Text style={styles.reply}>{item.text}</Text>
           </View>
         )}
+        keyExtractor={item => item.id}
+        estimatedItemSize={40}
       />
     </>
   );
@@ -322,4 +318,4 @@ const PostComment = ({
   );
 };
 
-export default PostComment;
+export default React.memo(PostComment);

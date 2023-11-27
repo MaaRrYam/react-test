@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
+
 import {
   BackButton,
   PrimaryButton,
@@ -30,7 +32,7 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
         <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Current Employment Status</Text>
 
-        <FlatList
+        <FlashList
           data={employmentStatuses}
           renderItem={({item}) => (
             <EmploymentSelectionField
@@ -43,6 +45,7 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
             />
           )}
           keyExtractor={item => item}
+          estimatedItemSize={5}
         />
       </View>
       <View style={commonStyles.footer}>

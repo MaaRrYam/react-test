@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
 import {RootStackParamList} from '@/types';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -51,4 +51,4 @@ const ChatItem = ({
   );
 };
 
-export default ChatItem;
+export default memo(ChatItem);

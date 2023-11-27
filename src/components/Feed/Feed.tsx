@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {Loading, BottomSheet} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -64,7 +65,7 @@ const Feed = () => {
   }
   return (
     <>
-      <FlatList
+      <FlashList
         data={feed}
         renderItem={({item}) => (
           <FeedItem item={item} fetchPostComments={fetchPostComments} />
@@ -73,6 +74,7 @@ const Feed = () => {
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
         }
+        estimatedItemSize={200}
       />
       {/* {!isFeedFetched && feed.length && (
         <ActivityIndicator color={COLORS.primary} size="large" />

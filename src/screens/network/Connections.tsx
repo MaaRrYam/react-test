@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
@@ -43,7 +44,7 @@ const Connections = () => {
   return (
     <>
       {connections.length ? (
-        <FlatList
+        <FlashList
           data={connections}
           keyExtractor={item => item.id?.toString()}
           renderItem={({item}) => (
@@ -55,6 +56,7 @@ const Connections = () => {
               onRefresh={handleRefresh}
             />
           }
+          estimatedItemSize={50}
         />
       ) : (
         <Empty />

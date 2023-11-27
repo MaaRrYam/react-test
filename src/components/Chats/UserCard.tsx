@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, memo} from 'react';
 import {View, Image, Text} from 'react-native';
 
 import {ChatsInterface, UserInterface} from '@/interfaces';
@@ -76,4 +76,4 @@ const UserCard = ({
   );
 };
 
-export default UserCard;
+export default memo(UserCard);

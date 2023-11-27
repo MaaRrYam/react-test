@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  FlatList,
   TextInput,
   TouchableOpacity,
   Platform,
@@ -22,6 +21,7 @@ import {getUID} from '@/utils/functions';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
+import {FlashList} from '@shopify/flash-list';
 
 const NewPost = ({
   isVisible,
@@ -185,7 +185,7 @@ const NewPost = ({
 
         <View>
           <View style={styles.imageListContainer}>
-            <FlatList
+            <FlashList
               data={photos}
               keyExtractor={(item, index) => index.toString()}
               horizontal
@@ -198,6 +198,7 @@ const NewPost = ({
                   />
                 </TouchableOpacity>
               )}
+              estimatedItemSize={40}
             />
           </View>
           <PrimaryButton

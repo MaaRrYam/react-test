@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList} from 'react-native';
+import {View} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
+
 import {PastApplicationCardInterface} from '@/interfaces';
 import PastApplicationsCard from '@/components/Cards/PastApplicationsCard';
 import {Loading} from '@/components';
@@ -28,7 +30,7 @@ const PastApplications = ({
       {isLoading && !isFlatListRendered ? (
         <Loading />
       ) : allJobs.length ? (
-        <FlatList
+        <FlashList
           data={allJobs}
           renderItem={({item}) => (
             <PastApplicationsCard
@@ -43,6 +45,7 @@ const PastApplications = ({
             />
           )}
           keyExtractor={item => item?.id?.toString()!}
+          estimatedItemSize={100}
         />
       ) : (
         !isDataFetched &&

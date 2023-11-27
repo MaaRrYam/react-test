@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, FlatList, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {BottomSheet, Loading} from '@/components';
@@ -9,6 +9,7 @@ import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsCard from '@/components/Cards/JobsCard';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import EmptyComponent from '@/components/NoResults/Empty';
+import {FlashList} from '@shopify/flash-list';
 
 const JobsComponent = ({
   jobFilterBottomSheet,
@@ -82,7 +83,7 @@ const JobsComponent = ({
             allJobs &&
             !filteredJobs.length &&
             !searchTerm && (
-              <FlatList
+              <FlashList
                 data={allJobs}
                 renderItem={({item}) => (
                   <JobsCard
@@ -95,11 +96,12 @@ const JobsComponent = ({
                   />
                 )}
                 keyExtractor={item => item?.id?.toString()!}
+                estimatedItemSize={100}
               />
             )}
 
           {filteredJobs.length > 0 && (
-            <FlatList
+            <FlashList
               data={filteredJobs}
               renderItem={({item}) => (
                 <JobsCard
@@ -112,6 +114,7 @@ const JobsComponent = ({
                 />
               )}
               keyExtractor={item => item?.id?.toString()!}
+              estimatedItemSize={100}
             />
           )}
 
