@@ -8,15 +8,20 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {BackButton, Button} from '@/components';
+import {BackButton, PrimaryButton} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {COLORS, MARGINS} from '@/constants';
+import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
-import {RoleService} from '@/services/onboarding';
+import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const {user} = useUserManagement();
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>(
+    user?.jobTags || [],
+  );
   const [allIndustries, setAllIndustries] = useState<string[]>([]);
 
   const toggleIndustrySelection = (industry: string) => {
@@ -28,14 +33,14 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
       setSelectedIndustries([...selectedIndustries, industry]);
     }
   };
+  const handleSubmit = async () => {
+    OnboardingService.industry(selectedIndustries);
+    navigation.navigate(SCREEN_NAMES.Experience);
+  };
 
   useEffect(() => {
     RoleService.getJobRoles().then(setAllIndustries);
   }, []);
-
-  const handleSubmit = () => {
-    navigation.navigate('Experience');
-  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -80,7 +85,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
         )}
       </View>
       <View style={commonStyles.footer}>
-        <Button
+        <PrimaryButton
           title="Continue"
           onPress={handleSubmit}
           disabled={!selectedIndustries.length}

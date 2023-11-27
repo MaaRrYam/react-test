@@ -3,22 +3,28 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
   BackButton,
-  Button,
+  PrimaryButton,
   EducationCard,
   BottomSheet,
   EducationForm,
 } from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EducationScreenProps} from '@/types';
 import {EducationState} from '@/interfaces';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Education: React.FC<EducationScreenProps> = ({navigation}) => {
-  const [education, setEducation] = useState<EducationState[]>([]);
+  const {user} = useUserManagement();
+  const [education, setEducation] = useState<EducationState[]>(
+    user?.educationList || [],
+  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const handleContinue = () => {
-    navigation.navigate('Industry');
+    OnboardingService.education(education);
+    navigation.navigate(SCREEN_NAMES.Industry);
   };
 
   const handleAddNewEducation = (newEducation: EducationState) => {
@@ -39,10 +45,9 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
                 id={item.id}
                 instituteName={item.instituteName}
                 degree={item.degree}
-                cgpa={item.cgpa}
-                startingYear={item.startingYear}
-                endingYear={item.endingYear}
-                currentlyWorking={item.currentlyWorking}
+                startingYear={item.startYear}
+                endingYear={item.endYear}
+                currentlyWorking={item.currentlyStudying}
                 onPress={educationData => {
                   console.log('Education card pressed:', educationData);
                 }}
@@ -52,16 +57,16 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
           />
         </View>
         <View style={commonStyles.footer}>
-          <Button
-            title="Add More"
+          <PrimaryButton
+            title="Add"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
             borderWidth={1}
             borderColor={COLORS.border}
-            disabled={education.length === 3}
+            disabled={education && education.length === 3}
           />
-          <Button
+          <PrimaryButton
             title={education.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />

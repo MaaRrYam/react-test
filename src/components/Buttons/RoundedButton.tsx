@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import {COLORS} from '@/constants';
+import {COLORS, FONTS} from '@/constants';
 import {RoundedButtonProps} from '@/interfaces';
 
 const RoundedButton = ({
@@ -19,7 +19,7 @@ const RoundedButton = ({
       {isLoading ? (
         <ActivityIndicator size="small" color={COLORS.primary} />
       ) : (
-        <Text>{text}</Text>
+        <Text style={styles.textStyle}>{text}</Text>
       )}
     </TouchableOpacity>
   );
@@ -32,6 +32,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGrayBackground,
     color: COLORS.black,
     borderRadius: 20,
+  },
+  textStyle: {
+    color: COLORS.black,
+    fontSize: FONTS.regularLabel,
+    fontWeight: 'bold',
   },
 });
 

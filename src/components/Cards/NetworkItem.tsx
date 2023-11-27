@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {FONTS, COLORS} from '@/constants';
+import {FONTS, COLORS, SCREEN_NAMES} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NetworkItemProps} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -10,6 +10,7 @@ import {
   removeConnection,
   unfollow,
 } from '@/store/features/networkSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const NetworkItem = ({
   item,
@@ -18,6 +19,7 @@ const NetworkItem = ({
   isFollowing,
 }: NetworkItemProps) => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<null | true>(null);
@@ -99,7 +101,12 @@ const NetworkItem = ({
         </View>
         <View style={styles.networkItemContent}>
           <View style={styles.networkItemHeader}>
-            <Text style={styles.networkItemName}>{item.name}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(SCREEN_NAMES.Profile, {UID: item.id})
+              }>
+              <Text style={styles.networkItemName}>{item.name}</Text>
+            </TouchableOpacity>
             <Text style={styles.networkItemMessage}>{item.tagline}</Text>
           </View>
           {renderControls()}

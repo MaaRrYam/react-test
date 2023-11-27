@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Button, Platform} from 'react-native';
+import {View, PrimaryButton, Platform} from 'react-native';
 import DateTimePicker from 'react-native-date-picker';
 
 const MyDatePicker = () => {
@@ -18,7 +18,7 @@ const MyDatePicker = () => {
   return (
     <View>
       <View>
-        <Button onPress={showDatePickerModal} title="Show Date Picker" />
+        <PrimaryButton onPress={showDatePickerModal} title="Show Date Picker" />
       </View>
       {showDatePicker && (
         <DateTimePicker

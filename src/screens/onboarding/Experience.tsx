@@ -3,22 +3,28 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {
   BackButton,
-  Button,
+  PrimaryButton,
   ExperienceCard,
   BottomSheet,
   ExperienceForm,
 } from '@/components';
-import {COLORS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
+import useUserManagement from '@/hooks/useUserManagement';
+import OnboardingService from '@/services/onboarding';
 
 const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
-  const [experience, setExperience] = useState<ExperienceState[]>([]);
+  const {user} = useUserManagement();
+  const [experience, setExperience] = useState<ExperienceState[]>(
+    user?.employmentList || [],
+  );
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-  const handleContinue = () => {
-    navigation.navigate('EmploymentStatus');
+  const handleContinue = async () => {
+    OnboardingService.experience(experience);
+    navigation.navigate(SCREEN_NAMES.EmploymentStatus);
   };
 
   const handleAddNewExperience = (newExperience: ExperienceState) => {
@@ -38,10 +44,10 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
             renderItem={({item}) => (
               <ExperienceCard
                 id={item.id}
-                currentCompany={item.currentCompany}
-                designation={item.designation}
-                startingYear={item.startingYear}
-                endingYear={item.endingYear}
+                currentCompany={item.companyName}
+                designation={item.role}
+                startingYear={item.startYear}
+                endingYear={item.endYear}
                 currentlyWorking={item.currentlyWorking}
                 onPress={id => {
                   console.log('Experience card pressed:', id);
@@ -52,15 +58,15 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
           />
         </View>
         <View style={commonStyles.footer}>
-          <Button
-            title="Add More"
+          <PrimaryButton
+            title="Add"
             onPress={() => setIsBottomSheetVisible(true)}
             backgroundColor={COLORS.white}
             textColor={COLORS.black}
             borderWidth={1}
             borderColor={COLORS.border}
           />
-          <Button
+          <PrimaryButton
             title={experience.length ? 'Continue' : 'Skip'}
             onPress={handleContinue}
           />

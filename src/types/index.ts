@@ -1,8 +1,13 @@
-import {RouteProp} from '@react-navigation/native';
+import {
+  NavigationState,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
+import {FeedItem, UserInterface} from '@/interfaces';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  SignIn: undefined;
+  Signin: undefined;
   SelectRole: undefined;
   RequestAccess: {
     role: string;
@@ -20,13 +25,35 @@ export type RootStackParamList = {
   Network: undefined;
   ChatDetails: {
     id: string;
-    name?: string;
+    name: string;
+    user: UserInterface;
   };
   Notifications: undefined;
+  Jobs: undefined;
+  Launch: undefined;
+  SigninWithEmail: undefined;
+  Signup: undefined;
+  SignupWithEmail: undefined;
+  Header: undefined;
+  Profile: {
+    uid: string;
+    Article: {
+      article?: FeedItem;
+      id?: string;
+    };
+  };
+  Article: {
+    article?: FeedItem;
+    id?: string;
+  };
+  Post: {
+    id?: string;
+    item: FeedItem;
+  };
 };
 
-export type SignInScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
+export type LaunchScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Launch'>;
 };
 
 export type SelectRoleScreenProps = {
@@ -87,8 +114,40 @@ export type ChatDetailsScreenProps = {
   route: RouteProp<RootStackParamList, 'ChatDetails'>;
 };
 
+export type ArticleScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Article'>;
+  route: RouteProp<RootStackParamList, 'Article'>;
+};
+
+export type PostScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Post'>;
+  route: RouteProp<RootStackParamList, 'Post'>;
+};
+
 export type NotificationsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };
+export type JobsScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Jobs'>;
+};
 
-export type DateFormatOption = 'date' | 'dateTime';
+export type SignInScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Signin'>;
+};
+export type SigninWithEmailProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SigninWithEmail'>;
+};
+export type SignupScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Signup'>;
+};
+
+export type SignupWithEmailProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SignupWithEmail'>;
+};
+
+export type HeaderProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Header'> | any;
+  setJobsFilterBottomSheet: Function;
+};
+export type DateFormatOption = 'date' | 'dateTime' | 'time';
+export type NavigationStateType = NavigationState<ParamListBase>;

@@ -1,27 +1,123 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   TextInput,
   FlatList,
   SafeAreaView,
-  StyleSheet,
   Image,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import {COLORS, CHAT_DETAILS, FONTS} from '@/constants';
-import {BackButton, IconButton} from '@/components';
+import {launchImageLibrary} from 'react-native-image-picker';
+
+import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
+import {Asset, GroupedMessage, UserInterface} from '@/interfaces';
+import {styles} from './styles';
+import {getUID} from '@/utils/functions';
+import ChatsService from '@/services/chats';
+import {SendIcon} from '@/assets/icons';
+import StorageService from '@/services/Storage';
+import FirebaseService from '@/services/Firebase';
+import {COLORS} from '@/constants';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
+  const [messages, setMessages] = useState<GroupedMessage[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [message, setMessage] = useState('');
+  const [selectedImage, setSelectedImage] = useState<null | Asset>(null);
+  const [isMessageSending, setIsMessageSending] = useState<boolean>(false);
+
   const {
-    params: {name},
+    params: {name, id, user},
   } = route;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const self = (await getUID()) as string;
+      const chatAddress = ChatsService.findChatAddress(self, id);
+      const unSub = await ChatsService.fetchMessagesRealTime(
+        chatAddress,
+        setMessages,
+      );
+      setLoading(false);
+
+      return () => {
+        if (unSub) {
+          unSub();
+        }
+      };
+    };
+
+    fetchData();
+  }, [id]);
+
+  const handleSendMessage = async () => {
+    setIsMessageSending(true);
+    const sender = (await StorageService.getItem('user')) as UserInterface;
+    const senderId = (await getUID()) as string;
+
+    const payload = {
+      senderId,
+      receiverId: id,
+      message,
+      sender,
+      receiver: user,
+      fileUrl: '',
+    };
+    if (selectedImage) {
+      const imageUrl = (await FirebaseService.uploadToStorage(
+        selectedImage,
+      )) as string;
+      payload.fileUrl = imageUrl;
+    }
+
+    setMessage('');
+    handleResetImage();
+    await ChatsService.sendMessage(payload);
+    setIsMessageSending(false);
+  };
+
+  const handleResetImage = () => {
+    setSelectedImage(null);
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const openImagePicker = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 2000,
+        maxWidth: 2000,
+      },
+      response => {
+        if (response.errorCode) {
+          console.log('Image picker error: ', response.errorMessage);
+        } else {
+          if (response.assets && response.assets.length) {
+            let imageUri = response.assets[0];
+            setSelectedImage(imageUri);
+          }
+        }
+      },
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <BackButton style={styles.backButton} />
         <Image
-          source={require('@/assets/images/user.png')}
+          source={
+            user?.photoUrl
+              ? {uri: user.photoUrl}
+              : require('@/assets/images/user.png')
+          }
           style={styles.userImage}
         />
         <Text style={styles.userName}>{name || 'Some User'}</Text>
@@ -30,7 +126,8 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
 
       <View style={styles.chatsContainer}>
         <FlatList
-          data={CHAT_DETAILS}
+          inverted
+          data={messages}
           keyExtractor={item => item.date}
           renderItem={({item}) => (
             <View>
@@ -39,143 +136,58 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
                 <Text style={styles.dateText}>{item.date}</Text>
                 <View style={styles.dateLine} />
               </View>
-              {item.messages.map((message, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.messageContainer,
-                    message.sender === 'me'
-                      ? styles.myMessageContainer
-                      : styles.otherMessageContainer,
-                  ]}>
-                  <View
-                    style={
-                      message.sender === 'me'
-                        ? styles.myMessage
-                        : styles.otherMessage
-                    }>
-                    <Text style={styles.messageText}>{message.message}</Text>
-                    <Text style={styles.messageTime}>{message.time}</Text>
-                  </View>
-                </View>
+              {item.messages.map((messageItem, index) => (
+                <Chat key={index} message={messageItem} />
               ))}
             </View>
           )}
         />
       </View>
 
+      <View style={styles.imageContainer}>
+        {selectedImage && (
+          <Image
+            source={{uri: selectedImage.uri || ''}}
+            style={styles.selectedImage}
+          />
+        )}
+
+        {selectedImage && (
+          <TouchableOpacity
+            onPress={handleResetImage}
+            style={styles.crossButton}>
+            <Text style={styles.crossText}>X</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <View style={styles.inputContainer}>
-        <TextInput placeholder="Start Typing..." style={styles.input} />
+        <View style={styles.inputFieldContainer}>
+          <TextInput
+            placeholder="Start Typing..."
+            value={message}
+            onChangeText={setMessage}
+            style={styles.input}
+          />
+          {message && (
+            <>
+              {isMessageSending ? (
+                <ActivityIndicator size="small" color={COLORS.primary} />
+              ) : (
+                <TouchableOpacity onPress={handleSendMessage}>
+                  <SendIcon />
+                </TouchableOpacity>
+              )}
+            </>
+          )}
+        </View>
         <IconButton
           imageSource={require('@/assets/icons/image.png')}
-          onPress={() => console.log('Upload Image')}
+          onPress={openImagePicker}
           style={styles.uploadImageButton}
         />
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-    padding: 10,
-  },
-  backButton: {
-    borderWidth: 0,
-  },
-  userImage: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    marginRight: 8,
-  },
-  userName: {
-    flex: 1,
-    fontSize: 18,
-  },
-  chatsContainer: {
-    flex: 1,
-    paddingTop: 20,
-  },
-  date: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 5,
-    marginBottom: 10,
-  },
-  dateLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: COLORS.border,
-    marginRight: 10,
-  },
-  dateText: {
-    fontSize: 14,
-    color: COLORS.text,
-    marginRight: 8,
-  },
-  messageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 10,
-    marginVertical: 5,
-  },
-  myMessageContainer: {
-    flexDirection: 'row-reverse',
-  },
-  otherMessageContainer: {
-    flexDirection: 'row',
-  },
-  myMessage: {
-    backgroundColor: COLORS.lightBlueBackground,
-    padding: 20,
-    borderRadius: 10,
-    width: '70%',
-  },
-  otherMessage: {
-    backgroundColor: COLORS.lightGrayBackground,
-    padding: 20,
-    borderRadius: 10,
-    width: '70%',
-  },
-  messageText: {
-    fontSize: FONTS.bodyRegular,
-    color: COLORS.black,
-  },
-  messageTime: {
-    fontSize: FONTS.bodyRegular,
-    alignSelf: 'flex-end',
-    marginTop: 5,
-    color: COLORS.black,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-    padding: 10,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: COLORS.lightBackground,
-    borderRadius: 20,
-    padding: 15,
-  },
-  uploadImageButton: {
-    width: 40,
-    height: 40,
-    marginLeft: 10,
-    backgroundColor: COLORS.lightGrayBackground,
-    padding: 20,
-  },
-});
 
 export default ChatScreen;

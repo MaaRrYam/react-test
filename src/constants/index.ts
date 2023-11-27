@@ -1,4 +1,5 @@
 import {Platform} from 'react-native';
+import {getScreenDimensions} from '@/utils/functions';
 
 export const baseURL: string =
   process.env.REACT_APP_API_BASE_URL ||
@@ -6,6 +7,10 @@ export const baseURL: string =
 export const isInDevelopment: boolean = process.env.NODE_ENV !== 'production';
 export const UNAUTHORIZED = 401;
 export const UNAUTHENTICATED = 403;
+
+export const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+export const getUserCacheKey = (uid: string): string => `user_${uid}`;
+export const getFeedCacheKey = (): string => 'feed';
 
 export const COLORS = {
   primary: '#1918ff',
@@ -16,10 +21,15 @@ export const COLORS = {
   lightBackground: '#F4F4F4',
   lightBlueBackground: '#EDF0FF',
   lightGrayBackground: '#F4F4F4',
+  deleteButtonBackground: 'rgba(255, 24, 24, 0.06)',
 };
 
 export const BORDER_RADIUS = {
-  general: 8,
+  general: 5,
+  recruiterIcon: 20,
+};
+export const BORDER_WIDTH = {
+  general: 2,
 };
 
 export const FONTS = {
@@ -39,6 +49,13 @@ export const MARGINS = {
 
 export const PADDING = {
   general: Platform.OS === 'ios' ? 20 : 12,
+};
+
+export const ICON_WIDTH = {
+  general: 50,
+};
+export const ICON_HEIGHT = {
+  general: 50,
 };
 
 export const ROLES_DATA = [
@@ -75,6 +92,9 @@ export const employmentStatuses = [
 ];
 
 export const NETWORK_TABS = ['Explore', 'Connections', 'Following'];
+export const JOBS_TABS = ['Jobs', 'Past Applications', 'Saved'];
+
+export const PROFILE_TABS = ['Profile', 'Career', 'Education'];
 
 export const NETWORK_REQUESTS = [
   {
@@ -177,3 +197,39 @@ export const NOTIFICATIONS = [
     isUnRead: false,
   },
 ];
+const {width} = getScreenDimensions();
+export const containerWidth = width - 50;
+
+export const SCREEN_NAMES = {
+  Launch: 'Launch',
+  Signin: 'Signin',
+  Signup: 'Signup',
+  RequestAccess: 'RequestAccess',
+  Onboarding: 'Onboarding',
+  BottomNavigator: 'BottomNavigator',
+  Chats: 'Chats',
+  ChatDetails: 'ChatDetails',
+  GetStarted: 'GetStarted',
+  Education: 'Education',
+  Industry: 'Industry',
+  Experience: 'Experience',
+  SalaryExpectations: 'SalaryExpectations',
+  EmploymentStatus: 'EmploymentStatus',
+  OnboardingCompleted: 'OnboardingCompleted',
+  SelectRole: 'SelectRole',
+  RequestAccessForm: 'RequestAccessForm',
+  RequestAccessComplete: 'RequestAccessComplete',
+  SigninOptions: 'SigninOptions',
+  SigninWithEmail: 'SigninWithEmail',
+  SignupWithEmail: 'SignupWithEmail',
+  Home: 'Home',
+  Network: 'Network',
+  Notifications: 'Notifications',
+  Jobs: 'Jobs',
+  Profile: 'Profile',
+  Article: 'Article',
+  Post: 'Post',
+};
+
+export const jobTypes = ['Full-time', 'Part-time', 'Temporary', 'Intern'];
+export const workEnviroment = ['In-office', 'Remote', 'Hybrid'];

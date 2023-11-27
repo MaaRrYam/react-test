@@ -1,4 +1,4 @@
-import {FirebaseServiceProps} from '@/interfaces';
+import {Platform} from 'react-native';
 import {
   getFirestore,
   collection,
@@ -14,7 +14,14 @@ import {
   getDoc,
   deleteDoc,
   updateDoc,
+  setDoc,
+  onSnapshot,
+  Unsubscribe,
 } from 'firebase/firestore';
+import storage from '@react-native-firebase/storage';
+
+import {FirebaseServiceProps, Asset} from '@/interfaces';
+import {formatFirebaseTimestamp} from '@/utils';
 
 const db = getFirestore();
 
@@ -31,21 +38,33 @@ const FirebaseService: FirebaseServiceProps = {
       throw error;
     }
   },
+  async updateDocument(collectionName, documentId, data) {
+    try {
+      const updateDocRef = doc(db, collectionName, documentId);
+      await updateDoc(updateDocRef, data);
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      throw error;
+    }
+  },
+  async setDoc(collectionName, docId, payload) {
+    try {
+      const docRef = doc(db, collectionName, docId);
+
+      await setDoc(docRef, payload);
+
+      console.log('Document successfully written!');
+    } catch (error) {
+      console.error('Error while setting document: ', error);
+      throw error;
+    }
+  },
   async deleteDocument(collectionName, documentId) {
     try {
       const docRef = doc(db, collectionName, documentId);
       await deleteDoc(docRef);
     } catch (error) {
       console.error('Error deleting document: ', error);
-      throw error;
-    }
-  },
-  async updateDocument(collectionName, documentId, data) {
-    try {
-      const docRef = doc(db, collectionName, documentId);
-      await updateDoc(docRef, data);
-    } catch (error) {
-      console.error('Error updating document: ', error);
       throw error;
     }
   },
@@ -69,7 +88,20 @@ const FirebaseService: FirebaseServiceProps = {
       const docRef = doc(db, collectionName, documentId);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        const document = {id: docSnapshot.id, ...docSnapshot.data()};
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
         return document;
       } else {
         return null;
@@ -121,6 +153,33 @@ const FirebaseService: FirebaseServiceProps = {
     }
   },
 
+  async uploadToStorage(file: Asset) {
+    try {
+      const {uri} = file;
+      if (uri) {
+        const filename = this.generateUniqueFilename();
+        const uploadUri =
+          Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+        const task = storage().ref(filename).putFile(uploadUri);
+        await task;
+
+        const imageURL = await storage().ref(filename).getDownloadURL();
+        return imageURL;
+      }
+      return '';
+    } catch (error) {
+      console.error('Error uploading file to storage: ', error);
+      throw error;
+    }
+  },
+
+  generateUniqueFilename() {
+    const timestamp = new Date().getTime();
+    const randomString = Math.random().toString(36).substring(7);
+    return `${timestamp}_${randomString}`;
+  },
+
   serverTimestamp() {
     return Timestamp.now();
   },
@@ -135,6 +194,73 @@ const FirebaseService: FirebaseServiceProps = {
     }
 
     return autoId;
+  },
+  listenToDocument: (
+    collectionName: string,
+    documentId: string,
+    callback: (document: DocumentData | null) => void,
+  ): Unsubscribe => {
+    const docRef = doc(db, collectionName, documentId);
+
+    // Set up a listener to watch for changes to the document
+    const unsubscribe = onSnapshot(docRef, docSnapshot => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
+        // Invoke the provided callback with the updated document
+        callback(document);
+      } else {
+        // The document no longer exists
+        callback(null);
+      }
+    });
+
+    return unsubscribe;
+  },
+  listenToAllDocuments: async (
+    collectionName: string,
+    callback: (documents: DocumentData[]) => void,
+  ): Promise<Unsubscribe> => {
+    const colRef = collection(db, collectionName);
+
+    // Set up a listener to watch for changes to the entire collection
+    const unsubscribe = onSnapshot(colRef, async querySnapshot => {
+      const documents: DocumentData[] = [];
+      for (const docSnapshot of querySnapshot.docs) {
+        const data = docSnapshot.data();
+
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        const document = {id: docSnapshot.id, ...data};
+        documents.push(document);
+      }
+
+      // Invoke the provided callback with the updated list of documents
+      callback(documents);
+    });
+
+    return unsubscribe;
   },
 };
 

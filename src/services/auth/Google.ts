@@ -1,7 +1,13 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-
-export const _signInWithGoogle = async () => {
+import {UserCredential} from 'firebase/auth';
+import SigninService from '@/services/signin';
+import {RootStackParamList} from '@/types';
+import {NavigationProp} from '@react-navigation/native';
+export const _signInWithGoogle = async (
+  navigation: NavigationProp<RootStackParamList>,
+  dispatch: any,
+) => {
   try {
     GoogleSignin.configure({
       offlineAccess: false,
@@ -14,9 +20,16 @@ export const _signInWithGoogle = async () => {
 
     const {idToken} = await GoogleSignin.signIn();
     const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-    auth().signInWithCredential(googleCredentials);
+    auth()
+      .signInWithCredential(googleCredentials)
+      .then(async (userCredential: UserCredential) => {
+        await SigninService.checkIfUserIsWhitelisted(
+          userCredential,
+          navigation,
+          dispatch,
+        );
+      });
 
-    console.log(userInfo);
     return {success: true, message: 'Successfully Signed In', data: userInfo};
   } catch (error: any) {
     console.log(error);

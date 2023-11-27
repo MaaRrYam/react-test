@@ -1,9 +1,13 @@
 import {NotificationInterface, UserInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {formatFirebaseTimestamp} from '@/utils';
+import {getUID} from '@/utils/functions';
+import Cache from '@/cache';
 
-const UID = 'ucCUjQtHVnZ8lblVtFHqAYMigot1';
-
+let UID: string;
+(async () => {
+  UID = (await getUID()) as string;
+})();
 const NotificationService = {
   async getAllNotifications() {
     try {
@@ -18,10 +22,19 @@ const NotificationService = {
             item.id,
           )) as NotificationInterface;
 
-          const author = (await FirebaseService.getDocument(
-            'users',
-            item.senderId,
-          )) as UserInterface;
+          let author = {} as UserInterface;
+
+          if (await Cache.get(`user_${item.senderId}`)) {
+            author = (await Cache.get(
+              `user_${item.senderId}`,
+            )) as UserInterface;
+          } else {
+            author = (await FirebaseService.getDocument(
+              'users',
+              item.senderId,
+            )) as UserInterface;
+            await Cache.set(`user_${item.senderId}`, author);
+          }
 
           return {
             ...notification,

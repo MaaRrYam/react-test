@@ -16,7 +16,8 @@
       "@/types/*": ["types/*"],
       "@/navigation/*": ["navigation/*"],
       "@/services/*": ["services/*"],
-      "@/store/*": ["store/*"]
+      "@/store/*": ["store/*"],
+      "@/cache/*": ["cache/*"]
     }
-  }
+  },
 }

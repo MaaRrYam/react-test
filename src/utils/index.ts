@@ -6,7 +6,7 @@ export const formatFirebaseTimestamp = (
   formatOption: DateFormatOption,
 ): string => {
   const date = new Date(
-    timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000,
+    timestamp?.seconds * 1000 + timestamp?.nanoseconds / 1000000,
   );
 
   if (formatOption === 'date') {
@@ -15,7 +15,7 @@ export const formatFirebaseTimestamp = (
       month: 'long',
       day: 'numeric',
     };
-    return date.toLocaleDateString(undefined, options);
+    return date?.toLocaleDateString(undefined, options);
   }
 
   if (formatOption === 'dateTime') {
@@ -26,8 +26,18 @@ export const formatFirebaseTimestamp = (
       hour: '2-digit',
       minute: '2-digit',
     };
-    return date.toLocaleString(undefined, options);
+    return date?.toLocaleString(undefined, options);
   }
 
-  throw new Error('Invalid format option. Use "date" or "dateTime".');
+  if (formatOption === 'time') {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return date?.toLocaleTimeString('en-US', options);
+  }
+
+  throw new Error(
+    'Invalid format option. Use "date", "dateTime", or "time24".',
+  );
 };

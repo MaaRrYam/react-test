@@ -3,14 +3,14 @@ import {Provider} from 'react-redux';
 import '@/config/firebase';
 import 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {ToastProvider} from 'react-native-toast-notifications';
 
 import store from '@/store';
-import {Splash} from './screens';
-import RootNavigation from './navigation';
+import {Splash} from '@/screens';
+import RootNavigation from '@/navigation';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
-
   useEffect(() => {
     setTimeout(() => {
       setShowSplash(false);
@@ -19,9 +19,11 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <Provider store={store}>
-        {showSplash ? <Splash /> : <RootNavigation />}
-      </Provider>
+      <ToastProvider placement="bottom" offsetBottom={50} r>
+        <Provider store={store}>
+          {showSplash ? <Splash /> : <RootNavigation />}
+        </Provider>
+      </ToastProvider>
     </GestureHandlerRootView>
   );
 };

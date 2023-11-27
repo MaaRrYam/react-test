@@ -1,33 +1,46 @@
-import React, {useState} from 'react';
-import {FlatList, SafeAreaView, TextInput, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {homeStyles} from '@/styles/home';
-import {BackButton, ChatItem} from '@/components';
+import {BackButton, ChatsList, Loading, NewChat} from '@/components';
 import {ChatsScreenProps} from '@/types';
 import {styles} from './styles';
-import {NewChat} from '@/assets/icons';
-
-const CHATS = [
-  {
-    id: '1',
-    image: '@/assets/images/user.png',
-    name: 'Дима',
-    time: '17 Jul',
-    hasUnreadMessages: true,
-    lastMessage: 'Какой-то текст от дима',
-  },
-  {
-    id: '2',
-    image: '@/assets/images/user.png',
-    name: 'Someone',
-    time: '17 Jul',
-    hasUnreadMessages: false,
-    lastMessage: 'Какой-то текст от дима',
-  },
-];
+import {NewChatIcon} from '@/assets/icons';
+import ChatsService from '@/services/chats';
+import {ChatsInterface} from '@/interfaces';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {setChatsToStore} from '@/store/features/chatsSlice';
 
 const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
   const [search, setSearch] = useState('');
+  const [isNewChatClicked, setIsNewChatClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [chats, setChats] = useState<ChatsInterface[]>([]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const unSub = await ChatsService.getAllChatsRealtime(setChats);
+      setLoading(false);
+
+      return () => {
+        if (unSub) {
+          unSub();
+        }
+      };
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    dispatch(setChatsToStore(chats));
+  }, [chats, dispatch]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <View style={homeStyles.outerContainer}>
@@ -43,20 +56,22 @@ const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
             />
           </View>
           <View style={styles.rightContainer}>
-            <View style={styles.iconContainer}>
-              <NewChat />
-            </View>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => setIsNewChatClicked(true)}>
+              <NewChatIcon />
+            </TouchableOpacity>
           </View>
         </View>
 
-        <FlatList
-          data={CHATS}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <ChatItem item={item} navigation={navigation} />
-          )}
-        />
+        <ChatsList search={search} navigation={navigation} />
       </SafeAreaView>
+      {isNewChatClicked && (
+        <NewChat
+          isVisible={isNewChatClicked}
+          onClose={() => setIsNewChatClicked(false)}
+        />
+      )}
     </View>
   );
 };
