@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {View, TouchableOpacity} from 'react-native';
 
 import profileStyles from '@/styles/profile';
-import {BottomSheet, ProfileFeed, RoundedButton} from '@/components';
-import {PROFILE_TABS} from '@/constants';
+import {BottomSheet, PrimaryButton, ProfileFeed} from '@/components';
+import {COLORS, PROFILE_TABS} from '@/constants';
 import {NewChatIcon} from '@/assets/icons';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {styles} from '@/screens/home/styles';
@@ -50,16 +50,16 @@ const Tabs = ({
       <View style={profileStyles.tabsContainer}>
         <View style={profileStyles.tabsHeader}>
           <View style={profileStyles.tabButtonContainer}>
-            {PROFILE_TABS.map((tab, index) => (
-              <RoundedButton
+            {PROFILE_TABS.map(tab => (
+              <PrimaryButton
                 key={tab}
-                text={tab}
+                title={tab}
+                backgroundColor={'#F4F4F4'}
+                textColor={COLORS.black}
                 style={
                   selectedTab === tab
-                    ? profileStyles.selectedTabButton
-                    : index === PROFILE_TABS.length - 1
-                    ? profileStyles.tabBorderRadius
-                    : profileStyles.tabButton
+                    ? profileStyles.selectedPrimaryButtonStyles
+                    : profileStyles.PrimaryButtonStyles
                 }
                 onPress={() => {
                   setSelectedTab(tab);
