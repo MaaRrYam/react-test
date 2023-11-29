@@ -95,7 +95,7 @@ const NetworkItem = ({
           <FastImage
             resizeMode="cover"
             source={{
-              uri: item.photoUrl || require('@/assets/images/user.png'),
+              uri: item.photoUrl || '',
               priority: FastImage.priority.normal,
               cache: FastImage.cacheControl.immutable,
             }}

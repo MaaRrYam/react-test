@@ -16,11 +16,7 @@ const SplashScreen = () => {
   return (
     <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
       <FastImage
-        source={{
-          uri: require('../assets/images/logo.png'),
-          priority: 'normal',
-          cache: 'immutable',
-        }}
+        source={require('../assets/images/logo.png')}
         style={styles.image}
         resizeMode={FastImage.resizeMode.cover}
       />
@@ -38,6 +34,7 @@ const styles = StyleSheet.create({
   image: {
     width: '80%',
     height: '80%',
+    resizeMode: 'contain',
   },
 });
 

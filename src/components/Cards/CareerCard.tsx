@@ -20,11 +20,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
       <View style={styles.iconContainer}>
         <FastImage
           resizeMode="cover"
-          source={{
-            uri: require('@/assets/images/emblem.png'),
-            priority: FastImage.priority.normal,
-            cache: FastImage.cacheControl.immutable,
-          }}
+          source={require('@/assets/images/emblem.png')}
           style={styles.icon}
         />
       </View>

@@ -50,11 +50,15 @@ const UserCard = ({
       <View style={styles.userImage}>
         <FastImage
           resizeMode="cover"
-          source={{
-            uri: item.photoUrl || require('@/assets/images/user.png'),
-            priority: FastImage.priority.normal,
-            cache: FastImage.cacheControl.immutable,
-          }}
+          source={
+            item.photoUrl
+              ? {
+                  uri: item.photoUrl,
+                  priority: FastImage.priority.normal,
+                  cache: FastImage.cacheControl.immutable,
+                }
+              : require('@/assets/images/user.png')
+          }
           style={styles.userImage}
         />
       </View>

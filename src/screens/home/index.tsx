@@ -42,12 +42,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
           <View style={homeStyles.subheader}>
             <FastImage
-              source={{
-                uri: user?.photoUrl
-                  ? user.photoUrl
-                  : require('@/assets/images/user.png'),
-                priority: 'normal',
-              }}
+              source={
+                user?.photoUrl
+                  ? {
+                      uri: user.photoUrl,
+                      priority: 'normal',
+                      cache: FastImage.cacheControl.immutable,
+                    }
+                  : require('@/assets/images/user.png')
+              }
               resizeMode={FastImage.resizeMode.cover}
               style={styles.userImage}
             />

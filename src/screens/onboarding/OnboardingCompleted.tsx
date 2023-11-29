@@ -23,10 +23,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.imagesContainer}>
           <FastImage
-            source={{
-              uri: require('assets/images/whiteLogo.png'),
-              priority: 'normal',
-            }}
+            source={require('assets/images/whiteLogo.png')}
             style={styles.logo}
             resizeMode="cover"
           />
@@ -35,10 +32,7 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
 
         <View style={styles.middleImageContainer}>
           <FastImage
-            source={{
-              uri: require('assets/images/completeOnboarding.png'),
-              priority: 'normal',
-            }}
+            source={require('assets/images/completeOnboarding.png')}
             style={styles.middleImage}
             resizeMode="cover"
           />

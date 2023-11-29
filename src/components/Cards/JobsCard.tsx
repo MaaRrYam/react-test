@@ -29,11 +29,7 @@ const JobsCard: React.FC<JobsCardProps> = ({
         ) : (
           <FastImage
             resizeMode="cover"
-            source={{
-              uri: require('@/assets/images/emblem.png'),
-              priority: FastImage.priority.normal,
-              cache: FastImage.cacheControl.immutable,
-            }}
+            source={require('@/assets/images/emblem.png')}
             style={jobCardStyles.icon}
           />
         )}

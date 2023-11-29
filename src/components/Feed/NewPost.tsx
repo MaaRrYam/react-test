@@ -147,11 +147,15 @@ const NewPost = ({
           <View style={styles.authorContainer}>
             <FastImage
               style={styles.avatar}
-              source={{
-                uri: user?.photoUrl || require('@/assets/images/user.png'),
-                priority: FastImage.priority.high,
-                cache: FastImage.cacheControl.immutable,
-              }}
+              source={
+                user?.photoUrl
+                  ? {
+                      uri: user?.photoUrl,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }
+                  : require('@/assets/images/user.png')
+              }
             />
             <Text style={styles.authorName}>{user?.name}</Text>
           </View>

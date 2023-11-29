@@ -34,11 +34,7 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
         ) : (
           <FastImage
             resizeMode="cover"
-            source={{
-              uri: require('@/assets/images/emblem.png'),
-              priority: FastImage.priority.normal,
-              cache: FastImage.cacheControl.web,
-            }}
+            source={require('@/assets/images/emblem.png')}
             style={pastApplicationCardStyles.icon}
           />
         )}

@@ -22,11 +22,15 @@ const ProfileTab: FC<TabDataInterface> = ({
           (id === loggedInID && (
             <View style={styles.subheader}>
               <FastImage
-                source={{
-                  uri: photo || require('@/assets/images/user.png'),
-                  priority: FastImage.priority.high,
-                  cache: FastImage.cacheControl.immutable,
-                }}
+                source={
+                  photo
+                    ? {
+                        uri: photo,
+                        priority: FastImage.priority.high,
+                        cache: FastImage.cacheControl.immutable,
+                      }
+                    : require('@/assets/images/user.png')
+                }
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.userImage}
               />

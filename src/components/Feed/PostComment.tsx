@@ -85,12 +85,15 @@ const RepliesContainer = ({
         renderItem={({item}) => (
           <View style={styles.replyContainer}>
             <FastImage
-              source={{
-                uri:
-                  item?.user?.photoUrl || require('@/assets/images/user.png'),
-                priority: FastImage.priority.high,
-                cache: FastImage.cacheControl.immutable,
-              }}
+              source={
+                item?.user?.photoUrl
+                  ? {
+                      uri: item?.user?.photoUrl,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }
+                  : require('@/assets/images/user.png')
+              }
               style={styles.commentImage}
             />
             <Text style={styles.replyAuthor}>{item.user.name}</Text>

@@ -26,11 +26,7 @@ const BackButton = ({
       style={[styles.button, isBgWhite && styles.whiteBackground, style]}
       onPress={handleNavigation}>
       <FastImage
-        source={{
-          uri: require('../../assets/images/back.png'),
-          priority: FastImage.priority.normal,
-          cache: FastImage.cacheControl.immutable,
-        }}
+        source={require('../../assets/images/back.png')}
         style={styles.icon}
         resizeMode="cover"
       />

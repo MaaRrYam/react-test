@@ -74,11 +74,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
     <SafeAreaView>
       <View style={styles.mainContainer}>
         <FastImage
-          source={{
-            uri: require('@/assets/images/logo.png'),
-            priority: 'normal',
-            cache: 'immutable',
-          }}
+          source={require('@/assets/images/logo.png')}
           style={styles.logo}
           resizeMode="cover"
         />

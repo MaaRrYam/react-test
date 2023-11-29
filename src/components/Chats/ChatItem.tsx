@@ -27,11 +27,15 @@ const ChatItem = ({
         <View style={styles.chatItemImage}>
           <FastImage
             resizeMode="cover"
-            source={{
-              uri: item.user?.photoUrl || require('@/assets/images/user.png'),
-              priority: FastImage.priority.high,
-              cache: FastImage.cacheControl.immutable,
-            }}
+            source={
+              item?.user?.photoUrl
+                ? {
+                    uri: item.user?.photoUrl,
+                    priority: FastImage.priority.high,
+                    cache: FastImage.cacheControl.immutable,
+                  }
+                : require('@/assets/images/user.png')
+            }
             style={styles.chatItemImage}
           />
         </View>

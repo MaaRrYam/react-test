@@ -113,11 +113,15 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       <View style={styles.header}>
         <BackButton style={styles.backButton} />
         <FastImage
-          source={{
-            uri: user?.photoUrl || require('@/assets/images/user.png'),
-            priority: 'high',
-            cache: 'immutable',
-          }}
+          source={
+            user?.photoUrl
+              ? {
+                  uri: user?.photoUrl,
+                  priority: 'high',
+                  cache: 'immutable',
+                }
+              : require('@/assets/images/user.png')
+          }
           resizeMode="cover"
           style={styles.userImage}
         />

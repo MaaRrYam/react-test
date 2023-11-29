@@ -22,11 +22,15 @@ const NotificationItem = ({
         ]}>
         <View style={styles.notificationItemImage}>
           <FastImage
-            source={{
-              uri: item.sender?.photoUrl || require('@/assets/images/user.png'),
-              priority: FastImage.priority.high,
-              cache: FastImage.cacheControl.immutable,
-            }}
+            source={
+              item?.sender?.photoUrl
+                ? {
+                    uri: item.sender?.photoUrl,
+                    priority: FastImage.priority.high,
+                    cache: FastImage.cacheControl.immutable,
+                  }
+                : require('@/assets/images/user.png')
+            }
             resizeMode={FastImage.resizeMode.cover}
             style={styles.notificationItemImage}
           />

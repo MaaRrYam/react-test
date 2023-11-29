@@ -106,14 +106,18 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
             {selectedImage?.uri ? (
               <FastImage
                 style={commonStyles.image}
-                source={{uri: selectedImage?.uri}}
+                source={{
+                  uri: selectedImage?.uri,
+                  priority: 'normal',
+                  cache: FastImage.cacheControl.immutable,
+                }}
                 resizeMode="cover"
               />
             ) : selectedImage ? (
               <FastImage
                 style={commonStyles.image}
                 source={{
-                  uri: selectedImage,
+                  uri: selectedImage?.uri,
                   priority: 'normal',
                   cache: FastImage.cacheControl.immutable,
                 }}

@@ -31,18 +31,12 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.imagesContainer}>
           <FastImage
-            source={{
-              uri: require('@/assets/images/logo.png'),
-              priority: 'normal',
-            }}
+            source={require('@/assets/images/logo.png')}
             style={styles.logo}
             resizeMode={FastImage.resizeMode.cover}
           />
           <FastImage
-            source={{
-              uri: require('@/assets/images/people.png'),
-              priority: 'normal',
-            }}
+            source={require('@/assets/images/people.png')}
             style={styles.peopleImage}
             resizeMode={FastImage.resizeMode.cover}
           />

@@ -37,11 +37,7 @@ const RequestAccessComplete: React.FC<RequestAccessCompleteScreenProps> = ({
 
         <View style={styles.imgContainer}>
           <FastImage
-            source={{
-              uri: require('@/assets/images/requestSuccess.png'),
-              priority: 'normal',
-              cache: 'immutable',
-            }}
+            source={require('@/assets/images/requestSuccess.png')}
             style={styles.logo}
             resizeMode="cover"
           />

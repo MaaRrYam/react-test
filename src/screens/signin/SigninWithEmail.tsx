@@ -74,11 +74,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView behavior={'padding'} style={styles.mainContainer}>
         <FastImage
-          source={{
-            uri: require('@/assets/images/logo.png'),
-            priority: 'normal',
-            cache: 'immutable',
-          }}
+          source={require('@/assets/images/logo.png')}
           style={styles.logo}
           resizeMode="cover"
         />
