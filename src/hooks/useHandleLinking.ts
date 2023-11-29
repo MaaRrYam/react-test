@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -7,21 +7,30 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 const useHandleLinking = () => {
   const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const handleLinkingUrl = (url: string) => {
-    const route = url.split('/')[3];
-    const id = url.split('/')[4];
+  const handleLinkingUrl = useCallback(
+    (url: string) => {
+      const route = url.split('/')[3];
+      const id = url.split('/')[4];
 
-    switch (route) {
-      case 'post':
-        // navigate('Post', {
-        //   id: id,
-        // });
-        break;
+      switch (route) {
+        case 'post':
+          navigate('Post', {
+            id: id,
+          });
+          break;
 
-      default:
-        break;
-    }
-  };
+        case 'article':
+          navigate('Article', {
+            id,
+          });
+          break;
+
+        default:
+          break;
+      }
+    },
+    [navigate],
+  );
 
   useEffect(() => {
     (async () => {
@@ -33,7 +42,7 @@ const useHandleLinking = () => {
         handleLinkingUrl(url);
       });
     })();
-  }, []);
+  }, [handleLinkingUrl]);
 };
 
 export default useHandleLinking;

@@ -48,7 +48,7 @@ export type RootStackParamList = {
   };
   Post: {
     id?: string;
-    item: FeedItem;
+    item?: FeedItem;
   };
 };
 
