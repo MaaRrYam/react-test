@@ -44,6 +44,7 @@ import ProfileFeed from '@/components/ProfileFeed';
 import Drawer from '@/components/Drawer';
 
 import {About, ProfileTabs} from '@/components/Profile';
+import {PostsSkeleton} from './Skeleton';
 
 export {
   BackButton,
@@ -87,4 +88,5 @@ export {
   NewPost,
   About,
   ProfileTabs,
+  PostsSkeleton,
 };
