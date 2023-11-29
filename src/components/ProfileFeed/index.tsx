@@ -6,7 +6,6 @@ import {FeedItem as FeedInterface, ProfileFeedInterface} from '@/interfaces';
 import HomeService from '@/services/home';
 import ProfileService from '@/services/profile';
 import Loading from '../Loading';
-import {FlashList} from '@shopify/flash-list';
 
 const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   const [feedData, setFeedData] = useState<FeedInterface[]>([]);
@@ -37,14 +36,13 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
   }
   return (
     <>
-      <FlashList
-        data={feedData}
-        renderItem={({item}) => (
-          <FeedItem item={item} fetchPostComments={fetchPostComments} />
-        )}
-        keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
-        estimatedItemSize={100}
-      />
+      {feedData.map((item, index) => (
+        <FeedItem
+          item={item}
+          fetchPostComments={fetchPostComments}
+          key={item.id || index}
+        />
+      ))}
     </>
   );
 };

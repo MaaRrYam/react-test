@@ -8,6 +8,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -21,7 +22,6 @@ import {getUID} from '@/utils/functions';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
-import {FlashList} from '@shopify/flash-list';
 import {hasAndroidPermission} from '@/utils';
 
 const NewPost = ({
@@ -191,7 +191,7 @@ const NewPost = ({
 
         <View>
           <View style={styles.imageListContainer}>
-            <FlashList
+            <FlatList
               data={photos}
               keyExtractor={(item, index) => index.toString()}
               horizontal
@@ -204,7 +204,6 @@ const NewPost = ({
                   />
                 </TouchableOpacity>
               )}
-              estimatedItemSize={40}
             />
           </View>
           <PrimaryButton
