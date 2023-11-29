@@ -13,7 +13,7 @@ import {TouchableOpacity} from 'react-native';
 const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
   const navigation = useNavigation();
   const handleAuthorPress = () => {
-    navigation.navigate(SCREEN_NAMES.Profile , {UID: item.authorId});
+    navigation.navigate(SCREEN_NAMES.Profile, {UID: item.authorId});
   };
 
   return (
@@ -23,6 +23,9 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
         <View style={{marginLeft: 10}}>
           <TouchableOpacity onPress={handleAuthorPress}>
             <Text style={styles.authorName}>{item.author?.name}</Text>
+            {item.author?.tagline && (
+              <Text style={styles.authorTagline}>{item.author?.tagline}</Text>
+            )}
           </TouchableOpacity>
           <Text style={styles.postTime}>
             {formatFirebaseTimestamp(

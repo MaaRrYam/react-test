@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, FONTS, MARGINS} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS, MARGINS, PADDING} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,20 +12,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     paddingBottom: 0,
-    backgroundColor: COLORS.white,
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
-    backgroundColor: COLORS.lightGrayBackground,
-    justifyContent: 'center',
-    padding: 7,
-    borderRadius: 9999,
   },
   backIcon: {
     marginLeft: 5,
-    marginHorizontal: 20,
     color: COLORS.primary,
   },
   backButtonText: {
@@ -36,64 +29,47 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
   },
-  shareButton: {},
+  shareButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   postInfo: {
     padding: 16,
   },
   feedContent: {
-    fontSize: FONTS.regularLabel,
+    fontSize: FONTS.largeLabel,
     marginVertical: MARGINS.general,
-    color: COLORS.black,
   },
   media: {
     width: '100%',
-    height: 275,
+    height: 300,
     marginBottom: 12,
-    borderRadius: 5,
+    borderRadius: BORDER_RADIUS.general,
   },
-  reactionContainer: {
+  postReactions: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  actionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  commentsContainer: {
-    backgroundColor: COLORS.white,
-    marginVertical: 10,
-    paddingBottom: 10,
+    justifyContent: 'space-between',
   },
   reactionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.lightBackground,
-    borderRadius: 9999,
+    backgroundColor: '#ffffff40',
+    paddingHorizontal: PADDING.general,
     paddingVertical: 5,
-    paddingHorizontal: 19,
+    borderRadius: BORDER_RADIUS.general,
   },
   like: {
-    fontWeight: '400',
-    fontSize: FONTS.regularLabel,
-    color: COLORS.text,
-    marginHorizontal: 10,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   iconsContainer: {
     flexDirection: 'row',
     flex: 1 / 2,
     justifyContent: 'flex-end',
   },
-  actionButton: {
-    marginLeft: 29,
-  },
-  postContainer: {
-    backgroundColor: COLORS.white,
-    borderTopColor: COLORS.border,
-    borderTopWidth: 1,
-    paddingHorizontal: 20,
+  report: {
+    marginLeft: 10 * 3,
   },
 });
 
