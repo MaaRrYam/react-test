@@ -22,6 +22,7 @@ import {getUID} from '@/utils/functions';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
+import {hasAndroidPermission} from '@/utils';
 
 const NewPost = ({
   isVisible,
@@ -36,7 +37,7 @@ const NewPost = ({
       filename: null,
       filepath: null,
       extension: null,
-      uri: 'https://media.istockphoto.com/id/1222357475/vector/image-preview-icon-picture-placeholder-for-website-or-ui-ux-design-vector-illustration.jpg?s=612x612&w=0&k=20&c=KuCo-dRBYV7nz2gbk4J9w1WtTAgpTdznHu55W9FjimE=',
+      uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png?20220519031949',
       height: 0,
       width: 0,
       fileSize: null,
@@ -71,7 +72,14 @@ const NewPost = ({
     );
   };
 
-  const handleButtonPress = () => {
+  const handleButtonPress = async () => {
+    if (Platform.OS === 'android') {
+      const hasPermissions = await hasAndroidPermission();
+      if (!hasPermissions) {
+        return;
+      }
+    }
+
     CameraRoll.getPhotos({
       first: 20,
       assetType: 'Photos',
@@ -86,9 +94,7 @@ const NewPost = ({
   };
 
   useEffect(() => {
-    if (Platform.OS === 'ios') {
-      handleButtonPress();
-    }
+    handleButtonPress();
   }, []);
 
   const handleImagePress = (image: ImageInterface) => {
@@ -170,7 +176,7 @@ const NewPost = ({
               <Image
                 style={styles.selectedImage}
                 source={{uri: selectedImage.uri}}
-                resizeMode="cover"
+                resizeMode="contain"
               />
             )}
             {selectedImage && (
