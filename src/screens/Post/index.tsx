@@ -46,7 +46,7 @@ import Cache from '@/cache';
 import {styles as userDataStyles} from '@/screens/Article/styles';
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
-    params: {item},
+    params: {item, id},
   } = route;
 
   const dispatch = useAppDispatch();
@@ -246,14 +246,14 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       ...prev,
       loading: true,
       showComments: true,
-      postId: item._id,
+      postId: item.id,
     }));
-    HomeService.fetchPostComments(item._id).then(response => {
+    HomeService.fetchPostComments(item.id).then(response => {
       if (response) {
         setComments(prev => ({...prev, loading: false, comments: response}));
       }
     });
-  }, [item._id]);
+  }, [item.id]);
 
   const handleBack = () => {
     navigation.goBack();
