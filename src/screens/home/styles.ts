@@ -35,12 +35,13 @@ export const styles = StyleSheet.create({
   },
   searchBar: {
     flex: 1,
-    borderRadius: BORDER_RADIUS.general * 2,
+    borderRadius: 20,
     backgroundColor: COLORS.lightBackground,
     paddingHorizontal: 10,
     paddingVertical: PADDING.general - 6,
     marginLeft: 10,
     justifyContent: 'center',
+    paddingLeft: 20,
   },
   searchBarText: {
     color: COLORS.text,
