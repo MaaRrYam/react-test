@@ -13,9 +13,9 @@ const useHandleLinking = () => {
 
     switch (route) {
       case 'post':
-        navigate('Post', {
-          id: id,
-        });
+        // navigate('Post', {
+        //   id: id,
+        // });
         break;
 
       default:
