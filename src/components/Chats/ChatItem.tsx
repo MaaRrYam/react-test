@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {RootStackParamList} from '@/types';
@@ -25,19 +25,22 @@ const ChatItem = ({
       }>
       <View style={styles.chatItem}>
         <View style={styles.chatItemImage}>
-          <FastImage
-            resizeMode="cover"
-            source={
-              item?.user?.photoUrl
-                ? {
-                    uri: item.user?.photoUrl,
-                    priority: FastImage.priority.high,
-                    cache: FastImage.cacheControl.immutable,
-                  }
-                : require('@/assets/images/user.png')
-            }
-            style={styles.chatItemImage}
-          />
+          {item?.user?.photoUrl ? (
+            <FastImage
+              resizeMode="cover"
+              source={{
+                uri: item.user?.photoUrl,
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
+              style={styles.chatItemImage}
+            />
+          ) : (
+            <Image
+              source={require('@/assets/images/user.png')}
+              style={styles.chatItemImage}
+            />
+          )}
         </View>
         <View style={styles.chatItemContent}>
           <View style={styles.chatItemHeader}>

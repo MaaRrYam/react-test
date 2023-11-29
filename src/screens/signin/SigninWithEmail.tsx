@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {View, Text, SafeAreaView, Image} from 'react-native';
 
 import {signInSchema} from '@/utils/schemas/schemas';
 import {
@@ -73,10 +72,10 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView behavior={'padding'} style={styles.mainContainer}>
-        <FastImage
+        <Image
           source={require('@/assets/images/logo.png')}
           style={styles.logo}
-          resizeMode="cover"
+          resizeMode="contain"
         />
 
         <View>

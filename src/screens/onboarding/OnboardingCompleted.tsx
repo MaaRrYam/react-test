@@ -1,7 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+  Image,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import FastImage from 'react-native-fast-image';
 
 import {PrimaryButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
@@ -22,19 +28,19 @@ const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
     <LinearGradient colors={['#2356F6', '#6EF0D3']} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.imagesContainer}>
-          <FastImage
+          <Image
             source={require('assets/images/whiteLogo.png')}
             style={styles.logo}
-            resizeMode="cover"
+            resizeMode="contain"
           />
           <Text style={styles.welcome}>Welcome Onboard!</Text>
         </View>
 
         <View style={styles.middleImageContainer}>
-          <FastImage
+          <Image
             source={require('assets/images/completeOnboarding.png')}
             style={styles.middleImage}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         </View>
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import {Home, Network, Notifications, Jobs, ImageIcon} from '@/assets/icons';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '@/constants';
-import FastImage from 'react-native-fast-image';
 
 export const getIcon = (
   label: string,
@@ -26,8 +25,8 @@ export const getIcon = (
         return (
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile', {uid})}>
-            <FastImage
-              source={{uri: photoUrl, priority: 'high', cache: 'immutable'}}
+            <Image
+              source={{uri: photoUrl}}
               style={styles.image}
               resizeMode="cover"
             />

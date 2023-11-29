@@ -1,7 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity, StyleSheet} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 
 const BackButton = ({
   onPress,
@@ -25,7 +24,7 @@ const BackButton = ({
     <TouchableOpacity
       style={[styles.button, isBgWhite && styles.whiteBackground, style]}
       onPress={handleNavigation}>
-      <FastImage
+      <Image
         source={require('../../assets/images/back.png')}
         style={styles.icon}
         resizeMode="cover"

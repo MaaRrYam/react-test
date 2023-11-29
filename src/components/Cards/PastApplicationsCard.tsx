@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {PastApplicationCardInterface} from '@/interfaces';
@@ -32,7 +32,7 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
             style={pastApplicationCardStyles.icon}
           />
         ) : (
-          <FastImage
+          <Image
             resizeMode="cover"
             source={require('@/assets/images/emblem.png')}
             style={pastApplicationCardStyles.icon}

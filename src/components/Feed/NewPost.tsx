@@ -8,6 +8,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  Image,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
@@ -145,18 +146,23 @@ const NewPost = ({
           <Text style={styles.createPostText}>Create a New Post</Text>
 
           <View style={styles.authorContainer}>
-            <FastImage
-              style={styles.avatar}
-              source={
-                user?.photoUrl
-                  ? {
-                      uri: user?.photoUrl,
-                      priority: FastImage.priority.high,
-                      cache: FastImage.cacheControl.immutable,
-                    }
-                  : require('@/assets/images/user.png')
-              }
-            />
+            {user?.photoUrl ? (
+              <FastImage
+                style={styles.avatar}
+                resizeMode="cover"
+                source={{
+                  uri: user?.photoUrl,
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }}
+              />
+            ) : (
+              <Image
+                style={styles.avatar}
+                source={require('@/assets/images/user.png')}
+                resizeMode="cover"
+              />
+            )}
             <Text style={styles.authorName}>{user?.name}</Text>
           </View>
 

@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  Image,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {styles} from '@/screens/home/styles';
@@ -84,18 +91,22 @@ const RepliesContainer = ({
         data={replies}
         renderItem={({item}) => (
           <View style={styles.replyContainer}>
-            <FastImage
-              source={
-                item?.user?.photoUrl
-                  ? {
-                      uri: item?.user?.photoUrl,
-                      priority: FastImage.priority.high,
-                      cache: FastImage.cacheControl.immutable,
-                    }
-                  : require('@/assets/images/user.png')
-              }
-              style={styles.commentImage}
-            />
+            {item?.user?.photoUrl ? (
+              <FastImage
+                source={{
+                  uri: item?.user?.photoUrl,
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                style={styles.commentImage}
+              />
+            ) : (
+              <Image
+                style={styles.commentImage}
+                source={require('@/assets/images/user.png')}
+                resizeMode="cover"
+              />
+            )}
             <Text style={styles.replyAuthor}>{item.user.name}</Text>
             <Text style={styles.reply}>{item.text}</Text>
           </View>
@@ -258,18 +269,22 @@ const PostComment = ({
   return (
     <View style={[styles.comment, isFromPost && styles.commentFromPost]}>
       <View style={styles.author}>
-        <FastImage
-          source={
-            item?.user?.photoUrl
-              ? {
-                  uri: item.user.photoUrl,
-                  priority: FastImage.priority.high,
-                  cache: FastImage.cacheControl.immutable,
-                }
-              : require('@/assets/images/user.png')
-          }
-          style={styles.commentImage}
-        />
+        {item?.user?.photoUrl ? (
+          <FastImage
+            source={{
+              uri: item.user.photoUrl,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            style={styles.commentImage}
+          />
+        ) : (
+          <Image
+            style={styles.commentImage}
+            source={require('@/assets/images/user.png')}
+            resizeMode="cover"
+          />
+        )}
         <View>
           <Text style={styles.commentAuthorName}>{item.user.name}</Text>
 

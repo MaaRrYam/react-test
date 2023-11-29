@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {COLORS} from '@/constants';
@@ -21,19 +21,23 @@ const NotificationItem = ({
           item?.isUnRead && styles.unReadNotificationItem,
         ]}>
         <View style={styles.notificationItemImage}>
-          <FastImage
-            source={
-              item?.sender?.photoUrl
-                ? {
-                    uri: item.sender?.photoUrl,
-                    priority: FastImage.priority.high,
-                    cache: FastImage.cacheControl.immutable,
-                  }
-                : require('@/assets/images/user.png')
-            }
-            resizeMode={FastImage.resizeMode.cover}
-            style={styles.notificationItemImage}
-          />
+          {item?.sender?.photoUrl ? (
+            <FastImage
+              source={{
+                uri: item.sender?.photoUrl,
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+              style={styles.notificationItemImage}
+            />
+          ) : (
+            <Image
+              style={styles.notificationItemImage}
+              source={require('@/assets/images/user.png')}
+              resizeMode="cover"
+            />
+          )}
         </View>
         <View style={styles.notificationItemContent}>
           <View style={styles.notificationItemHeader}>

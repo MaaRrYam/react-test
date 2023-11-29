@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
@@ -112,19 +113,23 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <BackButton style={styles.backButton} />
-        <FastImage
-          source={
-            user?.photoUrl
-              ? {
-                  uri: user?.photoUrl,
-                  priority: 'high',
-                  cache: 'immutable',
-                }
-              : require('@/assets/images/user.png')
-          }
-          resizeMode="cover"
-          style={styles.userImage}
-        />
+        {user?.photoUrl ? (
+          <FastImage
+            source={{
+              uri: user?.photoUrl,
+              priority: 'high',
+              cache: 'immutable',
+            }}
+            resizeMode="cover"
+            style={styles.userImage}
+          />
+        ) : (
+          <Image
+            style={styles.userImage}
+            source={require('@/assets/images/user.png')}
+            resizeMode="cover"
+          />
+        )}
         <Text style={styles.userName}>{name || 'Some User'}</Text>
         <Text>...</Text>
       </View>
@@ -153,7 +158,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
         {selectedImage && (
           <FastImage
             source={{
-              uri: selectedImage.uri || '',
+              uri: selectedImage.uri,
               priority: 'high',
               cache: 'web',
             }}

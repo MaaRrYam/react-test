@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import {Delete, NewChatIcon as NewChat} from '@/assets/icons';
@@ -18,7 +17,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <FastImage
+        <Image
           resizeMode="cover"
           source={require('@/assets/images/emblem.png')}
           style={styles.icon}

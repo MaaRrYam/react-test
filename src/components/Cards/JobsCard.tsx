@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {JobsCardProps} from '@/interfaces';
@@ -27,7 +27,7 @@ const JobsCard: React.FC<JobsCardProps> = ({
             style={jobCardStyles.icon}
           />
         ) : (
-          <FastImage
+          <Image
             resizeMode="cover"
             source={require('@/assets/images/emblem.png')}
             style={jobCardStyles.icon}

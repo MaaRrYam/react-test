@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Animated, StyleSheet} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Animated, Image, StyleSheet} from 'react-native';
 
 const SplashScreen = () => {
   const [fadeAnim] = useState(new Animated.Value(1));
@@ -15,10 +14,10 @@ const SplashScreen = () => {
 
   return (
     <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
-      <FastImage
+      <Image
         source={require('../assets/images/logo.png')}
         style={styles.image}
-        resizeMode={FastImage.resizeMode.cover}
+        resizeMode="contain"
       />
     </Animated.View>
   );
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
   image: {
     width: '80%',
     height: '80%',
-    resizeMode: 'contain',
   },
 });
 

@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {TabDataInterface} from '@/interfaces';
@@ -21,19 +21,23 @@ const ProfileTab: FC<TabDataInterface> = ({
         {id === '' ||
           (id === loggedInID && (
             <View style={styles.subheader}>
-              <FastImage
-                source={
-                  photo
-                    ? {
-                        uri: photo,
-                        priority: FastImage.priority.high,
-                        cache: FastImage.cacheControl.immutable,
-                      }
-                    : require('@/assets/images/user.png')
-                }
-                resizeMode={FastImage.resizeMode.cover}
-                style={styles.userImage}
-              />
+              {photo ? (
+                <FastImage
+                  source={{
+                    uri: photo,
+                    priority: FastImage.priority.high,
+                    cache: FastImage.cacheControl.immutable,
+                  }}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={styles.userImage}
+                />
+              ) : (
+                <Image
+                  style={styles.userImage}
+                  source={require('@/assets/images/user.png')}
+                  resizeMode="cover"
+                />
+              )}
 
               <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
                 <Text style={styles.searchBarText}>Start a Post</Text>
