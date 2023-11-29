@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {RefreshControl} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 
-import {Loading, BottomSheet} from '@/components';
+import {BottomSheet, PostsSkeleton} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {
@@ -18,8 +18,9 @@ import HomeService from '@/services/home';
 import {FeedCommentsResponse} from '@/interfaces';
 
 const Feed = () => {
-  const {feed, isFeedFetched, isFeedFirstRequest, isRefreshing} =
-    useAppSelector(state => state.home);
+  const {feed, isFeedFetched, isRefreshing} = useAppSelector(
+    state => state.home,
+  );
   const dispatch = useAppDispatch();
 
   const [comments, setComments] = useState({
@@ -60,25 +61,26 @@ const Feed = () => {
     setComments(prev => ({...prev, loading: false, comments: response}));
   };
 
-  if (isFeedFirstRequest && !feed.length) {
-    return <Loading />;
-  }
   return (
     <>
-      <FlashList
-        data={feed}
-        renderItem={({item}) => (
-          <FeedItem item={item} fetchPostComments={fetchPostComments} />
-        )}
-        keyExtractor={item => item._id}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-        }
-        estimatedItemSize={200}
-      />
-      {/* {!isFeedFetched && feed.length && (
-        <ActivityIndicator color={COLORS.primary} size="large" />
-      )} */}
+      {isFeedFetched ? (
+        <FlashList
+          data={feed}
+          renderItem={({item}) => (
+            <FeedItem item={item} fetchPostComments={fetchPostComments} />
+          )}
+          keyExtractor={item => item._id}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+          estimatedItemSize={100}
+        />
+      ) : (
+        <PostsSkeleton />
+      )}
 
       {comments.showComments && (
         <BottomSheet

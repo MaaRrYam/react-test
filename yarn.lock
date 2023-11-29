@@ -6918,6 +6918,11 @@ react-native-gesture-handler@^2.12.1:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
+react-native-gradient-shimmer@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-gradient-shimmer/-/react-native-gradient-shimmer-1.1.5.tgz#9870df4e35c0a8834a9c9645934b16b880a4dcde"
+  integrity sha512-fKY+eiak7TTBp5+dBp0olsfwwfYZcNPIvcUUBQa9HU51ENRLWE02bENUJSw4tRYAC6aCAMotN4GgcbvFKPGJbg==
+
 react-native-image-picker@^7.0.1:
   version "7.0.2"
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-7.0.2.tgz"
