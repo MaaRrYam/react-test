@@ -42,7 +42,7 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
         renderItem={({item}) => (
           <FeedItem item={item} fetchPostComments={fetchPostComments} />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         estimatedItemSize={100}
       />
     </>
