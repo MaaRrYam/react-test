@@ -16,7 +16,6 @@ import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
-import {FlashList} from '@shopify/flash-list';
 
 const RepliesContainer = ({
   replies,
@@ -80,25 +79,21 @@ const RepliesContainer = ({
           </TouchableOpacity>
         )}
       </View>
-      <FlashList
-        data={replies}
-        renderItem={({item}) => (
-          <View style={styles.replyContainer}>
-            <Image
-              source={
-                item?.user?.photoUrl
-                  ? {uri: item.user.photoUrl}
-                  : require('@/assets/images/user.png')
-              }
-              style={styles.commentImage}
-            />
-            <Text style={styles.replyAuthor}>{item.user.name}</Text>
-            <Text style={styles.reply}>{item.text}</Text>
-          </View>
-        )}
-        keyExtractor={item => item.id}
-        estimatedItemSize={40}
-      />
+
+      {replies.map((item, index) => (
+        <View style={styles.replyContainer} key={item.id || index}>
+          <Image
+            source={
+              item?.user?.photoUrl
+                ? {uri: item.user.photoUrl}
+                : require('@/assets/images/user.png')
+            }
+            style={styles.commentImage}
+          />
+          <Text style={styles.replyAuthor}>{item.user.name}</Text>
+          <Text style={styles.reply}>{item.text}</Text>
+        </View>
+      ))}
     </>
   );
 };

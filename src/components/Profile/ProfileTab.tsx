@@ -3,6 +3,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 import {TabDataInterface} from '@/interfaces';
 import {profileTabStyles as styles} from './styles';
+import {homeStyles} from '@/styles/home';
 
 const ProfileTab: FC<TabDataInterface> = ({
   bio,
@@ -27,8 +28,10 @@ const ProfileTab: FC<TabDataInterface> = ({
                 style={styles.userImage}
               />
 
-              <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
-                <Text style={styles.searchBarText}>Start a Post</Text>
+              <TouchableOpacity
+                style={homeStyles.searchBar}
+                onPress={handleOpen}>
+                <Text style={homeStyles.searchBarText}>Start a Post</Text>
               </TouchableOpacity>
             </View>
           ))}
