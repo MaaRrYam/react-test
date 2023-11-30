@@ -59,8 +59,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
               />
             )}
 
-            <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
-              <Text style={styles.searchBarText}>Start a Post</Text>
+            <TouchableOpacity style={homeStyles.searchBar} onPress={handleOpen}>
+              <Text style={homeStyles.searchBarText}>Start a Post</Text>
             </TouchableOpacity>
           </View>
         </View>

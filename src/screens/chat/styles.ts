@@ -1,4 +1,4 @@
-import {BORDER_RADIUS, COLORS, FONTS, MARGINS, PADDING} from '@/constants';
+import {COLORS, FONTS, PADDING} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -8,20 +8,20 @@ export const styles = StyleSheet.create({
   },
   searchInputStyles: {
     flex: 1,
-    borderRadius: BORDER_RADIUS.general * 2,
+    borderRadius: 22,
     backgroundColor: COLORS.lightBackground,
     paddingHorizontal: 10,
-    paddingVertical: PADDING.general - 6,
+    paddingVertical: PADDING.general * 0.55,
     color: COLORS.black,
     marginRight: 30,
     marginLeft: -10,
+    fontSize: FONTS.bodyRegular,
   },
   leftContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: MARGINS.general / 3,
   },
   rightContainer: {
     alignItems: 'center',
@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
   inputFieldContainer: {
     flex: 1,
     backgroundColor: COLORS.lightBackground,
-    borderRadius: 20,
+    borderRadius: 22,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

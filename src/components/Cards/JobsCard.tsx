@@ -47,4 +47,4 @@ const JobsCard: React.FC<JobsCardProps> = ({
   );
 };
 
-export default JobsCard;
+export default React.memo(JobsCard);

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  FlatList,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
@@ -22,6 +21,7 @@ import {SendIcon} from '@/assets/icons';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
 import {COLORS} from '@/constants';
+import {FlashList} from '@shopify/flash-list';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const [messages, setMessages] = useState<GroupedMessage[]>([]);
@@ -135,10 +135,12 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       </View>
 
       <View style={styles.chatsContainer}>
-        <FlatList
+        <FlashList
           inverted
           data={messages}
-          keyExtractor={item => item.date}
+          keyExtractor={(item, index) =>
+            item?.id?.toString() || index.toString()
+          }
           renderItem={({item}) => (
             <View>
               <View style={styles.date}>
@@ -151,6 +153,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
               ))}
             </View>
           )}
+          estimatedItemSize={100}
         />
       </View>
 

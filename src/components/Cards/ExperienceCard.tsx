@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExperienceCard;
+export default React.memo(ExperienceCard);

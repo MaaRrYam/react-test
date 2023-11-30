@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmploymentSelectionField;
+export default React.memo(EmploymentSelectionField);

@@ -166,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NetworkItem;
+export default React.memo(NetworkItem);

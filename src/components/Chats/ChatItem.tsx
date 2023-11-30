@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import React, {memo} from 'react';
+import {View, Image, Text, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {RootStackParamList} from '@/types';
@@ -61,4 +61,4 @@ const ChatItem = ({
   );
 };
 
-export default ChatItem;
+export default memo(ChatItem);

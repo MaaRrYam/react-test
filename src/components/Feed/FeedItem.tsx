@@ -34,6 +34,9 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
         <View style={{marginLeft: 10}}>
           <TouchableOpacity onPress={handleAuthorPress}>
             <Text style={styles.authorName}>{item.author?.name}</Text>
+            {item.author?.tagline && (
+              <Text style={styles.authorTagline}>{item.author?.tagline}</Text>
+            )}
           </TouchableOpacity>
           <Text style={styles.postTime}>
             {formatFirebaseTimestamp(

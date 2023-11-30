@@ -195,7 +195,7 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('Post', {
-          id: item._id,
+          id: item.id,
           item,
         })
       }>

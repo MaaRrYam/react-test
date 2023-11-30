@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   View,
-  FlatList,
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
@@ -23,6 +22,7 @@ import {getUID} from '@/utils/functions';
 import StorageService from '@/services/Storage';
 import HomeService from '@/services/home';
 import {COLORS, MARGINS} from '@/constants';
+import {FlashList} from '@shopify/flash-list';
 
 const PostComments = ({
   postId,
@@ -90,7 +90,7 @@ const PostComments = ({
       <View style={styles.commentsContainer}>
         {comments.length ? (
           <View style={styles.comments}>
-            <FlatList
+            <FlashList
               data={comments}
               renderItem={({item}: {item: FeedCommentsResponse}) => (
                 <PostComment
@@ -100,6 +100,8 @@ const PostComments = ({
                   isFromPost={isFromPost}
                 />
               )}
+              keyExtractor={item => item.id}
+              estimatedItemSize={40}
             />
           </View>
         ) : (

@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {styles} from '@/screens/home/styles';
@@ -87,31 +80,21 @@ const RepliesContainer = ({
           </TouchableOpacity>
         )}
       </View>
-      <FlatList
-        data={replies}
-        renderItem={({item}) => (
-          <View style={styles.replyContainer}>
-            {item?.user?.photoUrl ? (
-              <FastImage
-                source={{
-                  uri: item?.user?.photoUrl,
-                  priority: FastImage.priority.high,
-                  cache: FastImage.cacheControl.immutable,
-                }}
-                style={styles.commentImage}
-              />
-            ) : (
-              <Image
-                style={styles.commentImage}
-                source={require('@/assets/images/user.png')}
-                resizeMode="cover"
-              />
-            )}
-            <Text style={styles.replyAuthor}>{item.user.name}</Text>
-            <Text style={styles.reply}>{item.text}</Text>
-          </View>
-        )}
-      />
+
+      {replies.map((item, index) => (
+        <View style={styles.replyContainer} key={item.id || index}>
+          <Image
+            source={
+              item?.user?.photoUrl
+                ? {uri: item.user.photoUrl}
+                : require('@/assets/images/user.png')
+            }
+            style={styles.commentImage}
+          />
+          <Text style={styles.replyAuthor}>{item.user.name}</Text>
+          <Text style={styles.reply}>{item.text}</Text>
+        </View>
+      ))}
     </>
   );
 };
@@ -339,4 +322,4 @@ const PostComment = ({
   );
 };
 
-export default PostComment;
+export default React.memo(PostComment);

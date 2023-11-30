@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {COLORS, BORDER_RADIUS, PADDING, FONTS, MARGINS} from '@/constants';
 
 export const styles = StyleSheet.create({
@@ -32,19 +32,6 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
     maxHeight: 100,
-  },
-  searchBar: {
-    flex: 1,
-    borderRadius: BORDER_RADIUS.general * 2,
-    backgroundColor: COLORS.lightBackground,
-    paddingHorizontal: 10,
-    paddingVertical: PADDING.general - 6,
-    marginLeft: 10,
-    justifyContent: 'center',
-  },
-  searchBarText: {
-    color: COLORS.text,
-    fontSize: FONTS.bodyRegular,
   },
   searchIcon: {
     marginRight: 10,
@@ -145,6 +132,8 @@ export const styles = StyleSheet.create({
   comments: {
     marginTop: MARGINS.general / 2,
     paddingHorizontal: PADDING.general,
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('window').height,
   },
   comment: {
     marginBottom: MARGINS.general,
@@ -214,7 +203,7 @@ export const styles = StyleSheet.create({
     paddingRight: 8,
   },
   commentFieldContainer: {
-    backgroundColor: COLORS.lightGrayBackground,
+    backgroundColor: COLORS.white,
     borderRadius: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',

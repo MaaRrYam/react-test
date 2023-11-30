@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {FlashList} from '@shopify/flash-list';
 
 import {ChatItem, Empty} from '@/components';
 import {ChatsInterface} from '@/interfaces';
@@ -34,12 +34,13 @@ const ChatsList = ({search, navigation}: ChatsListProps) => {
   return (
     <>
       {filteredChats?.length ? (
-        <FlatList
+        <FlashList
           data={filteredChats}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => item.id || index.toString()}
           renderItem={({item}) => (
             <ChatItem item={item} navigation={navigation} />
           )}
+          estimatedItemSize={30}
         />
       ) : (
         <Empty />

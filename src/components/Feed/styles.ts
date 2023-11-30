@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
     paddingVertical: PADDING.general,
+    maxHeight: 120,
   },
   image: {
     width: 71,
