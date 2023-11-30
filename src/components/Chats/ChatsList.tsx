@@ -36,7 +36,7 @@ const ChatsList = ({search, navigation}: ChatsListProps) => {
       {filteredChats?.length ? (
         <FlashList
           data={filteredChats}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => item.id || index.toString()}
           renderItem={({item}) => (
             <ChatItem item={item} navigation={navigation} />
           )}

@@ -128,7 +128,9 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
         <FlashList
           inverted
           data={messages}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) =>
+            item?.id?.toString() || index.toString()
+          }
           renderItem={({item}) => (
             <View>
               <View style={styles.date}>

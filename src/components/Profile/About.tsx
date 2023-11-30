@@ -1,17 +1,10 @@
 import React, {useEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-} from 'react-native';
+import {View, Image, Text, useWindowDimensions} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 
 import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
 import {RootStackParamList} from '@/types';
 import profileStyles from '@/styles/profile';
-import {ThreeDots} from '@/assets/icons';
 import {UserInterface} from '@/interfaces';
 import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
@@ -157,7 +150,7 @@ const About = ({
                   />
                 </>
               ))}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[
                 profileStyles.optionsButton,
                 usersProfileID === loggedInUser.id &&
@@ -166,7 +159,7 @@ const About = ({
               <View>
                 <ThreeDots />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

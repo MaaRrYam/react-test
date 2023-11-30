@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {FlashList} from '@shopify/flash-list';
 
@@ -7,6 +7,7 @@ import {
   ShimmerLayout,
   ShimmerLayoutContainerType,
 } from 'react-native-gradient-shimmer';
+import {COLORS, PADDING} from '@/constants';
 
 const width = Dimensions.get('screen').width - 30;
 
@@ -78,13 +79,21 @@ const PostSkeleton = () => (
 );
 
 const PostsSkeleton = () => (
-  <FlashList
-    data={data}
-    keyExtractor={item => item.id}
-    renderItem={({item}) => <PostSkeleton key={item.id} />}
-    ListEmptyComponent={<PostSkeleton />}
-    estimatedItemSize={10}
-  />
+  <View
+    style={{
+      backgroundColor: COLORS.white,
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height * 2,
+      padding: PADDING.general,
+    }}>
+    <FlashList
+      data={data}
+      keyExtractor={item => item.id}
+      renderItem={({item}) => <PostSkeleton key={item.id} />}
+      ListEmptyComponent={<PostSkeleton />}
+      estimatedItemSize={10}
+    />
+  </View>
 );
 
 export default PostsSkeleton;
