@@ -128,6 +128,7 @@ export const styles = StyleSheet.create({
   },
   commentsContainer: {
     flex: 1,
+    paddingHorizontal: PADDING.general,
   },
   comments: {
     marginTop: MARGINS.general / 2,
