@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <ToastProvider placement="bottom" offsetBottom={50} r>
+      <ToastProvider placement="bottom" offsetBottom={50}>
         <Provider store={store}>
           {showSplash ? <Splash /> : <RootNavigation />}
         </Provider>
