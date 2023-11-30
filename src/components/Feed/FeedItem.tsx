@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Text} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
@@ -19,7 +20,17 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
   return (
     <View style={styles.feedItem}>
       <View style={styles.authorInfo}>
-        <Image source={{uri: item.author?.photoUrl}} style={styles.userImage} />
+        <FastImage
+          resizeMode={FastImage.resizeMode.cover}
+          defaultSource={require('@/assets/images/user.png')}
+          fallback={require('@/assets/images/user.png')}
+          source={{
+            uri: item.author?.photoUrl,
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          style={styles.userImage}
+        />
         <View style={{marginLeft: 10}}>
           <TouchableOpacity onPress={handleAuthorPress}>
             <Text style={styles.authorName}>{item.author?.name}</Text>

@@ -1,5 +1,6 @@
 import React, {useState, memo} from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {ChatsInterface, UserInterface} from '@/interfaces';
 import {styles} from './styles';
@@ -47,14 +48,23 @@ const UserCard = ({
   return (
     <View style={styles.userItem}>
       <View style={styles.userImage}>
-        <Image
-          source={
-            item.photoUrl
-              ? {uri: item.photoUrl}
-              : require('@/assets/images/user.png')
-          }
-          style={styles.userImage}
-        />
+        {item.photoUrl ? (
+          <FastImage
+            resizeMode="cover"
+            source={{
+              uri: item.photoUrl,
+              priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            style={styles.userImage}
+          />
+        ) : (
+          <Image
+            resizeMode="cover"
+            source={require('@/assets/images/user.png')}
+            style={styles.userImage}
+          />
+        )}
       </View>
       <View style={styles.userItemContent}>
         <View style={styles.userItemHeader}>

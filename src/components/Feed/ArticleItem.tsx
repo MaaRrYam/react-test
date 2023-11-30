@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Image, TouchableOpacity, useWindowDimensions} from 'react-native';
+import {View, TouchableOpacity, useWindowDimensions} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import RenderHtml from 'react-native-render-html';
+import FastImage from 'react-native-fast-image';
 
 import {FeedItem} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
@@ -29,7 +30,17 @@ ${item.content!.substring(0, 300) + '....'}`,
           source={source}
           baseStyle={{color: 'black', alignItems: 'center'}}
         />
-        <Image source={{uri: item.coverImage}} style={styles.media} />
+        <FastImage
+          resizeMode="cover"
+          defaultSource={require('@/assets/images/fallback.png')}
+          fallback={require('@/assets/images/fallback.png')}
+          source={{
+            uri: item.coverImage,
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          style={styles.media}
+        />
       </View>
     </TouchableOpacity>
   );

@@ -1,10 +1,15 @@
-import {StyleSheet} from 'react-native';
-import {BORDER_RADIUS, COLORS, FONTS, MARGINS, PADDING} from '@/constants';
+import {Dimensions, StyleSheet} from 'react-native';
+import {COLORS, FONTS, MARGINS} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  body: {
+    flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
+    minHeight: Dimensions.get('screen').height * 0.85,
   },
   header: {
     flexDirection: 'row',
@@ -12,13 +17,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     paddingBottom: 0,
+    backgroundColor: COLORS.white,
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 20,
+    backgroundColor: COLORS.lightGrayBackground,
+    justifyContent: 'center',
+    padding: 7,
+    borderRadius: 9999,
   },
   backIcon: {
     marginLeft: 5,
+    marginHorizontal: 20,
     color: COLORS.primary,
   },
   backButtonText: {
@@ -30,46 +42,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   shareButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginRight: 20,
   },
   postInfo: {
     padding: 16,
   },
   feedContent: {
-    fontSize: FONTS.largeLabel,
+    fontSize: FONTS.regularLabel,
     marginVertical: MARGINS.general,
+    color: COLORS.black,
   },
   media: {
     width: '100%',
-    height: 300,
+    height: 275,
     marginBottom: 12,
-    borderRadius: BORDER_RADIUS.general,
+    borderRadius: 5,
   },
-  postReactions: {
+  reactionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  commentsContainer: {
+    backgroundColor: COLORS.white,
+    marginVertical: 10,
+    paddingBottom: 10,
   },
   reactionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff40',
-    paddingHorizontal: PADDING.general,
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 9999,
     paddingVertical: 5,
-    borderRadius: BORDER_RADIUS.general,
+    paddingHorizontal: 19,
+    padding: 7,
   },
   like: {
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontWeight: '400',
+    fontSize: FONTS.regularLabel,
+    color: COLORS.text,
+    marginHorizontal: 10,
+    marginTop: 8,
   },
   iconsContainer: {
     flexDirection: 'row',
     flex: 1 / 2,
     justifyContent: 'flex-end',
   },
-  report: {
-    marginLeft: 10 * 3,
+  actionButton: {
+    marginLeft: 29,
+  },
+  postContainer: {
+    backgroundColor: COLORS.white,
+    borderTopColor: COLORS.border,
+    borderTopWidth: 1,
+    paddingHorizontal: 20,
   },
 });
 

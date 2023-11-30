@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, SafeAreaView, Image, Text, TouchableOpacity} from 'react-native';
+import {View, SafeAreaView, Text, TouchableOpacity, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {Header, Feed, NewPost} from '@/components';
 import {HomeScreenProps} from '@/types';
@@ -40,14 +41,23 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
         <View>
           <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
           <View style={homeStyles.subheader}>
-            <Image
-              source={
-                user?.photoUrl
-                  ? {uri: user.photoUrl}
-                  : require('@/assets/images/user.png')
-              }
-              style={styles.userImage}
-            />
+            {user?.photoUrl ? (
+              <FastImage
+                source={{
+                  uri: user.photoUrl,
+                  priority: 'normal',
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+                style={styles.userImage}
+              />
+            ) : (
+              <Image
+                source={require('@/assets/images/user.png')}
+                style={styles.userImage}
+                resizeMode="cover"
+              />
+            )}
 
             <TouchableOpacity style={homeStyles.searchBar} onPress={handleOpen}>
               <Text style={homeStyles.searchBarText}>Start a Post</Text>

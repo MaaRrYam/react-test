@@ -6,7 +6,11 @@ import {
   Image,
   Share,
   SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Dislike, Like, Report, ShareIcon} from '@/assets/icons';
@@ -29,6 +33,7 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {FeedCommentsResponse, ReactionInterface} from '@/interfaces';
 import PostComments from '@/components/Feed/PostComments';
 import {Loading} from '@/components';
+import {styles as homeStyles} from '@/screens/home/styles';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
@@ -263,51 +268,73 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Image
-            source={require('@/assets/images/back.png')}
-            style={styles.backIcon}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity onPress={sharePost} style={styles.shareButton}>
-            <ShareIcon />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={reportPost} style={styles.report}>
-            <Report />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.postInfo}>
-        {postItem?.media && (
-          <Image source={{uri: postItem.media}} style={styles.media} />
-        )}
-        <Text style={styles.feedContent}>{postItem?.text}</Text>
-        <View style={styles.postReactions}>
-          <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
-            <Like isLiked={reactions.like} />
-          </TouchableOpacity>
-          <Text style={styles.like}>
-            {postItem?.postLikes?.length - postItem?.postDislikes?.length}
-          </Text>
-          <TouchableOpacity
-            style={styles.reactionButton}
-            onPress={disLikeAPost}>
-            <Dislike isLiked={reactions.dislike} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}
+        pointerEvents="box-none">
+        <ScrollView style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+              <Image
+                source={require('@/assets/images/back.png')}
+                style={styles.backIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <View style={styles.headerIcons}>
+              <TouchableOpacity onPress={sharePost} style={styles.shareButton}>
+                <ShareIcon />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={reportPost}>
+                <Report />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.body}>
+            <View style={styles.postInfo}>
+              {postItem?.media && (
+                <FastImage
+                  source={{
+                    uri: postItem.media,
+                    priority: FastImage.priority.high,
+                    cache: FastImage.cacheControl.immutable,
+                  }}
+                  style={styles.media}
+                />
+              )}
+              <Text style={styles.feedContent}>{postItem?.text}</Text>
+              <View style={homeStyles.postReactions}>
+                <TouchableOpacity
+                  style={styles.reactionButton}
+                  onPress={likeAPost}>
+                  <Like isLiked={reactions.like} />
+                </TouchableOpacity>
+                <Text style={styles.like}>
+                  {postItem?.postLikes &&
+                    postItem.postDislikes &&
+                    postItem?.postLikes?.length -
+                      postItem?.postDislikes?.length}
+                </Text>
+                <TouchableOpacity
+                  style={styles.reactionButton}
+                  onPress={disLikeAPost}>
+                  <Dislike isLiked={reactions.dislike} />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-      <PostComments
-        postId={postItem?.id || ''}
-        comments={comments.comments}
-        loading={comments.loading}
-        showComments={comments.showComments}
-        setComments={setComments}
-        isFromPost={true}
-      />
+            <PostComments
+              postId={postItem?.id || ''}
+              comments={comments.comments}
+              loading={comments.loading}
+              showComments={comments.showComments}
+              setComments={setComments}
+              isFromPost={true}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

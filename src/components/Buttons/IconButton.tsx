@@ -1,6 +1,7 @@
-import {COLORS} from '@/constants';
 import React from 'react';
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet, Image} from 'react-native';
+
+import {COLORS} from '@/constants';
 
 interface IconButtonProps {
   imageSource: number;
@@ -17,7 +18,11 @@ const IconButton = ({
 }: IconButtonProps) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      <Image source={imageSource} style={{width: iconSize, height: iconSize}} />
+      <Image
+        resizeMode="cover"
+        source={imageSource}
+        style={{width: iconSize, height: iconSize}}
+      />
     </TouchableOpacity>
   );
 };

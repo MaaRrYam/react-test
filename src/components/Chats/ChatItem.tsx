@@ -1,5 +1,7 @@
 import React, {memo} from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {RootStackParamList} from '@/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ChatsInterface} from '@/interfaces';
@@ -23,14 +25,22 @@ const ChatItem = ({
       }>
       <View style={styles.chatItem}>
         <View style={styles.chatItemImage}>
-          <Image
-            source={
-              item.user?.photoUrl
-                ? {uri: item.user.photoUrl}
-                : require('@/assets/images/user.png')
-            }
-            style={styles.chatItemImage}
-          />
+          {item?.user?.photoUrl ? (
+            <FastImage
+              resizeMode="cover"
+              source={{
+                uri: item.user?.photoUrl,
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
+              style={styles.chatItemImage}
+            />
+          ) : (
+            <Image
+              source={require('@/assets/images/user.png')}
+              style={styles.chatItemImage}
+            />
+          )}
         </View>
         <View style={styles.chatItemContent}>
           <View style={styles.chatItemHeader}>

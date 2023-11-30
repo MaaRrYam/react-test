@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {styles} from '@/screens/home/styles';
 import {
@@ -251,14 +252,22 @@ const PostComment = ({
   return (
     <View style={[styles.comment, isFromPost && styles.commentFromPost]}>
       <View style={styles.author}>
-        <Image
-          source={
-            item?.user?.photoUrl
-              ? {uri: item.user.photoUrl}
-              : require('@/assets/images/user.png')
-          }
-          style={styles.commentImage}
-        />
+        {item?.user?.photoUrl ? (
+          <FastImage
+            source={{
+              uri: item.user.photoUrl,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            style={styles.commentImage}
+          />
+        ) : (
+          <Image
+            style={styles.commentImage}
+            source={require('@/assets/images/user.png')}
+            resizeMode="cover"
+          />
+        )}
         <View>
           <Text style={styles.commentAuthorName}>{item.user.name}</Text>
 

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 
 const BackButton = ({
   onPress,
@@ -27,7 +27,7 @@ const BackButton = ({
       <Image
         source={require('../../assets/images/back.png')}
         style={styles.icon}
-        resizeMode="contain"
+        resizeMode="cover"
       />
     </TouchableOpacity>
   );

@@ -10,6 +10,7 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
 
@@ -151,16 +152,23 @@ const NewPost = ({
           <Text style={styles.createPostText}>Create a New Post</Text>
 
           <View style={styles.authorContainer}>
-            <Image
-              style={styles.avatar}
-              source={
-                user?.photoUrl
-                  ? {
-                      uri: user.photoUrl,
-                    }
-                  : require('@/assets/images/user.png')
-              }
-            />
+            {user?.photoUrl ? (
+              <FastImage
+                style={styles.avatar}
+                resizeMode="cover"
+                source={{
+                  uri: user?.photoUrl,
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }}
+              />
+            ) : (
+              <Image
+                style={styles.avatar}
+                source={require('@/assets/images/user.png')}
+                resizeMode="cover"
+              />
+            )}
             <Text style={styles.authorName}>{user?.name}</Text>
           </View>
 
@@ -173,10 +181,14 @@ const NewPost = ({
             />
 
             {selectedImage && (
-              <Image
+              <FastImage
                 style={styles.selectedImage}
-                source={{uri: selectedImage.uri}}
-                resizeMode="contain"
+                source={{
+                  uri: selectedImage.uri,
+                  priority: FastImage.priority.normal,
+                  cache: FastImage.cacheControl.web,
+                }}
+                resizeMode="cover"
               />
             )}
             {selectedImage && (
@@ -197,9 +209,13 @@ const NewPost = ({
               horizontal
               renderItem={({item}) => (
                 <TouchableOpacity onPress={() => handleImagePress(item)}>
-                  <Image
+                  <FastImage
                     style={styles.image}
-                    source={{uri: item.uri}}
+                    source={{
+                      uri: item.uri,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }}
                     resizeMode="cover"
                   />
                 </TouchableOpacity>

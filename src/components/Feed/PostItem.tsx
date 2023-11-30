@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image, Share} from 'react-native';
+import {View, Text, TouchableOpacity, Share} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
@@ -199,13 +200,27 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
         })
       }>
       <Text style={styles.feedContent}>{item.text}</Text>
-      {item.media && <Image source={{uri: item.media}} style={styles.media} />}
+      {item.media && (
+        <FastImage
+          defaultSource={require('@/assets/images/fallback.png')}
+          fallback={require('@/assets/images/fallback.png')}
+          source={{
+            uri: item.media,
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          style={styles.media}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      )}
       <View style={styles.postReactions}>
         <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
           <Like isLiked={reactions.like} />
         </TouchableOpacity>
         <Text style={styles.like}>
-          {item?.postLikes?.length - item?.postDislikes?.length}
+          {item?.postLikes &&
+            item?.postDislikes &&
+            item?.postLikes?.length - item?.postDislikes?.length}
         </Text>
         <TouchableOpacity style={styles.reactionButton} onPress={disLikeAPost}>
           <Dislike isLiked={reactions.dislike} />

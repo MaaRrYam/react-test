@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   View,
-  Image,
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Text,
+  Image,
 } from 'react-native';
 
 import {PrimaryButton, SocialLoginButton} from '@/components';
@@ -33,12 +33,12 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
           <Image
             source={require('@/assets/images/logo.png')}
             style={styles.logo}
-            resizeMode="contain"
+            resizeMode={'contain'}
           />
           <Image
             source={require('@/assets/images/people.png')}
             style={styles.peopleImage}
-            resizeMode="contain"
+            resizeMode={'contain'}
           />
         </View>
 

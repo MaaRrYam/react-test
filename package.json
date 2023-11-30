@@ -31,6 +31,7 @@
     "react-native": "0.72.4",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-date-picker": "^4.3.0",
+    "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-gradient-shimmer": "^1.1.5",
     "react-native-image-picker": "^7.0.1",

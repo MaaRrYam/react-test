@@ -1,5 +1,7 @@
 import React from 'react';
-import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {PastApplicationCardInterface} from '@/interfaces';
 import {pastApplicationCardStyles} from '@/styles/jobs/index';
 import {FONTS} from '@/constants';
@@ -20,12 +22,18 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
       onPress={onPress}>
       <View style={pastApplicationCardStyles.iconContainer}>
         {companyLogo ? (
-          <Image
-            source={{uri: companyLogo}}
+          <FastImage
+            resizeMode="cover"
+            source={{
+              uri: companyLogo,
+              priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
+            }}
             style={pastApplicationCardStyles.icon}
           />
         ) : (
           <Image
+            resizeMode="cover"
             source={require('@/assets/images/emblem.png')}
             style={pastApplicationCardStyles.icon}
           />
