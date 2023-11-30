@@ -10,6 +10,7 @@ import ChatsService from '@/services/chats';
 import {ChatsInterface} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {setChatsToStore} from '@/store/features/chatsSlice';
+import {COLORS} from '@/constants';
 
 const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -53,6 +54,7 @@ const Chats: React.FC<ChatsScreenProps> = ({navigation}) => {
               onChangeText={setSearch}
               placeholder="Search"
               style={styles.searchInputStyles}
+              placeholderTextColor={COLORS.black}
             />
           </View>
           <View style={styles.rightContainer}>
