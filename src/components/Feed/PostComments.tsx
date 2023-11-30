@@ -22,6 +22,7 @@ import {getUID} from '@/utils/functions';
 import StorageService from '@/services/Storage';
 import HomeService from '@/services/home';
 import {COLORS, MARGINS} from '@/constants';
+import {FlashList} from '@shopify/flash-list';
 
 const PostComments = ({
   postId,
@@ -87,15 +88,33 @@ const PostComments = ({
         )}
       </View>
       <View style={styles.commentsContainer}>
-        {comments.map((item, index) => (
-          <PostComment
-            item={item}
-            setComments={setComments}
-            postId={postId}
-            isFromPost={isFromPost}
-            key={item.id || index}
+        {isFromPost ? (
+          <>
+            {comments.map((item, index) => (
+              <PostComment
+                item={item}
+                setComments={setComments}
+                postId={postId}
+                isFromPost={isFromPost}
+                key={item.id || index}
+              />
+            ))}
+          </>
+        ) : (
+          <FlashList
+            data={comments}
+            renderItem={({item}) => (
+              <PostComment
+                item={item}
+                setComments={setComments}
+                postId={postId}
+                isFromPost={isFromPost}
+              />
+            )}
+            estimatedItemSize={100}
+            keyExtractor={(item, index) => item.id || index.toString()}
           />
-        ))}
+        )}
       </View>
     </>
   );

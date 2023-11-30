@@ -271,7 +271,7 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}
         pointerEvents="box-none">
         <ScrollView style={styles.container}>
           <View style={styles.header}>
