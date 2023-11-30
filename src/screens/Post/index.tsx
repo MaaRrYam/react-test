@@ -7,6 +7,7 @@ import {
   Share,
   SafeAreaView,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Dislike, Like, Report, ShareIcon} from '@/assets/icons';
@@ -283,7 +284,14 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
       </View>
       <View style={styles.postInfo}>
         {postItem?.media && (
-          <Image source={{uri: postItem.media}} style={styles.media} />
+          <FastImage
+            source={{
+              uri: postItem.media,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            style={styles.media}
+          />
         )}
         <Text style={styles.feedContent}>{postItem?.text}</Text>
         <View style={homeStyles.postReactions}>
