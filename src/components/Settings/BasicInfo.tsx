@@ -5,7 +5,6 @@ import {PrimaryButton} from '../Buttons';
 import {getScreenDimensions, getUID} from '@/utils/functions';
 import DatePicker from 'react-native-date-picker';
 import {SettingBasicInfoUpdateInterface} from '@/interfaces';
-// import {Timestamp} from 'firebase/firestore';
 import ProfileService from '@/services/profile';
 import ToastService from '@/services/toast';
 import useUserManagement from '@/hooks/useUserManagement';

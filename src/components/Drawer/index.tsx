@@ -1,15 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {Home, Network, Notifications, Jobs} from '@/screens';
-import {COLORS, SCREEN_NAMES, PROFILE_TABS, PADDING} from '@/constants';
+import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
 import EditProfile from '@/components/EditProfile';
@@ -20,13 +14,6 @@ import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 import useHandleLinking from '@/hooks/useHandleLinking';
 
 const Tab = createBottomTabNavigator();
-function SettingsScreen() {
-  return (
-    <View>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
 
 function DrawerContent({
   state,

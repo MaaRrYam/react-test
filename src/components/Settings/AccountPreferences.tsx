@@ -5,16 +5,13 @@ import {PrimaryButton} from '../Buttons';
 import {getScreenDimensions} from '@/utils/functions';
 import StorageService from '@/services/Storage';
 import {useNavigation} from '@react-navigation/native';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useAppSelector } from '@/hooks/useAppSelector';
-import { RootState } from '@/store';
-import { logOut } from '@/store/features/authSlice';
-import { auth } from '@/config/firebase';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {logOut} from '@/store/features/authSlice';
+import {auth} from '@/config/firebase';
 
 const {height} = getScreenDimensions();
 const AccountPreferences = () => {
   const navigation = useNavigation();
-  const {user} = useAppSelector((state: RootState) => state.auth)
   const dispatch = useAppDispatch();
   const [messagingEnabled, setMessagingEnabled] = useState(false);
   const [connectionsVisibleEnabled, setConnectionsVisibleEnabled] =
