@@ -1,10 +1,15 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {COLORS, FONTS, MARGINS} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  body: {
+    flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
+    minHeight: Dimensions.get('screen').height * 0.85,
   },
   header: {
     flexDirection: 'row',
@@ -36,7 +41,9 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
   },
-  shareButton: {},
+  shareButton: {
+    marginRight: 20,
+  },
   postInfo: {
     padding: 16,
   },
@@ -70,16 +77,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.lightBackground,
+    backgroundColor: COLORS.white,
     borderRadius: 9999,
     paddingVertical: 5,
     paddingHorizontal: 19,
+    padding: 7,
   },
   like: {
     fontWeight: '400',
     fontSize: FONTS.regularLabel,
     color: COLORS.text,
     marginHorizontal: 10,
+    marginTop: 8,
   },
   iconsContainer: {
     flexDirection: 'row',

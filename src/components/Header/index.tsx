@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
@@ -29,6 +29,7 @@ const Header = ({
       <TouchableOpacity onPress={handleClick}>
         <Image
           source={require('@/assets/images/logo.png')}
+          resizeMode={'contain'}
           style={homeStyles.logo}
         />
       </TouchableOpacity>
@@ -37,7 +38,7 @@ const Header = ({
         {route.name === 'Jobs' ? (
           <TouchableOpacity
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-            onPress={() => setJobsFilterBottomSheet((prev: any) => !prev)}>
+            onPress={() => setJobsFilterBottomSheet((prev: boolean) => !prev)}>
             <Filter />
           </TouchableOpacity>
         ) : route.name === 'Profile' ? (

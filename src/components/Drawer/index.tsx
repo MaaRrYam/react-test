@@ -17,6 +17,7 @@ import {getUID} from '@/utils/functions';
 import {DrawerContentProps, UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
+import useHandleLinking from '@/hooks/useHandleLinking';
 
 const Tab = createBottomTabNavigator();
 function SettingsScreen() {
@@ -132,6 +133,9 @@ const Tabs = () => {
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const dispatch = useAppDispatch();
   const [UID, setUID] = useState('');
+
+  useHandleLinking();
+
   useEffect(() => {
     const fetchUser = async () => {
       const userStorage = await StorageService.getItem('user');

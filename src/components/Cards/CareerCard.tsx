@@ -1,5 +1,6 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+
 import {BORDER_RADIUS, COLORS, PADDING} from '@/constants';
 import {Delete, NewChatIcon as NewChat} from '@/assets/icons';
 import {CareerCardProps} from '@/interfaces';
@@ -17,6 +18,7 @@ const CareerCard: React.FC<CareerCardProps> = ({
     <View style={styles.container}>
       <View style={styles.iconContainer}>
         <Image
+          resizeMode="cover"
           source={require('@/assets/images/emblem.png')}
           style={styles.icon}
         />

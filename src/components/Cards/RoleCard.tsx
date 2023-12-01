@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoleCard;
+export default React.memo(RoleCard);

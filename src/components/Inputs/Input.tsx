@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, FC} from 'react';
 import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
+import {COLORS, FONTS} from '@/constants';
 import {InputProps} from '@/interfaces';
 
 const Input: FC<InputProps> = ({
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
     paddingVertical: 10,
-    borderRadius: BORDER_RADIUS.general,
+    borderRadius: 8,
     borderWidth: 1,
     position: 'relative',
   },

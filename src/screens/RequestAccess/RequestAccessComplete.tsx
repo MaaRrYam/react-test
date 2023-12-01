@@ -4,8 +4,8 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  Image,
   Dimensions,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useFocusEffect} from '@react-navigation/native';
@@ -45,7 +45,7 @@ const RequestAccessComplete: React.FC<RequestAccessCompleteScreenProps> = ({
           <Image
             source={require('@/assets/images/requestSuccess.png')}
             style={styles.logo}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
       </SafeAreaView>

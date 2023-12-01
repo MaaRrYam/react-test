@@ -4,15 +4,14 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  Image,
   Dimensions,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {PrimaryButton} from '@/components';
 import {COLORS, SCREEN_NAMES} from '@/constants';
 import {HomeScreenProps} from '@/types';
-import useUserManagement from '@/hooks/useUserManagement';
 import OnboardingService from '@/services/onboarding';
 
 const windowWidth = Dimensions.get('window').width;
@@ -20,8 +19,6 @@ const windowHeight = Dimensions.get('window').height;
 const containerWidth = windowWidth - 50;
 
 const OnboardingCompleted: React.FC<HomeScreenProps> = ({navigation}) => {
-  const {user} = useUserManagement();
-
   const handleOnboardingCompleted = async () => {
     OnboardingService.onboardingCompleted();
     navigation.navigate(SCREEN_NAMES.BottomNavigator);

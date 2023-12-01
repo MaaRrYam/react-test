@@ -1,17 +1,11 @@
 import React, {useEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-} from 'react-native';
+import {View, Text, useWindowDimensions} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
 import {RootStackParamList} from '@/types';
 import profileStyles from '@/styles/profile';
-import {ThreeDots} from '@/assets/icons';
 import {UserInterface} from '@/interfaces';
 import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
@@ -90,20 +84,26 @@ const About = ({
         setIsSettingsClicked={setIsSettingsClicked}
       />
       <View>
-        <Image
+        <FastImage
           source={{
             uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
           }}
+          resizeMode={FastImage.resizeMode.cover}
           style={profileStyles.headerImage}
         />
       </View>
 
       <View style={profileStyles.container}>
         <View style={profileStyles.avatarContainer}>
-          <Image
+          <FastImage
             source={{
               uri: user?.photoUrl,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
             }}
+            resizeMode={FastImage.resizeMode.cover}
             style={profileStyles.avatarImage}
           />
         </View>
@@ -163,7 +163,7 @@ const About = ({
                   />
                 </>
               ))}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[
                 profileStyles.optionsButton,
                 usersProfileID === loggedInUser.id &&
@@ -172,7 +172,7 @@ const About = ({
               <View>
                 <ThreeDots />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

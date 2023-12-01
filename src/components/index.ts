@@ -42,10 +42,11 @@ import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
 import ProfileFeed from '@/components/ProfileFeed';
 import Drawer from '@/components/Drawer';
-import BasicInfo from '@/components/Settings/BasicInfo'
-import AccountPreferences from '@/components/Settings/AccountPreferences'
-import Feedback from '@/components/Settings/Feedback'
+import BasicInfo from '@/components/Settings/BasicInfo';
+import AccountPreferences from '@/components/Settings/AccountPreferences';
+import Feedback from '@/components/Settings/Feedback';
 import {About, ProfileTabs} from '@/components/Profile';
+import {PostsSkeleton} from './Skeleton';
 export {
   BackButton,
   RoleCard,
@@ -91,4 +92,5 @@ export {
   AccountPreferences,
   BasicInfo,
   Feedback,
+  PostsSkeleton,
 };

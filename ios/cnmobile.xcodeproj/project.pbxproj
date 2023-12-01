@@ -45,6 +45,7 @@
 		A6BFF66E364CC5E7B72D761E /* Pods-cnmobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cnmobile.debug.xcconfig"; path = "Target Support Files/Pods-cnmobile/Pods-cnmobile.debug.xcconfig"; sourceTree = "<group>"; };
 		B09264EC15792FD109BE247F /* Pods_cnmobile_cnmobileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cnmobile_cnmobileTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55C1F5ED65D9BF7A479C19B /* Pods_cnmobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cnmobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3BCEF6D2B164ED700562063 /* cnmobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = cnmobile.entitlements; path = cnmobile/cnmobile.entitlements; sourceTree = "<group>"; };
 		E3C990A92AAEF1CF00437FA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -89,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* cnmobile */ = {
 			isa = PBXGroup;
 			children = (
+				E3BCEF6D2B164ED700562063 /* cnmobile.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -506,9 +508,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = cnmobile/cnmobile.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 476U6Z28VJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = cnmobile/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CareerNetwork;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -519,7 +525,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = co.careernetwork.app;
 				PRODUCT_NAME = cnmobile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -534,8 +540,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = cnmobile/cnmobile.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 476U6Z28VJ;
 				INFOPLIST_FILE = cnmobile/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CareerNetwork;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -546,7 +556,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = co.careernetwork.app;
 				PRODUCT_NAME = cnmobile;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
