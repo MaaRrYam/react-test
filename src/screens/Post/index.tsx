@@ -208,20 +208,20 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const sharePost = async () => {
     const {share, sharedAction, dismissedAction} = Share;
 
-    const appUrl = 'cnmobile://post/' + postItem!.id;
-    const shareOptions = {
-      message: `Check out this Post at CareerNetwork.co \n\n ${appUrl}`,
-    };
-
-    try {
-      const result = await share(shareOptions);
-      if (result.action === sharedAction) {
-        // ToastService.showSuccess('Post shared');
-      } else if (result.action === dismissedAction) {
-        // ToastService.showError('Post sharing dismissed');
+    if (postItem && postItem.id) {
+      const shareOptions = {
+        message: `Check out this Post at CareerNetwork.co \n\n ${`https://careernetwork.co/post/${postItem.id}`}`,
+      };
+      try {
+        const result = await share(shareOptions);
+        if (result.action === sharedAction) {
+          // ToastService.showSuccess('Post shared');
+        } else if (result.action === dismissedAction) {
+          // ToastService.showError('Post sharing dismissed');
+        }
+      } catch (error) {
+        ToastService.showError('Error sharing post');
       }
-    } catch (error) {
-      ToastService.showError('Error sharing post');
     }
   };
 
@@ -267,12 +267,11 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}
-        pointerEvents="box-none">
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      pointerEvents="box-none">
+      <SafeAreaView style={styles.container}>
         <ScrollView style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={handleBack} style={styles.backButton}>
@@ -324,18 +323,20 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
               </View>
             </View>
 
-            <PostComments
-              postId={postItem?.id || ''}
-              comments={comments.comments}
-              loading={comments.loading}
-              showComments={comments.showComments}
-              setComments={setComments}
-              isFromPost={true}
-            />
+            {postItem?.id && (
+              <PostComments
+                postId={postItem.id}
+                comments={comments.comments}
+                loading={comments.loading}
+                showComments={comments.showComments}
+                setComments={setComments}
+                isFromPost={true}
+              />
+            )}
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

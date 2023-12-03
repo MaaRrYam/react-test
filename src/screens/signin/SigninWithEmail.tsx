@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image} from 'react-native';
+import {View, Text, SafeAreaView, Image, Platform} from 'react-native';
 
 import {signInSchema} from '@/utils/schemas/schemas';
 import {
@@ -71,7 +71,9 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView behavior={'padding'} style={styles.mainContainer}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.mainContainer}>
         <Image
           source={require('@/assets/images/logo.png')}
           style={styles.logo}
