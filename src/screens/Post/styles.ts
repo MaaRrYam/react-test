@@ -1,15 +1,14 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {COLORS, FONTS, MARGINS} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.lightBlueBackground,
   },
   body: {
     flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
-    minHeight: Dimensions.get('screen').height * 0.85,
   },
   header: {
     flexDirection: 'row',

@@ -178,15 +178,14 @@ const NewPost = ({
               value={text}
               onChangeText={setText}
               placeholder="What do you want to post today?"
+              placeholderTextColor={COLORS.black}
             />
 
             {selectedImage && (
-              <FastImage
+              <Image
                 style={styles.selectedImage}
                 source={{
                   uri: selectedImage.uri,
-                  priority: FastImage.priority.normal,
-                  cache: FastImage.cacheControl.web,
                 }}
                 resizeMode="cover"
               />
@@ -209,12 +208,10 @@ const NewPost = ({
               horizontal
               renderItem={({item}) => (
                 <TouchableOpacity onPress={() => handleImagePress(item)}>
-                  <FastImage
+                  <Image
                     style={styles.image}
                     source={{
                       uri: item.uri,
-                      priority: FastImage.priority.high,
-                      cache: FastImage.cacheControl.immutable,
                     }}
                     resizeMode="cover"
                   />

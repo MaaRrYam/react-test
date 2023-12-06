@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, Platform} from 'react-native';
 import {COLORS, BORDER_RADIUS, PADDING, FONTS, MARGINS} from '@/constants';
 
 export const styles = StyleSheet.create({
@@ -210,8 +210,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 10,
-    paddingHorizontal: 8,
-    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    marginHorizontal: Platform.OS === 'ios' ? 20 : 10,
     borderColor: COLORS.border,
     borderWidth: 1,
   },
