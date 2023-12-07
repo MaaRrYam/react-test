@@ -3,9 +3,12 @@ import {DateFormatOption} from '@/types';
 import {PermissionsAndroid, Platform} from 'react-native';
 
 export const formatFirebaseTimestamp = (
-  timestamp: Timestamp,
+  timestamp: Timestamp | string,
   formatOption: DateFormatOption,
 ): string => {
+  if (typeof timestamp === 'string') {
+    return timestamp as string;
+  }
   const date = new Date(
     timestamp?.seconds * 1000 + timestamp?.nanoseconds / 1000000,
   );

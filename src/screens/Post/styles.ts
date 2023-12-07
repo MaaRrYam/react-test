@@ -1,31 +1,33 @@
-import {StyleSheet} from 'react-native';
-import {COLORS, FONTS, MARGINS} from '@/constants';
+import {Dimensions, StyleSheet} from 'react-native';
+import {COLORS, FONTS, MARGINS, PADDING} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  safeAreaContainer: {
+    flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
   },
   body: {
-    flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
+    height: Dimensions.get('screen').height,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    paddingBottom: 0,
     backgroundColor: COLORS.white,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
   },
   backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: MARGINS.general - 8,
     backgroundColor: COLORS.lightGrayBackground,
-    justifyContent: 'center',
-    padding: 7,
-    borderRadius: 9999,
+    padding: PADDING.general / 2,
+    borderRadius: 100,
   },
   backIcon: {
     marginLeft: 5,

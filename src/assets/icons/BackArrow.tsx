@@ -1,17 +1,18 @@
 import * as React from 'react';
 import Svg, {SvgProps, Mask, Path, G} from 'react-native-svg';
 const BackArrow = (props: SvgProps) => (
-  <Svg width={24} height={24} fill="none" {...props}>
+  <Svg
+    width={props.width || 24}
+    height={props.height || 24}
+    fill="none"
+    {...props}>
     <Mask
       id="a"
-      width={24}
-      height={25}
+      width={props.width || 24}
+      height={props.height || 25}
       x={0}
       y={0}
-      maskUnits="userSpaceOnUse"
-      style={{
-        maskType: 'alpha',
-      }}>
+      maskUnits="userSpaceOnUse">
       <Path fill="#D9D9D9" d="M0 .5h24v24H0z" />
     </Mask>
     <G mask="url(#a)">
