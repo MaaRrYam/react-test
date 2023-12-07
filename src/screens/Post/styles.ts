@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     marginVertical: MARGINS.general - 8,
     backgroundColor: COLORS.lightGrayBackground,
     padding: PADDING.general / 2,
-    // borderRadius: 9999,
     borderRadius: 100,
   },
   backIcon: {
