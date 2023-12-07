@@ -4,26 +4,31 @@ import {COLORS, BORDER_RADIUS, PADDING, FONTS, MARGINS} from '@/constants';
 export const styles = StyleSheet.create({
   postReactions: {
     flexDirection: 'row',
+    marginTop: 10,
   },
   iconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 3 / 5,
-    marginLeft: MARGINS.general,
+    marginLeft: 29,
     marginTop: MARGINS.general / 3,
   },
   reactionButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 3,
     backgroundColor: COLORS.lightGrayBackground,
-    borderRadius: BORDER_RADIUS.general * 2,
+    borderRadius: 9999,
   },
   like: {
     paddingTop: 8,
     marginHorizontal: MARGINS.general / 2,
     color: COLORS.black,
     fontSize: FONTS.bodySmall,
+    marginTop: 6,
+  },
+  reactionButtonGap: {
+    marginLeft: 29,
   },
   subheader: {
     backgroundColor: COLORS.white,
@@ -247,5 +252,8 @@ export const styles = StyleSheet.create({
   },
   inputFromPost: {
     backgroundColor: COLORS.white,
+  },
+  imagePostReactions: {
+    marginTop: 10,
   },
 });
