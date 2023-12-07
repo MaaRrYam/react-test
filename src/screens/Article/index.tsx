@@ -1,13 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
-  Image,
   ScrollView,
   Text,
   SafeAreaView,
   TouchableOpacity,
   Share,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import RenderHtml from 'react-native-render-html';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -117,14 +118,26 @@ const Article: React.FC<ArticleScreenProps> = ({route}) => {
             </View>
             <View style={styles.articleContainer}>
               <Text style={styles.articleTitle}>{article?.title}</Text>
-              <Image
-                source={{uri: articleData.coverImage}}
+              <FastImage
+                defaultSource={require('@/assets/images/fallback.png')}
+                fallback={require('@/assets/images/fallback.png')}
+                source={{
+                  uri: articleData.coverImage,
+                  priority: 'high',
+                  cache: 'web',
+                }}
+                resizeMode="cover"
                 style={styles.media}
               />
               <View>
                 <View style={styles.userInfoContainer}>
-                  <Image
-                    source={{uri: authorData?.photoUrl}}
+                  <FastImage
+                    source={{
+                      uri: authorData?.photoUrl,
+                      priority: 'high',
+                      cache: 'web',
+                    }}
+                    resizeMode="cover"
                     style={styles.userImage}
                   />
                   <View style={styles.userInfoTextContainer}>

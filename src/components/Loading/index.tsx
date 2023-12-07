@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View, Image} from 'react-native';
 import Animated, {
   Easing,
@@ -15,7 +15,7 @@ const emblemImage = require('@/assets/images/emblem.png');
 export default function Loading() {
   const rotation = useSharedValue(0);
 
-  const startRotation = () => {
+  const startRotation = useCallback(() => {
     rotation.value = withRepeat(
       withSequence(
         withTiming(1, {duration: 1000, easing: Easing.linear}),
@@ -24,7 +24,7 @@ export default function Loading() {
       -1,
       true,
     );
-  };
+  }, [rotation]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -34,7 +34,7 @@ export default function Loading() {
 
   useEffect(() => {
     startRotation();
-  }, []);
+  }, [startRotation]);
 
   return (
     <View style={styles.container}>

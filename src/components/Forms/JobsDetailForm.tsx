@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, SafeAreaView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+
 import {PrimaryButton, BottomSheet} from '@/components';
 import {
   ApplicantInterface,
@@ -19,7 +27,6 @@ import JobsService from '@/services/jobs';
 import LoadingScreen from '@/components/Loading';
 import ToastService from '@/services/toast';
 import JobQuestionsForm from '@/components/Forms/JobQuestionsForm';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const JobsDetailForm = ({
   selectedJob,
@@ -180,9 +187,14 @@ const JobsDetailForm = ({
             </View>
             {posterJobInfo?.name && (
               <View style={jobDetailFormStyles.recruiterContainer}>
-                <Image
+                <FastImage
                   style={jobDetailFormStyles.recruiterImage}
-                  source={{uri: posterJobInfo?.photoUrl}}
+                  resizeMode={FastImage.resizeMode.cover}
+                  source={{
+                    uri: posterJobInfo?.photoUrl,
+                    priority: FastImage.priority.high,
+                    cache: FastImage.cacheControl.immutable,
+                  }}
                 />
                 <Text style={jobDetailFormStyles.recruiterDetail}>
                   {posterJobInfo?.name} is hiring for this position

@@ -25,7 +25,11 @@ export const getIcon = (
         return (
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile', {uid})}>
-            <Image source={{uri: photoUrl}} style={styles.image} />
+            <Image
+              source={{uri: photoUrl}}
+              style={styles.image}
+              resizeMode="cover"
+            />
           </TouchableOpacity>
         );
       } else {

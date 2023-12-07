@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {
   BackButton,
@@ -38,7 +39,7 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
         <View style={commonStyles.container}>
           <BackButton />
           <Text style={commonStyles.title}>Your Education</Text>
-          <FlatList
+          <FlashList
             data={education}
             renderItem={({item}) => (
               <EducationCard

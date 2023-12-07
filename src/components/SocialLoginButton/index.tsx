@@ -18,14 +18,14 @@ const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
   textStyle,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const handlePress = async () => {
+  const handlePress = () => {
     if (isLoading) {
       return;
     }
 
     try {
       setIsLoading(true);
-      await onPress();
+      onPress();
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

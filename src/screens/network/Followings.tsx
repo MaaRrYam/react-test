@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
@@ -40,7 +41,7 @@ const Followings = () => {
   return (
     <>
       {following.length ? (
-        <FlatList
+        <FlashList
           data={following}
           keyExtractor={item => item.id?.toString()}
           renderItem={({item}) => (
@@ -52,6 +53,7 @@ const Followings = () => {
               onRefresh={handleRefresh}
             />
           }
+          estimatedItemSize={30}
         />
       ) : (
         <Empty />

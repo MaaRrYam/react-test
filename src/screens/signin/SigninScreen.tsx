@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
-import {View, Text, Image, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, Image} from 'react-native';
+
 import {PrimaryButton, SocialLoginButton} from '@/components';
 import {SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {SignInScreenProps} from '@/types';
-
 import {styles} from '@/styles/signinScreen';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 

@@ -1,4 +1,8 @@
-import {CreatePostInterface, UserInterface} from '@/interfaces';
+import {
+  CreatePostInterface,
+  ReactionInterface,
+  UserInterface,
+} from '@/interfaces';
 import {CancelTokenSource} from 'axios';
 import {API_GET} from '@/config/api/apiRequests';
 import {
@@ -308,6 +312,10 @@ const HomeService = {
         'articles',
         articleId,
       )) as FeedItem;
+
+      if (!response) {
+        return null;
+      }
       let author = {} as UserInterface;
 
       if (await Cache.get(`user_${response.authorId}`)) {
@@ -329,18 +337,64 @@ const HomeService = {
       return null;
     }
   },
-  async getAuthor(authorId: string) {
-    let author = {} as UserInterface;
-    if (await Cache.get(`user_${authorId}`)) {
-      author = (await Cache.get(`user_${authorId}`)) as UserInterface;
-    } else {
-      author = (await FirebaseService.getDocument(
-        'users',
-        authorId,
-      )) as UserInterface;
-      await Cache.set(`user_${authorId}`, author);
+  async fetchPost(postId: string) {
+    try {
+      const response = (await FirebaseService.getDocument(
+        'posts',
+        postId,
+      )) as FeedItem;
+
+      if (!response) {
+        return null;
+      }
+      let author = {} as UserInterface;
+
+      if (await Cache.get(`user_${response.authorId}`)) {
+        author = (await Cache.get(
+          `user_${response.authorId}`,
+        )) as UserInterface;
+      } else {
+        author = (await FirebaseService.getDocument(
+          'users',
+          response.authorId,
+        )) as UserInterface;
+        await Cache.set(`user_${response.authorId}`, author);
+      }
+      response.author = author;
+
+      const likes = await FirebaseService.getAllDocuments(
+        `posts/${postId}/likes`,
+      );
+      const dislikes = await FirebaseService.getAllDocuments(
+        `posts/${postId}/dislikes`,
+      );
+
+      const postLikes = await Promise.all(
+        likes.map(async like => {
+          return (await FirebaseService.getDocument(
+            `posts/${postId}/likes`,
+            like.id,
+          )) as ReactionInterface;
+        }),
+      );
+
+      const postDislikes = await Promise.all(
+        dislikes.map(async dislike => {
+          return (await FirebaseService.getDocument(
+            `posts/${postId}/dislikes`,
+            dislike.id,
+          )) as ReactionInterface;
+        }),
+      );
+
+      response.postLikes = postLikes;
+      response.postDislikes = postDislikes;
+
+      return response;
+    } catch (error) {
+      console.log(error);
+      return null;
     }
-    return author;
   },
 };
 

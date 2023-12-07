@@ -82,12 +82,12 @@ export default StyleSheet.create({
   tabsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 20,
-    paddingHorizontal: PADDING.general,
+    padding: PADDING.general,
   },
   tabButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    gap: 8,
   },
   selectedTabButton: {
     backgroundColor: COLORS.lightBlueBackground,
@@ -121,5 +121,15 @@ export default StyleSheet.create({
   },
   tabBorderRadius: {
     borderRadius: 10,
+  },
+  PrimaryButtonStyles: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  selectedPrimaryButtonStyles: {
+    paddingHorizontal: 15,
+    backgroundColor: COLORS.lightBlueBackground,
+    color: COLORS.black,
+    paddingVertical: 10,
   },
 });
