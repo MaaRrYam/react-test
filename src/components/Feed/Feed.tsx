@@ -9,7 +9,6 @@ import {
   getFeed,
   refreshFeed,
   setFeedFetchedToFalse,
-  setFeedFromCache,
   setIsRefreshingToFalse,
 } from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
@@ -50,10 +49,6 @@ const Feed = () => {
       dispatch(setIsRefreshingToFalse());
     }
   }, [dispatch, isFeedFetched]);
-
-  useEffect(() => {
-    dispatch(setFeedFromCache());
-  }, [dispatch]);
 
   const fetchPostComments = async (postId: string) => {
     setComments(prev => ({...prev, loading: true, showComments: true, postId}));

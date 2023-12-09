@@ -1,20 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 
 import FeedItem from '@/components/Feed/FeedItem';
-import {FeedItem as FeedInterface, ProfileFeedInterface} from '@/interfaces';
+import {ProfileFeedInterface} from '@/interfaces';
 import HomeService from '@/services/home';
-import ProfileService from '@/services/profile';
 import {PostsSkeleton} from '@/components';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {getProfileFeed} from '@/store/features/homeSlice';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
-  const [feedData, setFeedData] = useState<FeedInterface[]>([]);
-  const [loading, setLoading] = useState(false);
+  const {profileFeed, isProfileFeedFetched} = useAppSelector(
+    state => state.home,
+  );
+  const dispatch = useAppDispatch();
   const fetchData = useCallback(async () => {
-    setLoading(true);
-    const data = await ProfileService.getFeed(uid);
-    setFeedData(data);
-    setLoading(false);
-  }, [uid]);
+    dispatch(getProfileFeed(uid));
+  }, [dispatch, uid]);
 
   useEffect(() => {
     fetchData();
@@ -28,10 +29,10 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
 
   return (
     <>
-      {loading ? (
+      {!isProfileFeedFetched ? (
         <PostsSkeleton />
       ) : (
-        feedData.map((item, index) => (
+        profileFeed.map((item, index) => (
           <FeedItem
             item={item}
             fetchPostComments={fetchPostComments}

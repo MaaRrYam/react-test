@@ -7,16 +7,12 @@ import {HomeScreenProps} from '@/types';
 import {homeStyles} from '@/styles/home';
 import {styles} from './styles';
 import useUserManagement from '@/hooks/useUserManagement';
-import Cache from '@/cache';
-import {useAppSelector} from '@/hooks/useAppSelector';
-import {useFocusEffect} from '@react-navigation/native';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [isNewPostClicked, setIsNewPostClicked] =
     React.useState<boolean>(false);
 
   const {user} = useUserManagement();
-  const {feed} = useAppSelector(state => state.home);
 
   const handleOpen = () => {
     setIsNewPostClicked(true);
@@ -25,15 +21,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const handleClose = () => {
     setIsNewPostClicked(false);
   };
-
-  useFocusEffect(() => {
-    return () => {
-      (async () => {
-        const lastFeedItems = feed?.slice(feed.length - 5);
-        await Cache.set('feed', lastFeedItems);
-      })();
-    };
-  });
 
   return (
     <View style={homeStyles.outerContainer}>
