@@ -15,7 +15,7 @@ import {RootStackParamList} from '@/types';
 const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const handleAuthorPress = () => {
-    navigation.navigate('Profile', {uid: item.authorId});
+    navigation.navigate('Profile', {uid: item.authorId, user: item.author});
   };
 
   return (
