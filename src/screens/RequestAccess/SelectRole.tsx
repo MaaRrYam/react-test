@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, FlatList} from 'react-native';
 
 import {BackButton, PrimaryButton, Link, RoleCard} from '@/components';
 import {ROLES_DATA, SCREEN_NAMES} from '@/constants';
@@ -7,7 +7,6 @@ import {RootStackParamList, SelectRoleScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {FlashList} from '@shopify/flash-list';
 
 const SelectRole: React.FC<SelectRoleScreenProps> = () => {
   const [selectedRole, setSelectedRole] = useState(ROLES_DATA[0].value);
@@ -28,7 +27,7 @@ const SelectRole: React.FC<SelectRoleScreenProps> = () => {
         <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Choose Your Role</Text>
 
-        <FlashList
+        <FlatList
           data={ROLES_DATA}
           renderItem={({item}) => (
             <RoleCard
@@ -42,7 +41,6 @@ const SelectRole: React.FC<SelectRoleScreenProps> = () => {
             />
           )}
           keyExtractor={item => item.id.toString()}
-          estimatedItemSize={10}
         />
       </View>
       <View style={commonStyles.footer}>
