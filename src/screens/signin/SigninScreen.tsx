@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {View, Text, SafeAreaView, Image} from 'react-native';
+import {AppleButton} from '@invertase/react-native-apple-authentication';
 
 import {PrimaryButton, SocialLoginButton} from '@/components';
 import {SCREEN_NAMES} from '@/constants';
@@ -7,6 +8,7 @@ import {_signInWithGoogle} from '@/services/auth/Google';
 import {SignInScreenProps} from '@/types';
 import {styles} from '@/styles/signinScreen';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {onAppleButtonPress} from '@/utils/helpers/signInWithApple';
 
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
@@ -38,6 +40,19 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
             onPress={() => {}}
             text="Sign in with X"
             style={{marginTop: 14.61}}
+          />
+          <AppleButton
+            buttonStyle={AppleButton.Style.WHITE}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              width: 160,
+              height: 45,
+            }}
+            onPress={() =>
+              onAppleButtonPress().then(() =>
+                console.log('Apple sign-in complete!'),
+              )
+            }
           />
         </View>
         <View style={styles.dividerContainer}>
