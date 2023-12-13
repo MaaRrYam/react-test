@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import {FlashList} from '@shopify/flash-list';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  FlatList,
+} from 'react-native';
 
 import {
   BackButton,
@@ -36,50 +42,56 @@ const Education: React.FC<EducationScreenProps> = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={commonStyles.container}>
-        <View style={commonStyles.container}>
-          <BackButton />
-          <Text style={commonStyles.title}>Your Education</Text>
-          <FlashList
-            data={education}
-            renderItem={({item}) => (
-              <EducationCard
-                id={item.id}
-                instituteName={item.instituteName}
-                degree={item.degree}
-                startingYear={item.startYear}
-                endingYear={item.endYear}
-                currentlyWorking={item.currentlyStudying}
-                onPress={educationData => {
-                  console.log('Education card pressed:', educationData);
-                }}
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <>
+            <View style={commonStyles.container}>
+              <BackButton />
+              <Text style={commonStyles.title}>Your Education</Text>
+              <FlatList
+                data={education}
+                renderItem={({item}) => (
+                  <EducationCard
+                    id={item.id}
+                    instituteName={item.instituteName}
+                    degree={item.degree}
+                    startingYear={item.startYear}
+                    endingYear={item.endYear}
+                    currentlyWorking={item.currentlyStudying}
+                    onPress={educationData => {
+                      console.log('Education card pressed:', educationData);
+                    }}
+                  />
+                )}
+                keyExtractor={item => item.id.toString()}
               />
+            </View>
+            <View style={commonStyles.footer}>
+              <PrimaryButton
+                title="Add"
+                onPress={() => setIsBottomSheetVisible(true)}
+                backgroundColor={COLORS.white}
+                textColor={COLORS.black}
+                borderWidth={1}
+                borderColor={COLORS.border}
+                disabled={education && education.length === 3}
+              />
+              <PrimaryButton
+                title={education.length ? 'Continue' : 'Skip'}
+                onPress={handleContinue}
+              />
+            </View>
+            {isBottomSheetVisible && (
+              <BottomSheet
+                isVisible={isBottomSheetVisible}
+                onClose={() => setIsBottomSheetVisible(false)}>
+                <EducationForm handleAddNewEducation={handleAddNewEducation} />
+              </BottomSheet>
             )}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View>
-        <View style={commonStyles.footer}>
-          <PrimaryButton
-            title="Add"
-            onPress={() => setIsBottomSheetVisible(true)}
-            backgroundColor={COLORS.white}
-            textColor={COLORS.black}
-            borderWidth={1}
-            borderColor={COLORS.border}
-            disabled={education && education.length === 3}
-          />
-          <PrimaryButton
-            title={education.length ? 'Continue' : 'Skip'}
-            onPress={handleContinue}
-          />
-        </View>
+          </>
+        </KeyboardAvoidingView>
       </SafeAreaView>
-      {isBottomSheetVisible && (
-        <BottomSheet
-          isVisible={isBottomSheetVisible}
-          onClose={() => setIsBottomSheetVisible(false)}>
-          <EducationForm handleAddNewEducation={handleAddNewEducation} />
-        </BottomSheet>
-      )}
     </>
   );
 };

@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useCallback, FC} from 'react';
-import {View, TextInput, StyleSheet, Animated, Text} from 'react-native';
-import {COLORS, FONTS} from '@/constants';
+import {View, TextInput, Animated, Text} from 'react-native';
+import {COLORS} from '@/constants';
 import {InputProps} from '@/interfaces';
+import {inputStyles} from './styles';
 
 const Input: FC<InputProps> = ({
   placeholder,
@@ -74,12 +75,12 @@ const Input: FC<InputProps> = ({
 
   return (
     <View>
-      <View style={[styles.container, style, inputContainerStyle]}>
+      <View style={[inputStyles.container, style, inputContainerStyle]}>
         <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
         <TextInput
           value={value}
           onChangeText={handleTextChange}
-          style={styles.input}
+          style={inputStyles.input}
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
@@ -87,32 +88,9 @@ const Input: FC<InputProps> = ({
           editable={!disabled}
         />
       </View>
-      {touched && error && <Text style={styles.error}>{error}</Text>}
+      {touched && error && <Text style={inputStyles.error}>{error}</Text>}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 10,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    position: 'relative',
-  },
-  input: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: FONTS.text,
-    color: COLORS.black,
-  },
-  error: {
-    fontSize: FONTS.bodySmall,
-    color: 'red',
-    marginTop: -10,
-    marginLeft: 12,
-    marginBottom: 10,
-  },
-});
 
 export default Input;
