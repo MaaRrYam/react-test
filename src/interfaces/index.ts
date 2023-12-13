@@ -401,7 +401,7 @@ export interface FeedItem {
   authorId: string;
   author: UserInterface;
   media?: string;
-  mediaType?: string;
+  mediaType?: string | null;
   editedTime: Timestamp;
   edited: boolean;
   _id: string;
@@ -581,11 +581,8 @@ export interface ProfileProps {
   navigation: NavigationProp<RootStackParamList, 'Profile'>;
   route: {
     params: {
-      setTabItem: React.Dispatch<React.SetStateAction<string>>;
-      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-      tabItem: string;
-      isEditing: boolean;
-      UID: string;
+      uid: string;
+      user?: UserInterface;
     };
   };
 }
@@ -621,9 +618,7 @@ export interface EditEducationProps {
 }
 
 export interface UserInfoProps {
-  user: UserInterface;
   onClose: () => void;
-  setIsEdit?: (value: boolean) => void;
 }
 
 export interface CheckboxProps {
@@ -661,14 +656,7 @@ export interface DrawerContentProps {
   state: any;
   descriptors: any;
   navigation: any;
-  isVisible: boolean;
-  setIsVisible: (isVisible: boolean) => void;
-  tabItem: string;
-  isEditing: boolean;
-  setIsEditing: (isEditing: boolean) => void;
   user: UserInterface;
-  editingIndex: number;
-  setEditingIndex: Dispatch<SetStateAction<number>>;
   uid: string;
 }
 

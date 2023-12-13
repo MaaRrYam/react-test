@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, useWindowDimensions} from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
 import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
@@ -11,17 +11,7 @@ import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
 import useProfile from '@/hooks/useProfile';
 
-const About = ({
-  navigation,
-  usersProfileID,
-  user,
-  setUser,
-}: {
-  navigation: NavigationProp<RootStackParamList, 'Profile'>;
-  usersProfileID: string;
-  user: UserInterface;
-  setUser: React.Dispatch<React.SetStateAction<UserInterface>>;
-}) => {
+const About = ({user}: {user: UserInterface}) => {
   const {
     loading,
     buttonLoading,
@@ -33,8 +23,9 @@ const About = ({
     handleAcceptConnection,
     loggedInUser,
     connections,
-  } = useProfile(usersProfileID, user);
+  } = useProfile(user.id, user);
   const {width, height} = useWindowDimensions();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleMessage = async () => {
     const chatPayload = {
@@ -59,12 +50,6 @@ const About = ({
       });
     }
   };
-
-  useEffect(() => {
-    if (usersProfileID === loggedInUser.id) {
-      setUser(loggedInUser);
-    }
-  }, [loggedInUser, setUser, usersProfileID]);
 
   if (loading) {
     return (
@@ -117,11 +102,10 @@ const About = ({
           <View
             style={[
               profileStyles.buttonContainer,
-              (usersProfileID === loggedInUser.id || usersProfileID === '') &&
-                profileStyles.justifyEnd,
+              user.id === loggedInUser.id && profileStyles.justifyEnd,
             ]}>
-            {!usersProfileID ||
-              (usersProfileID !== loggedInUser.id && (
+            {!user.id ||
+              (user.id !== loggedInUser.id && (
                 <>
                   {!isAlreadyConnected &&
                   !isAlreadyPendingRequest &&
@@ -151,6 +135,7 @@ const About = ({
                     title="Message"
                     style={[
                       profileStyles.messageButton,
+                      profileStyles.messageButtonMargin,
                       isAlreadyConnected && profileStyles.messageMargin,
                     ]}
                     onPress={handleMessage}

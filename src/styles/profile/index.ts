@@ -53,8 +53,7 @@ export default StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginTop: 10,
     marginLeft: -3,
   },
@@ -112,6 +111,9 @@ export default StyleSheet.create({
   justifyEnd: {
     justifyContent: 'flex-end',
     marginBottom: 5,
+  },
+  messageButtonMargin: {
+    marginLeft: 20,
   },
   messageMargin: {
     marginLeft: 170,
