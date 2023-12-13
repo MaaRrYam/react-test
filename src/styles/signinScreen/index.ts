@@ -1,4 +1,4 @@
-import {COLORS, FONTS} from '@/constants';
+import {BORDER_RADIUS, COLORS, FONTS} from '@/constants';
 import {getScreenDimensions} from '@/utils/functions';
 import {Platform, StyleSheet} from 'react-native';
 const {width} = getScreenDimensions();
@@ -56,5 +56,13 @@ export const styles = StyleSheet.create({
   },
   signUpText: {
     color: COLORS.primary,
+  },
+  appleSignIn: {
+    width: '100%',
+    height: 50,
+    borderWidth: 1,
+    marginTop: 14.61,
+    borderRadius: BORDER_RADIUS.general,
+    borderColor: COLORS.border,
   },
 });
