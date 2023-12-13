@@ -9,21 +9,27 @@ import {
 } from 'react-native';
 
 import {PrimaryButton, SocialLoginButton} from '@/components';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {COLORS} from '@/constants';
 import {LaunchScreenProps} from '@/types';
 import {_signInWithGoogle} from '@/services/auth/Google';
+import {_signInWithApple} from '@/services/auth/Apple';
 import {styles} from '@/styles/main';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
   const handleSignButtonClick = () => {
-    navigation.navigate(SCREEN_NAMES.Signin);
+    navigation.navigate('Signin');
   };
 
   const handleGoogleSign = async () => {
     await _signInWithGoogle(navigation, dispatch);
   };
+
+  const handleAppleSignIn = async () => {
+    await _signInWithApple(navigation, dispatch);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -55,6 +61,14 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
             text="Sign up with Twitter"
             style={{marginTop: 14.61}}
           />
+          {Platform.OS === 'ios' && (
+            <SocialLoginButton
+              logoSource={require('@/assets/images/apple.png')}
+              onPress={handleAppleSignIn}
+              text="Sign up with Apple"
+              style={{marginTop: 14.61}}
+            />
+          )}
         </View>
 
         <View style={styles.dividerContainer}>
@@ -68,7 +82,7 @@ const Main: React.FC<LaunchScreenProps> = ({navigation}) => {
         <View>
           <PrimaryButton
             title="Create Account"
-            onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}
+            onPress={() => navigation.navigate('Signup')}
             style={{}}
             activityIndicatorColor={COLORS.white}
           />

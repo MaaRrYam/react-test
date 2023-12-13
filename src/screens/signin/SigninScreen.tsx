@@ -1,20 +1,23 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image} from 'react-native';
-import {AppleButton} from '@invertase/react-native-apple-authentication';
+import {View, Text, SafeAreaView, Image, Platform} from 'react-native';
 
 import {PrimaryButton, SocialLoginButton} from '@/components';
-import {SCREEN_NAMES} from '@/constants';
 import {_signInWithGoogle} from '@/services/auth/Google';
 import {SignInScreenProps} from '@/types';
 import {styles} from '@/styles/signinScreen';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {onAppleButtonPress} from '@/utils/helpers/signInWithApple';
+import {_signInWithApple} from '@/services/auth/Apple';
 
 const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
   const handleGoogleSign = async () => {
     await _signInWithGoogle(navigation, dispatch);
   };
+
+  const handleAppleSignIn = async () => {
+    await _signInWithApple(navigation, dispatch);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainContainer}>
@@ -41,19 +44,14 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
             text="Sign in with X"
             style={{marginTop: 14.61}}
           />
-          <AppleButton
-            buttonStyle={AppleButton.Style.WHITE}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={{
-              width: 160,
-              height: 45,
-            }}
-            onPress={() =>
-              onAppleButtonPress().then(() =>
-                console.log('Apple sign-in complete!'),
-              )
-            }
-          />
+          {Platform.OS === 'ios' && (
+            <SocialLoginButton
+              logoSource={require('@/assets/images/apple.png')}
+              onPress={handleAppleSignIn}
+              text="Sign up with Apple"
+              style={{marginTop: 14.61}}
+            />
+          )}
         </View>
         <View style={styles.dividerContainer}>
           <View style={styles.divider} />
@@ -65,7 +63,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
 
         <View>
           <PrimaryButton
-            onPress={() => navigation.navigate(SCREEN_NAMES.SigninWithEmail)}
+            onPress={() => navigation.navigate('SigninWithEmail')}
             title="Sign in with email"
             textColor="white"
             style={styles.signInWithEmailButton}
@@ -76,7 +74,7 @@ const SigninScreen: FC<SignInScreenProps> = ({navigation}) => {
           <Text style={styles.text}>Don't have an Account? </Text>
           <Text
             style={styles.signUpText}
-            onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}>
+            onPress={() => navigation.navigate('Signup')}>
             Sign up
           </Text>
         </View>
