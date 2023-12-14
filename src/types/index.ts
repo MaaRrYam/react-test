@@ -38,10 +38,7 @@ export type RootStackParamList = {
   Header: undefined;
   Profile: {
     uid: string;
-    Article: {
-      article?: FeedItem;
-      id?: string;
-    };
+    user?: UserInterface;
   };
   Article: {
     article?: FeedItem;

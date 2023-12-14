@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -16,7 +16,6 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 import {BottomSheet, PrimaryButton} from '@/components';
 import {styles} from './styles';
-import useUserManagement from '@/hooks/useUserManagement';
 import {Asset, ImageInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
 import {getUID} from '@/utils/functions';
@@ -24,6 +23,9 @@ import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
 import {hasAndroidPermission} from '@/utils';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {addPostToProfileFeed} from '@/store/features/homeSlice';
+import {useAppSelector} from '@/hooks/useAppSelector';
 
 const NewPost = ({
   isVisible,
@@ -32,7 +34,7 @@ const NewPost = ({
   isVisible: boolean;
   onClose: () => void;
 }) => {
-  const {user} = useUserManagement();
+  const {user} = useAppSelector(state => state.auth);
   const [photos, setPhotos] = useState<ImageInterface[]>([
     {
       filename: null,
@@ -51,8 +53,9 @@ const NewPost = ({
   >(null);
   const [text, setText] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
-  const openImagePicker = () => {
+  const openImagePicker = useCallback(() => {
     launchImageLibrary(
       {
         mediaType: 'photo',
@@ -71,9 +74,9 @@ const NewPost = ({
         }
       },
     );
-  };
+  }, []);
 
-  const handleButtonPress = async () => {
+  const handleButtonPress = useCallback(async () => {
     if (Platform.OS === 'android') {
       const hasPermissions = await hasAndroidPermission();
       if (!hasPermissions) {
@@ -92,11 +95,11 @@ const NewPost = ({
       .catch(err => {
         console.log(err);
       });
-  };
+  }, []);
 
   useEffect(() => {
     handleButtonPress();
-  }, []);
+  }, [handleButtonPress]);
 
   const handleImagePress = (image: ImageInterface) => {
     if (!image.fileSize) {
@@ -117,28 +120,40 @@ const NewPost = ({
       )) as string;
     }
 
+    const postId = FirebaseService.generateUniqueId();
     const payload = {
-      id: FirebaseService.generateUniqueId(),
+      id: postId,
+      creationTime: FirebaseService.serverTimestamp(),
+      hashtag: 'post',
+      type: imageUrl ? 'Media' : 'Text',
+      text,
       authorId: UID,
       media: imageUrl,
       mediaType: imageUrl ? 'image' : null,
-      type: imageUrl ? 'Media' : 'Text',
-      text,
-      hashtag: 'post',
-      creationTime: FirebaseService.serverTimestamp(),
-      edited: false,
       editedTime: FirebaseService.serverTimestamp(),
+      edited: false,
     };
 
     const response = await HomeService.createPost(payload);
-    setIsLoading(false);
-    setText('');
-    setSelectedImage(null);
     if (response) {
+      setText('');
+      setSelectedImage(null);
+      dispatch(
+        addPostToProfileFeed({
+          ...payload,
+          author: user,
+          _id: postId,
+          feedType: 'post',
+          postLikes: [],
+          postDislikes: [],
+          tags: [],
+        }),
+      );
       ToastService.showSuccess('Post created successfully');
     } else {
       ToastService.showError('Something went wrong');
     }
+    setIsLoading(false);
     onClose();
   };
 
@@ -178,15 +193,14 @@ const NewPost = ({
               value={text}
               onChangeText={setText}
               placeholder="What do you want to post today?"
+              placeholderTextColor={COLORS.black}
             />
 
             {selectedImage && (
-              <FastImage
+              <Image
                 style={styles.selectedImage}
                 source={{
                   uri: selectedImage.uri,
-                  priority: FastImage.priority.normal,
-                  cache: FastImage.cacheControl.web,
                 }}
                 resizeMode="cover"
               />
@@ -209,12 +223,10 @@ const NewPost = ({
               horizontal
               renderItem={({item}) => (
                 <TouchableOpacity onPress={() => handleImagePress(item)}>
-                  <FastImage
+                  <Image
                     style={styles.image}
                     source={{
                       uri: item.uri,
-                      priority: FastImage.priority.high,
-                      cache: FastImage.cacheControl.immutable,
                     }}
                     resizeMode="cover"
                   />

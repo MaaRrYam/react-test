@@ -1,46 +1,24 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Share,
-  SafeAreaView,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, TouchableOpacity, SafeAreaView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Dislike, Like, Report, ShareIcon} from '@/assets/icons';
-import {PostScreenProps, RootStackParamList} from '@/types';
-import {getUID} from '@/utils/functions';
-import ToastService from '@/services/toast';
-import styles from './styles';
-import FirebaseService from '@/services/Firebase';
+
 import HomeService from '@/services/home';
-import {
-  removeLike,
-  addLikeAndRemoveDislike,
-  addLike,
-  removeDisLike,
-  addDislikeAndRemoveLike,
-  addDislike,
-  removeReportedPostFromFeed,
-} from '@/store/features/homeSlice';
-import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {FeedCommentsResponse, ReactionInterface} from '@/interfaces';
-import PostComments from '@/components/Feed/PostComments';
-import {Loading} from '@/components';
+import {formatFirebaseTimestamp} from '@/utils';
+import {PostScreenProps, RootStackParamList} from '@/types';
+import {FeedCommentsResponse} from '@/interfaces';
+import {Loading, BottomSheet, PostComments} from '@/components';
+import PostItem from '@/components/Feed/PostItem';
 import {styles as homeStyles} from '@/screens/home/styles';
+import styles from './styles';
+import {BackArrow} from '@/assets/icons';
 
 const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const {
     params: {item, id},
   } = route;
 
-  const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [comments, setComments] = useState({
     postId: '',
@@ -51,201 +29,11 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
   const [postItem, setPostItem] = useState(item);
   const [loading, setLoading] = useState(item ? false : true);
 
-  const [reactions, setReactions] = useState({
-    like: false,
-    dislike: false,
-  });
-
-  const isPostLikedByUser = async () => {
-    const UID = await getUID();
-    if (postItem) {
-      const response =
-        postItem.postLikes?.some(
-          (like: ReactionInterface) => like.likedBy === UID,
-        ) || false;
-      setReactions(prev => ({...prev, like: response}));
-    }
-  };
-
-  const isPostDisLikedByUser = async () => {
-    const UID = await getUID();
-
-    if (postItem) {
-      const response =
-        postItem.postDislikes?.some(
-          (like: ReactionInterface) => like.likedBy === UID,
-        ) || false;
-      setReactions(prev => ({...prev, dislike: response}));
-    }
-  };
-
-  const likeAPost = async () => {
-    const UID = (await getUID()) as string;
-    if (reactions.like) {
-      dispatch(
-        removeLike({
-          id: postItem!.id,
-          reaction: {
-            likedBy: UID,
-            timestamp: FirebaseService.serverTimestamp(),
-          },
-        }),
-      );
-      setReactions(prev => ({...prev, like: false}));
-      const response = await HomeService.removeLike(postItem!.id, UID);
-      if (response) {
-        ToastService.showSuccess('Post Like Removed');
-      }
-
-      return;
-    } else if (reactions.dislike) {
-      dispatch(
-        addLikeAndRemoveDislike({
-          id: postItem!.id,
-          reaction: {
-            likedBy: UID,
-            timestamp: FirebaseService.serverTimestamp(),
-          },
-        }),
-      );
-      setReactions({like: true, dislike: false});
-      const response = await HomeService.removeDisLikeAndLike(
-        postItem!.id,
-        UID,
-      );
-      if (response) {
-        ToastService.showSuccess('Post Disliked');
-      }
-      return;
-    } else {
-      dispatch(
-        addLike({
-          id: postItem!.id,
-          reaction: {
-            likedBy: UID,
-            timestamp: FirebaseService.serverTimestamp(),
-          },
-        }),
-      );
-      setReactions(prev => ({...prev, like: true}));
-      const response = await HomeService.likeAPost(postItem!.id, UID);
-      if (response) {
-        ToastService.showSuccess('Post liked');
-      }
-    }
-  };
-
-  const disLikeAPost = async () => {
-    const UID = (await getUID()) as string;
-
-    if (reactions.dislike) {
-      dispatch(
-        removeDisLike({
-          id: postItem!.id,
-          reaction: {
-            likedBy: UID,
-            timestamp: FirebaseService.serverTimestamp(),
-          },
-        }),
-      );
-      setReactions(prev => ({...prev, dislike: false}));
-      const response = await HomeService.removeDislike(postItem!.id, UID);
-      if (response) {
-        ToastService.showSuccess('Post Dislike Removed');
-      }
-      return;
-    } else if (reactions.like) {
-      dispatch(
-        addDislikeAndRemoveLike({
-          id: postItem!.id,
-          reaction: {
-            likedBy: UID,
-            timestamp: FirebaseService.serverTimestamp(),
-          },
-        }),
-      );
-      setReactions({like: false, dislike: true});
-      const response = await HomeService.removeLikeAndDisLike(
-        postItem!.id,
-        UID,
-      );
-      if (response) {
-        ToastService.showSuccess('Post Liked');
-      }
-      return;
-    } else {
-      dispatch(
-        addDislike({
-          id: postItem!.id,
-          reaction: {
-            likedBy: UID,
-            timestamp: FirebaseService.serverTimestamp(),
-          },
-        }),
-      );
-
-      setReactions(prev => ({...prev, dislike: true}));
-      const response = await HomeService.disLikeAPost(postItem!.id, UID);
-      if (response) {
-        ToastService.showSuccess('Post Disliked');
-      }
-    }
-  };
-
-  const reportPost = async () => {
-    if (postItem) {
-      const response = await HomeService.reportAPost(
-        postItem.id,
-        postItem.authorId,
-      );
-      if (response) {
-        dispatch(removeReportedPostFromFeed(postItem.id));
-        ToastService.showSuccess('Post reported');
-      }
-    }
-  };
-
-  const sharePost = async () => {
-    const {share, sharedAction, dismissedAction} = Share;
-
-    const appUrl = 'cnmobile://post/' + postItem!.id;
-    const shareOptions = {
-      message: `Check out this Post at CareerNetwork.co \n\n ${appUrl}`,
-    };
-
-    try {
-      const result = await share(shareOptions);
-      if (result.action === sharedAction) {
-        // ToastService.showSuccess('Post shared');
-      } else if (result.action === dismissedAction) {
-        // ToastService.showError('Post sharing dismissed');
-      }
-    } catch (error) {
-      ToastService.showError('Error sharing post');
-    }
-  };
-
-  useEffect(() => {
-    isPostDisLikedByUser();
-    isPostLikedByUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postItem]);
-
-  useEffect(() => {
-    if (postItem) {
-      setComments(prev => ({
-        ...prev,
-        loading: true,
-        showComments: true,
-        postId: postItem.id,
-      }));
-      HomeService.fetchPostComments(postItem.id).then(response => {
-        if (response) {
-          setComments(prev => ({...prev, loading: false, comments: response}));
-        }
-      });
-    }
-  }, [postItem]);
+  const fetchPostComments = useCallback(async (postId: string) => {
+    setComments(prev => ({...prev, loading: true, showComments: true, postId}));
+    const response = await HomeService.fetchPostComments(postId);
+    setComments(prev => ({...prev, loading: false, comments: response}));
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -258,83 +46,81 @@ const PostScreen: React.FC<PostScreenProps> = ({route}) => {
     }
   }, [id]);
 
+  const handleAuthorPress = useCallback(() => {
+    if (postItem) {
+      navigation.navigate('Profile', {uid: postItem.authorId});
+    }
+  }, [postItem, navigation]);
+
   const handleBack = () => {
     navigation.goBack();
   };
 
-  if (loading) {
+  if (loading || !postItem?.id) {
     return <Loading />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}
-        pointerEvents="box-none">
-        <ScrollView style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              <Image
-                source={require('@/assets/images/back.png')}
-                style={styles.backIcon}
-                resizeMode="contain"
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <BackArrow width={30} height={30} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.body}>
+        <View style={homeStyles.feedItem}>
+          <View style={homeStyles.authorInfo}>
+            <TouchableOpacity onPress={handleAuthorPress}>
+              <FastImage
+                resizeMode={FastImage.resizeMode.cover}
+                defaultSource={require('@/assets/images/user.png')}
+                fallback={require('@/assets/images/user.png')}
+                source={{
+                  uri: postItem.author?.photoUrl,
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                style={homeStyles.userImage}
               />
             </TouchableOpacity>
-            <View style={styles.headerIcons}>
-              <TouchableOpacity onPress={sharePost} style={styles.shareButton}>
-                <ShareIcon />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={reportPost}>
-                <Report />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.body}>
-            <View style={styles.postInfo}>
-              {postItem?.media && (
-                <FastImage
-                  source={{
-                    uri: postItem.media,
-                    priority: FastImage.priority.high,
-                    cache: FastImage.cacheControl.immutable,
-                  }}
-                  style={styles.media}
-                />
-              )}
-              <Text style={styles.feedContent}>{postItem?.text}</Text>
-              <View style={homeStyles.postReactions}>
-                <TouchableOpacity
-                  style={styles.reactionButton}
-                  onPress={likeAPost}>
-                  <Like isLiked={reactions.like} />
-                </TouchableOpacity>
-                <Text style={styles.like}>
-                  {postItem?.postLikes &&
-                    postItem.postDislikes &&
-                    postItem?.postLikes?.length -
-                      postItem?.postDislikes?.length}
+            <View style={{marginLeft: 10}}>
+              <TouchableOpacity onPress={handleAuthorPress}>
+                <Text style={homeStyles.authorName}>
+                  {postItem.author?.name}
                 </Text>
-                <TouchableOpacity
-                  style={styles.reactionButton}
-                  onPress={disLikeAPost}>
-                  <Dislike isLiked={reactions.dislike} />
-                </TouchableOpacity>
-              </View>
+                {postItem.author?.tagline && (
+                  <Text style={homeStyles.authorTagline}>
+                    {postItem.author?.tagline}
+                  </Text>
+                )}
+              </TouchableOpacity>
+              <Text style={homeStyles.postTime}>
+                {formatFirebaseTimestamp(
+                  postItem.editedTime || postItem.timestamp,
+                  'dateTime',
+                )}
+              </Text>
             </View>
-
-            <PostComments
-              postId={postItem?.id || ''}
-              comments={comments.comments}
-              loading={comments.loading}
-              showComments={comments.showComments}
-              setComments={setComments}
-              isFromPost={true}
-            />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <PostItem item={postItem} fetchPostComments={fetchPostComments} />
+        </View>
+      </View>
+
+      {comments.showComments && (
+        <BottomSheet
+          isVisible={comments.showComments}
+          snapPoints={['20%', '90%']}
+          onClose={() => setComments(prev => ({...prev, showComments: false}))}>
+          <PostComments
+            showComments={comments.showComments}
+            comments={comments.comments}
+            loading={comments.loading}
+            setComments={setComments}
+            postId={comments.postId}
+          />
+        </BottomSheet>
+      )}
     </SafeAreaView>
   );
 };

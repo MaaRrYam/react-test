@@ -1,17 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {Home, Network, Notifications, Jobs} from '@/screens';
-import {COLORS, SCREEN_NAMES, PROFILE_TABS} from '@/constants';
+import {COLORS, SCREEN_NAMES} from '@/constants';
 import {getIcon} from '@/utils/IconsHelper';
 import Profile from '@/screens/profile';
-import EditProfile from '@/components/EditProfile';
 import {getUID} from '@/utils/functions';
 import {DrawerContentProps, UserInterface} from '@/interfaces';
 import StorageService from '@/services/Storage';
 import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 import useHandleLinking from '@/hooks/useHandleLinking';
+import {useAppSelector} from '@/hooks/useAppSelector';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,17 +22,11 @@ function DrawerContent({
   state,
   descriptors,
   navigation,
-  isVisible,
-  setIsVisible,
-  tabItem,
-  isEditing,
-  setIsEditing,
   user,
-  editingIndex,
-  setEditingIndex,
   uid,
 }: DrawerContentProps) {
   const dispatch = useAppDispatch();
+  const loggedInUser = useAppSelector(storeState => storeState.auth.user);
 
   return (
     <>
@@ -49,11 +46,18 @@ function DrawerContent({
 
             const isFocused = state.index === index;
 
-            const onPress = () => {
+            const onPress = async () => {
               if (isFocused && route.name === 'Home') {
                 dispatch(refreshFeed());
                 dispatch(setFeedFetchedToFalse());
                 return;
+              }
+
+              if (route.name === 'Profile') {
+                return navigation.navigate('Profile', {
+                  uid,
+                  user: loggedInUser,
+                });
               }
 
               const event = navigation.emit({
@@ -84,39 +88,17 @@ function DrawerContent({
                 onPress={onPress}
                 onLongPress={onLongPress}
                 style={styles.tab}>
-                {getIcon(
-                  label,
-                  isFocused,
-                  navigation,
-                  user?.photoUrl,
-                  uid as string,
-                )}
+                {getIcon(label, isFocused, user?.photoUrl)}
               </TouchableOpacity>
             );
           },
         )}
       </View>
-      {isVisible && (
-        <EditProfile
-          isVisible={isVisible}
-          onClose={() => setIsVisible(false)}
-          tabItem={tabItem}
-          user={user}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          editingIndex={editingIndex}
-          setEditingIndex={setEditingIndex}
-        />
-      )}
     </>
   );
 }
 
 const Tabs = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [tabItem, setTabItem] = useState(PROFILE_TABS[0]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(0);
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const dispatch = useAppDispatch();
   const [UID, setUID] = useState('');
@@ -130,6 +112,7 @@ const Tabs = () => {
     };
     fetchUser();
   }, []);
+
   useEffect(() => {
     async function fetchUID() {
       const uid = await getUID();
@@ -140,24 +123,18 @@ const Tabs = () => {
   }, [dispatch]);
   const {width, height} = Dimensions.get('window');
 
+  const renderDrawerContent = useCallback(
+    (props: BottomTabBarProps) => {
+      return <DrawerContent {...props} user={user} uid={UID} />;
+    },
+    [UID, user],
+  );
+
   return (
     <View style={{width, height}}>
       <Tab.Navigator
         screenOptions={{headerShown: false, tabBarHideOnKeyboard: true}}
-        tabBar={props => (
-          <DrawerContent
-            {...props}
-            isVisible={isVisible}
-            setIsVisible={setIsVisible}
-            tabItem={tabItem}
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
-            user={user}
-            editingIndex={editingIndex}
-            setEditingIndex={setEditingIndex}
-            uid={UID}
-          />
-        )}>
+        tabBar={props => renderDrawerContent(props)}>
         <Tab.Screen name={SCREEN_NAMES.Home} component={Home} />
         <Tab.Screen name={SCREEN_NAMES.Network} component={Network} />
         <Tab.Screen
@@ -169,11 +146,6 @@ const Tabs = () => {
           name={SCREEN_NAMES.Profile}
           component={Profile}
           initialParams={{
-            isVisible,
-            setIsVisible,
-            setTabItem,
-            tabItem,
-            isEditing,
             UID,
           }}
         />

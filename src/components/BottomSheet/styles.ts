@@ -1,4 +1,4 @@
-import {BORDER_RADIUS, COLORS, MARGINS, PADDING} from '@/constants';
+import {BORDER_RADIUS, COLORS} from '@/constants';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -22,5 +22,9 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.58,
     shadowRadius: 16,
     elevation: 24,
+  },
+  backdrop: {
+    backgroundColor: COLORS.black,
+    opacity: 0.5,
   },
 });
