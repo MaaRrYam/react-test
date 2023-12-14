@@ -6,7 +6,6 @@ import {BottomSheet, PrimaryButton, ProfileFeed} from '@/components';
 import EditProfile from '@/components/EditProfile';
 import {COLORS, PROFILE_TABS} from '@/constants';
 import {NewChatIcon} from '@/assets/icons';
-import {useAppSelector} from '@/hooks/useAppSelector';
 import {styles} from '@/screens/home/styles';
 import {
   EmploymentProps,
@@ -18,6 +17,7 @@ import CareerTab from './CareerTab';
 import EducationTab from './EducationTab';
 import ProfileTab from './ProfileTab';
 import PostComments from '../Feed/PostComments';
+import useUserManagement from '@/hooks/useUserManagement';
 
 const Tabs = ({
   user,
@@ -39,7 +39,7 @@ const Tabs = ({
     showComments: false,
   });
 
-  const loggedInUser = useAppSelector(state => state.auth.user);
+  const value = useUserManagement();
 
   const openBottomSheet = () => {
     setIsVisible(true);
@@ -75,7 +75,7 @@ const Tabs = ({
                 <NewChatIcon />
               </TouchableOpacity>
             ) : (
-              usersProfileID === loggedInUser.id && (
+              usersProfileID === value.user?.id && (
                 <TouchableOpacity
                   style={profileStyles.editIcon}
                   onPress={openBottomSheet}>
@@ -91,7 +91,6 @@ const Tabs = ({
               bio={user.description as string}
               photo={user.photoUrl as string}
               id={user.id}
-              loggedInID={loggedInUser.id}
               handleOpen={handleOpen}
             />
           ) : selectedTab === PROFILE_TABS[1] ? (

@@ -34,7 +34,10 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
             style={styles.userImage}
           />
         </TouchableOpacity>
-        <View style={{marginLeft: 10}}>
+        <View
+          style={{
+            marginLeft: 10,
+          }}>
           <TouchableOpacity onPress={handleAuthorPress}>
             <Text style={styles.authorName}>{item.author?.name}</Text>
             {item.author?.tagline && (

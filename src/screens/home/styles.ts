@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 8,
     padding: 10,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   feedTitle: {
     fontSize: 18,
@@ -96,7 +96,6 @@ export const styles = StyleSheet.create({
   postTime: {
     fontSize: FONTS.bodySmall,
     color: 'gray',
-    marginBottom: 8,
   },
   moreIcon: {
     alignSelf: 'flex-end',
