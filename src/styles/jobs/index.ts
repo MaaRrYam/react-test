@@ -43,7 +43,7 @@ export const jobMainStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     gap: 8,
     marginTop: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   buttonStyles: {
     paddingHorizontal: 15,
@@ -224,10 +224,10 @@ export const jobCardStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: MARGINS.general,
-    borderBottomWidth: BORDER_WIDTH.general,
+    borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
-    paddingHorizontal: PADDING.general,
-    paddingVertical: PADDING.general,
+    // paddingHorizontal: PADDING.general,
+    paddingVertical: PADDING.general / 2,
   },
   iconContainer: {
     width: ICON_WIDTH.general,

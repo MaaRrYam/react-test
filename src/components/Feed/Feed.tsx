@@ -1,25 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {RefreshControl} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 
 import {BottomSheet, PostsSkeleton} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {
-  getFeed,
-  refreshFeed,
-  setFeedFetchedToFalse,
-  setIsRefreshingToFalse,
-} from '@/store/features/homeSlice';
+import {getFeed, setIsRefreshingToFalse} from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
 import PostComments from './PostComments';
 import HomeService from '@/services/home';
 import {FeedCommentsResponse} from '@/interfaces';
 
 const Feed = () => {
-  const {feed, isFeedFetched, isRefreshing} = useAppSelector(
-    state => state.home,
-  );
+  const {feed, isFeedFetched} = useAppSelector(state => state.home);
   const dispatch = useAppDispatch();
 
   const [comments, setComments] = useState({
@@ -28,11 +21,6 @@ const Feed = () => {
     comments: [] as FeedCommentsResponse[],
     showComments: false,
   });
-
-  const handleRefresh = () => {
-    dispatch(refreshFeed());
-    dispatch(setFeedFetchedToFalse());
-  };
 
   const fetchData = useCallback(() => {
     if (!isFeedFetched) {
@@ -59,20 +47,17 @@ const Feed = () => {
   return (
     <>
       {isFeedFetched ? (
-        <FlashList
-          data={feed}
-          renderItem={({item}) => (
-            <FeedItem item={item} fetchPostComments={fetchPostComments} />
-          )}
-          keyExtractor={item => item._id}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-            />
-          }
-          estimatedItemSize={100}
-        />
+        <View style={{minHeight: Dimensions.get('screen').height}}>
+          <FlashList
+            data={feed}
+            renderItem={({item}) => (
+              <FeedItem item={item} fetchPostComments={fetchPostComments} />
+            )}
+            keyExtractor={item => item._id || item.id}
+            estimatedItemSize={120}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       ) : (
         <PostsSkeleton />
       )}
@@ -80,7 +65,7 @@ const Feed = () => {
       {comments.showComments && (
         <BottomSheet
           isVisible={comments.showComments}
-          snapPoints={['20%', '100%']}
+          snapPoints={['20%', '150%']}
           onClose={() => setComments(prev => ({...prev, showComments: false}))}>
           <PostComments
             showComments={comments.showComments}

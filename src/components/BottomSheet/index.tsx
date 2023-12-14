@@ -22,7 +22,11 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
   const bottomSheetRef = useRef<BottomSheet | null>(null);
 
   const renderBackdrop = (style: StyleProp<ViewStyle>) => (
-    <TouchableWithoutFeedback onPress={() => onClose()}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        bottomSheetRef.current?.close();
+        onClose();
+      }}>
       <View style={[style, styles.backdrop]} />
     </TouchableWithoutFeedback>
   );

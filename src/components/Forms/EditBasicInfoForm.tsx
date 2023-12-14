@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 
 import {Dropdown, Input, PrimaryButton, TextArea} from '@/components';
@@ -17,6 +10,7 @@ import ProfileService from '@/services/profile';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {updateUserData} from '@/store/features/authSlice';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
   const {user} = useAppSelector(state => state.auth);
@@ -59,10 +53,8 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
   );
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}>
-      <ScrollView>
+    <>
+      <ScrollView style={styles.container}>
         <Text
           style={[
             styles.headerText,
@@ -136,16 +128,16 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
             error={errors.city}
           />
         </View>
+        <View style={styles.footer}>
+          <PrimaryButton
+            title="Save"
+            onPress={handleSubmit}
+            isLoading={isSubmitting}
+            style={styles.saveButton}
+          />
+        </View>
       </ScrollView>
-      <View style={styles.footer}>
-        <PrimaryButton
-          title="Save"
-          onPress={handleSubmit}
-          isLoading={isSubmitting}
-          style={styles.saveButton}
-        />
-      </View>
-    </KeyboardAvoidingView>
+    </>
   );
 };
 

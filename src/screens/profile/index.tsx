@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, RefreshControl} from 'react-native';
+
 import {Loading, About, ProfileTabs, NewPost} from '@/components';
 import ProfileService from '@/services/profile';
 import {ProfileProps, UserInterface} from '@/interfaces';
