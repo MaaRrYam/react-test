@@ -142,7 +142,7 @@ export default Feedback;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get('window').height * 0.67,
+    height: Dimensions.get('window').height * 0.6,
     justifyContent: 'space-between',
     paddingTop: 10,
   },

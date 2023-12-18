@@ -6,6 +6,7 @@ import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '@/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -133,6 +134,9 @@ export interface FirebaseServiceProps {
     callback: (documents: DocumentData[]) => void,
   ): Promise<Unsubscribe>;
   generateUniqueFilename(): string;
+  reAuthenticateUser(
+    password: string,
+  ): Promise<FirebaseAuthTypes.UserCredential | undefined>;
 }
 
 export interface ImageInterface {

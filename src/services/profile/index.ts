@@ -1,3 +1,4 @@
+import {getAuth, updateEmail} from 'firebase/auth';
 import {areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 import {
@@ -12,6 +13,7 @@ import {Timestamp} from 'firebase/firestore';
 import ToastService from '@/services/toast';
 import {API_GET} from '@/config/api/apiRequests';
 import Cache from '@/cache';
+
 const ProfileService = {
   async handleSaveBasicInformation({
     name,
@@ -240,6 +242,20 @@ const ProfileService = {
     try {
       await FirebaseService.updateDocument('users', payload.id, payload);
       return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async changeEmail(newEmail: string) {
+    try {
+      const auth = getAuth();
+
+      if (auth.currentUser) {
+        const response = await updateEmail(auth.currentUser, newEmail);
+        console.log({response});
+        return true;
+      }
     } catch (error) {
       console.log(error);
       return false;
