@@ -1,5 +1,10 @@
 import React, {useRef} from 'react';
-import {View} from 'react-native';
+import {
+  StyleProp,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 
 import {styles} from './styles';
@@ -16,6 +21,16 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
 }) => {
   const bottomSheetRef = useRef<BottomSheet | null>(null);
 
+  const renderBackdrop = (style: StyleProp<ViewStyle>) => (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        bottomSheetRef.current?.close();
+        onClose();
+      }}>
+      <View style={[style, styles.backdrop]} />
+    </TouchableWithoutFeedback>
+  );
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -27,6 +42,7 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
           onClose();
         }
       }}
+      backdropComponent={({style}) => renderBackdrop(style)}
       handleIndicatorStyle={!indicatorVisible && {display: 'none'}}>
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.contentContainer, contentContainerStyle]}>

@@ -3,41 +3,29 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {FeedItem, ReactionPayload} from '@/interfaces';
 import HomeService from '@/services/home';
 import {getUID} from '@/utils/functions';
-import Cache from '@/cache';
-
-let localFeed: FeedItem[] | null = null;
-(async () => {
-  localFeed = await Cache.get('feed');
-})();
+import ProfileService from '@/services/profile';
 
 const initialState = {
   feed: [] as FeedItem[],
   isFeedFetched: false,
   isFeedFirstRequest: true,
   isRefreshing: false,
+  profileFeed: [] as FeedItem[],
+  isProfileFeedFetched: false,
 };
 
 export const getFeed = createAsyncThunk('home/getFeed', async () => {
   const result = await HomeService.getFeed();
-  const mergedFeed: FeedItem[] = localFeed ? [...localFeed] : [];
-
-  if (localFeed) {
-    result.forEach((post: FeedItem) => {
-      const foundPost = localFeed!.find((item: FeedItem) => {
-        if (item._id === post._id) {
-          return true;
-        }
-      });
-
-      if (!foundPost) {
-        mergedFeed.push(post);
-      }
-    });
-  } else {
-    mergedFeed.push(...result);
-  }
-  return mergedFeed;
+  return result;
 });
+
+export const getProfileFeed = createAsyncThunk(
+  'home/getProfileFeed',
+  async (uid: string) => {
+    const result = await ProfileService.getFeed(uid);
+    return result;
+  },
+);
 
 export const refreshFeed = createAsyncThunk('home/refreshFeed', async () => {
   const result = await HomeService.getFeed();
@@ -48,11 +36,6 @@ export const homeSlice = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    setFeedFromCache(state) {
-      if (localFeed) {
-        state.feed = localFeed;
-      }
-    },
     removeReportedPostFromFeed(state, {payload}: {payload: string}) {
       state.feed = state.feed.filter(post => post.id !== payload);
     },
@@ -163,6 +146,9 @@ export const homeSlice = createSlice({
         return post;
       });
     },
+    addPostToProfileFeed(state, {payload}: {payload: FeedItem}) {
+      state.profileFeed = [payload, ...state.profileFeed];
+    },
   },
   extraReducers: builder => {
     builder.addCase(getFeed.fulfilled, (state, {payload}) => {
@@ -178,6 +164,13 @@ export const homeSlice = createSlice({
       state.feed = payload;
       state.isFeedFetched = true;
     });
+    builder.addCase(getProfileFeed.fulfilled, (state, {payload}) => {
+      state.profileFeed = payload;
+      state.isProfileFeedFetched = true;
+    });
+    builder.addCase(getProfileFeed.pending, state => {
+      state.isProfileFeedFetched = false;
+    });
   },
 });
 
@@ -188,10 +181,10 @@ export const {
   removeLike,
   addDislikeAndRemoveLike,
   addLikeAndRemoveDislike,
-  setFeedFromCache,
   setFeedFetchedToFalse,
   removeReportedPostFromFeed,
   setIsRefreshingToFalse,
+  addPostToProfileFeed,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;

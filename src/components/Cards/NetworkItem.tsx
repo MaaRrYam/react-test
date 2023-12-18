@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {FONTS, COLORS, SCREEN_NAMES} from '@/constants';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+import {FONTS, COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NetworkItemProps} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -10,7 +14,7 @@ import {
   removeConnection,
   unfollow,
 } from '@/store/features/networkSlice';
-import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
 
 const NetworkItem = ({
   item,
@@ -19,7 +23,7 @@ const NetworkItem = ({
   isFollowing,
 }: NetworkItemProps) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<null | true>(null);
@@ -90,20 +94,32 @@ const NetworkItem = ({
     <TouchableOpacity>
       <View style={styles.networkItem}>
         <View style={styles.networkItemImage}>
-          <Image
-            source={
-              item.photoUrl
-                ? {uri: item.photoUrl}
-                : require('@/assets/images/user.png')
-            }
-            style={styles.networkItemImage}
-          />
+          {item.photoUrl ? (
+            <FastImage
+              resizeMode="cover"
+              source={{
+                uri: item.photoUrl,
+                priority: FastImage.priority.normal,
+                cache: FastImage.cacheControl.immutable,
+              }}
+              style={styles.networkItemImage}
+            />
+          ) : (
+            <Image
+              resizeMode="cover"
+              source={require('@/assets/images/user.png')}
+              style={styles.networkItemImage}
+            />
+          )}
         </View>
         <View style={styles.networkItemContent}>
           <View style={styles.networkItemHeader}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate(SCREEN_NAMES.Profile, {UID: item.id})
+                navigation.navigate('Profile', {
+                  uid: item.id,
+                  user: item,
+                })
               }>
               <Text style={styles.networkItemName}>{item.name}</Text>
             </TouchableOpacity>
@@ -155,4 +171,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NetworkItem;
+export default React.memo(NetworkItem);

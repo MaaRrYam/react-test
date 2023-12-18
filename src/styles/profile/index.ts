@@ -28,8 +28,6 @@ export default StyleSheet.create({
     borderRadius: 25,
   },
   userInfoContainer: {
-    width: '100%',
-    height: 'auto',
     paddingHorizontal: PADDING.general,
   },
   userName: {
@@ -53,15 +51,14 @@ export default StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
     marginTop: 10,
     marginLeft: -3,
   },
   connectButton: {
-    paddingHorizontal: 55,
-    paddingVertical: 10,
+    paddingVertical: 5,
     borderRadius: 1000,
+    width: 200,
+    marginRight: 10,
   },
   messageButton: {
     paddingHorizontal: 34,
@@ -82,12 +79,12 @@ export default StyleSheet.create({
   tabsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 20,
-    paddingHorizontal: PADDING.general,
+    padding: PADDING.general,
   },
   tabButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    gap: 8,
   },
   selectedTabButton: {
     backgroundColor: COLORS.lightBlueBackground,
@@ -113,6 +110,9 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: 5,
   },
+  messageButtonMargin: {
+    // marginLeft: 20,
+  },
   messageMargin: {
     marginLeft: 170,
   },
@@ -121,5 +121,15 @@ export default StyleSheet.create({
   },
   tabBorderRadius: {
     borderRadius: 10,
+  },
+  PrimaryButtonStyles: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  selectedPrimaryButtonStyles: {
+    paddingHorizontal: 15,
+    backgroundColor: COLORS.lightBlueBackground,
+    color: COLORS.black,
+    paddingVertical: 10,
   },
 });

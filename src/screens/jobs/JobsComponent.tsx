@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, FlatList, Text} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {BottomSheet, Loading} from '@/components';
@@ -9,6 +9,7 @@ import JobsDetailForm from '@/components/Forms/JobsDetailForm';
 import JobsCard from '@/components/Cards/JobsCard';
 import JobsFilterForm from '@/components/Forms/JobsFilterForm';
 import EmptyComponent from '@/components/NoResults/Empty';
+import {FlashList} from '@shopify/flash-list';
 
 const JobsComponent = ({
   jobFilterBottomSheet,
@@ -82,7 +83,7 @@ const JobsComponent = ({
             allJobs &&
             !filteredJobs.length &&
             !searchTerm && (
-              <FlatList
+              <FlashList
                 data={allJobs}
                 renderItem={({item}) => (
                   <JobsCard
@@ -95,11 +96,12 @@ const JobsComponent = ({
                   />
                 )}
                 keyExtractor={item => item?.id?.toString()!}
+                estimatedItemSize={100}
               />
             )}
 
           {filteredJobs.length > 0 && (
-            <FlatList
+            <FlashList
               data={filteredJobs}
               renderItem={({item}) => (
                 <JobsCard
@@ -112,6 +114,7 @@ const JobsComponent = ({
                 />
               )}
               keyExtractor={item => item?.id?.toString()!}
+              estimatedItemSize={100}
             />
           )}
 
@@ -127,7 +130,7 @@ const JobsComponent = ({
             <BottomSheet
               isVisible={isBottomSheetVisible}
               onClose={() => setIsBottomSheetVisible(false)}
-              snapPoints={['60%', '100%']}>
+              snapPoints={['90%', '98%']}>
               <ScrollView>
                 <JobsDetailForm
                   selectedJob={selectedJob}
@@ -140,17 +143,23 @@ const JobsComponent = ({
           {jobFilterBottomSheet && (
             <BottomSheet
               isVisible={isBottomSheetVisible}
-              onClose={() => setIsBottomSheetVisible(false)}
-              snapPoints={['90%', '100%']}>
+              onClose={() => {
+                setIsBottomSheetVisible(false);
+              }}
+              snapPoints={['80%', '100%']}>
               <ScrollView>
-                <JobsFilterForm
-                  selectedFilters={selectedFilters}
-                  setSelectedFilters={setSelectedFilters}
-                  applyFilters={applyFilters}
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  setIsResetVisible={setIsResetVisible}
-                />
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  style={{flex: 1}}>
+                  <JobsFilterForm
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    applyFilters={applyFilters}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    setIsResetVisible={setIsResetVisible}
+                  />
+                </KeyboardAvoidingView>
               </ScrollView>
             </BottomSheet>
           )}

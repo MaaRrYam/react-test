@@ -1,15 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {useFormik} from 'formik';
+import FastImage from 'react-native-fast-image';
+
 import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
-import {UserInterface} from '@/interfaces';
+import {Asset, ImageInterface, UserInterface} from '@/interfaces';
 import {SCREEN_NAMES} from '@/constants';
 import LoadingScreen from '@/components/Loading';
 import OnboardingService from '@/services/onboarding';
 import useUserManagement from '@/hooks/useUserManagement';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {CameraSvg} from '@/assets/icons';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
@@ -21,6 +32,9 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     country: user.country || '',
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<
+    ImageInterface | Asset | null
+  >(null);
 
   const handleSubmitUserData = formValues => {
     const newData = {...formValues, onboardingStep: 0};
@@ -28,7 +42,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       ...prev,
       ...newData,
     }));
-    OnboardingService.getStarted(newData);
+    OnboardingService.getStarted(newData, selectedImage);
     navigation.navigate(SCREEN_NAMES.Education);
   };
 
@@ -42,6 +56,27 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       },
     });
 
+  const openImagePicker = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 2000,
+        maxWidth: 2000,
+      },
+      response => {
+        if (response.errorCode) {
+          console.log('Image picker error: ', response.errorMessage);
+        } else {
+          if (response.assets && response.assets.length) {
+            let imageUri = response.assets[0];
+            setSelectedImage(imageUri);
+          }
+        }
+      },
+    );
+  };
+
   useEffect(() => {
     (async () => {
       OnboardingService.fetchUserData().then(res => {
@@ -52,6 +87,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
 
   useEffect(() => {
     OnboardingService.setScreen(navigation, setIsLoading, userData);
+    setSelectedImage(userData?.photoUrl);
   }, [userData]);
 
   useEffect(() => {
@@ -66,10 +102,42 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <KeyboardAvoidingView style={commonStyles.container}>
-      <SafeAreaView>
+    <SafeAreaView style={commonStyles.container}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View>
           <Text style={commonStyles.title}>Let's get you started,</Text>
+          <TouchableOpacity
+            style={commonStyles.imageContainer}
+            onPress={() => openImagePicker()}>
+            {selectedImage?.uri ? (
+              <FastImage
+                style={commonStyles.image}
+                source={{
+                  uri: selectedImage?.uri,
+                  priority: 'normal',
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                resizeMode="cover"
+              />
+            ) : selectedImage ? (
+              <FastImage
+                style={commonStyles.image}
+                source={{
+                  uri: selectedImage?.uri,
+                  priority: 'normal',
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                resizeMode="cover"
+              />
+            ) : (
+              <View style={commonStyles.cameraImage}>
+                <CameraSvg />
+              </View>
+            )}
+          </TouchableOpacity>
+          <Text style={commonStyles.imageText}>Add Profile Picture</Text>
           <Input
             placeholder="Username"
             value={values.username}
@@ -110,8 +178,8 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
         <View style={commonStyles.footer}>
           <PrimaryButton title="Continue" onPress={handleSubmit} />
         </View>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

@@ -1,33 +1,17 @@
-import React, {useEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-} from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
+import React from 'react';
+import {View, Text, useWindowDimensions} from 'react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
 import {RootStackParamList} from '@/types';
 import profileStyles from '@/styles/profile';
-import {ThreeDots} from '@/assets/icons';
 import {UserInterface} from '@/interfaces';
 import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
 import useProfile from '@/hooks/useProfile';
 
-const About = ({
-  navigation,
-  usersProfileID,
-  user,
-  setUser,
-}: {
-  navigation: NavigationProp<RootStackParamList, 'Profile'>;
-  usersProfileID: string;
-  user: UserInterface;
-  setUser: React.Dispatch<React.SetStateAction<UserInterface>>;
-}) => {
+const About = ({user}: {user: UserInterface}) => {
   const {
     loading,
     buttonLoading,
@@ -39,8 +23,9 @@ const About = ({
     handleAcceptConnection,
     loggedInUser,
     connections,
-  } = useProfile(usersProfileID, user);
+  } = useProfile(user.id, user);
   const {width, height} = useWindowDimensions();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleMessage = async () => {
     const chatPayload = {
@@ -66,12 +51,6 @@ const About = ({
     }
   };
 
-  useEffect(() => {
-    if (usersProfileID === loggedInUser.id) {
-      setUser(loggedInUser);
-    }
-  }, [loggedInUser, setUser, usersProfileID]);
-
   if (loading) {
     return (
       <View style={{width, height}}>
@@ -84,80 +63,89 @@ const About = ({
     <>
       <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
       <View>
-        <Image
+        <FastImage
           source={{
             uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
           }}
+          resizeMode={FastImage.resizeMode.cover}
           style={profileStyles.headerImage}
         />
       </View>
 
       <View style={profileStyles.container}>
         <View style={profileStyles.avatarContainer}>
-          <Image
+          <FastImage
             source={{
               uri: user?.photoUrl,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
             }}
+            resizeMode={FastImage.resizeMode.cover}
             style={profileStyles.avatarImage}
           />
         </View>
         <View style={profileStyles.userInfoContainer}>
-          <View>
-            <Text style={profileStyles.userName}>{user?.name}</Text>
-            <Text style={profileStyles.userTagline}>
-              {user?.tagline || 'Tagline Not Available'}
-            </Text>
-            <Text style={profileStyles.userLocation}>
-              {user?.city}, {user?.country}
-            </Text>
-            <Text style={profileStyles.connectionsLink}>
-              {connections.length} connections
-            </Text>
-          </View>
-          <View
-            style={[
-              profileStyles.buttonContainer,
-              (usersProfileID === loggedInUser.id || usersProfileID === '') &&
-                profileStyles.justifyEnd,
-            ]}>
-            {!usersProfileID ||
-              (usersProfileID !== loggedInUser.id && (
-                <>
-                  {!isAlreadyConnected &&
+          <Text style={profileStyles.userName}>{user?.name}</Text>
+          <Text style={profileStyles.userTagline}>
+            {user?.tagline || 'Tagline Not Available'}
+          </Text>
+          <Text style={profileStyles.userLocation}>
+            {user?.city}, {user?.country}
+          </Text>
+          <Text style={profileStyles.connectionsLink}>
+            {connections.length} connections
+          </Text>
+
+          <View style={profileStyles.buttonContainer}>
+            {user.id !== loggedInUser.id && (
+              <>
+                {/* connect button */}
+                {!isAlreadyConnected &&
                   !isAlreadyPendingRequest &&
-                  !isConnectionRequestReceived ? (
+                  !isConnectionRequestReceived && (
                     <PrimaryButton
                       title="Connect"
                       style={[profileStyles.connectButton]}
                       isLoading={buttonLoading}
                       onPress={handleConnect}
                     />
-                  ) : isConnectionRequestReceived ? (
-                    <PrimaryButton
-                      title="Accept"
-                      style={profileStyles.connectButton}
-                      onPress={handleAcceptConnection}
-                      isLoading={buttonLoading}
-                    />
-                  ) : isAlreadyPendingRequest && !isAlreadyConnected ? (
-                    <SecondaryButton
-                      title="Request Sent"
-                      style={profileStyles.messageButton}
-                      onPress={handleRemoveConnectionRequest}
-                      isLoading={buttonLoading}
-                    />
-                  ) : null}
+                  )}
+
+                {/* accept button */}
+                {isConnectionRequestReceived && (
+                  <PrimaryButton
+                    title="Accept"
+                    style={profileStyles.connectButton}
+                    onPress={handleAcceptConnection}
+                    isLoading={buttonLoading}
+                  />
+                )}
+
+                {/* request sent button */}
+                {isAlreadyPendingRequest && !isAlreadyConnected && (
+                  <SecondaryButton
+                    title="Request Sent"
+                    style={profileStyles.messageButton}
+                    onPress={handleRemoveConnectionRequest}
+                    isLoading={buttonLoading}
+                  />
+                )}
+                <View>
                   <SecondaryButton
                     title="Message"
                     style={[
                       profileStyles.messageButton,
+                      profileStyles.messageButtonMargin,
                       isAlreadyConnected && profileStyles.messageMargin,
                     ]}
                     onPress={handleMessage}
                   />
-                </>
-              ))}
-            <TouchableOpacity
+                </View>
+              </>
+            )}
+            {/* <TouchableOpacity
               style={[
                 profileStyles.optionsButton,
                 usersProfileID === loggedInUser.id &&
@@ -166,7 +154,7 @@ const About = ({
               <View>
                 <ThreeDots />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

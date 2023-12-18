@@ -40,9 +40,10 @@ export const jobMainStyles = StyleSheet.create({
   },
   subHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
+    gap: 8,
     marginTop: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   buttonStyles: {
     paddingHorizontal: 15,
@@ -91,15 +92,15 @@ export const jobDetailFormStyles = StyleSheet.create({
     fontSize: FONTS.largeLabel * 1.1,
     fontWeight: 'normal',
     paddingLeft: 20,
-    marginTop: MARGINS.general / 3,
+    marginTop: MARGINS.general / 3.5,
     color: COLORS.black,
   },
   basicDetails: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general * 2,
-    marginTop: MARGINS.general * 2,
+    marginLeft: MARGINS.general / 2,
+    marginTop: MARGINS.general,
   },
   basicDetailItem: {
     flex: 1,
@@ -107,6 +108,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     fontSize: FONTS.text,
     marginLeft: MARGINS.general / 2,
+    marginTop: MARGINS.general / 6,
     color: COLORS.black,
   },
   recruiterContainer: {
@@ -115,7 +117,6 @@ export const jobDetailFormStyles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general,
   },
   recruiterImage: {
     width: ICON_WIDTH.general / 1.2,
@@ -129,7 +130,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     fontSize: FONTS.text,
     fontWeight: 'bold',
     paddingLeft: PADDING.general,
-    marginTop: MARGINS.general * 2,
+    marginTop: MARGINS.general * 2.3,
     color: COLORS.black,
   },
   applyButtonContainer: {
@@ -138,7 +139,7 @@ export const jobDetailFormStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: PADDING.general * 2,
     paddingRight: PADDING.general * 2,
-    marginTop: MARGINS.general * 3,
+    marginTop: MARGINS.general * 1.5,
   },
   saveButtonContainer: {
     backgroundColor: COLORS.lightGrayBackground,
@@ -152,8 +153,8 @@ export const jobDetailFormStyles = StyleSheet.create({
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'flex-start',
-    marginLeft: MARGINS.general * 2,
-    marginTop: MARGINS.general * 2,
+    marginLeft: MARGINS.general,
+    marginTop: MARGINS.general,
     color: COLORS.black,
   },
   jobDetailHeading: {
@@ -164,8 +165,8 @@ export const jobDetailFormStyles = StyleSheet.create({
   JobsDetailText: {
     fontSize: FONTS.text,
     color: COLORS.black,
-    marginTop: MARGINS.general / 1.9,
-    marginBottom: MARGINS.general * 2,
+    marginTop: MARGINS.general / 2,
+    marginBottom: MARGINS.general * 1.5,
     paddingRight: PADDING.general * 2.4,
   },
 });
@@ -177,8 +178,8 @@ export const jobsFilterFormStyles = StyleSheet.create({
     marginBottom: MARGINS.general * 4,
   },
   inputfield: {
-    marginTop: MARGINS.general,
-    marginLeft: MARGINS.general,
+    marginTop: MARGINS.general / 1.5,
+    marginLeft: MARGINS.general / 2,
     marginRight: MARGINS.general,
   },
   checkboxContainer: {
@@ -186,7 +187,7 @@ export const jobsFilterFormStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    marginBottom: MARGINS.general * 3,
+    marginBottom: MARGINS.general,
   },
   checkbox: {
     borderWidth: BORDER_WIDTH.general,
@@ -198,7 +199,6 @@ export const jobsFilterFormStyles = StyleSheet.create({
   },
   title: {
     fontSize: FONTS.text * 1.1,
-    marginBottom: MARGINS.general,
     fontWeight: 'bold',
     paddingLeft: PADDING.general,
     marginTop: MARGINS.general,
@@ -213,6 +213,7 @@ export const jobsFilterFormStyles = StyleSheet.create({
   },
   applyButtonContainer: {
     flex: 1,
+    marginTop: MARGINS.general,
     paddingLeft: PADDING.general * 1.2,
     paddingRight: PADDING.general * 2,
   },
@@ -223,10 +224,10 @@ export const jobCardStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: MARGINS.general,
-    borderBottomWidth: BORDER_WIDTH.general,
+    borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
-    paddingHorizontal: PADDING.general,
-    paddingVertical: PADDING.general,
+    // paddingHorizontal: PADDING.general,
+    paddingVertical: PADDING.general / 2,
   },
   iconContainer: {
     width: ICON_WIDTH.general,

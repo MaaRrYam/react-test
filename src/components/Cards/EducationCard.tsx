@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EducationCard;
+export default React.memo(EducationCard);

@@ -1,27 +1,33 @@
-import {StyleSheet} from 'react-native';
-import {COLORS, FONTS, MARGINS} from '@/constants';
+import {Dimensions, StyleSheet} from 'react-native';
+import {COLORS, FONTS, MARGINS, PADDING} from '@/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  safeAreaContainer: {
+    flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
+  },
+  body: {
+    backgroundColor: COLORS.lightBlueBackground,
+    height: Dimensions.get('screen').height,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    paddingBottom: 0,
     backgroundColor: COLORS.white,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
   },
   backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: MARGINS.general - 8,
     backgroundColor: COLORS.lightGrayBackground,
-    justifyContent: 'center',
-    padding: 7,
-    borderRadius: 9999,
+    padding: PADDING.general / 2,
+    borderRadius: 100,
   },
   backIcon: {
     marginLeft: 5,
@@ -36,7 +42,9 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
   },
-  shareButton: {},
+  shareButton: {
+    marginRight: 20,
+  },
   postInfo: {
     padding: 16,
   },
@@ -70,16 +78,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.lightBackground,
+    backgroundColor: COLORS.white,
     borderRadius: 9999,
     paddingVertical: 5,
     paddingHorizontal: 19,
+    padding: 7,
   },
   like: {
     fontWeight: '400',
     fontSize: FONTS.regularLabel,
     color: COLORS.text,
     marginHorizontal: 10,
+    marginTop: 8,
   },
   iconsContainer: {
     flexDirection: 'row',

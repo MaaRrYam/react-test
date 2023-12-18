@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   View,
-  FlatList,
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
@@ -15,7 +14,7 @@ import {
   ReplyCommentInterface,
 } from '@/interfaces';
 import {styles} from '@/screens/home/styles';
-import {Empty, Loading} from '@/components';
+import {Loading} from '@/components';
 import PostComment from './PostComment';
 import {SendIcon} from '@/assets/icons';
 import FirebaseService from '@/services/Firebase';
@@ -23,6 +22,7 @@ import {getUID} from '@/utils/functions';
 import StorageService from '@/services/Storage';
 import HomeService from '@/services/home';
 import {COLORS, MARGINS} from '@/constants';
+import {FlashList} from '@shopify/flash-list';
 
 const PostComments = ({
   postId,
@@ -69,11 +69,7 @@ const PostComments = ({
 
   return (
     <>
-      <View
-        style={[
-          styles.commentFieldContainer,
-          isFromPost && styles.inputFromPost,
-        ]}>
+      <View style={[styles.commentFieldContainer]}>
         <TextInput
           placeholder="Add a comment"
           value={comment}
@@ -88,26 +84,36 @@ const PostComments = ({
         )}
       </View>
       <View style={styles.commentsContainer}>
-        {comments.length ? (
-          <View style={styles.comments}>
-            <FlatList
-              data={comments}
-              renderItem={({item}: {item: FeedCommentsResponse}) => (
-                <PostComment
-                  item={item}
-                  setComments={setComments}
-                  postId={postId}
-                  isFromPost={isFromPost}
-                />
-              )}
-            />
-          </View>
+        {isFromPost ? (
+          <>
+            {comments.map((item, index) => (
+              <PostComment
+                item={item}
+                setComments={setComments}
+                postId={postId}
+                isFromPost={isFromPost}
+                key={item.id || index}
+              />
+            ))}
+          </>
         ) : (
-          <Empty />
+          <FlashList
+            data={comments}
+            renderItem={({item}) => (
+              <PostComment
+                item={item}
+                setComments={setComments}
+                postId={postId}
+                isFromPost={isFromPost}
+              />
+            )}
+            estimatedItemSize={100}
+            keyExtractor={(item, index) => item.id || index.toString()}
+          />
         )}
       </View>
     </>
   );
 };
 
-export default PostComments;
+export default memo(PostComments);

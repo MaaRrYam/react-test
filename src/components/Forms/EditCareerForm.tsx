@@ -223,7 +223,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
               </Text>
             </View>
           </KeyboardAvoidingView>
-          <View style={styles.footer}>
+          <View style={[styles.footer, {marginTop: 10}]}>
             <PrimaryButton
               title={editingIndex !== null ? 'Update' : 'Save'}
               onPress={handleSubmit}

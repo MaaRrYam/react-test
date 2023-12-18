@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
@@ -47,8 +48,8 @@ const Explore = ({searchText}: LocalizedSearchProps) => {
   return (
     <>
       {recommendations.length ? (
-        <FlatList
-          data={filteredList}
+        <FlashList
+          data={recommendations}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => (
             <NetworkItem item={item} isExploring={true} />
@@ -59,6 +60,7 @@ const Explore = ({searchText}: LocalizedSearchProps) => {
               onRefresh={handleRefresh}
             />
           }
+          estimatedItemSize={10}
         />
       ) : (
         <Empty />

@@ -1,20 +1,37 @@
-import React, {useState} from 'react';
-import {View, SafeAreaView, Image, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {Header, Feed, NewPost} from '@/components';
 import {HomeScreenProps} from '@/types';
 import {homeStyles} from '@/styles/home';
 import {styles} from './styles';
-import useUserManagement from '@/hooks/useUserManagement';
-import Cache from '@/cache';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useFocusEffect} from '@react-navigation/native';
+import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [isNewPostClicked, setIsNewPostClicked] = useState<boolean>(false);
 
-  const {user} = useUserManagement();
-  const {feed} = useAppSelector(state => state.home);
+  const dispatch = useAppDispatch();
+  const {user} = useAppSelector(state => state.auth);
+  const {isRefreshing} = useAppSelector(state => state.home);
+
+  const handleRefresh = () => {
+    dispatch(refreshFeed());
+    dispatch(setFeedFetchedToFalse());
+  };
 
   const handleOpen = () => {
     setIsNewPostClicked(true);
@@ -24,43 +41,56 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     setIsNewPostClicked(false);
   };
 
-  useFocusEffect(() => {
-    return () => {
-      (async () => {
-        const lastFeedItems = feed?.slice(feed.length - 5);
-        await Cache.set('feed', lastFeedItems);
-      })();
-    };
-  });
-
   return (
     <View style={homeStyles.outerContainer}>
       <SafeAreaView style={homeStyles.container}>
-        <View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={homeStyles.container}>
           <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
-          <View style={homeStyles.subheader}>
-            <Image
-              source={
-                user?.photoUrl
-                  ? {uri: user.photoUrl}
-                  : require('@/assets/images/user.png')
-              }
-              style={styles.userImage}
-            />
 
-            <TouchableOpacity style={styles.searchBar} onPress={handleOpen}>
-              <Text style={styles.searchBarText}>Start a Post</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+              />
+            }>
+            <View style={homeStyles.subheader}>
+              {user?.photoUrl ? (
+                <FastImage
+                  source={{
+                    uri: user.photoUrl,
+                    priority: 'normal',
+                    cache: FastImage.cacheControl.immutable,
+                  }}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={styles.userImage}
+                />
+              ) : (
+                <Image
+                  source={require('@/assets/images/user.png')}
+                  style={styles.userImage}
+                  resizeMode="cover"
+                />
+              )}
 
-        <View style={styles.feedContainer}>
-          <Feed />
-        </View>
+              <TouchableOpacity
+                style={homeStyles.searchBar}
+                onPress={handleOpen}>
+                <Text style={homeStyles.searchBarText}>Start a Post</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.feedContainer}>
+              <Feed />
+            </View>
+          </ScrollView>
+          {isNewPostClicked && (
+            <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
+          )}
+        </KeyboardAvoidingView>
       </SafeAreaView>
-      {isNewPostClicked && (
-        <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
-      )}
     </View>
   );
 };

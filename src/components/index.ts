@@ -37,6 +37,7 @@ import {default as SocialLoginButton} from '@/components/SocialLoginButton';
 import Empty from '@/components/NoResults/Empty';
 import SearchButton from '@/components/Search';
 import Feed from '@/components/Feed/Feed';
+import PostComments from './Feed/PostComments';
 import NewPost from '@/components/Feed/NewPost';
 import {NotificationsList} from '@/components/Notifications';
 import {ChatItem, ChatsList, Chat, NewChat} from '@/components/Chats';
@@ -44,6 +45,7 @@ import ProfileFeed from '@/components/ProfileFeed';
 import Drawer from '@/components/Drawer';
 
 import {About, ProfileTabs} from '@/components/Profile';
+import {PostsSkeleton} from './Skeleton';
 
 export {
   BackButton,
@@ -87,4 +89,6 @@ export {
   NewPost,
   About,
   ProfileTabs,
+  PostsSkeleton,
+  PostComments,
 };

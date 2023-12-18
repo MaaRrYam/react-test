@@ -7,17 +7,24 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopLeftRadius: BORDER_RADIUS.general,
     borderTopRightRadius: BORDER_RADIUS.general,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   contentContainer: {
     flex: 1,
   },
-  sheetStyles: {},
+  sheetStyles: {
+    backgroundColor: COLORS.black,
+    borderRadius: 30,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16,
+    elevation: 24,
+  },
+  backdrop: {
+    backgroundColor: COLORS.black,
+    opacity: 0.5,
+  },
 });

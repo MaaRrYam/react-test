@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, MARGINS, PADDING} from '@/constants';
+import {COLORS, FONTS, MARGINS, PADDING} from '@/constants';
 
 export const homeStyles = StyleSheet.create({
   outerContainer: {
@@ -18,7 +18,8 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: COLORS.border,
     borderBottomWidth: 1,
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   logo: {
     width: 180,
@@ -51,6 +52,17 @@ export const homeStyles = StyleSheet.create({
     borderColor: COLORS.border,
     borderRadius: 10,
     color: COLORS.text,
+    flex: 1,
+    backgroundColor: COLORS.lightBackground,
+    paddingHorizontal: 10,
+    paddingVertical: PADDING.general - 6,
+    marginLeft: 10,
+    justifyContent: 'center',
+    paddingLeft: 20,
   },
-  flexRow: {flexDirection: 'row', alignItems: 'center'}
+  flexRow: {flexDirection: 'row', alignItems: 'center'},
+  searchBarText: {
+    color: COLORS.black,
+    fontSize: FONTS.bodyRegular,
+  },
 });

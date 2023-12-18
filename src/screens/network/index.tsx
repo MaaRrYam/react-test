@@ -88,7 +88,8 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   subHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
+    gap: 8,
     marginTop: 20,
     paddingHorizontal: 20,
   },

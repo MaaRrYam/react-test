@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {NetworkItem, Loading} from '@/components';
@@ -53,8 +54,8 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
   return (
     <>
       {following.length ? (
-        <FlatList
-          data={filteredList}
+        <FlashList
+          data={following}
           keyExtractor={item => item.id?.toString()}
           renderItem={({item}) => (
             <NetworkItem item={item} isFollowing={true} />
@@ -65,6 +66,7 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
               onRefresh={handleRefresh}
             />
           }
+          estimatedItemSize={30}
         />
       ) : (
         <Empty />

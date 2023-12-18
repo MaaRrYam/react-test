@@ -1,21 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
 
 import FeedItem from '@/components/Feed/FeedItem';
-import {FeedItem as FeedInterface, ProfileFeedInterface} from '@/interfaces';
+import {ProfileFeedInterface} from '@/interfaces';
 import HomeService from '@/services/home';
-import ProfileService from '@/services/profile';
-import Loading from '../Loading';
+import {PostsSkeleton} from '@/components';
+import {useAppSelector} from '@/hooks/useAppSelector';
+import {getProfileFeed} from '@/store/features/homeSlice';
+import {useAppDispatch} from '@/hooks/useAppDispatch';
 
 const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
-  const [feedData, setFeedData] = useState<FeedInterface[]>([]);
-  const [loading, setLoading] = useState(false);
+  const {profileFeed, isProfileFeedFetched} = useAppSelector(
+    state => state.home,
+  );
+  const dispatch = useAppDispatch();
   const fetchData = useCallback(async () => {
-    setLoading(true);
-    const data = await ProfileService.getFeed(uid);
-    setFeedData(data);
-    setLoading(false);
-  }, [uid]);
+    dispatch(getProfileFeed(uid));
+  }, [dispatch, uid]);
 
   useEffect(() => {
     fetchData();
@@ -27,22 +27,19 @@ const ProfileFeed = ({setComments, uid}: ProfileFeedInterface) => {
     setComments(prev => ({...prev, loading: false, comments: response}));
   };
 
-  if (loading) {
-    return (
-      <View style={{height: 200}}>
-        <Loading />
-      </View>
-    );
-  }
   return (
     <>
-      <FlatList
-        data={feedData}
-        renderItem={({item}) => (
-          <FeedItem item={item} fetchPostComments={fetchPostComments} />
-        )}
-        keyExtractor={item => item._id}
-      />
+      {!isProfileFeedFetched ? (
+        <PostsSkeleton />
+      ) : (
+        profileFeed.map((item, index) => (
+          <FeedItem
+            item={item}
+            fetchPostComments={fetchPostComments}
+            key={item.id || index}
+          />
+        ))
+      )}
     </>
   );
 };

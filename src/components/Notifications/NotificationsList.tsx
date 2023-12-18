@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
 
 import {useAppSelector} from '@/hooks/useAppSelector';
 import Empty from '../NoResults/Empty';
 import NotificationItem from './NotificationItem';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {getNotifications} from '@/store/features/notificationsSlice';
+import {FlashList} from '@shopify/flash-list';
 
 const NotificationsList = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -29,7 +30,7 @@ const NotificationsList = () => {
   return (
     <>
       {notifications?.length ? (
-        <FlatList
+        <FlashList
           data={notifications}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <NotificationItem item={item} />}
@@ -39,6 +40,7 @@ const NotificationsList = () => {
               onRefresh={handleRefresh}
             />
           }
+          estimatedItemSize={100}
         />
       ) : (
         <Empty />

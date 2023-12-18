@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {View, Image, TouchableOpacity, TextInput} from 'react-native';
+import React from 'react';
+import {View, TouchableOpacity, Image} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
 import {BackArrow, Chats, Filter} from '@/assets/icons';
@@ -37,35 +38,12 @@ const Header = ({
   };
   return (
     <View style={homeStyles.header}>
-      <TouchableOpacity>
-        {!searchVisible ? (
-          <TouchableOpacity onPress={handleLogout}>
-            <Image
-              source={require('@/assets/images/logo.png')}
-              style={homeStyles.logo}
-            />
-          </TouchableOpacity>
-        ) : (
-          <View style={homeStyles.flexRow}>
-            <TouchableOpacity
-              onPress={() => {
-                if (route.name === 'Jobs' || route.name === 'Network') {
-                  setSearchVisible(false);
-                }
-              }}>
-              <BackArrow />
-            </TouchableOpacity>
-            <TextInput
-              placeholder={`Search ${
-                route.name === 'Jobs' ? 'Jobs' : 'People'
-              }`}
-              onChangeText={handleSearchTextChange}
-              value={searchText}
-              style={homeStyles.searchBar}
-              placeholderTextColor={COLORS.text}
-            />
-          </View>
-        )}
+      <TouchableOpacity onPress={handleClick}>
+        <Image
+          source={require('@/assets/images/logo.png')}
+          resizeMode={'contain'}
+          style={homeStyles.logo}
+        />
       </TouchableOpacity>
       <View style={homeStyles.headerIcons}>
         <SearchButton
@@ -79,7 +57,7 @@ const Header = ({
         {route.name === 'Jobs' ? (
           <TouchableOpacity
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
-            onPress={() => setJobsFilterBottomSheet(prev => !prev)}>
+            onPress={() => setJobsFilterBottomSheet((prev: boolean) => !prev)}>
             <Filter />
           </TouchableOpacity>
         ) : (

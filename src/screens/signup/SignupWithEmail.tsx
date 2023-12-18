@@ -1,6 +1,14 @@
 import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {useFormik} from 'formik';
+
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -69,66 +77,69 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
     }
   };
   return (
-    <SafeAreaView>
-      <View style={styles.mainContainer}>
-        <Image
-          source={require('@/assets/images/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.mainContainer}>
+          <Image
+            source={require('@/assets/images/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
 
-        <View>
-          <Text style={styles.headingTitle}>Create Account</Text>
-        </View>
+          <View>
+            <Text style={styles.headingTitle}>Create Account</Text>
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Input
-            placeholder="Email"
-            value={values.email}
-            onChangeText={handleChange('email')}
-            touched={touched.email}
-            error={errors.email}
-            name="email"
-            setFieldTouched={setFieldTouched}
+          <View style={styles.inputContainer}>
+            <Input
+              placeholder="Email"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              touched={touched.email}
+              error={errors.email}
+              name="email"
+              setFieldTouched={setFieldTouched}
+            />
+            <Input
+              placeholder="Password"
+              value={values.password}
+              onChangeText={handleChange('password')}
+              touched={touched.password}
+              error={errors.password}
+              secureTextEntry
+              name="password"
+              setFieldTouched={setFieldTouched}
+            />
+            <Input
+              placeholder="Confirm Password"
+              value={values.confirmPassword}
+              onChangeText={handleChange('confirmPassword')}
+              touched={touched.confirmPassword}
+              error={errors.confirmPassword}
+              secureTextEntry
+              name="confirmPassword"
+              setFieldTouched={setFieldTouched}
+            />
+          </View>
+          <PrimaryButton
+            title="Sign up"
+            onPress={handleSubmit}
+            style={styles.signUpButtonContainer}
+            isLoading={isSubmitting}
+            activityIndicatorColor={COLORS.white}
+            textColor={COLORS.white}
           />
-          <Input
-            placeholder="Password"
-            value={values.password}
-            onChangeText={handleChange('password')}
-            touched={touched.password}
-            error={errors.password}
-            secureTextEntry
-            name="password"
-            setFieldTouched={setFieldTouched}
-          />
-          <Input
-            placeholder="Confirm Password"
-            value={values.confirmPassword}
-            onChangeText={handleChange('confirmPassword')}
-            touched={touched.confirmPassword}
-            error={errors.confirmPassword}
-            secureTextEntry
-            name="confirmPassword"
-            setFieldTouched={setFieldTouched}
-          />
+          <View style={styles.dontHaveAccount}>
+            <Text style={styles.mainText}>Already have an Account? </Text>
+            <Text
+              style={styles.signInText}
+              onPress={() => navigation.navigate(SCREEN_NAMES.Signin)}>
+              Sign in
+            </Text>
+          </View>
         </View>
-        <PrimaryButton
-          title="Sign up"
-          onPress={handleSubmit}
-          style={styles.signUpButtonContainer}
-          isLoading={isSubmitting}
-          activityIndicatorColor={COLORS.white}
-          textColor={COLORS.white}
-        />
-        <View style={styles.dontHaveAccount}>
-          <Text style={styles.mainText}>Already have an Account? </Text>
-          <Text
-            style={styles.signInText}
-            onPress={() => navigation.navigate(SCREEN_NAMES.Signin)}>
-            Sign in
-          </Text>
-        </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

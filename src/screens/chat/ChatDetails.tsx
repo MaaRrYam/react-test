@@ -3,13 +3,13 @@ import {
   View,
   Text,
   TextInput,
-  FlatList,
   SafeAreaView,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import FastImage from 'react-native-fast-image';
 
 import {BackButton, Chat, IconButton, Loading} from '@/components';
 import {ChatDetailsScreenProps} from '@/types';
@@ -21,6 +21,7 @@ import {SendIcon} from '@/assets/icons';
 import StorageService from '@/services/Storage';
 import FirebaseService from '@/services/Firebase';
 import {COLORS} from '@/constants';
+import {FlashList} from '@shopify/flash-list';
 
 const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
   const [messages, setMessages] = useState<GroupedMessage[]>([]);
@@ -112,23 +113,34 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <BackButton style={styles.backButton} />
-        <Image
-          source={
-            user?.photoUrl
-              ? {uri: user.photoUrl}
-              : require('@/assets/images/user.png')
-          }
-          style={styles.userImage}
-        />
+        {user?.photoUrl ? (
+          <FastImage
+            source={{
+              uri: user?.photoUrl,
+              priority: 'high',
+              cache: 'immutable',
+            }}
+            resizeMode="cover"
+            style={styles.userImage}
+          />
+        ) : (
+          <Image
+            style={styles.userImage}
+            source={require('@/assets/images/user.png')}
+            resizeMode="cover"
+          />
+        )}
         <Text style={styles.userName}>{name || 'Some User'}</Text>
         <Text>...</Text>
       </View>
 
       <View style={styles.chatsContainer}>
-        <FlatList
+        <FlashList
           inverted
           data={messages}
-          keyExtractor={item => item.date}
+          keyExtractor={(item, index) =>
+            item?.id?.toString() || index.toString()
+          }
           renderItem={({item}) => (
             <View>
               <View style={styles.date}>
@@ -141,13 +153,19 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
               ))}
             </View>
           )}
+          estimatedItemSize={100}
         />
       </View>
 
       <View style={styles.imageContainer}>
         {selectedImage && (
-          <Image
-            source={{uri: selectedImage.uri || ''}}
+          <FastImage
+            source={{
+              uri: selectedImage.uri,
+              priority: 'high',
+              cache: 'web',
+            }}
+            resizeMode="cover"
             style={styles.selectedImage}
           />
         )}

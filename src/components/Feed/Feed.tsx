@@ -1,24 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {Dimensions, View} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 
-import {Loading, BottomSheet} from '@/components';
+import {BottomSheet, PostsSkeleton} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {
-  getFeed,
-  refreshFeed,
-  setFeedFetchedToFalse,
-  setFeedFromCache,
-  setIsRefreshingToFalse,
-} from '@/store/features/homeSlice';
+import {getFeed, setIsRefreshingToFalse} from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
 import PostComments from './PostComments';
 import HomeService from '@/services/home';
 import {FeedCommentsResponse} from '@/interfaces';
 
 const Feed = () => {
-  const {feed, isFeedFetched, isFeedFirstRequest, isRefreshing} =
-    useAppSelector(state => state.home);
+  const {feed, isFeedFetched} = useAppSelector(state => state.home);
   const dispatch = useAppDispatch();
 
   const [comments, setComments] = useState({
@@ -27,11 +21,6 @@ const Feed = () => {
     comments: [] as FeedCommentsResponse[],
     showComments: false,
   });
-
-  const handleRefresh = () => {
-    dispatch(refreshFeed());
-    dispatch(setFeedFetchedToFalse());
-  };
 
   const fetchData = useCallback(() => {
     if (!isFeedFetched) {
@@ -49,39 +38,34 @@ const Feed = () => {
     }
   }, [dispatch, isFeedFetched]);
 
-  useEffect(() => {
-    dispatch(setFeedFromCache());
-  }, [dispatch]);
-
   const fetchPostComments = async (postId: string) => {
     setComments(prev => ({...prev, loading: true, showComments: true, postId}));
     const response = await HomeService.fetchPostComments(postId);
     setComments(prev => ({...prev, loading: false, comments: response}));
   };
 
-  if (isFeedFirstRequest && !feed.length) {
-    return <Loading />;
-  }
   return (
     <>
-      <FlatList
-        data={feed}
-        renderItem={({item}) => (
-          <FeedItem item={item} fetchPostComments={fetchPostComments} />
-        )}
-        keyExtractor={item => item._id}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-        }
-      />
-      {/* {!isFeedFetched && feed.length && (
-        <ActivityIndicator color={COLORS.primary} size="large" />
-      )} */}
+      {isFeedFetched ? (
+        <View style={{minHeight: Dimensions.get('screen').height}}>
+          <FlashList
+            data={feed}
+            renderItem={({item}) => (
+              <FeedItem item={item} fetchPostComments={fetchPostComments} />
+            )}
+            keyExtractor={item => item._id || item.id}
+            estimatedItemSize={120}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      ) : (
+        <PostsSkeleton />
+      )}
 
       {comments.showComments && (
         <BottomSheet
           isVisible={comments.showComments}
-          snapPoints={['20%', '100%']}
+          snapPoints={['20%', '150%']}
           onClose={() => setComments(prev => ({...prev, showComments: false}))}>
           <PostComments
             showComments={comments.showComments}
