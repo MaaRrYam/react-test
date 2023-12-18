@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {BottomSheet, Loading} from '@/components';
@@ -143,17 +143,23 @@ const JobsComponent = ({
           {jobFilterBottomSheet && (
             <BottomSheet
               isVisible={isBottomSheetVisible}
-              onClose={() => setIsBottomSheetVisible(false)}
-              snapPoints={['90%', '100%']}>
+              onClose={() => {
+                setIsBottomSheetVisible(false);
+              }}
+              snapPoints={['80%', '100%']}>
               <ScrollView>
-                <JobsFilterForm
-                  selectedFilters={selectedFilters}
-                  setSelectedFilters={setSelectedFilters}
-                  applyFilters={applyFilters}
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  setIsResetVisible={setIsResetVisible}
-                />
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  style={{flex: 1}}>
+                  <JobsFilterForm
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    applyFilters={applyFilters}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    setIsResetVisible={setIsResetVisible}
+                  />
+                </KeyboardAvoidingView>
               </ScrollView>
             </BottomSheet>
           )}

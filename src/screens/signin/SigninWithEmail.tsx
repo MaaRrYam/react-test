@@ -73,7 +73,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.mainContainer}>
+        style={{flex: 1}}>
         <Image
           source={require('@/assets/images/logo.png')}
           style={styles.logo}

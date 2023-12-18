@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 
 import {BackButton, PrimaryButton} from '@/components';
@@ -44,53 +46,59 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <View style={commonStyles.container}>
-        <BackButton onPress={() => console.log('Back button pressed')} />
-        <Text style={commonStyles.title}>Your Function</Text>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <>
+          <View style={commonStyles.container}>
+            <BackButton onPress={() => console.log('Back button pressed')} />
+            <Text style={commonStyles.title}>Your Function</Text>
 
-        {allIndustries.length ? (
-          <ScrollView
-            style={styles.industryScrollView}
-            contentContainerStyle={styles.industryList}>
-            {allIndustries.map(industry => (
-              <TouchableOpacity
-                key={industry}
-                style={[
-                  styles.industryItem,
-                  {
-                    backgroundColor: selectedIndustries.includes(industry)
-                      ? COLORS.primary
-                      : COLORS.white,
-                    borderColor: selectedIndustries.includes(industry)
-                      ? COLORS.primary
-                      : COLORS.border,
-                  },
-                ]}
-                onPress={() => toggleIndustrySelection(industry)}>
-                <Text
-                  style={{
-                    color: selectedIndustries.includes(industry)
-                      ? COLORS.white
-                      : COLORS.black,
-                  }}>
-                  {industry}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        ) : (
-          <SafeAreaView style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </SafeAreaView>
-        )}
-      </View>
-      <View style={commonStyles.footer}>
-        <PrimaryButton
-          title="Continue"
-          onPress={handleSubmit}
-          disabled={!selectedIndustries.length}
-        />
-      </View>
+            {allIndustries.length ? (
+              <ScrollView
+                style={styles.industryScrollView}
+                contentContainerStyle={styles.industryList}>
+                {allIndustries.map(industry => (
+                  <TouchableOpacity
+                    key={industry}
+                    style={[
+                      styles.industryItem,
+                      {
+                        backgroundColor: selectedIndustries.includes(industry)
+                          ? COLORS.primary
+                          : COLORS.white,
+                        borderColor: selectedIndustries.includes(industry)
+                          ? COLORS.primary
+                          : COLORS.border,
+                      },
+                    ]}
+                    onPress={() => toggleIndustrySelection(industry)}>
+                    <Text
+                      style={{
+                        color: selectedIndustries.includes(industry)
+                          ? COLORS.white
+                          : COLORS.black,
+                      }}>
+                      {industry}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            ) : (
+              <SafeAreaView style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={COLORS.primary} />
+              </SafeAreaView>
+            )}
+          </View>
+          <View style={commonStyles.footer}>
+            <PrimaryButton
+              title="Continue"
+              onPress={handleSubmit}
+              disabled={!selectedIndustries.length}
+            />
+          </View>
+        </>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

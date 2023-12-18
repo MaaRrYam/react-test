@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-import {FONTS, COLORS, SCREEN_NAMES} from '@/constants';
+import {FONTS, COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NetworkItemProps} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -12,7 +14,7 @@ import {
   removeConnection,
   unfollow,
 } from '@/store/features/networkSlice';
-import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
 
 const NetworkItem = ({
   item,
@@ -21,7 +23,7 @@ const NetworkItem = ({
   isFollowing,
 }: NetworkItemProps) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<null | true>(null);
@@ -114,7 +116,10 @@ const NetworkItem = ({
           <View style={styles.networkItemHeader}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate(SCREEN_NAMES.Profile, {UID: item.id})
+                navigation.navigate('Profile', {
+                  uid: item.id,
+                  user: item,
+                })
               }>
               <Text style={styles.networkItemName}>{item.name}</Text>
             </TouchableOpacity>

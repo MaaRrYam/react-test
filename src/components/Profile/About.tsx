@@ -97,50 +97,52 @@ const About = ({
           />
         </View>
         <View style={profileStyles.userInfoContainer}>
-          <View>
-            <Text style={profileStyles.userName}>{user?.name}</Text>
-            <Text style={profileStyles.userTagline}>
-              {user?.tagline || 'Tagline Not Available'}
-            </Text>
-            <Text style={profileStyles.userLocation}>
-              {user?.city}, {user?.country}
-            </Text>
-            <Text style={profileStyles.connectionsLink}>
-              {connections.length} connections
-            </Text>
-          </View>
-          <View
-            style={[
-              profileStyles.buttonContainer,
-              user.id === loggedInUser.id && profileStyles.justifyEnd,
-            ]}>
-            {!user.id ||
-              (user.id !== loggedInUser.id && (
-                <>
-                  {!isAlreadyConnected &&
+          <Text style={profileStyles.userName}>{user?.name}</Text>
+          <Text style={profileStyles.userTagline}>
+            {user?.tagline || 'Tagline Not Available'}
+          </Text>
+          <Text style={profileStyles.userLocation}>
+            {user?.city}, {user?.country}
+          </Text>
+          <Text style={profileStyles.connectionsLink}>
+            {connections.length} connections
+          </Text>
+
+          <View style={profileStyles.buttonContainer}>
+            {user.id !== loggedInUser.id && (
+              <>
+                {/* connect button */}
+                {!isAlreadyConnected &&
                   !isAlreadyPendingRequest &&
-                  !isConnectionRequestReceived ? (
+                  !isConnectionRequestReceived && (
                     <PrimaryButton
                       title="Connect"
                       style={[profileStyles.connectButton]}
                       isLoading={buttonLoading}
                       onPress={handleConnect}
                     />
-                  ) : isConnectionRequestReceived ? (
-                    <PrimaryButton
-                      title="Accept"
-                      style={profileStyles.connectButton}
-                      onPress={handleAcceptConnection}
-                      isLoading={buttonLoading}
-                    />
-                  ) : isAlreadyPendingRequest && !isAlreadyConnected ? (
-                    <SecondaryButton
-                      title="Request Sent"
-                      style={profileStyles.messageButton}
-                      onPress={handleRemoveConnectionRequest}
-                      isLoading={buttonLoading}
-                    />
-                  ) : null}
+                  )}
+
+                {/* accept button */}
+                {isConnectionRequestReceived && (
+                  <PrimaryButton
+                    title="Accept"
+                    style={profileStyles.connectButton}
+                    onPress={handleAcceptConnection}
+                    isLoading={buttonLoading}
+                  />
+                )}
+
+                {/* request sent button */}
+                {isAlreadyPendingRequest && !isAlreadyConnected && (
+                  <SecondaryButton
+                    title="Request Sent"
+                    style={profileStyles.messageButton}
+                    onPress={handleRemoveConnectionRequest}
+                    isLoading={buttonLoading}
+                  />
+                )}
+                <View>
                   <SecondaryButton
                     title="Message"
                     style={[
@@ -150,8 +152,9 @@ const About = ({
                     ]}
                     onPress={handleMessage}
                   />
-                </>
-              ))}
+                </View>
+              </>
+            )}
             {/* <TouchableOpacity
               style={[
                 profileStyles.optionsButton,

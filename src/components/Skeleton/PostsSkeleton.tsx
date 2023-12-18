@@ -11,7 +11,7 @@ import {COLORS, PADDING} from '@/constants';
 
 const width = Dimensions.get('screen').width - 30;
 
-const data = Array.from({length: 10}, (_, index) => ({
+const data = Array.from({length: 5}, (_, index) => ({
   id: index.toString(),
 }));
 
@@ -83,7 +83,7 @@ const PostsSkeleton = () => (
     style={{
       backgroundColor: COLORS.white,
       width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height * 2,
+      height: Dimensions.get('window').height,
       padding: PADDING.general,
     }}>
     <FlashList
@@ -92,6 +92,7 @@ const PostsSkeleton = () => (
       renderItem={({item}) => <PostSkeleton key={item.id} />}
       ListEmptyComponent={<PostSkeleton />}
       estimatedItemSize={10}
+      showsVerticalScrollIndicator={false}
     />
   </View>
 );

@@ -28,8 +28,6 @@ export default StyleSheet.create({
     borderRadius: 25,
   },
   userInfoContainer: {
-    width: '100%',
-    height: 'auto',
     paddingHorizontal: PADDING.general,
   },
   userName: {
@@ -53,14 +51,14 @@ export default StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 10,
     marginLeft: -3,
   },
   connectButton: {
-    paddingHorizontal: 55,
-    paddingVertical: 10,
+    paddingVertical: 5,
     borderRadius: 1000,
+    width: 200,
+    marginRight: 10,
   },
   messageButton: {
     paddingHorizontal: 34,
@@ -113,7 +111,7 @@ export default StyleSheet.create({
     marginBottom: 5,
   },
   messageButtonMargin: {
-    marginLeft: 20,
+    // marginLeft: 20,
   },
   messageMargin: {
     marginLeft: 170,

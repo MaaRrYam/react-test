@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {useFormik} from 'formik';
 import FastImage from 'react-native-fast-image';
 
@@ -96,8 +102,10 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <SafeAreaView>
-      <KeyboardAvoidingView style={commonStyles.container}>
+    <SafeAreaView style={commonStyles.container}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View>
           <Text style={commonStyles.title}>Let's get you started,</Text>
           <TouchableOpacity

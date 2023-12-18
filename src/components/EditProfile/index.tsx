@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
 import {
@@ -36,12 +36,7 @@ const EditProfile = ({
   const renderForm = () => {
     switch (tabItem) {
       case 'Profile':
-        return (
-          <EditBasicInfoForm
-            user={user as UserInterface}
-            onClose={handleOnClose}
-          />
-        );
+        return <EditBasicInfoForm onClose={handleOnClose} />;
       case 'Career':
         return (
           <EditCareerForm
@@ -87,32 +82,26 @@ const EditProfile = ({
       onClose={onClose}
       indicatorVisible={false}
       snapPoints={['20%', '100%']}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.closeButtonContainer}>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={handleOnClose}>
-              <Cross />
-            </TouchableOpacity>
-          </View>
-          <View>
-            {tabItem !== 'Profile' && (
-              <SecondaryButton
-                title={`Add New ${
-                  tabItem === 'Education' ? 'Education' : 'Experience'
-                }`}
-                style={!isEditing ? styles.addButton : {display: 'none'}}
-                onPress={async () => {
-                  setAddNew(true);
-                  setIsEditing(true);
-                }}
-              />
-            )}
-          </View>
+      <View style={styles.header}>
+        <View style={styles.closeButtonContainer}>
+          <TouchableOpacity style={styles.closeButton} onPress={handleOnClose}>
+            <Cross />
+          </TouchableOpacity>
         </View>
-        <View style={styles.contentContainer}>{renderForm()}</View>
-      </SafeAreaView>
+        {tabItem !== 'Profile' && (
+          <SecondaryButton
+            title={`Add New ${
+              tabItem === 'Education' ? 'Education' : 'Experience'
+            }`}
+            style={!isEditing ? styles.addButton : {display: 'none'}}
+            onPress={async () => {
+              setAddNew(true);
+              setIsEditing(true);
+            }}
+          />
+        )}
+      </View>
+      <ScrollView style={styles.contentContainer}>{renderForm()}</ScrollView>
     </BottomSheet>
   );
 };
