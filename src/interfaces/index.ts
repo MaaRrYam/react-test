@@ -716,6 +716,7 @@ export interface FeedbackInterface {
 }
 export interface SettingBasicInfoUpdateInterface {
   id: string;
+  name: string;
   recoverEmail?: string;
   phoneNumber?: string;
   dateOfBirth?: string;

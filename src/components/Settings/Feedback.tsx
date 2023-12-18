@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {Dropdown, TextArea} from '../Inputs';
 import {
@@ -14,11 +21,10 @@ import {Asset, FeedbackInterface, ImageInterface} from '@/interfaces';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native';
 import ToastService from '@/services/toast';
-import {getScreenDimensions, getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 import ProfileService from '@/services/profile';
-import Loading from '../Loading';
-const {height} = getScreenDimensions();
+import useUserManagement from '@/hooks/useUserManagement';
+
 const Feedback = () => {
   const [issueType, setIssueType] = useState('Select a type of Issue');
   const [feedback, setFeedback] = useState('');
@@ -26,6 +32,8 @@ const Feedback = () => {
   const [selectedImage, setSelectedImage] = useState<
     ImageInterface | Asset | null
   >(null);
+
+  const {user} = useUserManagement();
 
   const openImagePicker = () => {
     launchImageLibrary(
@@ -50,14 +58,13 @@ const Feedback = () => {
 
   const handleSubmitFeedback = async () => {
     setLoading(true);
-    const UID = (await getUID()) as string;
+    const UID = user!.id;
     let imageUrl = '';
     if (selectedImage?.uri) {
       imageUrl = (await FirebaseService.uploadToStorage(
         selectedImage,
       )) as string;
     }
-
     const payload: FeedbackInterface = {
       id: FirebaseService.generateUniqueId(),
       applicantId: UID,
@@ -77,71 +84,74 @@ const Feedback = () => {
       ToastService.showError('Something went wrong');
     }
   };
+
   return (
-    <>
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <Loading />
+    <KeyboardAvoidingView style={styles.container}>
+      <View>
+        <Dropdown
+          options={feedbackCategories}
+          onOptionSelect={option => setIssueType(option)}
+          selectedOption={issueType ? issueType : 'Select type of issue'}
+        />
+        <View style={styles.feedbackTextContainer}>
+          <TextArea
+            onChangeText={setFeedback}
+            placeholder="Write Feedback"
+            value={feedback}
+          />
         </View>
-      ) : (
-        <View>
-          <View>
-            <Dropdown
-              options={feedbackCategories}
-              onOptionSelect={option => setIssueType(option)}
-              selectedOption={issueType ? issueType : 'Select type of issue'}
-            />
-          </View>
-          <View style={styles.feedbackTextContainer}>
-            <TextArea
-              onChangeText={setFeedback}
-              placeholder="Write Feedback"
-              value={feedback}
-            />
-          </View>
-          <View>
-            <Text style={styles.text}>Attach Screenshot (optional)</Text>
-          </View>
-          <View>
-            {selectedImage && (
-              <Image
-                style={styles.selectedImage}
-                source={{uri: selectedImage.uri}}
-                resizeMode="cover"
-              />
-            )}
-            {selectedImage && (
+
+        <View style={styles.imageContainer}>
+          <Text style={styles.text}>Attach Screenshot (optional)</Text>
+          <>
+            {selectedImage ? (
+              <>
+                <TouchableOpacity
+                  onPress={() => setSelectedImage(null)}
+                  style={styles.crossButton}>
+                  <Text style={styles.crossText}>X</Text>
+                </TouchableOpacity>
+                <Image
+                  style={styles.selectedImage}
+                  source={{uri: selectedImage.uri}}
+                  resizeMode="cover"
+                />
+              </>
+            ) : (
               <TouchableOpacity
-                onPress={() => setSelectedImage(null)}
-                style={styles.crossButton}>
-                <Text style={styles.crossText}>X</Text>
+                style={styles.cameraIconContainer}
+                onPress={() => openImagePicker()}>
+                <CameraIcon />
               </TouchableOpacity>
             )}
-          </View>
-          {!selectedImage && (
-            <TouchableOpacity
-              style={styles.cameraIconContainer}
-              onPress={() => openImagePicker()}>
-              <CameraIcon />
-            </TouchableOpacity>
-          )}
-          <View style={styles.buttonContainer}>
-            <PrimaryButton
-              title="Submit"
-              onPress={() => handleSubmitFeedback()}
-            />
-          </View>
+          </>
         </View>
-      )}
-    </>
+      </View>
+      <View style={styles.buttonContainer}>
+        <PrimaryButton
+          title="Submit"
+          onPress={handleSubmitFeedback}
+          isLoading={loading}
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Feedback;
 
 const styles = StyleSheet.create({
+  container: {
+    height: Dimensions.get('window').height * 0.67,
+    justifyContent: 'space-between',
+    paddingTop: 10,
+  },
   text: {
     color: 'black',
+  },
+  imageContainer: {
+    marginTop: 20,
+    height: Dimensions.get('window').height * 0.2,
   },
   cameraIconContainer: {
     backgroundColor: COLORS.lightBlueBackground,
@@ -150,10 +160,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: MARGINS.general * 1.5,
   },
   feedbackTextContainer: {
-    marginTop: 45,
+    marginTop: 50,
   },
   buttonContainer: {
     marginTop: 120,
@@ -161,11 +171,11 @@ const styles = StyleSheet.create({
   crossButton: {
     position: 'absolute',
     right: 0,
-    top: 40,
+    top: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 20,
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -178,10 +188,5 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: BORDER_RADIUS.general,
     marginTop: MARGINS.general,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: height - 300,
   },
 });

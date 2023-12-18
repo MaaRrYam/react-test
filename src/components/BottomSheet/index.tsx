@@ -42,6 +42,8 @@ const CustomBottomSheet: React.FC<BottomSheetProps> = ({
           onClose();
         }
       }}
+      keyboardBehavior="interactive"
+      keyboardBlurBehavior="restore"
       backdropComponent={({style}) => renderBackdrop(style)}
       handleIndicatorStyle={!indicatorVisible && {display: 'none'}}>
       <View style={[styles.container, containerStyle]}>

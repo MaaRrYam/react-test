@@ -51,7 +51,7 @@ const FirebaseService: FirebaseServiceProps = {
     try {
       const docRef = doc(db, collectionName, docId);
 
-      await setDoc(docRef, payload);
+      await setDoc(docRef, payload, {merge: true});
 
       console.log('Document successfully written!');
     } catch (error) {

@@ -43,6 +43,7 @@ function useUserManagement(): UserManagement {
     };
 
     addToRedux();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

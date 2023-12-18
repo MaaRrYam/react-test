@@ -5,10 +5,12 @@ import {
   BasicInfo,
   BottomSheet,
   Feedback,
-  RoundedButton,
+  PrimaryButton,
 } from '@/components';
 import {BackArrow} from '@/assets/icons';
 import {COLORS, SETTINGS_TABS} from '@/constants';
+import profileStyles from '@/styles/profile';
+
 interface SettingsProps {
   isVisible: boolean;
   onClose: () => void;
@@ -18,7 +20,7 @@ const Settings = ({isVisible, onClose}: SettingsProps) => {
   const [selectedButton, setSelectedButton] = useState(SETTINGS_TABS[0]);
 
   const handleButtonPress = (item: string) => {
-    setSelectedButton(item === selectedButton ? '' : item);
+    setSelectedButton(item);
   };
 
   const renderSettingsComponent = (title: string) => {
@@ -39,32 +41,38 @@ const Settings = ({isVisible, onClose}: SettingsProps) => {
       isVisible={isVisible}
       onClose={onClose}
       snapPoints={['10%', '100%']}
-      indicatorVisible={false}
-      containerStyle={{}}>
+      indicatorVisible={false}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose} style={styles.backButton}>
             <BackArrow />
           </TouchableOpacity>
         </View>
-        <ScrollView horizontal contentContainerStyle={styles.buttonsContainer}>
-          {SETTINGS_TABS.map((item, index) => (
-            <View>
-              <RoundedButton
-                key={index}
+
+        <View style={styles.content}>
+          <ScrollView
+            horizontal
+            contentContainerStyle={[
+              profileStyles.tabButtonContainer,
+              styles.buttonsContainer,
+            ]}>
+            {SETTINGS_TABS.map(item => (
+              <PrimaryButton
+                key={item}
                 onPress={() => handleButtonPress(item)}
-                style={[
-                  styles.roundedButton,
-                  selectedButton === item && styles.bgLightBlue,
-                  item !== SETTINGS_TABS[0] && styles.ml10,
-                ]}
-                text={item}
+                backgroundColor={'#F4F4F4'}
+                textColor={COLORS.black}
+                style={
+                  selectedButton === item
+                    ? profileStyles.selectedPrimaryButtonStyles
+                    : profileStyles.PrimaryButtonStyles
+                }
+                title={item}
               />
-            </View>
-          ))}
-        </ScrollView>
-        <View style={styles.componentContainer}>
-          {selectedButton && renderSettingsComponent(selectedButton)}
+            ))}
+          </ScrollView>
+
+          {renderSettingsComponent(selectedButton)}
         </View>
       </View>
     </BottomSheet>
@@ -93,17 +101,8 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
   },
   buttonsContainer: {
-    marginTop: 10,
-    paddingHorizontal: 20,
+    marginTop: 20,
     flexDirection: 'row',
-  },
-  roundedButton: {
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 36,
   },
   bgLight: {
     backgroundColor: COLORS.lightBackground,
@@ -114,8 +113,7 @@ const styles = StyleSheet.create({
   ml10: {
     marginLeft: 10,
   },
-  componentContainer: {
+  content: {
     paddingHorizontal: 20,
-    marginTop: 30,
   },
 });
