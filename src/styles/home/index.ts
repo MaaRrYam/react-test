@@ -47,12 +47,8 @@ export const homeStyles = StyleSheet.create({
     marginLeft: MARGINS.general / 2,
   },
   searchBar: {
-    width: 230,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 10,
-    color: COLORS.text,
     flex: 1,
+    borderRadius: 22,
     backgroundColor: COLORS.lightBackground,
     paddingHorizontal: 10,
     paddingVertical: PADDING.general - 6,
