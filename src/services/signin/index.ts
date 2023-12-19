@@ -7,7 +7,7 @@ import {SCREEN_NAMES} from '@/constants';
 import ToastService from '@/services/toast';
 import {RootStackParamList} from '@/types';
 import {NavigationProp} from '@react-navigation/native';
-import {listenToUserData} from '@/store/features/authSlice';
+
 const SigninService: SigninServiceProps = {
   async checkIfUserIsWhitelisted(
     loggedInUser: UserCredential,
@@ -26,13 +26,13 @@ const SigninService: SigninServiceProps = {
       );
 
       if (!whiteListedUsers.length) {
-        await ToastService.showError(
+        ToastService.showError(
           'Please submit an access request to start using the platform.',
         );
         navigation.navigate(SCREEN_NAMES.RequestAccess);
       } else if (!whiteListedUsers[0].whitelisted) {
         await auth.signOut();
-        await ToastService.showError(
+        ToastService.showError(
           'Your access request is still pending approval.',
         );
       } else {
@@ -69,8 +69,7 @@ const SigninService: SigninServiceProps = {
           'accessToken',
           (await user.getIdToken()).toString(),
         );
-        await dispatch(listenToUserData());
-        await ToastService.showSuccess('Successfully signed in');
+        ToastService.showSuccess('Successfully signed in');
         navigation.navigate(
           userData[0]?.onboarded
             ? SCREEN_NAMES.BottomNavigator

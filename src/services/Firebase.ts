@@ -18,6 +18,7 @@ import {
   onSnapshot,
   Unsubscribe,
 } from 'firebase/firestore';
+import {firebase} from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 
 import {FirebaseServiceProps, Asset} from '@/interfaces';
@@ -51,7 +52,7 @@ const FirebaseService: FirebaseServiceProps = {
     try {
       const docRef = doc(db, collectionName, docId);
 
-      await setDoc(docRef, payload);
+      await setDoc(docRef, payload, {merge: true});
 
       console.log('Document successfully written!');
     } catch (error) {
@@ -261,6 +262,16 @@ const FirebaseService: FirebaseServiceProps = {
     });
 
     return unsubscribe;
+  },
+  async reAuthenticateUser(password: string) {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        user.email as string,
+        password,
+      );
+      return user.reauthenticateWithCredential(credential);
+    }
   },
 };
 

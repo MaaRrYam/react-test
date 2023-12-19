@@ -5,6 +5,7 @@ import {Loading, About, ProfileTabs, NewPost} from '@/components';
 import ProfileService from '@/services/profile';
 import {ProfileProps, UserInterface} from '@/interfaces';
 import profileStyles from '@/styles/profile';
+import Settings from '../settings';
 import {useAppSelector} from '@/hooks/useAppSelector';
 
 const Profile = ({route}: ProfileProps) => {
@@ -22,9 +23,14 @@ const Profile = ({route}: ProfileProps) => {
   );
 
   const [isNewPostClicked, setIsNewPostClicked] = useState(false);
+  const [isSettingsClicked, setIsSettingsClicked] = useState(false);
 
   const handleClose = () => {
     setIsNewPostClicked(false);
+  };
+
+  const handleSettingsClose = () => {
+    setIsSettingsClicked(false);
   };
   const handleOpen = () => {
     setIsNewPostClicked(true);
@@ -62,7 +68,10 @@ const Profile = ({route}: ProfileProps) => {
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }>
-          <About user={profileUser} />
+          <About
+            user={profileUser}
+            setIsSettingsClicked={setIsSettingsClicked}
+          />
           <ProfileTabs
             user={profileUser}
             usersProfileID={uid}
@@ -72,6 +81,9 @@ const Profile = ({route}: ProfileProps) => {
       </SafeAreaView>
       {isNewPostClicked && (
         <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
+      )}
+      {isSettingsClicked && (
+        <Settings isVisible={isSettingsClicked} onClose={handleSettingsClose} />
       )}
     </>
   );

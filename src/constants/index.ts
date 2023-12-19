@@ -233,3 +233,12 @@ export const SCREEN_NAMES = {
 
 export const jobTypes = ['Full-time', 'Part-time', 'Temporary', 'Intern'];
 export const workEnviroment = ['In-office', 'Remote', 'Hybrid'];
+export const SETTINGS_TABS = ['Basic Info', 'Account Preferences', 'Feedback'];
+export const feedbackCategories = [
+  "Something isn't working",
+  'This feature already exists somewhere',
+  'New Feature Request',
+  'Good for newcomers',
+  "This doesn't seem right",
+  'Any query regarding the platform',
+];

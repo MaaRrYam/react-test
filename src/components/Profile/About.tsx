@@ -11,7 +11,13 @@ import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
 import useProfile from '@/hooks/useProfile';
 
-const About = ({user}: {user: UserInterface}) => {
+const About = ({
+  user,
+  setIsSettingsClicked,
+}: {
+  user: UserInterface;
+  setIsSettingsClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {
     loading,
     buttonLoading,
@@ -61,7 +67,11 @@ const About = ({user}: {user: UserInterface}) => {
 
   return (
     <>
-      <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
+      <Header
+        navigation={navigation}
+        setJobsFilterBottomSheet={() => {}}
+        setIsSettingsClicked={setIsSettingsClicked}
+      />
       <View>
         <FastImage
           source={{
