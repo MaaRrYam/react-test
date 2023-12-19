@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -18,7 +18,6 @@ import {homeStyles} from '@/styles/home';
 import {styles} from './styles';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {useFocusEffect} from '@react-navigation/native';
 import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
