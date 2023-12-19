@@ -710,6 +710,10 @@ export interface PastApplicationCardInterface {
   rating: number;
   onPress: () => void;
 }
+
+export interface LocalizedSearchProps {
+  searchText: string;
+}
 export interface FeedbackInterface {
   id: string;
   applicantId?: string;

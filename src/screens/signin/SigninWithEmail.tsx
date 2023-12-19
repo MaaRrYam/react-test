@@ -9,7 +9,7 @@ import {
 } from '@firebase/auth';
 import {useFormik} from 'formik';
 import {Input, PrimaryButton} from '@/components';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {COLORS} from '@/constants';
 import {SigninWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
 import {KeyboardAvoidingView} from 'react-native';
@@ -73,7 +73,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={styles.mainContainer}>
         <Image
           source={require('@/assets/images/logo.png')}
           style={styles.logo}
@@ -118,7 +118,7 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
           <Text style={styles.mainText}>Don't have an Account? </Text>
           <Text
             style={styles.signUpText}
-            onPress={() => navigation.navigate(SCREEN_NAMES.Signup)}>
+            onPress={() => navigation.navigate('Signup')}>
             Sign up
           </Text>
         </View>

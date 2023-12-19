@@ -143,7 +143,7 @@ export default Feedback;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get('window').height * 0.6,
+    height: Dimensions.get('window').height * 0.65,
     justifyContent: 'space-between',
     paddingTop: 10,
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   buttonContainer: {
-    marginTop: Platform.OS === 'android' ? MARGINS.general * 2 : 120,
+    marginTop: Platform.OS === 'android' ? 0 : 120,
   },
   crossButton: {
     position: 'absolute',

@@ -7,8 +7,9 @@ import {NetworkItem, Loading} from '@/components';
 import {Empty} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {refetchRecommendations} from '@/store/features/networkSlice';
+import {LocalizedSearchProps} from '@/interfaces';
 
-const Explore = () => {
+const Explore = ({searchText}: LocalizedSearchProps) => {
   const {
     recommendations,
     isRecommendationsFetched,
@@ -17,6 +18,7 @@ const Explore = () => {
   const dispatch = useAppDispatch();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [filteredList, setFilteredList] = useState(recommendations);
 
   const handleRefresh = () => {
     dispatch(refetchRecommendations());
@@ -29,13 +31,24 @@ const Explore = () => {
     }
   }, [isRecommendationsFetched]);
 
+  useEffect(() => {
+    if (!searchText.trim()) {
+      setFilteredList(recommendations);
+    } else {
+      const filteredItems = recommendations.filter(item =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      setFilteredList(filteredItems);
+    }
+  }, [recommendations, searchText]);
+
   if (isRecommendationsFirstRequest) {
     return <Loading />;
   }
 
   return (
     <>
-      {recommendations.length ? (
+      {filteredList.length ? (
         <FlashList
           data={recommendations}
           keyExtractor={item => item.id.toString()}

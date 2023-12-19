@@ -91,9 +91,15 @@ const NetworkItem = ({
   };
 
   return (
-    <TouchableOpacity>
-      <View style={styles.networkItem}>
-        <View style={styles.networkItemImage}>
+    <View style={styles.networkItem}>
+      <View style={styles.networkItemImage}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Profile', {
+              uid: item.id,
+              user: item,
+            })
+          }>
           {item.photoUrl ? (
             <FastImage
               resizeMode="cover"
@@ -111,24 +117,24 @@ const NetworkItem = ({
               style={styles.networkItemImage}
             />
           )}
-        </View>
-        <View style={styles.networkItemContent}>
-          <View style={styles.networkItemHeader}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Profile', {
-                  uid: item.id,
-                  user: item,
-                })
-              }>
-              <Text style={styles.networkItemName}>{item.name}</Text>
-            </TouchableOpacity>
-            <Text style={styles.networkItemMessage}>{item.tagline}</Text>
-          </View>
-          {renderControls()}
-        </View>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+      <View style={styles.networkItemContent}>
+        <View style={styles.networkItemHeader}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Profile', {
+                uid: item.id,
+                user: item,
+              })
+            }>
+            <Text style={styles.networkItemName}>{item.name}</Text>
+          </TouchableOpacity>
+          <Text style={styles.networkItemMessage}>{item.tagline}</Text>
+        </View>
+        {renderControls()}
+      </View>
+    </View>
   );
 };
 

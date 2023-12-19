@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -21,8 +21,7 @@ import {useAppSelector} from '@/hooks/useAppSelector';
 import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
-  const [isNewPostClicked, setIsNewPostClicked] =
-    React.useState<boolean>(false);
+  const [isNewPostClicked, setIsNewPostClicked] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const {user} = useAppSelector(state => state.auth);
