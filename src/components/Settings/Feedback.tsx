@@ -2,6 +2,7 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   buttonContainer: {
-    marginTop: 120,
+    marginTop: Platform.OS === 'android' ? MARGINS.general * 2 : 120,
   },
   crossButton: {
     position: 'absolute',
