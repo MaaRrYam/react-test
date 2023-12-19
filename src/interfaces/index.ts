@@ -6,6 +6,7 @@ import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '@/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -72,6 +73,7 @@ export interface InputProps {
   setFieldValue?: any;
   disabled?: boolean;
   maxLength?: number;
+  onPress?: () => void;
 }
 
 export interface StorageServiceProps {
@@ -132,6 +134,9 @@ export interface FirebaseServiceProps {
     callback: (documents: DocumentData[]) => void,
   ): Promise<Unsubscribe>;
   generateUniqueFilename(): string;
+  reAuthenticateUser(
+    password: string,
+  ): Promise<FirebaseAuthTypes.UserCredential | undefined>;
 }
 
 export interface ImageInterface {
@@ -206,7 +211,7 @@ export interface ExperienceState {
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   isLoading?: boolean;
 }
 
@@ -282,6 +287,8 @@ export interface UserInterface {
   totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
+  contactNumber?: string;
+  recoveryEmail?: string;
 }
 
 export interface whiteListedUser {
@@ -706,4 +713,19 @@ export interface PastApplicationCardInterface {
 
 export interface LocalizedSearchProps {
   searchText: string;
+}
+export interface FeedbackInterface {
+  id: string;
+  applicantId?: string;
+  experience?: string;
+  feedbackCategory?: string;
+  referenceImage?: string;
+  timeStamp: Timestamp;
+}
+export interface SettingBasicInfoUpdateInterface {
+  id: string;
+  name: string;
+  recoverEmail?: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
 }

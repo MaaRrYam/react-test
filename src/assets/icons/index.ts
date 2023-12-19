@@ -27,6 +27,8 @@ import BaseSalary from './BaseSalary';
 import SaveIcon from './SaveIcon';
 import UnsaveIcon from './UnsaveIcon';
 import Filter from './Filter';
+import SettingsIcon from './SettingsIcon';
+import CameraIcon from './CameraIcon';
 import CameraSvg from './Camera';
 
 export {
@@ -60,4 +62,6 @@ export {
   SaveIcon,
   UnsaveIcon,
   Filter,
+  SettingsIcon,
+  CameraIcon,
 };

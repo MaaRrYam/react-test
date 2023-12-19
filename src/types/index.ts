@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import {FeedItem, UserInterface} from '@/interfaces';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Dispatch, SetStateAction} from 'react';
 
 export type RootStackParamList = {
   Signin: undefined;
@@ -147,6 +148,7 @@ export type HeaderProps = {
   setSearchText?: (text: string) => void;
   searchText?: string;
   setJobsFilterBottomSheet?: Function;
+  setIsSettingsClicked: Dispatch<SetStateAction<boolean>>;
 };
 export type DateFormatOption = 'date' | 'dateTime' | 'time';
 export type NavigationStateType = NavigationState<ParamListBase>;

@@ -24,3 +24,4 @@ export {default as Post} from '@/screens/Post';
 export {default as Jobs} from '@/screens/jobs/index';
 export {default as JobsComponent} from '@/screens/jobs/JobsComponent';
 export {default as PastApplications} from '@/screens/jobs/PastApplications';
+export {default as Settings} from '@/screens/settings';

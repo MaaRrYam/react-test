@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Image, TextInput} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
 import {homeStyles} from '@/styles/home';
-import {Chats, Filter} from '@/assets/icons';
+import {Chats, Filter, SettingsIcon} from '@/assets/icons';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {HeaderProps} from '@/types';
 import {SearchButton} from '@/components';
@@ -23,6 +23,7 @@ const Header = ({
   setSearchText,
   searchText,
   setJobsFilterBottomSheet,
+  setIsSettingsClicked,
 }: HeaderProps) => {
   const dispatch = useAppDispatch();
   const route = useRoute();
@@ -89,6 +90,12 @@ const Header = ({
             style={[homeStyles.searchIcon, homeStyles.messageIcon]}
             onPress={() => setJobsFilterBottomSheet((prev: boolean) => !prev)}>
             <Filter />
+          </TouchableOpacity>
+        ) : route.name === 'Profile' ? (
+          <TouchableOpacity
+            style={[homeStyles.searchIcon, homeStyles.messageIcon]}
+            onPress={() => setIsSettingsClicked(true)}>
+            <SettingsIcon />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity

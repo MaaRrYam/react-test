@@ -14,7 +14,7 @@ import {COLORS, FONTS} from '@/constants';
 interface DropdownProps {
   label?: string;
   options: string[];
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   selectedOption?: string | null;
   onOptionSelect: (option: string) => void;
   error?: string;
