@@ -65,4 +65,14 @@ export const homeStyles = StyleSheet.create({
     color: COLORS.black,
     fontSize: FONTS.bodyRegular,
   },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    flex: 1,
+    marginRight: 15,
+    height: 40,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    color: COLORS.black,
+  },
 });

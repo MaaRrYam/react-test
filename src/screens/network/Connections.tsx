@@ -21,7 +21,7 @@ const Connections = ({searchText}: LocalizedSearchProps) => {
   const [filteredList, setFilteredList] = useState(connections);
 
   useEffect(() => {
-    if (searchText.trim() === '') {
+    if (!searchText.trim()) {
       setFilteredList(connections);
     } else {
       const filteredItems = connections.filter(item => {
@@ -57,7 +57,7 @@ const Connections = ({searchText}: LocalizedSearchProps) => {
 
   return (
     <>
-      {connections.length ? (
+      {filteredList.length ? (
         <FlashList
           data={connections}
           keyExtractor={item => item.id?.toString()}

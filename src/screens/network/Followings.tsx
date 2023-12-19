@@ -17,12 +17,30 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [filteredList, setFilteredList] = useState(following);
 
+  /**
+   * @description This function handles the refresh event
+   * @returns void
+   */
   const handleRefresh = () => {
     setIsRefreshing(true);
     dispatch(refetchFollowing());
   };
+
+  /**
+   * @description This function fetches the following list
+   * @returns void
+   */
+  const fetchData = useCallback(() => {
+    if (!isFollowingFetched) {
+      dispatch(getFollowing());
+    }
+  }, [dispatch, isFollowingFetched]);
+
+  /**
+   * @description This effect filters the following list
+   */
   useEffect(() => {
-    if (searchText.trim() === '') {
+    if (!searchText.trim()) {
       setFilteredList(following);
     } else {
       const filteredItems = following.filter(item => {
@@ -33,12 +51,10 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
       setFilteredList(filteredItems);
     }
   }, [following, searchText]);
-  const fetchData = useCallback(() => {
-    if (!isFollowingFetched) {
-      dispatch(getFollowing());
-    }
-  }, [dispatch, isFollowingFetched]);
 
+  /**
+   * @description This effect fetches the following list
+   */
   useEffect(() => {
     fetchData();
 
@@ -47,13 +63,17 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
     }
   }, [fetchData, isFollowingFetched]);
 
+  /**
+   * @description This condition checks if the following list is being fetched for the first time
+   * @returns JSX.Element
+   */
   if (isFollowingFirstRequest) {
     return <Loading />;
   }
 
   return (
     <>
-      {following.length ? (
+      {filteredList.length ? (
         <FlashList
           data={following}
           keyExtractor={item => item.id?.toString()}

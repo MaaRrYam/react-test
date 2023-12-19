@@ -12,10 +12,18 @@ import Connections from '@/screens/network/Connections';
 import Followings from '@/screens/network/Followings';
 import Explore from '@/screens/network/Explore';
 
+/**
+ *
+ * @param navigation
+ * @description This function renders the network screen
+ * @returns JSX.Element
+ */
 const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
-  const [selectedTab, setSelectedTab] = useState<string>(NETWORK_TABS[0]);
   const {isRecommendationsFetched} = useAppSelector(state => state.network);
+
+  const [selectedTab, setSelectedTab] = useState(NETWORK_TABS[0]);
   const [searchText, setSearchText] = useState('');
+
   const dispatch = useAppDispatch();
 
   const fetchData = useCallback(() => {
@@ -38,39 +46,20 @@ const Network: React.FC<NetworkScreenProps> = ({navigation}) => {
         />
 
         <View style={styles.subHeader}>
-          <PrimaryButton
-            title={NETWORK_TABS[0]}
-            onPress={() => setSelectedTab(NETWORK_TABS[0])}
-            backgroundColor={'#F4F4F4'}
-            textColor={COLORS.black}
-            style={
-              selectedTab === NETWORK_TABS[0]
-                ? styles.selectedPrimaryButtonStyles
-                : styles.PrimaryButtonStyles
-            }
-          />
-          <PrimaryButton
-            title={NETWORK_TABS[1]}
-            onPress={() => setSelectedTab(NETWORK_TABS[1])}
-            backgroundColor={'#F4F4F4'}
-            textColor={COLORS.black}
-            style={
-              selectedTab === NETWORK_TABS[1]
-                ? styles.selectedPrimaryButtonStyles
-                : styles.PrimaryButtonStyles
-            }
-          />
-          <PrimaryButton
-            title={NETWORK_TABS[2]}
-            onPress={() => setSelectedTab(NETWORK_TABS[2])}
-            backgroundColor={'#F4F4F4'}
-            textColor={COLORS.black}
-            style={
-              selectedTab === NETWORK_TABS[2]
-                ? styles.selectedPrimaryButtonStyles
-                : styles.PrimaryButtonStyles
-            }
-          />
+          {NETWORK_TABS.map(tab => (
+            <PrimaryButton
+              key={tab}
+              title={tab}
+              onPress={() => setSelectedTab(tab)}
+              backgroundColor={'#F4F4F4'}
+              textColor={COLORS.black}
+              style={
+                selectedTab === tab
+                  ? styles.selectedPrimaryButtonStyles
+                  : styles.PrimaryButtonStyles
+              }
+            />
+          ))}
         </View>
 
         {selectedTab === NETWORK_TABS[0] ? (

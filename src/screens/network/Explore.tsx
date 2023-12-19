@@ -19,6 +19,7 @@ const Explore = ({searchText}: LocalizedSearchProps) => {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [filteredList, setFilteredList] = useState(recommendations);
+
   const handleRefresh = () => {
     dispatch(refetchRecommendations());
     setIsRefreshing(true);
@@ -31,7 +32,7 @@ const Explore = ({searchText}: LocalizedSearchProps) => {
   }, [isRecommendationsFetched]);
 
   useEffect(() => {
-    if (searchText.trim() === '') {
+    if (!searchText.trim()) {
       setFilteredList(recommendations);
     } else {
       const filteredItems = recommendations.filter(item =>
@@ -47,7 +48,7 @@ const Explore = ({searchText}: LocalizedSearchProps) => {
 
   return (
     <>
-      {recommendations.length ? (
+      {filteredList.length ? (
         <FlashList
           data={recommendations}
           keyExtractor={item => item.id.toString()}

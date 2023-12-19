@@ -17,7 +17,7 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [searchFilteredJobs, setSearchFilteredJobs] = useState(allJobs)
+  const [searchFilteredJobs, setSearchFilteredJobs] = useState(allJobs);
   useEffect(() => {
     if (selectedTab === JOBS_TABS[0]) {
       if (!allJobs?.length) {
@@ -78,39 +78,20 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
           setSearchText={setSearchText}
         />
         <View style={jobMainStyles.subHeader}>
-          <PrimaryButton
-            title={JOBS_TABS[0]}
-            onPress={() => setSelectedTab(JOBS_TABS[0])}
-            backgroundColor={COLORS.lightBackground}
-            textColor={COLORS.black}
-            style={
-              selectedTab === JOBS_TABS[0]
-                ? jobMainStyles.selectedButtonStyles
-                : jobMainStyles.buttonStyles
-            }
-          />
-          <PrimaryButton
-            title={JOBS_TABS[1]}
-            onPress={() => setSelectedTab(JOBS_TABS[1])}
-            backgroundColor={COLORS.lightBackground}
-            textColor={COLORS.black}
-            style={
-              selectedTab === JOBS_TABS[1]
-                ? jobMainStyles.selectedButtonStyles
-                : jobMainStyles.buttonStyles
-            }
-          />
-          <PrimaryButton
-            title={JOBS_TABS[2]}
-            onPress={() => setSelectedTab(JOBS_TABS[2])}
-            backgroundColor={COLORS.lightBackground}
-            textColor={COLORS.black}
-            style={
-              selectedTab === JOBS_TABS[2]
-                ? jobMainStyles.selectedButtonStyles
-                : jobMainStyles.buttonStyles
-            }
-          />
+          {JOBS_TABS.map(tab => (
+            <PrimaryButton
+              key={tab}
+              title={tab}
+              onPress={() => setSelectedTab(tab)}
+              backgroundColor={COLORS.lightBackground}
+              textColor={COLORS.black}
+              style={
+                selectedTab === tab
+                  ? jobMainStyles.selectedButtonStyles
+                  : jobMainStyles.buttonStyles
+              }
+            />
+          ))}
         </View>
         {selectedTab === JOBS_TABS[0] ? (
           <JobsComponent
