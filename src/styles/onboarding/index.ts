@@ -44,4 +44,22 @@ export const commonStyles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 10,
   },
+  searchablecontainer: {
+    marginTop: MARGINS.general,
+    select: {
+      flex: 1,
+      container: {
+        height: 60,
+      },
+      text: {
+        fontSize: 14,
+      },
+    },
+    option: {
+      flex: 1,
+      text: {
+        fontSize: 14,
+      },
+    },
+  },
 });

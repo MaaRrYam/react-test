@@ -5,6 +5,7 @@ import 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ToastProvider} from 'react-native-toast-notifications';
 import SplashScreen from 'react-native-splash-screen';
+import {SelectProvider} from '@mobile-reality/react-native-select-pro';
 
 import store from '@/store';
 import RootNavigation from '@/navigation';
@@ -21,7 +22,9 @@ const App = () => {
     <GestureHandlerRootView style={{flex: 1}}>
       <ToastProvider placement="bottom" offsetBottom={50}>
         <Provider store={store}>
-          <RootNavigation />
+          <SelectProvider>
+            <RootNavigation />
+          </SelectProvider>
         </Provider>
       </ToastProvider>
     </GestureHandlerRootView>

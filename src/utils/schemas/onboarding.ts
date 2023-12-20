@@ -11,9 +11,6 @@ export const salaryExpectationsSchema = Yup.object().shape({
 
 export const getStartedSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
-  country: Yup.string().required('Country is required'),
-  city: Yup.string().required('City is required'),
-  state: Yup.string().required('State is required'),
 });
 
 export const addEducationSchema = Yup.object().shape({

@@ -21,10 +21,27 @@ import useUserManagement from '@/hooks/useUserManagement';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CameraSvg} from '@/assets/icons';
+import {Select} from '@mobile-reality/react-native-select-pro';
+import {
+  Country,
+  State,
+  City,
+  IState,
+  ICountry,
+  ICity,
+} from 'country-state-city';
+import ToastService from '@/services/toast';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
   const [userData, setUserData] = useState<UserInterface>({});
+  const countries: ICountry[] = Country.getAllCountries();
+  const [allCountries, setAllCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState<ICountry>();
+  const [allStates, setAllStates] = useState([]);
+  const [selectedState, setSelectedState] = useState<IState>();
+  const [allCities, setAllCities] = useState();
+  const [selectedCity, setSelectedCity] = useState<ICity>();
   const [initialValues, setInitialValues] = useState({
     username: user.username || '',
     city: user.city || '',
@@ -37,13 +54,31 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   >(null);
 
   const handleSubmitUserData = formValues => {
-    const newData = {...formValues, onboardingStep: 0};
-    setUserData(prev => ({
-      ...prev,
-      ...newData,
-    }));
-    OnboardingService.getStarted(newData, selectedImage);
-    navigation.navigate(SCREEN_NAMES.Education);
+    if (!selectedCountry) {
+      ToastService.showError('Please Select Your Country');
+    } else if (!selectedState) {
+      ToastService.showError('Please Select Your State');
+    } else if (!selectedCity) {
+      ToastService.showError('Please Select Your City');
+    } else {
+      const newData = {
+        ...formValues,
+        country: selectedCountry?.label,
+        countryDetails: selectedCountry?.value,
+        state: selectedState?.label,
+        stateDetails: selectedState?.value,
+        city: selectedCity?.label,
+        cityDetails: selectedCity?.value,
+        onboardingStep: 0,
+      };
+      setUserData(prev => ({
+        ...prev,
+        ...newData,
+      }));
+
+      OnboardingService.getStarted(newData, selectedImage);
+      navigation.navigate(SCREEN_NAMES.Education);
+    }
   };
 
   const {values, touched, errors, handleChange, handleSubmit, setFieldTouched} =
@@ -84,6 +119,37 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       });
     })();
   }, []);
+
+  useEffect(() => {
+    const countriesArr = [];
+    countries?.map((ct, index) => {
+      countriesArr.push({label: ct?.name, value: ct});
+    });
+    setAllCountries(countriesArr);
+  }, [countries]);
+
+  useEffect(() => {
+    const states: IState[] = State.getStatesOfCountry(
+      selectedCountry?.value?.isoCode,
+    );
+    const statesArr = [];
+    states?.map((st, index) => {
+      statesArr.push({label: st?.name, value: st});
+    });
+    setAllStates(statesArr);
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    const cities: ICity[] = City.getCitiesOfState(
+      selectedCountry?.value?.isoCode,
+      selectedState?.value?.isoCode,
+    );
+    const citiesArr = [];
+    cities?.map((city, index) => {
+      citiesArr.push({label: city?.name, value: city});
+    });
+    setAllCities(citiesArr);
+  }, [selectedState]);
 
   useEffect(() => {
     OnboardingService.setScreen(navigation, setIsLoading, userData);
@@ -147,33 +213,59 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
             name="username"
             setFieldTouched={setFieldTouched}
           />
-          <Input
-            placeholder="Country"
-            value={values.country}
-            onChangeText={handleChange('country')}
-            touched={touched.country}
-            error={errors.country}
-            name="country"
-            setFieldTouched={setFieldTouched}
-          />
-          <Input
-            placeholder="State"
-            value={values.state}
-            onChangeText={handleChange('state')}
-            touched={touched.state}
-            error={errors.state}
-            name="state"
-            setFieldTouched={setFieldTouched}
-          />
-          <Input
-            placeholder="City"
-            value={values.city}
-            onChangeText={handleChange('city')}
-            touched={touched.city}
-            error={errors.city}
-            name="city"
-            setFieldTouched={setFieldTouched}
-          />
+
+          <View>
+            <Select
+              styles={commonStyles.searchablecontainer}
+              options={allCountries}
+              searchable={true}
+              onSelect={(option, index) => {
+                setSelectedCountry(option);
+              }}
+              placeholderText={'Country'}
+              onRemove={() => {
+                setSelectedCountry({});
+              }}
+            />
+          </View>
+
+          <>
+            {allStates.length > 0 && (
+              <View style={commonStyles.searchablecontainer}>
+                <Select
+                  styles={commonStyles.searchablecontainer}
+                  options={allStates}
+                  searchable={true}
+                  onSelect={(option, index) => {
+                    setSelectedState(option);
+                  }}
+                  placeholderText={'State'}
+                  onRemove={() => {
+                    setSelectedState({});
+                  }}
+                />
+              </View>
+            )}
+          </>
+
+          <>
+            {allCities?.length > 0 && (
+              <View style={commonStyles.searchablecontainer}>
+                <Select
+                  styles={commonStyles.searchablecontainer}
+                  options={allCities}
+                  searchable={true}
+                  onSelect={(option, index) => {
+                    setSelectedCity(option);
+                  }}
+                  placeholderText={'City'}
+                  onRemove={() => {
+                    setSelectedCity({});
+                  }}
+                />
+              </View>
+            )}
+          </>
         </View>
         <View style={commonStyles.footer}>
           <PrimaryButton title="Continue" onPress={handleSubmit} />
