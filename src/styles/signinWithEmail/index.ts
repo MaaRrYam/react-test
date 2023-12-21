@@ -1,15 +1,17 @@
 import {BORDER_RADIUS, COLORS, FONTS, containerWidth} from '@/constants';
 import {getScreenDimensions} from '@/utils/functions';
-import {Platform} from 'react-native';
 import {StyleSheet} from 'react-native';
 
 const {width} = getScreenDimensions();
 export const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: 'white',
     flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 30,
+    backgroundColor: 'white',
+  },
+  keyboardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mainContainer: {
     flex: 1,
@@ -53,5 +55,5 @@ export const styles = StyleSheet.create({
   },
   signUpText: {
     color: COLORS.primary,
-  }
+  },
 });

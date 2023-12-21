@@ -1,5 +1,12 @@
-import React, {FC} from 'react';
-import {View, Text, SafeAreaView, Image, Platform} from 'react-native';
+import React, {FC, useRef} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Platform,
+  TextInput,
+} from 'react-native';
 
 import {signInSchema} from '@/utils/schemas/schemas';
 import {
@@ -21,6 +28,8 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 const auth = getAuth();
 const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
+  const passwordInputRef = useRef<TextInput | null>(null);
+
   const {
     values,
     touched,
@@ -69,58 +78,65 @@ const SigninWithEmail: FC<SigninWithEmailProps> = ({navigation}) => {
       setSubmitting(false);
     }
   };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.mainContainer}>
-        <Image
-          source={require('@/assets/images/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        style={styles.keyboardContainer}>
+        <View style={styles.mainContainer}>
+          <Image
+            source={require('@/assets/images/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
 
-        <View>
           <Text style={styles.headingTitle}>Sign in</Text>
-        </View>
 
-        <View style={[styles.inputContainer, {marginTop: 35}]}>
-          <Input
-            placeholder="Email"
-            value={values.email}
-            onChangeText={handleChange('email')}
-            touched={touched.email}
-            error={errors.email}
-            name="email"
-            setFieldTouched={setFieldTouched}
+          <View style={[styles.inputContainer, {marginTop: 35}]}>
+            <Input
+              placeholder="Email"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              touched={touched.email}
+              error={errors.email}
+              name="email"
+              setFieldTouched={setFieldTouched}
+              autoFocus={true}
+              returnKeyType="next"
+              onSubmitEditing={() => passwordInputRef.current?.focus()}
+            />
+            <Input
+              placeholder="Password"
+              value={values.password}
+              onChangeText={handleChange('password')}
+              touched={touched.password}
+              error={errors.password}
+              secureTextEntry
+              name="password"
+              setFieldTouched={setFieldTouched}
+              forwardedRef={passwordInputRef}
+              returnKeyType="done"
+              onSubmitEditing={handleSubmit}
+            />
+          </View>
+          <PrimaryButton
+            title="Sign in"
+            onPress={handleSubmit}
+            style={styles.signinButtonContainer}
+            isLoading={isSubmitting}
+            activityIndicatorColor={COLORS.white}
+            textColor={COLORS.white}
           />
-          <Input
-            placeholder="Password"
-            value={values.password}
-            onChangeText={handleChange('password')}
-            touched={touched.password}
-            error={errors.password}
-            secureTextEntry
-            name="password"
-            setFieldTouched={setFieldTouched}
-          />
-        </View>
-        <PrimaryButton
-          title="Sign in"
-          onPress={handleSubmit}
-          style={styles.signinButtonContainer}
-          isLoading={isSubmitting}
-          activityIndicatorColor={COLORS.white}
-          textColor={COLORS.white}
-        />
 
-        <View style={styles.dontHaveAnAccount}>
-          <Text style={styles.mainText}>Don't have an Account? </Text>
-          <Text
-            style={styles.signUpText}
-            onPress={() => navigation.navigate('Signup')}>
-            Sign up
-          </Text>
+          <View style={styles.dontHaveAnAccount}>
+            <Text style={styles.mainText}>Don't have an Account? </Text>
+            <Text
+              style={styles.signUpText}
+              onPress={() => navigation.navigate('Signup')}>
+              Sign up
+            </Text>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
