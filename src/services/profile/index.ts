@@ -261,6 +261,36 @@ const ProfileService = {
       return false;
     }
   },
+  async allowEveryoneToSendMessage(value: boolean) {
+    try {
+      const id = (await getUID()) as string;
+
+      await FirebaseService.updateDocument('users', id, {
+        allowEveryoneToSendMessage: value,
+      });
+      ToastService.showSuccess('Settings updated successfully');
+      return true;
+    } catch (error) {
+      console.log(error);
+      ToastService.showError('Error updating settings');
+      return false;
+    }
+  },
+  async allowEveryoneToSeeMyConnections(value: boolean) {
+    try {
+      const id = (await getUID()) as string;
+
+      await FirebaseService.updateDocument('users', id, {
+        allowEveryoneToSeeMyConnections: value,
+      });
+      ToastService.showSuccess('Settings updated successfully');
+      return true;
+    } catch (error) {
+      console.log(error);
+      ToastService.showError('Error updating settings');
+      return false;
+    }
+  },
 };
 
 export default ProfileService;

@@ -1,27 +1,38 @@
 import {Dimensions, StyleSheet, Switch, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {COLORS, FONTS} from '@/constants';
 import {PrimaryButton} from '../Buttons';
 import StorageService from '@/services/Storage';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {logOut} from '@/store/features/authSlice';
+import {logOut, updateUserData} from '@/store/features/authSlice';
 import {auth} from '@/config/firebase';
 import {RootStackParamList} from '@/types';
+import ProfileService from '@/services/profile';
+import {useAppSelector} from '@/hooks/useAppSelector';
 
 const AccountPreferences = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {user} = useAppSelector(state => state.auth);
+
   const dispatch = useAppDispatch();
-  const [messagingEnabled, setMessagingEnabled] = useState(false);
-  const [connectionsVisibleEnabled, setConnectionsVisibleEnabled] =
-    useState(false);
+  const [messagingEnabled, setMessagingEnabled] = useState(
+    user.allowEveryoneToSendMessage || false,
+  );
+  const [connectionsVisibleEnabled, setConnectionsVisibleEnabled] = useState(
+    user.allowEveryoneToSeeMyConnections || false,
+  );
 
   const toggleMessagingSwitch = () => {
-    setMessagingEnabled(!messagingEnabled);
+    const updatedValue = !messagingEnabled;
+    setMessagingEnabled(updatedValue);
+    handleSendMessage(updatedValue);
   };
 
   const toggleConnectionsVisibleSwitch = () => {
-    setConnectionsVisibleEnabled(!connectionsVisibleEnabled);
+    const updatedValue = !connectionsVisibleEnabled;
+    setConnectionsVisibleEnabled(updatedValue);
+    handleConnectionVisibility(updatedValue);
   };
 
   const handleLogout = async () => {
@@ -30,6 +41,25 @@ const AccountPreferences = () => {
     await auth.signOut();
     navigation.navigate('Launch');
   };
+
+  const handleSendMessage = useCallback(
+    async (newValue: boolean) => {
+      await ProfileService.allowEveryoneToSendMessage(newValue);
+      dispatch(updateUserData({...user, allowEveryoneToSendMessage: newValue}));
+    },
+    [dispatch, user],
+  );
+
+  const handleConnectionVisibility = useCallback(
+    async (newValue: boolean) => {
+      await ProfileService.allowEveryoneToSeeMyConnections(newValue);
+      dispatch(
+        updateUserData({...user, allowEveryoneToSeeMyConnections: newValue}),
+      );
+    },
+    [dispatch, user],
+  );
+
   return (
     <View style={styles.container}>
       <View>
