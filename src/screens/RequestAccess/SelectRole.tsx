@@ -22,7 +22,7 @@ const SelectRole: React.FC<SelectRoleScreenProps> = () => {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={[commonStyles.safeArea]}>
       <View style={commonStyles.container}>
         <BackButton onPress={() => console.log('Back button pressed')} />
         <Text style={commonStyles.title}>Choose Your Role</Text>

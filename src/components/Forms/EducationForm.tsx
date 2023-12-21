@@ -1,19 +1,26 @@
-import React from 'react';
-import {ScrollView, SafeAreaView, View} from 'react-native';
+import React, {useRef} from 'react';
+import {ScrollView, SafeAreaView, View, TextInput} from 'react-native';
 import {useFormik} from 'formik';
 
 import {addEducationSchema} from '@/utils/schemas/onboarding';
-import {Input, Checkbox, PrimaryButton} from '@/components';
+import {
+  Checkbox,
+  PrimaryButton,
+  KeyboardAvoidingView,
+  BottomSheetInput,
+} from '@/components';
 import {COLORS} from '@/constants';
 import {EducationState} from '@/interfaces';
 import {commonStyles} from '@/styles/onboarding';
 
-const handleCheckbox = (newValue: boolean) => {};
 const EducationForm = ({
   handleAddNewEducation,
 }: {
   handleAddNewEducation: (newEducation: EducationState) => void;
 }) => {
+  const degreeName = useRef<TextInput>(null);
+  const startingYear = useRef<TextInput>(null);
+
   const {
     values,
     errors,
@@ -50,67 +57,76 @@ const EducationForm = ({
   });
 
   return (
-    <SafeAreaView style={commonStyles.container}>
-      <ScrollView style={commonStyles.container}>
-        <Input
-          placeholder="Institute Name"
-          value={values.instituteName}
-          onChangeText={handleChange('instituteName')}
-          touched={touched.instituteName}
-          onBlur={handleBlur('instituteName')}
-          error={errors.instituteName}
-          name="instituteName"
-          setFieldTouched={setFieldTouched}
-        />
-        <Input
-          placeholder="Degree Name"
-          value={values.degree}
-          onChangeText={handleChange('degree')}
-          onBlur={handleBlur('degree')}
-          touched={touched.degree}
-          error={errors.degree}
-          name="degree"
-          setFieldTouched={setFieldTouched}
-        />
+    <SafeAreaView style={commonStyles.safeArea}>
+      <KeyboardAvoidingView>
+        <View style={commonStyles.container}>
+          <ScrollView>
+            <BottomSheetInput
+              placeholder="Institute Name"
+              value={values.instituteName}
+              onChangeText={handleChange('instituteName')}
+              touched={touched.instituteName}
+              onBlur={handleBlur('instituteName')}
+              error={errors.instituteName}
+              name="instituteName"
+              setFieldTouched={setFieldTouched}
+              onSubmitEditing={() => degreeName.current?.focus()}
+              returnKeyType="next"
+            />
+            <BottomSheetInput
+              placeholder="Degree Name"
+              value={values.degree}
+              onChangeText={handleChange('degree')}
+              onBlur={handleBlur('degree')}
+              touched={touched.degree}
+              error={errors.degree}
+              name="degree"
+              setFieldTouched={setFieldTouched}
+              forwardedRef={degreeName}
+              onSubmitEditing={() => startingYear.current?.focus()}
+              returnKeyType="next"
+            />
 
-        <Input
-          placeholder="Starting Year"
-          value={values.startYear}
-          onChangeText={handleChange('startYear')}
-          onBlur={handleBlur('startYear')}
-          error={errors.startYear}
-          name="startYear"
-          touched={touched.startYear}
-          setFieldTouched={setFieldTouched}
-          keyboardType="numeric"
-        />
+            <BottomSheetInput
+              placeholder="Starting Year"
+              value={values.startYear}
+              onChangeText={handleChange('startYear')}
+              onBlur={handleBlur('startYear')}
+              error={errors.startYear}
+              name="startYear"
+              touched={touched.startYear}
+              setFieldTouched={setFieldTouched}
+              keyboardType="numeric"
+              forwardedRef={startingYear}
+            />
 
-        <Input
-          placeholder="Ending Year"
-          value={values.endYear}
-          onChangeText={handleChange('endYear')}
-          onBlur={handleBlur('endYear')}
-          error={errors.endYear}
-          touched={touched.endYear}
-          name="endYear"
-          setFieldTouched={setFieldTouched}
-          keyboardType="numeric"
-          disabled={values.currentlyStudying}
-        />
+            <BottomSheetInput
+              placeholder="Ending Year"
+              value={values.endYear}
+              onChangeText={handleChange('endYear')}
+              onBlur={handleBlur('endYear')}
+              error={errors.endYear}
+              touched={touched.endYear}
+              name="endYear"
+              setFieldTouched={setFieldTouched}
+              keyboardType="numeric"
+              disabled={values.currentlyStudying}
+            />
 
-        <Checkbox
-          onPress={() =>
-            setFieldValue('currentlyStudying', !values.currentlyStudying)
-          }
-          text="Currently Studying"
-          fillColor={COLORS.primary}
-          style={{marginBottom: 20}}
-        />
-
-        <View style={commonStyles.footer}>
-          <PrimaryButton title="Continue" onPress={handleSubmit} />
+            <Checkbox
+              onPress={() =>
+                setFieldValue('currentlyStudying', !values.currentlyStudying)
+              }
+              text="Currently Studying"
+              fillColor={COLORS.primary}
+              style={{marginBottom: 20}}
+            />
+          </ScrollView>
+          <View style={commonStyles.footer}>
+            <PrimaryButton title="Continue" onPress={handleSubmit} />
+          </View>
         </View>
-      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

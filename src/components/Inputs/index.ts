@@ -5,3 +5,4 @@ export {default as Dropdown} from './Dropdown';
 export {default as LocationDropdown} from './LocationDropdown';
 export {default as TextArea} from './TextArea';
 export {default as YearDropdown} from './YearDropdown';
+export {default as BottomSheetInput} from './BottomSheetInput';

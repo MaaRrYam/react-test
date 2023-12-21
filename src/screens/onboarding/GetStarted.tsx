@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import {useFormik} from 'formik';
 import FastImage from 'react-native-fast-image';
@@ -14,7 +15,6 @@ import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
 import {Asset, ImageInterface, UserInterface} from '@/interfaces';
-import {SCREEN_NAMES} from '@/constants';
 import LoadingScreen from '@/components/Loading';
 import OnboardingService from '@/services/onboarding';
 import useUserManagement from '@/hooks/useUserManagement';
@@ -162,35 +162,43 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     });
   }, [userData]);
 
-  return isLoading ? (
-    <LoadingScreen />
-  ) : (
-    <SafeAreaView style={commonStyles.container}>
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <SafeAreaView style={commonStyles.safeArea}>
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={commonStyles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View>
+        <View style={commonStyles.container}>
           <Text style={commonStyles.title}>Let's get you started,</Text>
           <TouchableOpacity
             style={commonStyles.imageContainer}
             onPress={() => openImagePicker()}>
-            {selectedImage?.uri ? (
+            {user?.photoUrl ? (
               <FastImage
                 style={commonStyles.image}
                 source={{
-                  uri: selectedImage?.uri,
-                  priority: 'normal',
+                  uri: user.photoUrl,
+                  priority: FastImage.priority.high,
                   cache: FastImage.cacheControl.immutable,
                 }}
                 resizeMode="cover"
               />
-            ) : selectedImage ? (
-              <FastImage
+            ) : selectedImage?.uri ? (
+              <Image
                 style={commonStyles.image}
                 source={{
                   uri: selectedImage?.uri,
-                  priority: 'normal',
-                  cache: FastImage.cacheControl.immutable,
+                }}
+                resizeMode="cover"
+              />
+            ) : selectedImage ? (
+              <Image
+                style={commonStyles.image}
+                source={{
+                  uri: selectedImage?.uri,
                 }}
                 resizeMode="cover"
               />
@@ -266,9 +274,9 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
               </View>
             )}
           </>
-        </View>
-        <View style={commonStyles.footer}>
-          <PrimaryButton title="Continue" onPress={handleSubmit} />
+          <View style={commonStyles.footer}>
+            <PrimaryButton title="Continue" onPress={handleSubmit} />
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

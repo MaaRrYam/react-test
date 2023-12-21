@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useRef} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from 'react-native';
 import {useFormik} from 'formik';
 
@@ -15,7 +16,7 @@ import {
   UserCredential,
 } from '@firebase/auth';
 import {Input, PrimaryButton} from '@/components';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {COLORS} from '@/constants';
 import {SignupWithEmailProps} from '@/types';
 import SigninService from '@/services/signin';
 import {styles} from '@/styles/signupWithEmail';
@@ -27,6 +28,10 @@ import {useAppDispatch} from '@/hooks/useAppDispatch';
 const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
   const auth = getAuth();
   const dispatch = useAppDispatch();
+
+  const passwordInputRef = useRef<TextInput | null>(null);
+  const confirmPasswordInputRef = useRef<TextInput | null>(null);
+
   const {
     values,
     touched,
@@ -47,6 +52,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
       handleSignIn(formValues);
     },
   });
+
   const handleSignIn = async (formValues: {
     email: string;
     password: string;
@@ -76,10 +82,12 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
       setSubmitting(false);
     }
   };
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.keyboardContainer}>
         <View style={styles.mainContainer}>
           <Image
             source={require('@/assets/images/logo.png')}
@@ -87,9 +95,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
             resizeMode="contain"
           />
 
-          <View>
-            <Text style={styles.headingTitle}>Create Account</Text>
-          </View>
+          <Text style={styles.headingTitle}>Create Account</Text>
 
           <View style={styles.inputContainer}>
             <Input
@@ -100,6 +106,8 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
               error={errors.email}
               name="email"
               setFieldTouched={setFieldTouched}
+              onSubmitEditing={() => passwordInputRef.current?.focus()}
+              returnKeyType="next"
             />
             <Input
               placeholder="Password"
@@ -110,6 +118,9 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
               secureTextEntry
               name="password"
               setFieldTouched={setFieldTouched}
+              returnKeyType="next"
+              onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
+              forwardedRef={passwordInputRef}
             />
             <Input
               placeholder="Confirm Password"
@@ -120,6 +131,9 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
               secureTextEntry
               name="confirmPassword"
               setFieldTouched={setFieldTouched}
+              returnKeyType="done"
+              forwardedRef={confirmPasswordInputRef}
+              onSubmitEditing={handleSubmit}
             />
           </View>
           <PrimaryButton
@@ -134,7 +148,7 @@ const SignupWithEmail: FC<SignupWithEmailProps> = ({navigation}) => {
             <Text style={styles.mainText}>Already have an Account? </Text>
             <Text
               style={styles.signInText}
-              onPress={() => navigation.navigate(SCREEN_NAMES.Signin)}>
+              onPress={() => navigation.navigate('Signin')}>
               Sign in
             </Text>
           </View>

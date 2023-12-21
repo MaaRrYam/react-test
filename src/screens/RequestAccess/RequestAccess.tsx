@@ -1,22 +1,20 @@
 import React, {useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView, TextInput} from 'react-native';
 import {useFormik} from 'formik';
 import PhoneInput from 'react-native-phone-number-input';
 
-import {BackButton, PrimaryButton, Input} from '@/components';
+import {
+  BackButton,
+  PrimaryButton,
+  Input,
+  KeyboardAvoidingView,
+} from '@/components';
 import {RequestAccessScreenProps} from '@/types';
 import {commonStyles} from '@/styles/onboarding';
 import {requestAccessSchema} from '@/utils/schemas/schemas';
 import {requestAccessFormValues} from '@/interfaces';
 import {submitRequestAccess} from '@/services/requestAccess';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {COLORS} from '@/constants';
 import {styles} from '@/styles/signinScreen';
 import ToastService from '@/services/toast';
 import {inputStyles} from '@/components/Inputs/styles';
@@ -28,6 +26,10 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
   const {role} = route.params;
 
   const phoneInput = useRef<PhoneInput>(null);
+  const emailInput = useRef<TextInput>(null);
+  const linkedInUrlInput = useRef<TextInput>(null);
+  const currentCompanyInput = useRef<TextInput>(null);
+  const currentDesignationInput = useRef<TextInput>(null);
 
   const {
     values,
@@ -74,12 +76,12 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
     ToastService.showSuccess(data.message);
     setSubmitting(false);
     if (data.success) {
-      navigation.navigate(SCREEN_NAMES.Signin);
+      navigation.navigate('Signin');
     }
   };
 
   const handleSignInClick = () => {
-    navigation.navigate(SCREEN_NAMES.Signin);
+    navigation.navigate('Signin');
   };
 
   useEffect(() => {
@@ -95,10 +97,8 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
   }, [setFieldError, setFieldTouched, values.phoneNo]);
 
   return (
-    <SafeAreaView style={commonStyles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <SafeAreaView style={commonStyles.safeArea}>
+      <KeyboardAvoidingView>
         <View style={commonStyles.container}>
           <BackButton onPress={() => console.log('Back button pressed')} />
           <Text style={commonStyles.title}>Request Access</Text>
@@ -112,6 +112,9 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
               error={errors.name}
               name="name"
               setFieldTouched={setFieldTouched}
+              autoFocus={true}
+              returnKeyType="next"
+              onSubmitEditing={() => emailInput.current?.focus()}
             />
             <Input
               placeholder="Email"
@@ -122,6 +125,9 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
               error={errors.email}
               name="email"
               setFieldTouched={setFieldTouched}
+              forwardedRef={emailInput}
+              returnKeyType="next"
+              onSubmitEditing={() => linkedInUrlInput.current?.focus()}
             />
             <Input
               placeholder="LinkedIn User Name"
@@ -131,6 +137,9 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
               error={errors.linkedInUrl}
               name="linkedInUrl"
               setFieldTouched={setFieldTouched}
+              forwardedRef={linkedInUrlInput}
+              returnKeyType="next"
+              onSubmitEditing={() => currentCompanyInput.current?.focus()}
             />
             <Input
               placeholder="Current Company"
@@ -140,6 +149,9 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
               error={errors.currentCompany}
               name="currentCompany"
               setFieldTouched={setFieldTouched}
+              forwardedRef={currentCompanyInput}
+              returnKeyType="next"
+              onSubmitEditing={() => currentDesignationInput.current?.focus()}
             />
             <Input
               placeholder="Current Designation"
@@ -149,6 +161,7 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
               error={errors.currentDesignation}
               name="currentDesignation"
               setFieldTouched={setFieldTouched}
+              forwardedRef={currentDesignationInput}
             />
             <PhoneInput
               ref={phoneInput}
