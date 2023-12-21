@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback, FC} from 'react';
-import {View, TextInput, Animated, Text} from 'react-native';
+import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import {View, Animated, Text} from 'react-native';
 import {COLORS} from '@/constants';
 import {InputProps} from '@/interfaces';
 import {inputStyles} from './styles';
@@ -90,7 +91,7 @@ const Input: FC<InputProps> = ({
     <View>
       <View style={[inputStyles.container, style, inputContainerStyle]}>
         <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
-        <TextInput
+        <BottomSheetTextInput
           ref={forwardedRef}
           value={value}
           onChangeText={handleTextChange}

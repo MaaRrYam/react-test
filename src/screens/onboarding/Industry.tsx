@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,16 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 
-import {BackButton, PrimaryButton} from '@/components';
+import {
+  BackButton,
+  Input,
+  PrimaryButton,
+  KeyboardAvoidingView,
+} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
-import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
+import {COLORS, MARGINS} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
 import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
@@ -25,69 +28,89 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
     user?.jobTags || [],
   );
   const [allIndustries, setAllIndustries] = useState<string[]>([]);
+  const [filteredIndustries, setFilteredIndustries] = useState<string[]>([]);
+  const [search, setSearch] = useState<string>('');
 
-  const toggleIndustrySelection = (industry: string) => {
-    if (selectedIndustries.includes(industry)) {
-      setSelectedIndustries(
-        selectedIndustries.filter(item => item !== industry),
-      );
-    } else {
-      setSelectedIndustries([...selectedIndustries, industry]);
-    }
-  };
-  const handleSubmit = async () => {
+  const toggleIndustrySelection = useCallback(
+    (industry: string) => {
+      if (selectedIndustries.includes(industry)) {
+        setSelectedIndustries(
+          selectedIndustries.filter(item => item !== industry),
+        );
+      } else {
+        setSelectedIndustries([...selectedIndustries, industry]);
+      }
+    },
+    [selectedIndustries],
+  );
+
+  const handleSubmit = useCallback(async () => {
     OnboardingService.industry(selectedIndustries);
-    navigation.navigate(SCREEN_NAMES.Experience);
-  };
+    navigation.navigate('Experience');
+  }, [navigation, selectedIndustries]);
 
   useEffect(() => {
     RoleService.getJobRoles().then(setAllIndustries);
   }, []);
 
+  useEffect(() => {
+    setFilteredIndustries(
+      allIndustries.filter(industry =>
+        industry.toLowerCase().includes(search.toLowerCase()),
+      ),
+    );
+  }, [allIndustries, search]);
+
   return (
     <SafeAreaView style={commonStyles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView>
         <>
           <View style={commonStyles.container}>
             <BackButton onPress={() => console.log('Back button pressed')} />
             <Text style={commonStyles.title}>Your Function</Text>
 
-            {allIndustries.length ? (
-              <ScrollView
-                style={styles.industryScrollView}
-                contentContainerStyle={styles.industryList}>
-                {allIndustries.map(industry => (
-                  <TouchableOpacity
-                    key={industry}
-                    style={[
-                      styles.industryItem,
-                      {
-                        backgroundColor: selectedIndustries.includes(industry)
-                          ? COLORS.primary
-                          : COLORS.white,
-                        borderColor: selectedIndustries.includes(industry)
-                          ? COLORS.primary
-                          : COLORS.border,
-                      },
-                    ]}
-                    onPress={() => toggleIndustrySelection(industry)}>
-                    <Text
-                      style={{
-                        color: selectedIndustries.includes(industry)
-                          ? COLORS.white
-                          : COLORS.black,
-                      }}>
-                      {industry}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
+            {filteredIndustries.length ? (
+              <>
+                <Input
+                  placeholder="Search for your function"
+                  value={search}
+                  onChangeText={setSearch}
+                  style={commonStyles.yourFunctionSearchInput}
+                />
+                <ScrollView
+                  style={styles.industryScrollView}
+                  contentContainerStyle={styles.industryList}>
+                  {filteredIndustries.map(industry => (
+                    <TouchableOpacity
+                      key={industry}
+                      style={[
+                        styles.industryItem,
+                        {
+                          backgroundColor: selectedIndustries.includes(industry)
+                            ? COLORS.primary
+                            : COLORS.white,
+                          borderColor: selectedIndustries.includes(industry)
+                            ? COLORS.primary
+                            : COLORS.border,
+                        },
+                      ]}
+                      onPress={() => toggleIndustrySelection(industry)}>
+                      <Text
+                        style={{
+                          color: selectedIndustries.includes(industry)
+                            ? COLORS.white
+                            : COLORS.black,
+                        }}>
+                        {industry}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </>
             ) : (
-              <SafeAreaView style={styles.loadingContainer}>
+              <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color={COLORS.primary} />
-              </SafeAreaView>
+              </View>
             )}
           </View>
           <View style={commonStyles.footer}>

@@ -74,6 +74,10 @@ export interface InputProps {
   disabled?: boolean;
   maxLength?: number;
   onPress?: () => void;
+  returnKeyType?: 'done' | 'next';
+  onSubmitEditing?: () => void;
+  autoFocus?: boolean;
+  forwardedRef?: any;
 }
 
 export interface StorageServiceProps {

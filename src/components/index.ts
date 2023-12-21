@@ -21,6 +21,7 @@ import {
   LocationDropdown,
   TextArea,
   YearDropdown,
+  BottomSheetInput,
 } from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
@@ -48,11 +49,14 @@ import AccountPreferences from '@/components/Settings/AccountPreferences';
 import Feedback from '@/components/Settings/Feedback';
 import {About, ProfileTabs} from '@/components/Profile';
 import {PostsSkeleton} from './Skeleton';
+import KeyboardAvoidingView from './KeyboardAvoidingView';
+
 export {
   BackButton,
   RoleCard,
   Link,
   Input,
+  BottomSheetInput,
   EducationCard,
   ExperienceCard,
   EmploymentSelectionField,
@@ -95,4 +99,5 @@ export {
   Feedback,
   PostsSkeleton,
   PostComments,
+  KeyboardAvoidingView,
 };
