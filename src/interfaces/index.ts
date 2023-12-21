@@ -293,6 +293,8 @@ export interface UserInterface {
   redeems?: Array<string>;
   contactNumber?: string;
   recoveryEmail?: string;
+  allowEveryoneToSendMessage?: boolean;
+  allowEveryoneToSeeMyConnections?: boolean;
 }
 
 export interface whiteListedUser {

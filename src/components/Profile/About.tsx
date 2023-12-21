@@ -65,6 +65,13 @@ const About = ({
     );
   }
 
+  const shouldMessageButtonHaveMarginLeft =
+    (!isAlreadyConnected &&
+      !isAlreadyPendingRequest &&
+      !isConnectionRequestReceived) ||
+    (isAlreadyPendingRequest && !isAlreadyConnected) ||
+    isConnectionRequestReceived;
+
   return (
     <>
       <Header
@@ -98,15 +105,17 @@ const About = ({
         </View>
         <View style={profileStyles.userInfoContainer}>
           <Text style={profileStyles.userName}>{user?.name}</Text>
-          <Text style={profileStyles.userTagline}>
-            {user?.tagline || 'Tagline Not Available'}
-          </Text>
+          {user.tagline && (
+            <Text style={profileStyles.userTagline}>{user.tagline}</Text>
+          )}
           <Text style={profileStyles.userLocation}>
             {user?.city}, {user?.country}
           </Text>
-          <Text style={profileStyles.connectionsLink}>
-            {connections.length} connections
-          </Text>
+          {user?.allowEveryoneToSeeMyConnections !== false && (
+            <Text style={profileStyles.connectionsLink}>
+              {connections.length} connections
+            </Text>
+          )}
 
           <View style={profileStyles.buttonContainer}>
             {user.id !== loggedInUser.id && (
@@ -142,17 +151,21 @@ const About = ({
                     isLoading={buttonLoading}
                   />
                 )}
-                <View>
+
+                {(user.allowEveryoneToSendMessage !== false ||
+                  isAlreadyConnected) && (
                   <SecondaryButton
                     title="Message"
                     style={[
                       profileStyles.messageButton,
                       profileStyles.messageButtonMargin,
-                      isAlreadyConnected && profileStyles.messageMargin,
+                      isAlreadyConnected &&
+                        shouldMessageButtonHaveMarginLeft &&
+                        profileStyles.messageMargin,
                     ]}
                     onPress={handleMessage}
                   />
-                </View>
+                )}
               </>
             )}
             {/* <TouchableOpacity
