@@ -46,10 +46,16 @@ export const commonStyles = StyleSheet.create({
   },
   searchablecontainer: {
     marginTop: MARGINS.general,
+    outline: 'none',
+    outlineStyle: 'none',
+    border: 'none',
     select: {
       flex: 1,
       container: {
         height: 60,
+        outline: 'none',
+        outlineStyle: 'none',
+        border: 'none',
       },
       text: {
         fontSize: 14,

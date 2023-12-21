@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import LoadingScreen from '@/components/Loading';
 import OnboardingService from '@/services/onboarding';
 import useUserManagement from '@/hooks/useUserManagement';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {CameraSvg} from '@/assets/icons';
 import {Select} from '@mobile-reality/react-native-select-pro';
 import {
@@ -37,16 +37,13 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const [userData, setUserData] = useState<UserInterface>({});
   const countries: ICountry[] = Country.getAllCountries();
   const [allCountries, setAllCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState<ICountry>();
+  const [selectedCountry, setSelectedCountry] = useState({});
   const [allStates, setAllStates] = useState([]);
-  const [selectedState, setSelectedState] = useState<IState>();
-  const [allCities, setAllCities] = useState();
-  const [selectedCity, setSelectedCity] = useState<ICity>();
+  const [selectedState, setSelectedState] = useState({});
+  const [allCities, setAllCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState({});
   const [initialValues, setInitialValues] = useState({
     username: user.username || '',
-    city: user.city || '',
-    state: user.state || '',
-    country: user.country || '',
   });
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<
@@ -54,22 +51,28 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   >(null);
 
   const handleSubmitUserData = formValues => {
-    if (!selectedCountry) {
+    if (Object.keys(selectedCountry).length === 0) {
       ToastService.showError('Please Select Your Country');
-    } else if (!selectedState) {
+    } else if (
+      allStates.length > 0 &&
+      Object.keys(selectedState).length === 0
+    ) {
       ToastService.showError('Please Select Your State');
-    } else if (!selectedCity) {
+    } else if (allCities.length > 0 && Object.keys(selectedCity).length === 0) {
       ToastService.showError('Please Select Your City');
     } else {
       const newData = {
         ...formValues,
         country: selectedCountry?.label,
         countryDetails: selectedCountry?.value,
-        state: selectedState?.label,
-        stateDetails: selectedState?.value,
-        city: selectedCity?.label,
-        cityDetails: selectedCity?.value,
-        onboardingStep: 0,
+        state:
+          allStates.length > 0 && !selectedState ? selectedState?.label : '',
+        stateDetails:
+          allStates.length > 0 && !selectedState ? selectedState?.value : {},
+        city: allCities.length > 0 && !selectedCity ? selectedCity?.label : '',
+        cityDetails:
+          allCities.length > 0 && !selectedCity ? selectedCity?.value : {},
+        onboardingStep: 1,
       };
       setUserData(prev => ({
         ...prev,
@@ -151,19 +154,13 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     setAllCities(citiesArr);
   }, [selectedState]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     OnboardingService.setScreen(navigation, setIsLoading, userData);
     setSelectedImage(userData?.photoUrl);
-  }, [userData]);
-
-  useEffect(() => {
     setInitialValues({
-      username: user.username || '',
-      city: user.city || '',
-      state: user.state || '',
-      country: user.country || '',
+      username: userData?.username || '',
     });
-  }, [user]);
+  }, [userData]);
 
   return isLoading ? (
     <LoadingScreen />
@@ -214,32 +211,34 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
 
-          <View>
+          <>
             <Select
               styles={commonStyles.searchablecontainer}
               options={allCountries}
+              animation={true}
               searchable={true}
               onSelect={(option, index) => {
                 setSelectedCountry(option);
               }}
-              placeholderText={'Country'}
+              placeholderText={'Select Country'}
               onRemove={() => {
                 setSelectedCountry({});
               }}
             />
-          </View>
+          </>
 
           <>
-            {allStates.length > 0 && (
+            {allStates?.length > 0 && (
               <View style={commonStyles.searchablecontainer}>
                 <Select
                   styles={commonStyles.searchablecontainer}
                   options={allStates}
+                  animation={true}
                   searchable={true}
                   onSelect={(option, index) => {
                     setSelectedState(option);
                   }}
-                  placeholderText={'State'}
+                  placeholderText={'Select State'}
                   onRemove={() => {
                     setSelectedState({});
                   }}
@@ -254,11 +253,12 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
                 <Select
                   styles={commonStyles.searchablecontainer}
                   options={allCities}
+                  animation={true}
                   searchable={true}
                   onSelect={(option, index) => {
                     setSelectedCity(option);
                   }}
-                  placeholderText={'City'}
+                  placeholderText={'Select City'}
                   onRemove={() => {
                     setSelectedCity({});
                   }}
