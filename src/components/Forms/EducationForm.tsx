@@ -62,7 +62,7 @@ const EducationForm = ({
         <View style={commonStyles.container}>
           <ScrollView>
             <BottomSheetInput
-              placeholder="Institute Name"
+              placeholder="Name of School"
               value={values.instituteName}
               onChangeText={handleChange('instituteName')}
               touched={touched.instituteName}
@@ -74,7 +74,7 @@ const EducationForm = ({
               returnKeyType="next"
             />
             <BottomSheetInput
-              placeholder="Degree Name"
+              placeholder="Degree Title"
               value={values.degree}
               onChangeText={handleChange('degree')}
               onBlur={handleBlur('degree')}
