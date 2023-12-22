@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  StyleSheet,
 } from 'react-native';
 import {useFormik} from 'formik';
 import FastImage from 'react-native-fast-image';
@@ -19,7 +20,7 @@ import LoadingScreen from '@/components/Loading';
 import OnboardingService from '@/services/onboarding';
 import useUserManagement from '@/hooks/useUserManagement';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CameraSvg} from '@/assets/icons';
 import {Select} from '@mobile-reality/react-native-select-pro';
 import {
@@ -31,6 +32,7 @@ import {
   ICity,
 } from 'country-state-city';
 import ToastService from '@/services/toast';
+import {FONTS, MARGINS, COLORS} from '@/constants';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();

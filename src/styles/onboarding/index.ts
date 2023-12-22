@@ -51,26 +51,24 @@ export const commonStyles = StyleSheet.create({
   },
   searchablecontainer: {
     marginTop: MARGINS.general,
-    outline: 'none',
-    outlineStyle: 'none',
-    border: 'none',
     select: {
       flex: 1,
       container: {
         height: 60,
-        outline: 'none',
-        outlineStyle: 'none',
-        border: 'none',
+        borderColor: COLORS.border,
       },
       text: {
-        fontSize: 14,
+        fontSize: FONTS.text,
       },
     },
     option: {
       flex: 1,
       text: {
-        fontSize: 14,
+        fontSize: FONTS.text,
       },
+    },
+    optionsList: {
+      borderColor: COLORS.border,
     },
   },
   yourFunctionSearchInput: {
