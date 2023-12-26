@@ -1,5 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
-import {COLORS, PADDING, FONTS} from '@/constants';
+import {COLORS, PADDING, FONTS, MARGINS} from '@/constants';
 
 export const commonStyles = StyleSheet.create({
   container: {
@@ -40,7 +40,7 @@ export const commonStyles = StyleSheet.create({
     fontSize: FONTS.regularLabel,
   },
   cameraImage: {
-    paddingVertical: PADDING.general * 3,
+    paddingTop: PADDING.general * 3,
     paddingHorizontal: PADDING.general * 4,
   },
   image: {
@@ -48,6 +48,28 @@ export const commonStyles = StyleSheet.create({
     height: '100%',
     marginRight: 10,
     borderRadius: 10,
+  },
+  searchablecontainer: {
+    marginTop: MARGINS.general,
+    select: {
+      flex: 1,
+      container: {
+        height: 60,
+        borderColor: COLORS.border,
+      },
+      text: {
+        fontSize: FONTS.text,
+      },
+    },
+    option: {
+      flex: 1,
+      text: {
+        fontSize: FONTS.text,
+      },
+    },
+    optionsList: {
+      borderColor: COLORS.border,
+    },
   },
   yourFunctionSearchInput: {
     marginTop: -20,

@@ -15,7 +15,7 @@ import {
   BottomSheet,
   ExperienceForm,
 } from '@/components';
-import {COLORS, SCREEN_NAMES} from '@/constants';
+import {COLORS} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
@@ -31,7 +31,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
 
   const handleContinue = async () => {
     OnboardingService.experience(experience);
-    navigation.navigate(SCREEN_NAMES.EmploymentStatus);
+    navigation.navigate('EmploymentStatus');
   };
 
   const handleAddNewExperience = (newExperience: ExperienceState) => {

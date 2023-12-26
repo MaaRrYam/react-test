@@ -13,7 +13,7 @@ import {
   PrimaryButton,
   EmploymentSelectionField,
 } from '@/components';
-import {SCREEN_NAMES, employmentStatuses} from '@/constants';
+import {employmentStatuses} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EmploymentStatusScreenProps} from '@/types';
 import useUserManagement from '@/hooks/useUserManagement';
@@ -29,7 +29,7 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
 
   const handleEmploymentStatus = () => {
     OnboardingService.employmentStatus(employment);
-    navigation.navigate(SCREEN_NAMES.SalaryExpectations);
+    navigation.navigate('SalaryExpectations');
   };
 
   return (
@@ -54,7 +54,6 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
               />
             )}
             keyExtractor={item => item}
-            estimatedItemSize={5}
           />
         </View>
         <View style={commonStyles.footer}>
