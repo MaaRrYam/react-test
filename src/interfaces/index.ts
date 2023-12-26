@@ -7,6 +7,8 @@ import {StyleProp, ViewStyle} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '@/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {ICountry, IState, ICity} from 'country-state-city';
+
 export interface EducationCardProps {
   id: number;
   instituteName: string;
@@ -256,11 +258,11 @@ export interface UserInterface {
   name: string;
   email: string;
   country: string;
-  countryDetails: string;
+  countryDetails: ICountry;
   city: string;
-  cityDetails: Object;
+  cityDetails: ICity;
   state: string;
-  stateDetails: Object;
+  stateDetails: IState;
   username: string;
   selectedRole: string;
   previousRole?: string;
@@ -734,4 +736,19 @@ export interface SettingBasicInfoUpdateInterface {
   recoverEmail?: string;
   phoneNumber?: string;
   dateOfBirth?: string;
+}
+
+export interface GetStartedCountryState {
+  label: string;
+  value: ICountry;
+}
+
+export interface GetStartedState {
+  label: string;
+  value: IState;
+}
+
+export interface GetStartedCity {
+  label: string;
+  value: ICity;
 }

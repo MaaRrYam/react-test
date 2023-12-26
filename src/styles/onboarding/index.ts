@@ -40,7 +40,7 @@ export const commonStyles = StyleSheet.create({
     fontSize: FONTS.regularLabel,
   },
   cameraImage: {
-    paddingVertical: PADDING.general * 3,
+    paddingTop: PADDING.general * 3,
     paddingHorizontal: PADDING.general * 4,
   },
   image: {
