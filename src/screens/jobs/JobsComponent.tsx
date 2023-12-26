@@ -130,21 +130,21 @@ const JobsComponent = ({
             <BottomSheet
               isVisible={isBottomSheetVisible}
               onClose={() => setIsBottomSheetVisible(false)}
-              snapPoints={['90%', '98%']}>
-              <JobsDetailForm
-                selectedJob={selectedJob}
-                setAllJobs={setAllJobs}
-                setIsBottomSheetVisible={setIsBottomSheetVisible}
-              />
+              snapPoints={['90%', '95%']}>
+              <ScrollView>
+                <JobsDetailForm
+                  selectedJob={selectedJob}
+                  setAllJobs={setAllJobs}
+                  setIsBottomSheetVisible={setIsBottomSheetVisible}
+                />
+              </ScrollView>
             </BottomSheet>
           )}
           {jobFilterBottomSheet && (
             <BottomSheet
-              isVisible={isBottomSheetVisible}
-              onClose={() => {
-                setIsBottomSheetVisible(false);
-              }}
-              snapPoints={['80%', '100%']}>
+              isVisible={jobFilterBottomSheet}
+              onClose={() => setJobsFilterBottomSheet(false)}
+              snapPoints={['95%', '95%']}>
               <ScrollView>
                 <KeyboardAvoidingView
                   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

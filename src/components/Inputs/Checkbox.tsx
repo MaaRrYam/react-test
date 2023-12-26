@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: FONTS.text,
     fontWeight: 'normal',
     color: COLORS.black,
+    marginLeft: 4,
   },
 });
 export default Checkbox;
