@@ -78,7 +78,6 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     } else if (allCities.length > 0 && Object.keys(selectedCity).length === 0) {
       ToastService.showError('Please Select Your City');
     } else {
-      console.log(selectedState, selectedCity);
       const newData = {
         ...formValues,
         country: selectedCountry.label,
