@@ -31,43 +31,47 @@ const JobsFilterForm = ({
 
   return (
     <SafeAreaView style={jobsFilterFormStyles.SafeAreaView}>
-      <View>
-        <Text style={jobsFilterFormStyles.title}>Location</Text>
-        <Input
-          style={jobsFilterFormStyles.inputfield}
-          placeholder="City/State"
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-        />
-        <Text style={jobsFilterFormStyles.title}>Job Type</Text>
-        <View style={jobsFilterFormStyles.checkboxContainer}>
-          {jobTypes.map(option => (
-            <Checkbox
-              onPress={() => toggleFilter('employmentType', option)}
-              isChecked={selectedFilters.some(filter => {
-                return Object.values(filter).includes(option);
-              })}
-              text={option}
-            />
-          ))}
-        </View>
+      <ScrollView>
+        <View>
+          <Text style={jobsFilterFormStyles.title}>Location</Text>
+          <Input
+            style={jobsFilterFormStyles.inputfield}
+            placeholder="City/State"
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+          />
+          <Text style={jobsFilterFormStyles.title}>Job Type</Text>
+          <View style={jobsFilterFormStyles.checkboxContainer}>
+            {jobTypes.map(option => (
+              <Checkbox
+                onPress={() => toggleFilter('employmentType', option)}
+                style={jobsFilterFormStyles.checkbox}
+                isChecked={selectedFilters.some(filter => {
+                  return Object.values(filter).includes(option);
+                })}
+                text={option}
+              />
+            ))}
+          </View>
 
-        <Text style={jobsFilterFormStyles.title}>Work Enviroment</Text>
-        <View style={jobsFilterFormStyles.checkboxContainer}>
-          {workEnviroment.map(option => (
-            <Checkbox
-              onPress={() => toggleFilter('workplaceType', option)}
-              isChecked={selectedFilters.some(filter => {
-                return Object.values(filter).includes(option);
-              })}
-              text={option}
-            />
-          ))}
+          <Text style={jobsFilterFormStyles.title}>Work Enviroment</Text>
+          <View style={jobsFilterFormStyles.checkboxContainer}>
+            {workEnviroment.map(option => (
+              <Checkbox
+                onPress={() => toggleFilter('workplaceType', option)}
+                style={jobsFilterFormStyles.checkbox}
+                isChecked={selectedFilters.some(filter => {
+                  return Object.values(filter).includes(option);
+                })}
+                text={option}
+              />
+            ))}
+          </View>
         </View>
-      </View>
-      <View style={jobsFilterFormStyles.applyButtonContainer}>
-        <PrimaryButton title="Apply" onPress={applyFilters} />
-      </View>
+        <View style={jobsFilterFormStyles.applyButtonContainer}>
+          <PrimaryButton title="Apply" onPress={applyFilters} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
