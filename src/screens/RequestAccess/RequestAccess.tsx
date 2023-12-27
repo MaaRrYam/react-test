@@ -18,6 +18,7 @@ import {COLORS} from '@/constants';
 import {styles} from '@/styles/signinScreen';
 import ToastService from '@/services/toast';
 import {inputStyles} from '@/components/Inputs/styles';
+import StorageService from '@/services/Storage';
 
 const RequestAccess: React.FC<RequestAccessScreenProps> = ({
   route,
@@ -26,7 +27,6 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
   const {role} = route.params;
 
   const phoneInput = useRef<PhoneInput>(null);
-  const emailInput = useRef<TextInput>(null);
   const linkedInUrlInput = useRef<TextInput>(null);
   const currentCompanyInput = useRef<TextInput>(null);
   const currentDesignationInput = useRef<TextInput>(null);
@@ -45,7 +45,6 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
   } = useFormik({
     initialValues: {
       name: '',
-      email: '',
       linkedInUrl: 'https://www.linkedin.com/in/',
       currentCompany: '',
       currentDesignation: '',
@@ -69,7 +68,6 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
 
     const payload = {
       ...formValues,
-      email: formValues.email.toLowerCase(),
       selectedRole: role,
     };
     const data = await submitRequestAccess(payload);
@@ -113,19 +111,6 @@ const RequestAccess: React.FC<RequestAccessScreenProps> = ({
               name="name"
               setFieldTouched={setFieldTouched}
               autoFocus={true}
-              returnKeyType="next"
-              onSubmitEditing={() => emailInput.current?.focus()}
-            />
-            <Input
-              placeholder="Email"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              keyboardType="email-address"
-              touched={touched.email}
-              error={errors.email}
-              name="email"
-              setFieldTouched={setFieldTouched}
-              forwardedRef={emailInput}
               returnKeyType="next"
               onSubmitEditing={() => linkedInUrlInput.current?.focus()}
             />

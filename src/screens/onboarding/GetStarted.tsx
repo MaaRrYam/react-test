@@ -78,24 +78,21 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     } else if (allCities.length > 0 && Object.keys(selectedCity).length === 0) {
       ToastService.showError('Please Select Your City');
     } else {
+      console.log(selectedState, selectedCity);
       const newData = {
         ...formValues,
         country: selectedCountry.label,
         countryDetails: selectedCountry.value,
         state:
-          allStates.length && !selectedState.label ? selectedState?.label : '',
+          allStates.length && selectedState.label ? selectedState?.label : '',
         stateDetails:
-          allStates.length > 0 && !selectedState.value
+          allStates.length > 0 && selectedState.value
             ? selectedState?.value
             : {},
         city:
-          allCities.length > 0 && !selectedCity.label
-            ? selectedCity?.label
-            : '',
+          allCities.length > 0 && selectedCity.label ? selectedCity?.label : '',
         cityDetails:
-          allCities.length > 0 && !selectedCity.value
-            ? selectedCity?.value
-            : {},
+          allCities.length > 0 && selectedCity.value ? selectedCity?.value : {},
         onboardingStep: 1,
       };
       setUserData(
@@ -305,9 +302,9 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
               />
             </View>
           )}
-        </View>
-        <View style={commonStyles.footer}>
-          <PrimaryButton title="Continue" onPress={handleSubmit} />
+          <View style={commonStyles.footer}>
+            <PrimaryButton title="Continue" onPress={handleSubmit} />
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

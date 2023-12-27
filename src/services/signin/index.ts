@@ -17,6 +17,7 @@ const SigninService: SigninServiceProps = {
     const user = loggedInUser.user;
     const email = user.email?.toString();
     const photoUrl = user.photoURL?.toString() || '';
+
     try {
       const whiteListedUsers = await FirebaseService.getDocumentsByQuery(
         'whitelist',
@@ -29,6 +30,7 @@ const SigninService: SigninServiceProps = {
         ToastService.showError(
           'Please submit an access request to start using the platform.',
         );
+        await StorageService.setItem('useremail', email);
         navigation.navigate(SCREEN_NAMES.RequestAccess);
       } else if (!whiteListedUsers[0].whitelisted) {
         await auth.signOut();

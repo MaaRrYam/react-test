@@ -166,7 +166,6 @@ export interface SigninServiceProps {
 }
 export interface requestAccessFormValues {
   name: string;
-  email: string;
   linkedInUrl: string;
   currentCompany: string;
   currentDesignation: string;
