@@ -5,7 +5,7 @@ import StorageService from '../Storage';
 export async function submitRequestAccess(
   requestDetails: requestAccessFormValues,
 ) {
-  const useremail = await StorageService.getItem('useremail');
+  const useremail = await StorageService.getItem('requestaccessemail');
 
   try {
     const isDuplicate = await FirebaseService.checkDuplicateRequest(
@@ -13,7 +13,6 @@ export async function submitRequestAccess(
       'email',
       useremail,
     );
-    console.log(useremail, isDuplicate);
     if (isDuplicate) {
       return {success: false, message: 'You already have a pending request'};
     } else {

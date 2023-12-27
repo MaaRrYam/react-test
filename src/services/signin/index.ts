@@ -30,7 +30,7 @@ const SigninService: SigninServiceProps = {
         ToastService.showError(
           'Please submit an access request to start using the platform.',
         );
-        await StorageService.setItem('useremail', email);
+        await StorageService.setItem('requestaccessemail', email);
         navigation.navigate(SCREEN_NAMES.RequestAccess);
       } else if (!whiteListedUsers[0].whitelisted) {
         await auth.signOut();
