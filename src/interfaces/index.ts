@@ -10,13 +10,14 @@ import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {ICountry, IState, ICity} from 'country-state-city';
 
 export interface EducationCardProps {
-  id: number;
+  id: string;
   instituteName: string;
   degree: string;
   startingYear: string;
   endingYear?: string;
   currentlyWorking?: boolean;
-  onPress: (id: number) => void;
+  onPress: (id: string) => void;
+  onRemove?: (id: string) => void;
 }
 
 export interface EducationData {
@@ -46,13 +47,14 @@ export interface ButtonProps {
 }
 
 export interface ExperienceCardProps {
-  id: number;
+  id: string;
   currentCompany: string;
   designation: string;
   startingYear: number;
   endingYear?: number;
   currentlyWorking?: boolean;
-  onPress?: (id: number) => void;
+  onPress?: (id: string) => void;
+  onRemove?: (id: string) => void;
 }
 
 export interface CardWrapperProps {
@@ -183,7 +185,7 @@ export interface BottomSheetProps {
 }
 
 export interface EducationState {
-  id: number;
+  id: string;
   instituteName: string;
   degree: string;
   startYear: string;
@@ -205,7 +207,7 @@ export interface CheckboxProps {
 }
 
 export interface ExperienceState {
-  id: number;
+  id: string;
   companyName: string;
   role: string;
   startYear: number;
@@ -231,6 +233,10 @@ export interface IconProps extends SvgProps {
 
 export interface ReactionIconProps extends SvgProps {
   isLiked: boolean;
+}
+
+export interface ColoredIconProps extends SvgProps {
+  color?: string;
 }
 
 export interface EducationProps {

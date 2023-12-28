@@ -1,9 +1,10 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 
-import {COLORS} from '../../constants';
+import {COLORS} from '@/constants';
 import {ExperienceCardProps} from 'interfaces';
 import CardWrapper from './CardWrapper';
+import {Cross} from '@/assets/icons';
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
   id,
@@ -13,6 +14,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   endingYear,
   currentlyWorking,
   onPress,
+  onRemove,
 }) => {
   return (
     <CardWrapper
@@ -22,6 +24,17 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           onPress(id);
         }
       }}>
+      <View style={styles.header}>
+        <Text style={styles.company}>{currentCompany}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            if (onRemove) {
+              onRemove(id);
+            }
+          }}>
+          <Cross iconContainerStyles={styles.crossIcon} color="red" />
+        </TouchableOpacity>
+      </View>
       <Text style={styles.company}>{currentCompany}</Text>
       <Text style={styles.designation}>{designation}</Text>
       <Text style={styles.duration}>
@@ -36,6 +49,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: COLORS.black,
+  },
+  crossIcon: {
+    alignItems: 'flex-end',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   designation: {
     fontSize: 16,

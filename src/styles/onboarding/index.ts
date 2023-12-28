@@ -75,4 +75,7 @@ export const commonStyles = StyleSheet.create({
     marginTop: -20,
     marginBottom: 20,
   },
+  progressBar: {
+    marginBottom: 10,
+  },
 });

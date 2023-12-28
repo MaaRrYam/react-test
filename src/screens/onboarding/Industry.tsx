@@ -3,17 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 
-import {
-  BackButton,
-  Input,
-  PrimaryButton,
-  KeyboardAvoidingView,
-} from '@/components';
+import {Input, PrimaryButton} from '@/components';
+import Layout from './Layout';
 import {commonStyles} from '@/styles/onboarding';
 import {COLORS, MARGINS} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
@@ -24,6 +19,7 @@ import OnboardingService from '@/services/onboarding';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
+
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>(
     user?.jobTags || [],
   );
@@ -62,67 +58,59 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   }, [allIndustries, search]);
 
   return (
-    <SafeAreaView style={commonStyles.container}>
-      <KeyboardAvoidingView>
+    <Layout
+      title="Your Function"
+      footer={
+        <PrimaryButton
+          title="Continue"
+          onPress={handleSubmit}
+          disabled={!selectedIndustries.length}
+        />
+      }>
+      {filteredIndustries.length ? (
         <>
-          <View style={commonStyles.container}>
-            <BackButton onPress={() => console.log('Back button pressed')} />
-            <Text style={commonStyles.title}>Your Function</Text>
-
-            {filteredIndustries.length ? (
-              <>
-                <Input
-                  placeholder="Search for your function"
-                  value={search}
-                  onChangeText={setSearch}
-                  style={commonStyles.yourFunctionSearchInput}
-                />
-                <ScrollView
-                  style={styles.industryScrollView}
-                  contentContainerStyle={styles.industryList}>
-                  {filteredIndustries.map(industry => (
-                    <TouchableOpacity
-                      key={industry}
-                      style={[
-                        styles.industryItem,
-                        {
-                          backgroundColor: selectedIndustries.includes(industry)
-                            ? COLORS.primary
-                            : COLORS.white,
-                          borderColor: selectedIndustries.includes(industry)
-                            ? COLORS.primary
-                            : COLORS.border,
-                        },
-                      ]}
-                      onPress={() => toggleIndustrySelection(industry)}>
-                      <Text
-                        style={{
-                          color: selectedIndustries.includes(industry)
-                            ? COLORS.white
-                            : COLORS.black,
-                        }}>
-                        {industry}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </>
-            ) : (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={COLORS.primary} />
-              </View>
-            )}
-          </View>
-          <View style={commonStyles.footer}>
-            <PrimaryButton
-              title="Continue"
-              onPress={handleSubmit}
-              disabled={!selectedIndustries.length}
-            />
-          </View>
+          <Input
+            placeholder="Search for your function"
+            value={search}
+            onChangeText={setSearch}
+            style={commonStyles.yourFunctionSearchInput}
+          />
+          <ScrollView
+            style={styles.industryScrollView}
+            contentContainerStyle={styles.industryList}>
+            {filteredIndustries.map(industry => (
+              <TouchableOpacity
+                key={industry}
+                style={[
+                  styles.industryItem,
+                  {
+                    backgroundColor: selectedIndustries.includes(industry)
+                      ? COLORS.primary
+                      : COLORS.white,
+                    borderColor: selectedIndustries.includes(industry)
+                      ? COLORS.primary
+                      : COLORS.border,
+                  },
+                ]}
+                onPress={() => toggleIndustrySelection(industry)}>
+                <Text
+                  style={{
+                    color: selectedIndustries.includes(industry)
+                      ? COLORS.white
+                      : COLORS.black,
+                  }}>
+                  {industry}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      ) : (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        </View>
+      )}
+    </Layout>
   );
 };
 
