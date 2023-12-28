@@ -63,10 +63,6 @@ const EducationForm = ({
     },
   });
 
-  useEffect(() => {
-    console.log(values.currentlyStudying);
-  }, [values.currentlyStudying]);
-
   return (
     <SafeAreaView style={commonStyles.safeArea}>
       <KeyboardAvoidingView>
