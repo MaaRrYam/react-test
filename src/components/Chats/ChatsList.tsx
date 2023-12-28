@@ -43,7 +43,7 @@ const ChatsList = ({search, navigation}: ChatsListProps) => {
           estimatedItemSize={30}
         />
       ) : (
-        <Empty />
+        <Empty text="Chats" />
       )}
     </>
   );

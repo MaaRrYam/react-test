@@ -64,7 +64,7 @@ const Explore = ({searchText}: LocalizedSearchProps) => {
           estimatedItemSize={10}
         />
       ) : (
-        <Empty />
+        <Empty text="Connections" />
       )}
     </>
   );

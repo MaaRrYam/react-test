@@ -43,7 +43,7 @@ const NotificationsList = () => {
           estimatedItemSize={100}
         />
       ) : (
-        <Empty />
+        <Empty text="New Notifications" />
       )}
     </>
   );

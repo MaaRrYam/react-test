@@ -73,7 +73,7 @@ const Connections = ({searchText}: LocalizedSearchProps) => {
           estimatedItemSize={50}
         />
       ) : (
-        <Empty />
+        <Empty text="Connections" />
       )}
     </>
   );
