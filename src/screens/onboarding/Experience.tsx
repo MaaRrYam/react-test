@@ -1,22 +1,15 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import {FlashList} from '@shopify/flash-list';
+import {FlatList} from 'react-native';
 
 import {
-  BackButton,
   PrimaryButton,
   ExperienceCard,
   BottomSheet,
   ExperienceForm,
 } from '@/components';
 import {COLORS} from '@/constants';
-import {commonStyles} from '@/styles/onboarding';
+import Layout from './Layout';
+
 import {ExperienceScreenProps} from '@/types';
 import {ExperienceState} from '@/interfaces';
 import useUserManagement from '@/hooks/useUserManagement';
@@ -40,63 +33,58 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
     setIsBottomSheetVisible(false);
   };
 
+  const handleRemoveExperience = (id: string) => {
+    setExperience(prev => prev.filter(item => item.id !== id));
+  };
+
   return (
     <>
-      <SafeAreaView style={commonStyles.container}>
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Layout
+        title="Your Experience"
+        footer={
           <>
-            <View style={commonStyles.container}>
-              <BackButton onPress={() => console.log('Back button pressed')} />
-              <Text style={commonStyles.title}>Your Experience</Text>
-
-              <FlashList
-                data={experience}
-                renderItem={({item}) => (
-                  <ExperienceCard
-                    id={item.id}
-                    currentCompany={item.companyName}
-                    designation={item.role}
-                    startingYear={item.startYear}
-                    endingYear={item.endYear}
-                    currentlyWorking={item.currentlyWorking}
-                    onPress={id => {
-                      console.log('Experience card pressed:', id);
-                    }}
-                  />
-                )}
-                keyExtractor={item => item.id.toString()}
-                estimatedItemSize={10}
-              />
-            </View>
-            <View style={commonStyles.footer}>
-              <PrimaryButton
-                title="Add"
-                onPress={() => setIsBottomSheetVisible(true)}
-                backgroundColor={COLORS.white}
-                textColor={COLORS.black}
-                borderWidth={1}
-                borderColor={COLORS.border}
-              />
-              <PrimaryButton
-                title={experience.length ? 'Continue' : 'Skip'}
-                onPress={handleContinue}
-              />
-            </View>
-            {isBottomSheetVisible && (
-              <BottomSheet
-                isVisible={isBottomSheetVisible}
-                onClose={() => setIsBottomSheetVisible(false)}
-                snapPoints={['20%', '65%']}>
-                <ExperienceForm
-                  handleAddNewExperience={handleAddNewExperience}
-                />
-              </BottomSheet>
-            )}
+            <PrimaryButton
+              title="Add"
+              onPress={() => setIsBottomSheetVisible(true)}
+              backgroundColor={COLORS.white}
+              textColor={COLORS.black}
+              borderWidth={1}
+              borderColor={COLORS.border}
+            />
+            <PrimaryButton
+              title={experience.length ? 'Continue' : 'Skip'}
+              onPress={handleContinue}
+            />
           </>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        }>
+        <FlatList
+          data={experience}
+          renderItem={({item}) => (
+            <ExperienceCard
+              id={item.id}
+              currentCompany={item.companyName}
+              designation={item.role}
+              startingYear={item.startYear}
+              endingYear={item.endYear}
+              currentlyWorking={item.currentlyWorking}
+              onPress={id => {
+                console.log('Experience card pressed:', id);
+              }}
+              onRemove={id => handleRemoveExperience(id)}
+            />
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
+      </Layout>
+
+      {isBottomSheetVisible && (
+        <BottomSheet
+          isVisible={isBottomSheetVisible}
+          onClose={() => setIsBottomSheetVisible(false)}
+          snapPoints={['20%', '65%']}>
+          <ExperienceForm handleAddNewExperience={handleAddNewExperience} />
+        </BottomSheet>
+      )}
     </>
   );
 };
