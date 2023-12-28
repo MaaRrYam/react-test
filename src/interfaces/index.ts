@@ -6,14 +6,18 @@ import {SvgProps} from 'react-native-svg';
 import {StyleProp, ViewStyle} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '@/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {ICountry, IState, ICity} from 'country-state-city';
+
 export interface EducationCardProps {
-  id: number;
+  id: string;
   instituteName: string;
   degree: string;
   startingYear: string;
   endingYear?: string;
   currentlyWorking?: boolean;
-  onPress: (id: number) => void;
+  onPress: (id: string) => void;
+  onRemove?: (id: string) => void;
 }
 
 export interface EducationData {
@@ -43,13 +47,14 @@ export interface ButtonProps {
 }
 
 export interface ExperienceCardProps {
-  id: number;
+  id: string;
   currentCompany: string;
   designation: string;
   startingYear: number;
   endingYear?: number;
   currentlyWorking?: boolean;
-  onPress?: (id: number) => void;
+  onPress?: (id: string) => void;
+  onRemove?: (id: string) => void;
 }
 
 export interface CardWrapperProps {
@@ -72,6 +77,11 @@ export interface InputProps {
   setFieldValue?: any;
   disabled?: boolean;
   maxLength?: number;
+  onPress?: () => void;
+  returnKeyType?: 'done' | 'next';
+  onSubmitEditing?: () => void;
+  autoFocus?: boolean;
+  forwardedRef?: any;
 }
 
 export interface StorageServiceProps {
@@ -132,6 +142,9 @@ export interface FirebaseServiceProps {
     callback: (documents: DocumentData[]) => void,
   ): Promise<Unsubscribe>;
   generateUniqueFilename(): string;
+  reAuthenticateUser(
+    password: string,
+  ): Promise<FirebaseAuthTypes.UserCredential | undefined>;
 }
 
 export interface ImageInterface {
@@ -155,7 +168,6 @@ export interface SigninServiceProps {
 }
 export interface requestAccessFormValues {
   name: string;
-  email: string;
   linkedInUrl: string;
   currentCompany: string;
   currentDesignation: string;
@@ -173,7 +185,7 @@ export interface BottomSheetProps {
 }
 
 export interface EducationState {
-  id: number;
+  id: string;
   instituteName: string;
   degree: string;
   startYear: string;
@@ -195,7 +207,7 @@ export interface CheckboxProps {
 }
 
 export interface ExperienceState {
-  id: number;
+  id: string;
   companyName: string;
   role: string;
   startYear: number;
@@ -206,7 +218,7 @@ export interface ExperienceState {
 export interface RoundedButtonProps {
   onPress: () => void;
   text: string;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   isLoading?: boolean;
 }
 
@@ -221,6 +233,10 @@ export interface IconProps extends SvgProps {
 
 export interface ReactionIconProps extends SvgProps {
   isLiked: boolean;
+}
+
+export interface ColoredIconProps extends SvgProps {
+  color?: string;
 }
 
 export interface EducationProps {
@@ -247,11 +263,11 @@ export interface UserInterface {
   name: string;
   email: string;
   country: string;
-  countryDetails: string;
+  countryDetails: ICountry;
   city: string;
-  cityDetails: Object;
+  cityDetails: ICity;
   state: string;
-  stateDetails: Object;
+  stateDetails: IState;
   username: string;
   selectedRole: string;
   previousRole?: string;
@@ -282,6 +298,10 @@ export interface UserInterface {
   totalCompensation: number;
   readNotifications?: number;
   redeems?: Array<string>;
+  contactNumber?: string;
+  recoveryEmail?: string;
+  allowEveryoneToSendMessage?: boolean;
+  allowEveryoneToSeeMyConnections?: boolean;
 }
 
 export interface whiteListedUser {
@@ -401,7 +421,7 @@ export interface FeedItem {
   authorId: string;
   author: UserInterface;
   media?: string;
-  mediaType?: string;
+  mediaType?: string | null;
   editedTime: Timestamp;
   edited: boolean;
   _id: string;
@@ -581,11 +601,8 @@ export interface ProfileProps {
   navigation: NavigationProp<RootStackParamList, 'Profile'>;
   route: {
     params: {
-      setTabItem: React.Dispatch<React.SetStateAction<string>>;
-      setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-      tabItem: string;
-      isEditing: boolean;
-      UID: string;
+      uid: string;
+      user?: UserInterface;
     };
   };
 }
@@ -621,9 +638,7 @@ export interface EditEducationProps {
 }
 
 export interface UserInfoProps {
-  user: UserInterface;
   onClose: () => void;
-  setIsEdit?: (value: boolean) => void;
 }
 
 export interface CheckboxProps {
@@ -661,14 +676,7 @@ export interface DrawerContentProps {
   state: any;
   descriptors: any;
   navigation: any;
-  isVisible: boolean;
-  setIsVisible: (isVisible: boolean) => void;
-  tabItem: string;
-  isEditing: boolean;
-  setIsEditing: (isEditing: boolean) => void;
   user: UserInterface;
-  editingIndex: number;
-  setEditingIndex: Dispatch<SetStateAction<number>>;
   uid: string;
 }
 
@@ -714,4 +722,38 @@ export interface PastApplicationCardInterface {
   feedback: string;
   rating: number;
   onPress: () => void;
+}
+
+export interface LocalizedSearchProps {
+  searchText: string;
+}
+export interface FeedbackInterface {
+  id: string;
+  applicantId?: string;
+  experience?: string;
+  feedbackCategory?: string;
+  referenceImage?: string;
+  timeStamp: Timestamp;
+}
+export interface SettingBasicInfoUpdateInterface {
+  id: string;
+  name: string;
+  recoverEmail?: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+}
+
+export interface GetStartedCountryState {
+  label: string;
+  value: ICountry;
+}
+
+export interface GetStartedState {
+  label: string;
+  value: IState;
+}
+
+export interface GetStartedCity {
+  label: string;
+  value: ICity;
 }

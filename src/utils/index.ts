@@ -3,9 +3,12 @@ import {DateFormatOption} from '@/types';
 import {PermissionsAndroid, Platform} from 'react-native';
 
 export const formatFirebaseTimestamp = (
-  timestamp: Timestamp,
+  timestamp: Timestamp | string,
   formatOption: DateFormatOption,
 ): string => {
+  if (typeof timestamp === 'string') {
+    return timestamp as string;
+  }
   const date = new Date(
     timestamp?.seconds * 1000 + timestamp?.nanoseconds / 1000000,
   );
@@ -89,3 +92,29 @@ export async function hasAndroidPermission() {
 
   return await getRequestPermissionPromise();
 }
+
+export const trackOnboardingProgress = (screenName: string) => {
+  switch (screenName) {
+    case 'GetStarted':
+      return 0;
+    case 'Education':
+      return 0.2;
+    case 'Industry':
+      return 0.4;
+    case 'Experience':
+      return 0.6;
+    case 'SalaryExpectations':
+      return 0.8;
+    default:
+      return 1;
+  }
+};
+
+export const OnboardingScreens = [
+  'GetStarted',
+  'Education',
+  'Industry',
+  'Experience',
+  'SalaryExpectations',
+  'OnboardingCompleted',
+];

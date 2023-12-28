@@ -1,14 +1,17 @@
 import {requestAccessFormValues} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
+import StorageService from '../Storage';
 
 export async function submitRequestAccess(
   requestDetails: requestAccessFormValues,
 ) {
+  const useremail = await StorageService.getItem('requestaccessemail');
+
   try {
     const isDuplicate = await FirebaseService.checkDuplicateRequest(
       'whitelist',
       'email',
-      requestDetails.email,
+      useremail,
     );
     if (isDuplicate) {
       return {success: false, message: 'You already have a pending request'};
@@ -17,6 +20,7 @@ export async function submitRequestAccess(
         ...requestDetails,
         time: FirebaseService.serverTimestamp(),
         id: FirebaseService.generateUniqueId(),
+        email: useremail,
         whitelisted: false,
       });
       return {success: true, message: 'Request Successfully Submitted!'};

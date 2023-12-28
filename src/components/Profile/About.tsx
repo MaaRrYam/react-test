@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, useWindowDimensions} from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
 import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
@@ -12,15 +12,11 @@ import FirebaseService from '@/services/Firebase';
 import useProfile from '@/hooks/useProfile';
 
 const About = ({
-  navigation,
-  usersProfileID,
   user,
-  setUser,
+  setIsSettingsClicked,
 }: {
-  navigation: NavigationProp<RootStackParamList, 'Profile'>;
-  usersProfileID: string;
   user: UserInterface;
-  setUser: React.Dispatch<React.SetStateAction<UserInterface>>;
+  setIsSettingsClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const {
     loading,
@@ -33,8 +29,9 @@ const About = ({
     handleAcceptConnection,
     loggedInUser,
     connections,
-  } = useProfile(usersProfileID, user);
+  } = useProfile(user.id, user);
   const {width, height} = useWindowDimensions();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleMessage = async () => {
     const chatPayload = {
@@ -60,12 +57,6 @@ const About = ({
     }
   };
 
-  useEffect(() => {
-    if (usersProfileID === loggedInUser.id) {
-      setUser(loggedInUser);
-    }
-  }, [loggedInUser, setUser, usersProfileID]);
-
   if (loading) {
     return (
       <View style={{width, height}}>
@@ -74,9 +65,20 @@ const About = ({
     );
   }
 
+  const shouldMessageButtonHaveMarginLeft =
+    (!isAlreadyConnected &&
+      !isAlreadyPendingRequest &&
+      !isConnectionRequestReceived) ||
+    (isAlreadyPendingRequest && !isAlreadyConnected) ||
+    isConnectionRequestReceived;
+
   return (
     <>
-      <Header navigation={navigation} setJobsFilterBottomSheet={() => {}} />
+      <Header
+        navigation={navigation}
+        setJobsFilterBottomSheet={() => {}}
+        setIsSettingsClicked={setIsSettingsClicked}
+      />
       <View>
         <FastImage
           source={{
@@ -102,61 +104,70 @@ const About = ({
           />
         </View>
         <View style={profileStyles.userInfoContainer}>
-          <View>
-            <Text style={profileStyles.userName}>{user?.name}</Text>
-            <Text style={profileStyles.userTagline}>
-              {user?.tagline || 'Tagline Not Available'}
-            </Text>
-            <Text style={profileStyles.userLocation}>
-              {user?.city}, {user?.country}
-            </Text>
+          <Text style={profileStyles.userName}>{user?.name}</Text>
+          {user.tagline && (
+            <Text style={profileStyles.userTagline}>{user.tagline}</Text>
+          )}
+          <Text style={profileStyles.userLocation}>
+            {user?.city}, {user?.country}
+          </Text>
+          {user?.allowEveryoneToSeeMyConnections !== false && (
             <Text style={profileStyles.connectionsLink}>
               {connections.length} connections
             </Text>
-          </View>
-          <View
-            style={[
-              profileStyles.buttonContainer,
-              (usersProfileID === loggedInUser.id || usersProfileID === '') &&
-                profileStyles.justifyEnd,
-            ]}>
-            {!usersProfileID ||
-              (usersProfileID !== loggedInUser.id && (
-                <>
-                  {!isAlreadyConnected &&
+          )}
+
+          <View style={profileStyles.buttonContainer}>
+            {user.id !== loggedInUser.id && (
+              <>
+                {/* connect button */}
+                {!isAlreadyConnected &&
                   !isAlreadyPendingRequest &&
-                  !isConnectionRequestReceived ? (
+                  !isConnectionRequestReceived && (
                     <PrimaryButton
                       title="Connect"
                       style={[profileStyles.connectButton]}
                       isLoading={buttonLoading}
                       onPress={handleConnect}
                     />
-                  ) : isConnectionRequestReceived ? (
-                    <PrimaryButton
-                      title="Accept"
-                      style={profileStyles.connectButton}
-                      onPress={handleAcceptConnection}
-                      isLoading={buttonLoading}
-                    />
-                  ) : isAlreadyPendingRequest && !isAlreadyConnected ? (
-                    <SecondaryButton
-                      title="Request Sent"
-                      style={profileStyles.messageButton}
-                      onPress={handleRemoveConnectionRequest}
-                      isLoading={buttonLoading}
-                    />
-                  ) : null}
+                  )}
+
+                {/* accept button */}
+                {isConnectionRequestReceived && (
+                  <PrimaryButton
+                    title="Accept"
+                    style={profileStyles.connectButton}
+                    onPress={handleAcceptConnection}
+                    isLoading={buttonLoading}
+                  />
+                )}
+
+                {/* request sent button */}
+                {isAlreadyPendingRequest && !isAlreadyConnected && (
+                  <SecondaryButton
+                    title="Request Sent"
+                    style={profileStyles.messageButton}
+                    onPress={handleRemoveConnectionRequest}
+                    isLoading={buttonLoading}
+                  />
+                )}
+
+                {(user.allowEveryoneToSendMessage !== false ||
+                  isAlreadyConnected) && (
                   <SecondaryButton
                     title="Message"
                     style={[
                       profileStyles.messageButton,
-                      isAlreadyConnected && profileStyles.messageMargin,
+                      profileStyles.messageButtonMargin,
+                      isAlreadyConnected &&
+                        shouldMessageButtonHaveMarginLeft &&
+                        profileStyles.messageMargin,
                     ]}
                     onPress={handleMessage}
                   />
-                </>
-              ))}
+                )}
+              </>
+            )}
             {/* <TouchableOpacity
               style={[
                 profileStyles.optionsButton,

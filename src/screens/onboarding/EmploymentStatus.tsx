@@ -1,13 +1,19 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import {FlashList} from '@shopify/flash-list';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  FlatList,
+} from 'react-native';
 
 import {
   BackButton,
   PrimaryButton,
   EmploymentSelectionField,
 } from '@/components';
-import {SCREEN_NAMES, employmentStatuses} from '@/constants';
+import {employmentStatuses} from '@/constants';
 import {commonStyles} from '@/styles/onboarding';
 import {EmploymentStatusScreenProps} from '@/types';
 import useUserManagement from '@/hooks/useUserManagement';
@@ -23,34 +29,37 @@ const EmploymentStatus: React.FC<EmploymentStatusScreenProps> = ({
 
   const handleEmploymentStatus = () => {
     OnboardingService.employmentStatus(employment);
-    navigation.navigate(SCREEN_NAMES.SalaryExpectations);
+    navigation.navigate('SalaryExpectations');
   };
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <View style={commonStyles.container}>
-        <BackButton onPress={() => console.log('Back button pressed')} />
-        <Text style={commonStyles.title}>Current Employment Status</Text>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={commonStyles.container}>
+          <BackButton onPress={() => console.log('Back button pressed')} />
+          <Text style={commonStyles.title}>Current Employment Status</Text>
 
-        <FlashList
-          data={employmentStatuses}
-          renderItem={({item}) => (
-            <EmploymentSelectionField
-              key={item}
-              text={item}
-              isSelected={item === employment}
-              onPress={selectionStatus => {
-                setEmployment(selectionStatus);
-              }}
-            />
-          )}
-          keyExtractor={item => item}
-          estimatedItemSize={5}
-        />
-      </View>
-      <View style={commonStyles.footer}>
-        <PrimaryButton title="Continue" onPress={handleEmploymentStatus} />
-      </View>
+          <FlatList
+            data={employmentStatuses}
+            renderItem={({item}) => (
+              <EmploymentSelectionField
+                key={item}
+                text={item}
+                isSelected={item === employment}
+                onPress={selectionStatus => {
+                  setEmployment(selectionStatus);
+                }}
+              />
+            )}
+            keyExtractor={item => item}
+          />
+        </View>
+        <View style={commonStyles.footer}>
+          <PrimaryButton title="Continue" onPress={handleEmploymentStatus} />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

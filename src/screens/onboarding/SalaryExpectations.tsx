@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, ScrollView} from 'react-native';
+import {ScrollView, Platform} from 'react-native';
 import {useFormik} from 'formik';
 
-import {BackButton, PrimaryButton, Input} from '@/components';
-import {commonStyles} from '@/styles/onboarding';
+import {PrimaryButton, Input} from '@/components';
 import {SalaryExpectationsScreenProps} from '@/types';
 import {salaryExpectationsSchema} from '@/utils/schemas/onboarding';
 import {SCREEN_NAMES} from '@/constants';
 import useUserManagement from '@/hooks/useUserManagement';
 import OnboardingService from '@/services/onboarding';
+import Layout from './Layout';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
@@ -43,19 +43,16 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
 
   useEffect(() => {
     setInitialValues({
-      minimumSalary: user.minimumSalary?.toString() || '',
-      totalCompensation: user.totalCompensation?.toString() || '',
+      minimumSalary: user?.minimumSalary?.toString() || '',
+      totalCompensation: user?.totalCompensation?.toString() || '',
     });
   }, [user]);
 
   return (
-    <SafeAreaView style={commonStyles.container}>
-      <View style={commonStyles.container}>
-        <BackButton onPress={() => console.log('Back button pressed')} />
-        <Text style={commonStyles.title}>
-          Salary Expectations for Job Search
-        </Text>
-
+    <>
+      <Layout
+        title="Salary Expectations for Job Search"
+        footer={<PrimaryButton title="Continue" onPress={handleSubmit} />}>
         <ScrollView>
           <Input
             placeholder="Minimum Salary Expectations"
@@ -64,6 +61,7 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
             keyboardType="numeric"
             touched={touched.minimumSalary}
             error={errors.minimumSalary}
+            returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
           />
           <Input
             placeholder="Total Compensation"
@@ -72,13 +70,11 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
             keyboardType="numeric"
             touched={touched.totalCompensation}
             error={errors.totalCompensation}
+            returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
           />
         </ScrollView>
-      </View>
-      <View style={commonStyles.footer}>
-        <PrimaryButton title="Continue" onPress={handleSubmit} />
-      </View>
-    </SafeAreaView>
+      </Layout>
+    </>
   );
 };
 

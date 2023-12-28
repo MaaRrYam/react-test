@@ -1,3 +1,4 @@
+import {getAuth, updateEmail} from 'firebase/auth';
 import {areEducationsEqual, getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 import {
@@ -5,11 +6,14 @@ import {
   EducationProps,
   FeedItem,
   UserInterface,
+  FeedbackInterface,
+  SettingBasicInfoUpdateInterface,
 } from '@/interfaces';
 import {Timestamp} from 'firebase/firestore';
 import ToastService from '@/services/toast';
 import {API_GET} from '@/config/api/apiRequests';
 import Cache from '@/cache';
+
 const ProfileService = {
   async handleSaveBasicInformation({
     name,
@@ -223,6 +227,68 @@ const ProfileService = {
     } catch (error) {
       console.error('Error fetching followers:', error);
       throw error;
+    }
+  },
+  async createFeedback(payload: FeedbackInterface) {
+    try {
+      await FirebaseService.setDoc('feedback', payload.id, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async updateSettingsBasicInfo(payload: SettingBasicInfoUpdateInterface) {
+    try {
+      await FirebaseService.updateDocument('users', payload.id, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async changeEmail(newEmail: string) {
+    try {
+      const auth = getAuth();
+
+      if (auth.currentUser) {
+        const response = await updateEmail(auth.currentUser, newEmail);
+        console.log({response});
+        return true;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  async allowEveryoneToSendMessage(value: boolean) {
+    try {
+      const id = (await getUID()) as string;
+
+      await FirebaseService.updateDocument('users', id, {
+        allowEveryoneToSendMessage: value,
+      });
+      ToastService.showSuccess('Settings updated successfully');
+      return true;
+    } catch (error) {
+      console.log(error);
+      ToastService.showError('Error updating settings');
+      return false;
+    }
+  },
+  async allowEveryoneToSeeMyConnections(value: boolean) {
+    try {
+      const id = (await getUID()) as string;
+
+      await FirebaseService.updateDocument('users', id, {
+        allowEveryoneToSeeMyConnections: value,
+      });
+      ToastService.showSuccess('Settings updated successfully');
+      return true;
+    } catch (error) {
+      console.log(error);
+      ToastService.showError('Error updating settings');
+      return false;
     }
   },
 };

@@ -16,12 +16,14 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
   const [allJobs, setAllJobs] = useState<JobInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDataFetched, setIsDataFetched] = useState(false);
-
+  const [searchText, setSearchText] = useState('');
+  const [searchFilteredJobs, setSearchFilteredJobs] = useState(allJobs);
   useEffect(() => {
     if (selectedTab === JOBS_TABS[0]) {
       if (!allJobs?.length) {
         setIsLoading(true);
         JobsService.getAllJobs().then(setAllJobs);
+        JobsService.getAllJobs().then(setSearchFilteredJobs);
       } else {
         setIsLoading(false);
       }
@@ -53,53 +55,49 @@ const Jobs: React.FC<JobsScreenProps> = ({navigation}) => {
     setAllJobs([]);
   }, [selectedTab]);
 
+  useEffect(() => {
+    if (searchText.trim() === '') {
+      setSearchFilteredJobs(allJobs);
+    } else {
+      const filteredItems = allJobs.filter(item => {
+        if (typeof item.jobTitle === 'string') {
+          return item.jobTitle.toLowerCase().includes(searchText.toLowerCase());
+        }
+      });
+      setSearchFilteredJobs(filteredItems);
+    }
+  }, [allJobs, searchText]);
+
   return (
     <SafeAreaView style={jobMainStyles.outerContainer}>
       <View style={jobMainStyles.SafeAreaView}>
         <Header
           navigation={navigation}
           setJobsFilterBottomSheet={setJobsFilterBottomSheet}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
         <View style={jobMainStyles.subHeader}>
-          <PrimaryButton
-            title={JOBS_TABS[0]}
-            onPress={() => setSelectedTab(JOBS_TABS[0])}
-            backgroundColor={COLORS.lightBackground}
-            textColor={COLORS.black}
-            style={
-              selectedTab === JOBS_TABS[0]
-                ? jobMainStyles.selectedButtonStyles
-                : jobMainStyles.buttonStyles
-            }
-          />
-          <PrimaryButton
-            title={JOBS_TABS[1]}
-            onPress={() => setSelectedTab(JOBS_TABS[1])}
-            backgroundColor={COLORS.lightBackground}
-            textColor={COLORS.black}
-            style={
-              selectedTab === JOBS_TABS[1]
-                ? jobMainStyles.selectedButtonStyles
-                : jobMainStyles.buttonStyles
-            }
-          />
-          <PrimaryButton
-            title={JOBS_TABS[2]}
-            onPress={() => setSelectedTab(JOBS_TABS[2])}
-            backgroundColor={COLORS.lightBackground}
-            textColor={COLORS.black}
-            style={
-              selectedTab === JOBS_TABS[2]
-                ? jobMainStyles.selectedButtonStyles
-                : jobMainStyles.buttonStyles
-            }
-          />
+          {JOBS_TABS.map(tab => (
+            <PrimaryButton
+              key={tab}
+              title={tab}
+              onPress={() => setSelectedTab(tab)}
+              backgroundColor={COLORS.lightBackground}
+              textColor={COLORS.black}
+              style={
+                selectedTab === tab
+                  ? jobMainStyles.selectedButtonStyles
+                  : jobMainStyles.buttonStyles
+              }
+            />
+          ))}
         </View>
         {selectedTab === JOBS_TABS[0] ? (
           <JobsComponent
             jobFilterBottomSheet={jobFilterBottomSheet}
             setJobsFilterBottomSheet={setJobsFilterBottomSheet}
-            allJobs={allJobs}
+            allJobs={searchFilteredJobs}
             setAllJobs={setAllJobs}
             isLoading={isLoading}
           />

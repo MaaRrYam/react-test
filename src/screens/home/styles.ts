@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, Platform} from 'react-native';
 import {COLORS, BORDER_RADIUS, PADDING, FONTS, MARGINS} from '@/constants';
 
 export const styles = StyleSheet.create({
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 8,
     padding: 10,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   feedTitle: {
     fontSize: 18,
@@ -101,7 +101,6 @@ export const styles = StyleSheet.create({
   postTime: {
     fontSize: FONTS.bodySmall,
     color: 'gray',
-    marginBottom: 8,
   },
   moreIcon: {
     alignSelf: 'flex-end',
@@ -215,8 +214,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 10,
-    paddingHorizontal: 8,
-    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    marginHorizontal: Platform.OS === 'ios' ? 20 : 10,
     borderColor: COLORS.border,
     borderWidth: 1,
   },

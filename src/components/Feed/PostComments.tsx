@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   View,
   TextInput,
@@ -69,11 +69,7 @@ const PostComments = ({
 
   return (
     <>
-      <View
-        style={[
-          styles.commentFieldContainer,
-          isFromPost && styles.inputFromPost,
-        ]}>
+      <View style={[styles.commentFieldContainer]}>
         <TextInput
           placeholder="Add a comment"
           value={comment}
@@ -120,4 +116,4 @@ const PostComments = ({
   );
 };
 
-export default PostComments;
+export default memo(PostComments);

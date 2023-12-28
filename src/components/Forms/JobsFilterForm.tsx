@@ -45,6 +45,7 @@ const JobsFilterForm = ({
             {jobTypes.map(option => (
               <Checkbox
                 onPress={() => toggleFilter('employmentType', option)}
+                style={jobsFilterFormStyles.checkbox}
                 isChecked={selectedFilters.some(filter => {
                   return Object.values(filter).includes(option);
                 })}
@@ -58,6 +59,7 @@ const JobsFilterForm = ({
             {workEnviroment.map(option => (
               <Checkbox
                 onPress={() => toggleFilter('workplaceType', option)}
+                style={jobsFilterFormStyles.checkbox}
                 isChecked={selectedFilters.some(filter => {
                   return Object.values(filter).includes(option);
                 })}

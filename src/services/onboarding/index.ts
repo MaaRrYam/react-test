@@ -35,7 +35,7 @@ const OnboardingService = {
       } else if (userData?.onboardingStep === 3) {
         navigation.navigate(SCREEN_NAMES.Experience);
       } else if (userData?.onboardingStep === 4) {
-        navigation.navigate(SCREEN_NAMES.EmploymentStatus);
+        navigation.navigate(SCREEN_NAMES.SalaryExpectations);
       }
     }
     setIsLoading(false);
@@ -45,7 +45,7 @@ const OnboardingService = {
       const UID = (await getUID()) as string;
       const data = await FirebaseService.getDocument('users', UID);
       if (data) {
-        return data;
+        return data as UserInterface;
       }
     } catch (error) {
       console.error('Error fetching data from Firebase:', error);

@@ -1,12 +1,18 @@
 import {Platform, StyleSheet} from 'react-native';
-import {COLORS, PADDING, FONTS, BORDER_RADIUS, MARGINS} from '@/constants';
-import {WINDOW_HEIGHT, WINDOW_WIDTH} from '@gorhom/bottom-sheet';
+import {COLORS, PADDING, FONTS, MARGINS} from '@/constants';
 
 export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: PADDING.general,
     backgroundColor: COLORS.white,
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  keyboardContainer: {
+    flex: 1,
   },
   title: {
     fontSize: FONTS.title,
@@ -23,7 +29,6 @@ export const commonStyles = StyleSheet.create({
     paddingBottom: 20,
   },
   imageContainer: {
-    paddingRight: PADDING.general,
     borderRadius: 15,
     width: 101,
     height: 101,
@@ -35,13 +40,42 @@ export const commonStyles = StyleSheet.create({
     fontSize: FONTS.regularLabel,
   },
   cameraImage: {
-    paddingVertical: PADDING.general * 3,
+    paddingTop: PADDING.general * 3,
     paddingHorizontal: PADDING.general * 4,
   },
   image: {
-    width: 71,
-    height: 71,
+    width: '100%',
+    height: '100%',
     marginRight: 10,
     borderRadius: 10,
+  },
+  searchablecontainer: {
+    marginTop: MARGINS.general,
+    select: {
+      flex: 1,
+      container: {
+        height: 60,
+        borderColor: COLORS.border,
+      },
+      text: {
+        fontSize: FONTS.text,
+      },
+    },
+    option: {
+      flex: 1,
+      text: {
+        fontSize: FONTS.text,
+      },
+    },
+    optionsList: {
+      borderColor: COLORS.border,
+    },
+  },
+  yourFunctionSearchInput: {
+    marginTop: -20,
+    marginBottom: 20,
+  },
+  progressBar: {
+    marginBottom: 10,
   },
 });

@@ -509,7 +509,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = cnmobile/cnmobile.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEVELOPMENT_TEAM = 476U6Z28VJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = cnmobile/Info.plist;
@@ -519,7 +519,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -541,7 +541,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = cnmobile/cnmobile.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEVELOPMENT_TEAM = 476U6Z28VJ;
 				INFOPLIST_FILE = cnmobile/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CareerNetwork;
@@ -550,7 +550,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

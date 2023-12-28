@@ -1,9 +1,15 @@
-import React from 'react';
-import {ScrollView, SafeAreaView, View} from 'react-native';
+import React, {useRef} from 'react';
+import {
+  ScrollView,
+  SafeAreaView,
+  View,
+  TextInput,
+  Platform,
+} from 'react-native';
 import {useFormik} from 'formik';
 
 import {addExperienceSchema} from '@/utils/schemas/onboarding';
-import {Input, Checkbox, PrimaryButton} from '@/components';
+import {Checkbox, PrimaryButton, BottomSheetInput} from '@/components';
 import {COLORS} from '@/constants';
 import {ExperienceState} from '@/interfaces';
 import {commonStyles} from '@/styles/onboarding';
@@ -13,6 +19,10 @@ const ExperienceForm = ({
 }: {
   handleAddNewExperience: (newExperience: ExperienceState) => void;
 }) => {
+  const role = useRef<TextInput>(null);
+  const startingYear = useRef<TextInput>(null);
+  const endingYear = useRef<TextInput>(null);
+
   const {
     values,
     errors,
@@ -56,7 +66,7 @@ const ExperienceForm = ({
   return (
     <SafeAreaView style={commonStyles.container}>
       <ScrollView style={commonStyles.container}>
-        <Input
+        <BottomSheetInput
           placeholder="Company Name"
           value={values.companyName}
           onChangeText={handleChange('companyName')}
@@ -65,8 +75,10 @@ const ExperienceForm = ({
           error={errors.companyName}
           name="companyName"
           setFieldTouched={setFieldTouched}
+          onSubmitEditing={() => role.current?.focus()}
+          returnKeyType="next"
         />
-        <Input
+        <BottomSheetInput
           placeholder="Role"
           value={values.role}
           onChangeText={handleChange('role')}
@@ -75,9 +87,12 @@ const ExperienceForm = ({
           error={errors.role}
           name="role"
           setFieldTouched={setFieldTouched}
+          onSubmitEditing={() => startingYear.current?.focus()}
+          returnKeyType="next"
+          forwardedRef={role}
         />
 
-        <Input
+        <BottomSheetInput
           placeholder="Starting Year"
           value={values.startYear}
           onChangeText={handleChange('startYear')}
@@ -87,9 +102,11 @@ const ExperienceForm = ({
           touched={touched.startYear}
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
+          forwardedRef={startingYear}
+          returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
         />
 
-        <Input
+        <BottomSheetInput
           placeholder="Ending Year"
           value={values.endYear}
           onChangeText={handleChange('endYear')}
@@ -100,19 +117,25 @@ const ExperienceForm = ({
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
           disabled={values.currentlyWorking}
+          forwardedRef={endingYear}
+          returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
         />
 
         <Checkbox
-          onPress={(newValue: boolean) =>
-            setFieldValue('currentlyWorking', newValue)
+          onPress={() =>
+            setFieldValue('currentlyWorking', !values.currentlyWorking)
           }
+          isChecked={values.currentlyWorking}
           text="Currently Working"
           fillColor={COLORS.primary}
           style={{marginBottom: 20}}
         />
 
         <View style={commonStyles.footer}>
-          <PrimaryButton title="Add as Work Experience" onPress={handleSubmit} />
+          <PrimaryButton
+            title="Add as Work Experience"
+            onPress={handleSubmit}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

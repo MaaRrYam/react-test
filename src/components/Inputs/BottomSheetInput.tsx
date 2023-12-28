@@ -1,0 +1,115 @@
+import React, {useState, useEffect, useCallback, FC} from 'react';
+import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import {View, Animated, Text} from 'react-native';
+import {COLORS} from '@/constants';
+import {InputProps} from '@/interfaces';
+import {inputStyles} from './styles';
+
+const Input: FC<InputProps> = ({
+  placeholder,
+  value,
+  onChangeText,
+  style,
+  secureTextEntry,
+  keyboardType,
+  error,
+  touched,
+  name,
+  setFieldTouched,
+  disabled,
+  onPress,
+  returnKeyType,
+  onSubmitEditing,
+  autoFocus,
+  forwardedRef,
+}) => {
+  const [, setIsFocused] = useState(false);
+  const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
+
+  const handleFocus = useCallback(() => {
+    setIsFocused(true);
+    Animated.timing(animatedIsFocused, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [animatedIsFocused]);
+
+  const handleBlur = () => {
+    if (name && setFieldTouched) {
+      setFieldTouched(name, true);
+    }
+    if (!value) {
+      setIsFocused(false);
+      Animated.timing(animatedIsFocused, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  const handleTextChange = (text: string) => {
+    onChangeText(text);
+  };
+
+  const labelStyle = {
+    position: 'absolute' as 'absolute',
+    left: 12,
+    top: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [20, -8],
+    }),
+    fontSize: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [16, 12],
+    }),
+    color: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [COLORS.text, COLORS.text],
+    }),
+    backgroundColor: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['transparent', COLORS.white],
+    }),
+    paddingHorizontal: animatedIsFocused.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 3],
+    }),
+  };
+
+  const inputContainerStyle = {
+    borderColor: touched && error ? 'red' : COLORS.border,
+  };
+  useEffect(() => {
+    if (value) {
+      handleFocus();
+    }
+  }, [value, handleFocus]);
+
+  return (
+    <View>
+      <View style={[inputStyles.container, style, inputContainerStyle]}>
+        <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
+        <BottomSheetTextInput
+          ref={forwardedRef}
+          value={value}
+          onChangeText={handleTextChange}
+          style={inputStyles.input}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          secureTextEntry={secureTextEntry}
+          keyboardType={keyboardType}
+          editable={!disabled}
+          onPressIn={onPress}
+          returnKeyType={returnKeyType}
+          onSubmitEditing={onSubmitEditing}
+          autoFocus={autoFocus}
+        />
+      </View>
+      {touched && error && <Text style={inputStyles.error}>{error}</Text>}
+    </View>
+  );
+};
+
+export default Input;

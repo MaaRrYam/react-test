@@ -10,14 +10,28 @@ import {
   refetchConnections,
 } from '@/store/features/networkSlice';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
+import {LocalizedSearchProps} from '@/interfaces';
 
-const Connections = () => {
+const Connections = ({searchText}: LocalizedSearchProps) => {
   const {connections, isConnectionsFetched, isConnectionsFirstRequest} =
     useAppSelector(state => state.network);
   const dispatch = useAppDispatch();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [filteredList, setFilteredList] = useState(connections);
 
+  useEffect(() => {
+    if (!searchText.trim()) {
+      setFilteredList(connections);
+    } else {
+      const filteredItems = connections.filter(item => {
+        if (typeof item.name === 'string') {
+          return item.name.toLowerCase().includes(searchText.toLowerCase());
+        }
+      });
+      setFilteredList(filteredItems);
+    }
+  }, [connections, searchText]);
   const fetchData = useCallback(() => {
     if (!isConnectionsFetched) {
       dispatch(getConnections());
@@ -43,7 +57,7 @@ const Connections = () => {
 
   return (
     <>
-      {connections.length ? (
+      {filteredList.length ? (
         <FlashList
           data={connections}
           keyExtractor={item => item.id?.toString()}

@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 
-import {BackButton, PrimaryButton} from '@/components';
+import {Input, PrimaryButton} from '@/components';
+import Layout from './Layout';
 import {commonStyles} from '@/styles/onboarding';
-import {COLORS, MARGINS, SCREEN_NAMES} from '@/constants';
+import {COLORS, MARGINS} from '@/constants';
 import {ExperienceScreenProps} from '@/types';
 import {RoleService} from '@/services/requestAccess';
 import {ActivityIndicator} from 'react-native';
@@ -19,40 +19,66 @@ import OnboardingService from '@/services/onboarding';
 
 const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
+
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>(
     user?.jobTags || [],
   );
   const [allIndustries, setAllIndustries] = useState<string[]>([]);
+  const [filteredIndustries, setFilteredIndustries] = useState<string[]>([]);
+  const [search, setSearch] = useState<string>('');
 
-  const toggleIndustrySelection = (industry: string) => {
-    if (selectedIndustries.includes(industry)) {
-      setSelectedIndustries(
-        selectedIndustries.filter(item => item !== industry),
-      );
-    } else {
-      setSelectedIndustries([...selectedIndustries, industry]);
-    }
-  };
-  const handleSubmit = async () => {
+  const toggleIndustrySelection = useCallback(
+    (industry: string) => {
+      if (selectedIndustries.includes(industry)) {
+        setSelectedIndustries(
+          selectedIndustries.filter(item => item !== industry),
+        );
+      } else {
+        setSelectedIndustries([...selectedIndustries, industry]);
+      }
+    },
+    [selectedIndustries],
+  );
+
+  const handleSubmit = useCallback(async () => {
     OnboardingService.industry(selectedIndustries);
-    navigation.navigate(SCREEN_NAMES.Experience);
-  };
+    navigation.navigate('Experience');
+  }, [navigation, selectedIndustries]);
 
   useEffect(() => {
     RoleService.getJobRoles().then(setAllIndustries);
   }, []);
 
-  return (
-    <SafeAreaView style={commonStyles.container}>
-      <View style={commonStyles.container}>
-        <BackButton onPress={() => console.log('Back button pressed')} />
-        <Text style={commonStyles.title}>Your Function</Text>
+  useEffect(() => {
+    setFilteredIndustries(
+      allIndustries.filter(industry =>
+        industry.toLowerCase().includes(search.toLowerCase()),
+      ),
+    );
+  }, [allIndustries, search]);
 
-        {allIndustries.length ? (
+  return (
+    <Layout
+      title="Your Function"
+      footer={
+        <PrimaryButton
+          title="Continue"
+          onPress={handleSubmit}
+          disabled={!selectedIndustries.length}
+        />
+      }>
+      {filteredIndustries.length ? (
+        <>
+          <Input
+            placeholder="Search for your function"
+            value={search}
+            onChangeText={setSearch}
+            style={commonStyles.yourFunctionSearchInput}
+          />
           <ScrollView
             style={styles.industryScrollView}
             contentContainerStyle={styles.industryList}>
-            {allIndustries.map(industry => (
+            {filteredIndustries.map(industry => (
               <TouchableOpacity
                 key={industry}
                 style={[
@@ -78,20 +104,13 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
               </TouchableOpacity>
             ))}
           </ScrollView>
-        ) : (
-          <SafeAreaView style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </SafeAreaView>
-        )}
-      </View>
-      <View style={commonStyles.footer}>
-        <PrimaryButton
-          title="Continue"
-          onPress={handleSubmit}
-          disabled={!selectedIndustries.length}
-        />
-      </View>
-    </SafeAreaView>
+        </>
+      ) : (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        </View>
+      )}
+    </Layout>
   );
 };
 

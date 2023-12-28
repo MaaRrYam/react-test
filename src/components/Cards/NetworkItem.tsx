@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-import {FONTS, COLORS, SCREEN_NAMES} from '@/constants';
+import {FONTS, COLORS} from '@/constants';
 import {RoundedButton} from '../Buttons';
 import {NetworkItemProps} from '@/interfaces';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
@@ -12,7 +14,7 @@ import {
   removeConnection,
   unfollow,
 } from '@/store/features/networkSlice';
-import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '@/types';
 
 const NetworkItem = ({
   item,
@@ -21,7 +23,7 @@ const NetworkItem = ({
   isFollowing,
 }: NetworkItemProps) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState<null | true>(null);
@@ -89,9 +91,15 @@ const NetworkItem = ({
   };
 
   return (
-    <TouchableOpacity>
-      <View style={styles.networkItem}>
-        <View style={styles.networkItemImage}>
+    <View style={styles.networkItem}>
+      <View style={styles.networkItemImage}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Profile', {
+              uid: item.id,
+              user: item,
+            })
+          }>
           {item.photoUrl ? (
             <FastImage
               resizeMode="cover"
@@ -109,21 +117,24 @@ const NetworkItem = ({
               style={styles.networkItemImage}
             />
           )}
-        </View>
-        <View style={styles.networkItemContent}>
-          <View style={styles.networkItemHeader}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate(SCREEN_NAMES.Profile, {UID: item.id})
-              }>
-              <Text style={styles.networkItemName}>{item.name}</Text>
-            </TouchableOpacity>
-            <Text style={styles.networkItemMessage}>{item.tagline}</Text>
-          </View>
-          {renderControls()}
-        </View>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+      <View style={styles.networkItemContent}>
+        <View style={styles.networkItemHeader}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Profile', {
+                uid: item.id,
+                user: item,
+              })
+            }>
+            <Text style={styles.networkItemName}>{item.name}</Text>
+          </TouchableOpacity>
+          <Text style={styles.networkItemMessage}>{item.tagline}</Text>
+        </View>
+        {renderControls()}
+      </View>
+    </View>
   );
 };
 
