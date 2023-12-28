@@ -122,9 +122,10 @@ const ExperienceForm = ({
         />
 
         <Checkbox
-          onPress={(newValue: boolean) =>
-            setFieldValue('currentlyWorking', newValue)
+          onPress={() =>
+            setFieldValue('currentlyWorking', !values.currentlyWorking)
           }
+          isChecked={values.currentlyWorking}
           text="Currently Working"
           fillColor={COLORS.primary}
           style={{marginBottom: 20}}
