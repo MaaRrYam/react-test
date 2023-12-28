@@ -101,7 +101,6 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
           console.log('Image picker error: ', response.errorMessage);
         } else {
           if (response.assets && response.assets.length) {
-            console.log(response.assets[0]);
             let imageUri = response.assets[0];
             setSelectedImage(imageUri);
           }
