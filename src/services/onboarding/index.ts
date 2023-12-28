@@ -35,7 +35,7 @@ const OnboardingService = {
       } else if (userData?.onboardingStep === 3) {
         navigation.navigate(SCREEN_NAMES.Experience);
       } else if (userData?.onboardingStep === 4) {
-        navigation.navigate(SCREEN_NAMES.EmploymentStatus);
+        navigation.navigate(SCREEN_NAMES.SalaryExpectations);
       }
     }
     setIsLoading(false);

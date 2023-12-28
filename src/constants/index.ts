@@ -48,7 +48,7 @@ export const MARGINS = {
 };
 
 export const PADDING = {
-  general: Platform.OS === 'ios' ? 20 : 12,
+  general: Platform.OS === 'ios' ? 15 : 12,
 };
 
 export const ICON_WIDTH = {
