@@ -109,3 +109,12 @@ export const trackOnboardingProgress = (screenName: string) => {
       return 1;
   }
 };
+
+export const OnboardingScreens = [
+  'GetStarted',
+  'Education',
+  'Industry',
+  'Experience',
+  'SalaryExpectations',
+  'OnboardingCompleted',
+];

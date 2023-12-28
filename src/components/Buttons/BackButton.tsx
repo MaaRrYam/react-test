@@ -1,4 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
+import {OnboardingScreens} from '@/utils';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
 import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 
@@ -12,8 +13,19 @@ const BackButton = ({
   style?: object;
 }) => {
   const navigation = useNavigation();
+  const route = useRoute();
 
   const handleNavigation = () => {
+    /**
+     * if onboarding screens, go back to previous screen
+     */
+
+    if (OnboardingScreens.includes(route.name)) {
+      const currentRouteIndex = OnboardingScreens.indexOf(route.name);
+      const previousRoute = OnboardingScreens[currentRouteIndex - 1];
+      return navigation.navigate(previousRoute);
+    }
+
     navigation.goBack();
     if (onPress) {
       onPress();
