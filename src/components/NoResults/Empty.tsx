@@ -2,9 +2,8 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Empty} from '@/assets/icons';
 import {COLORS, FONTS} from '@/constants';
-interface EmptyProps {
-  text: string;
-}
+import {EmptyProps} from '@/interfaces';
+
 const EmptyComponent: React.FC<EmptyProps> = ({text}) => {
   return (
     <View style={styles.container}>
