@@ -185,6 +185,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
             value={message}
             onChangeText={setMessage}
             style={styles.input}
+            placeholderTextColor={COLORS.black}
           />
           {(message || selectedImage?.uri) && (
             <>
