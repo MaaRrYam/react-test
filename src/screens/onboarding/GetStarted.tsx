@@ -1,15 +1,9 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-  Image,
-} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {useFormik} from 'formik';
 import FastImage from 'react-native-fast-image';
 
+import Layout from './Layout';
 import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
@@ -200,113 +194,107 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView style={commonStyles.safeArea}>
-      <KeyboardAvoidingView
-        style={commonStyles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={commonStyles.container}>
-          <Text style={commonStyles.title}>Let's get you started,</Text>
-          <TouchableOpacity
-            style={commonStyles.imageContainer}
-            onPress={() => openImagePicker()}>
-            {user?.photoUrl ? (
-              <FastImage
-                style={commonStyles.image}
-                source={{
-                  uri: user.photoUrl,
-                  priority: FastImage.priority.high,
-                  cache: FastImage.cacheControl.immutable,
-                }}
-                resizeMode="cover"
-              />
-            ) : selectedImage?.uri ? (
-              <Image
-                style={commonStyles.image}
-                source={{
-                  uri: selectedImage?.uri,
-                }}
-                resizeMode="cover"
-              />
-            ) : selectedImage ? (
-              <Image
-                style={commonStyles.image}
-                source={{
-                  uri: selectedImage?.uri,
-                }}
-                resizeMode="cover"
-              />
-            ) : (
-              <View style={commonStyles.cameraImage}>
-                <CameraSvg />
-              </View>
-            )}
-          </TouchableOpacity>
-          <Text style={commonStyles.imageText}>Add Profile Picture</Text>
-          <Input
-            placeholder="Username"
-            value={values.username}
-            onChangeText={handleChange('username')}
-            touched={touched.username}
-            error={errors.username}
-            name="username"
-            setFieldTouched={setFieldTouched}
+    <Layout title="Let's get you started">
+      <TouchableOpacity
+        style={commonStyles.imageContainer}
+        onPress={() => openImagePicker()}>
+        {user?.photoUrl ? (
+          <FastImage
+            style={commonStyles.image}
+            source={{
+              uri: user.photoUrl,
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
+            }}
+            resizeMode="cover"
           />
+        ) : selectedImage?.uri ? (
+          <Image
+            style={commonStyles.image}
+            source={{
+              uri: selectedImage?.uri,
+            }}
+            resizeMode="cover"
+          />
+        ) : selectedImage ? (
+          <Image
+            style={commonStyles.image}
+            source={{
+              uri: selectedImage?.uri,
+            }}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={commonStyles.cameraImage}>
+            <CameraSvg />
+          </View>
+        )}
+      </TouchableOpacity>
+      <Text style={commonStyles.imageText}>Add Profile Picture</Text>
+      <Input
+        placeholder="Username"
+        value={values.username}
+        onChangeText={handleChange('username')}
+        touched={touched.username}
+        error={errors.username}
+        name="username"
+        setFieldTouched={setFieldTouched}
+      />
 
+      <Select
+        styles={commonStyles.searchablecontainer}
+        options={allCountries}
+        animation={true}
+        searchable={true}
+        onSelect={option => {
+          setSelectedCountry(option);
+        }}
+        placeholderText={'Select Country'}
+        onRemove={() => {
+          setSelectedCountry({} as GetStartedCountryState);
+        }}
+      />
+
+      {!!allStates?.length && (
+        <View style={commonStyles.searchablecontainer}>
           <Select
             styles={commonStyles.searchablecontainer}
-            options={allCountries}
+            options={allStates}
             animation={true}
             searchable={true}
             onSelect={option => {
-              setSelectedCountry(option);
+              setSelectedState(option);
             }}
-            placeholderText={'Select Country'}
+            placeholderText={'Select State'}
             onRemove={() => {
-              setSelectedCountry({} as GetStartedCountryState);
+              setSelectedState({} as GetStartedState);
             }}
           />
-
-          {!!allStates?.length && (
-            <View style={commonStyles.searchablecontainer}>
-              <Select
-                styles={commonStyles.searchablecontainer}
-                options={allStates}
-                animation={true}
-                searchable={true}
-                onSelect={option => {
-                  setSelectedState(option);
-                }}
-                placeholderText={'Select State'}
-                onRemove={() => {
-                  setSelectedState({} as GetStartedState);
-                }}
-              />
-            </View>
-          )}
-
-          {!!allCities?.length && (
-            <View style={commonStyles.searchablecontainer}>
-              <Select
-                styles={commonStyles.searchablecontainer}
-                options={allCities}
-                animation={true}
-                searchable={true}
-                onSelect={option => {
-                  setSelectedCity(option);
-                }}
-                placeholderText={'Select City'}
-                onRemove={() => {
-                  setSelectedCity({} as GetStartedCity);
-                }}
-              />
-            </View>
-          )}
-          <View style={commonStyles.footer}>
-            <PrimaryButton title="Continue" onPress={handleSubmit} />
-          </View>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      )}
+
+      {!!allCities?.length && (
+        <View style={commonStyles.searchablecontainer}>
+          <Select
+            styles={commonStyles.searchablecontainer}
+            options={allCities}
+            animation={true}
+            searchable={true}
+            onSelect={option => {
+              setSelectedCity(option);
+            }}
+            placeholderText={'Select City'}
+            onRemove={() => {
+              setSelectedCity({} as GetStartedCity);
+            }}
+          />
+        </View>
+      )}
+
+      <View style={commonStyles.footer}>
+        <PrimaryButton title="Continue" onPress={handleSubmit} />
+      </View>
+    </Layout>
   );
 };
 

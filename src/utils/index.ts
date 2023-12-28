@@ -92,3 +92,20 @@ export async function hasAndroidPermission() {
 
   return await getRequestPermissionPromise();
 }
+
+export const trackOnboardingProgress = (screenName: string) => {
+  switch (screenName) {
+    case 'GetStarted':
+      return 0;
+    case 'Education':
+      return 0.2;
+    case 'Industry':
+      return 0.4;
+    case 'Experience':
+      return 0.6;
+    case 'SalaryExpectations':
+      return 0.8;
+    default:
+      return 1;
+  }
+};

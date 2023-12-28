@@ -18,6 +18,7 @@ import {
 import {COLORS} from '@/constants';
 import {EducationState} from '@/interfaces';
 import {commonStyles} from '@/styles/onboarding';
+import FirebaseService from '@/services/Firebase';
 
 const EducationForm = ({
   handleAddNewEducation,
@@ -48,7 +49,7 @@ const EducationForm = ({
     },
     validationSchema: addEducationSchema,
     onSubmit: formValues => {
-      const payload = {id: Number(Math.random()), ...formValues};
+      const payload = {id: FirebaseService.generateUniqueId(), ...formValues};
 
       handleAddNewEducation(payload);
       handleReset({
