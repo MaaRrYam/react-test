@@ -19,12 +19,13 @@ import {styles} from './styles';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {refreshFeed, setFeedFetchedToFalse} from '@/store/features/homeSlice';
+import useUserManagement from '@/hooks/useUserManagement';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [isNewPostClicked, setIsNewPostClicked] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const {user} = useAppSelector(state => state.auth);
+  const {user} = useUserManagement();
   const {isRefreshing} = useAppSelector(state => state.home);
 
   const handleRefresh = () => {
@@ -60,7 +61,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
                 <FastImage
                   source={{
                     uri: user.photoUrl,
-                    priority: 'normal',
+                    priority: 'high',
                     cache: FastImage.cacheControl.immutable,
                   }}
                   resizeMode={FastImage.resizeMode.cover}

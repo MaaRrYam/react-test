@@ -1,5 +1,11 @@
 import React, {useRef} from 'react';
-import {ScrollView, SafeAreaView, View, TextInput} from 'react-native';
+import {
+  ScrollView,
+  SafeAreaView,
+  View,
+  TextInput,
+  Platform,
+} from 'react-native';
 import {useFormik} from 'formik';
 
 import {addEducationSchema} from '@/utils/schemas/onboarding';
@@ -20,6 +26,7 @@ const EducationForm = ({
 }) => {
   const degreeName = useRef<TextInput>(null);
   const startingYear = useRef<TextInput>(null);
+  const endingYear = useRef<TextInput>(null);
 
   const {
     values,
@@ -98,6 +105,8 @@ const EducationForm = ({
               setFieldTouched={setFieldTouched}
               keyboardType="numeric"
               forwardedRef={startingYear}
+              returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
+              onSubmitEditing={() => endingYear.current?.blur()}
             />
 
             <BottomSheetInput
@@ -111,6 +120,8 @@ const EducationForm = ({
               setFieldTouched={setFieldTouched}
               keyboardType="numeric"
               disabled={values.currentlyStudying}
+              forwardedRef={endingYear}
+              returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
             />
 
             <Checkbox

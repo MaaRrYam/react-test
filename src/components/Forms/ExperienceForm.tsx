@@ -1,5 +1,11 @@
 import React, {useRef} from 'react';
-import {ScrollView, SafeAreaView, View, TextInput} from 'react-native';
+import {
+  ScrollView,
+  SafeAreaView,
+  View,
+  TextInput,
+  Platform,
+} from 'react-native';
 import {useFormik} from 'formik';
 
 import {addExperienceSchema} from '@/utils/schemas/onboarding';
@@ -15,6 +21,7 @@ const ExperienceForm = ({
 }) => {
   const role = useRef<TextInput>(null);
   const startingYear = useRef<TextInput>(null);
+  const endingYear = useRef<TextInput>(null);
 
   const {
     values,
@@ -96,6 +103,7 @@ const ExperienceForm = ({
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
           forwardedRef={startingYear}
+          returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
         />
 
         <BottomSheetInput
@@ -109,6 +117,8 @@ const ExperienceForm = ({
           setFieldTouched={setFieldTouched}
           keyboardType="numeric"
           disabled={values.currentlyWorking}
+          forwardedRef={endingYear}
+          returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
         />
 
         <Checkbox
