@@ -60,8 +60,8 @@ const NewPost = ({
       {
         mediaType: 'photo',
         includeBase64: false,
-        maxHeight: 2000,
-        maxWidth: 2000,
+        maxHeight: 500,
+        maxWidth: 500,
       },
       response => {
         if (response.errorCode) {

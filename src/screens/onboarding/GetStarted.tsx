@@ -122,8 +122,8 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
       {
         mediaType: 'photo',
         includeBase64: false,
-        maxHeight: 2000,
-        maxWidth: 2000,
+        maxHeight: 300,
+        maxWidth: 300,
       },
       response => {
         if (response.errorCode) {

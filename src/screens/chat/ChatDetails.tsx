@@ -93,14 +93,15 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
       {
         mediaType: 'photo',
         includeBase64: false,
-        maxHeight: 2000,
-        maxWidth: 2000,
+        maxHeight: 300,
+        maxWidth: 300,
       },
       response => {
         if (response.errorCode) {
           console.log('Image picker error: ', response.errorMessage);
         } else {
           if (response.assets && response.assets.length) {
+            console.log(response.assets[0]);
             let imageUri = response.assets[0];
             setSelectedImage(imageUri);
           }
@@ -186,7 +187,7 @@ const ChatScreen: React.FC<ChatDetailsScreenProps> = ({route}) => {
             onChangeText={setMessage}
             style={styles.input}
           />
-          {message && (
+          {(message || selectedImage?.uri) && (
             <>
               {isMessageSending ? (
                 <ActivityIndicator size="small" color={COLORS.primary} />
