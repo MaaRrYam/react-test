@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   ScrollView,
   SafeAreaView,
@@ -129,6 +129,7 @@ const EducationForm = ({
               onPress={() =>
                 setFieldValue('currentlyStudying', !values.currentlyStudying)
               }
+              isChecked={values.currentlyStudying}
               text="Currently Studying"
               fillColor={COLORS.primary}
               style={{marginBottom: 20}}

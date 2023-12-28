@@ -24,7 +24,8 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
 
   const handleContinue = async () => {
     OnboardingService.experience(experience);
-    navigation.navigate('EmploymentStatus');
+    // navigation.navigate('EmploymentStatus');
+    navigation.navigate('SalaryExpectations');
   };
 
   const handleAddNewExperience = (newExperience: ExperienceState) => {
