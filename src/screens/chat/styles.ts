@@ -142,6 +142,7 @@ export const styles = StyleSheet.create({
   input: {
     padding: 10,
     flex: 1,
+    color: COLORS.black,
   },
   uploadImageButton: {
     width: 40,
