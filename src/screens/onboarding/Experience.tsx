@@ -87,7 +87,7 @@ const Experience: React.FC<ExperienceScreenProps> = ({navigation}) => {
               <BottomSheet
                 isVisible={isBottomSheetVisible}
                 onClose={() => setIsBottomSheetVisible(false)}
-                snapPoints={['20%', '60%']}>
+                snapPoints={['20%', '65%']}>
                 <ExperienceForm
                   handleAddNewExperience={handleAddNewExperience}
                 />
