@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {ScrollView, Platform, View, Text} from 'react-native';
 import {useFormik} from 'formik';
@@ -11,6 +10,7 @@ import useUserManagement from '@/hooks/useUserManagement';
 import OnboardingService from '@/services/onboarding';
 import Layout from './Layout';
 import {InfoIcon} from '@/assets/icons';
+import {commonStyles} from '@/styles/onboarding';
 
 const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
   navigation,
@@ -75,14 +75,9 @@ const SalaryExpectations: React.FC<SalaryExpectationsScreenProps> = ({
             returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
           />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              marginTop: 22,
-            }}>
+          <View style={commonStyles.infoTextContainer}>
             <InfoIcon />
-            <Text style={{color: '#7D7D7D', marginLeft: 10}}>
+            <Text style={commonStyles.infoText}>
               Confidential Minimum Salary Information is strictly kept private
               and not disclosed to any third parties on the platform. This
               information serves solely as a screening tool to evaluate
