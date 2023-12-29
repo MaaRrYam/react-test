@@ -30,7 +30,7 @@ import Filter from './Filter';
 import SettingsIcon from './SettingsIcon';
 import CameraIcon from './CameraIcon';
 import CameraSvg from './Camera';
-
+import InfoIcon from './InfoIcon';
 export {
   BackArrow,
   Dislike,
@@ -64,4 +64,5 @@ export {
   Filter,
   SettingsIcon,
   CameraIcon,
+  InfoIcon,
 };
