@@ -264,7 +264,6 @@ export const jobCardStyles = StyleSheet.create({
 export const pastApplicationCardStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginTop: 0,
     borderBottomWidth: BORDER_WIDTH.thin,
     borderBottomColor: COLORS.border,
     paddingHorizontal: PADDING.general,
