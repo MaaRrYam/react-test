@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {PastApplicationCardInterface} from '@/interfaces';
 import {pastApplicationCardStyles} from '@/styles/jobs/index';
-import {FONTS} from '@/constants';
+import {COLORS, FONTS} from '@/constants';
 
 const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
   jobTitle = 'Job Title',
@@ -45,14 +45,20 @@ const PastApplicationsCard: React.FC<PastApplicationCardInterface> = ({
           <Text style={pastApplicationCardStyles.textStyles}>Status:</Text>
 
           {isAccepted && !isPending && !starred ? (
-            <Text style={{fontSize: FONTS.text}}>Application accepted</Text>
+            <Text style={{fontSize: FONTS.text, color: COLORS.text}}>
+              Application accepted
+            </Text>
           ) : isPending && !isAccepted && !starred ? (
-            <Text style={{fontSize: FONTS.text}}>Review Pending</Text>
+            <Text style={{fontSize: FONTS.text, color: COLORS.text}}>
+              Review Pending
+            </Text>
           ) : (
             starred &&
             !isAccepted &&
             !isPending && (
-              <Text style={{fontSize: FONTS.text}}>Under Review</Text>
+              <Text style={{fontSize: FONTS.text, color: COLORS.text}}>
+                Under Review
+              </Text>
             )
           )}
         </View>

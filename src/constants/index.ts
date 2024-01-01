@@ -30,6 +30,7 @@ export const BORDER_RADIUS = {
 };
 export const BORDER_WIDTH = {
   general: 2,
+  thin: 1,
 };
 
 export const FONTS = {
@@ -49,6 +50,7 @@ export const MARGINS = {
 
 export const PADDING = {
   general: Platform.OS === 'ios' ? 20 : 12,
+  card: 17,
 };
 
 export const ICON_WIDTH = {

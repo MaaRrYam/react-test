@@ -226,11 +226,9 @@ export const jobCardStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: MARGINS.general,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
-    // paddingHorizontal: PADDING.general,
-    paddingVertical: PADDING.general / 2,
+    paddingVertical: PADDING.card,
   },
   iconContainer: {
     width: ICON_WIDTH.general,
@@ -266,11 +264,10 @@ export const jobCardStyles = StyleSheet.create({
 export const pastApplicationCardStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginTop: MARGINS.general,
-    borderBottomWidth: BORDER_WIDTH.general,
+    borderBottomWidth: BORDER_WIDTH.thin,
     borderBottomColor: COLORS.border,
     paddingHorizontal: PADDING.general,
-    paddingVertical: PADDING.general,
+    paddingVertical: PADDING.card,
   },
   iconContainer: {
     width: ICON_WIDTH.general,
