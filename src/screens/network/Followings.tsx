@@ -89,7 +89,7 @@ const Followings = ({searchText}: LocalizedSearchProps) => {
           estimatedItemSize={30}
         />
       ) : (
-        <Empty />
+        <Empty text="Following" />
       )}
     </>
   );

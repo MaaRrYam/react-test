@@ -51,7 +51,7 @@ const PastApplications = ({
         !isDataFetched &&
         allJobs.length && (
           <View style={jobMainStyles.emptyContainer}>
-            <EmptyComponent />
+            <EmptyComponent text="Jobs" />
           </View>
         )
       )}

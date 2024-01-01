@@ -122,7 +122,7 @@ const JobsComponent = ({
             (selectedFilters.length || searchTerm) &&
             filtersApplied && (
               <View style={jobMainStyles.emptyContainer}>
-                <EmptyComponent />
+                <EmptyComponent text="Jobs" />
               </View>
             )}
 

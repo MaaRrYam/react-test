@@ -44,7 +44,7 @@ const NewChat = ({
               keyExtractor={item => item.id}
             />
           ) : (
-            <Empty />
+            <Empty text="Chats" />
           )}
         </>
       )}

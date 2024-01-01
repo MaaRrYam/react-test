@@ -757,3 +757,7 @@ export interface GetStartedCity {
   label: string;
   value: ICity;
 }
+
+export interface EmptyProps {
+  text: string;
+}
