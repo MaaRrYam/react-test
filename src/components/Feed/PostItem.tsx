@@ -215,7 +215,7 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
       )}
       <View style={styles.postReactions}>
         <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
-          <Like isLiked={reactions.like} />
+          <Like isLiked={reactions.like} style={styles.like} />
         </TouchableOpacity>
         <Text style={styles.like}>
           {item?.postLikes &&
@@ -223,17 +223,21 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
             item?.postLikes?.length - item?.postDislikes?.length}
         </Text>
         <TouchableOpacity style={styles.reactionButton} onPress={disLikeAPost}>
-          <Dislike isLiked={reactions.dislike} />
+          <Dislike isLiked={reactions.dislike} style={styles.like} />
         </TouchableOpacity>
 
         <View style={styles.iconsContainer}>
           <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
             <Comment />
           </TouchableOpacity>
-          <TouchableOpacity onPress={sharePost}>
+          <TouchableOpacity
+            style={styles.reactionButtonGap}
+            onPress={sharePost}>
             <ShareIcon />
           </TouchableOpacity>
-          <TouchableOpacity onPress={reportPost}>
+          <TouchableOpacity
+            style={styles.reactionButtonGap}
+            onPress={reportPost}>
             <Report />
           </TouchableOpacity>
         </View>
