@@ -78,4 +78,13 @@ export const commonStyles = StyleSheet.create({
   progressBar: {
     marginBottom: 10,
   },
+  infoTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 22,
+  },
+  infoText: {
+    color: '#7D7D7D',
+    marginLeft: 7,
+  },
 });
