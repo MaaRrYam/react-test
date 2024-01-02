@@ -191,6 +191,14 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let isMediaExists: boolean = false;
+  if (typeof item.media === 'object') {
+    isMediaExists = item.media.url !== '';
+  }
+  if (typeof item.media === 'string') {
+    isMediaExists = item.media !== '';
+  }
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -200,12 +208,12 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
         })
       }>
       <Text style={styles.feedContent}>{item.text}</Text>
-      {item.media && (
+      {isMediaExists && (
         <FastImage
           defaultSource={require('@/assets/images/fallback.png')}
           fallback={require('@/assets/images/fallback.png')}
           source={{
-            uri: item.media,
+            uri: typeof item.media === 'object' ? item.media.url : item.media,
             priority: FastImage.priority.high,
             cache: FastImage.cacheControl.immutable,
           }}
