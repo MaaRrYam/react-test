@@ -59,7 +59,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
 
   return (
     <Layout
-      title="Your Function"
+      title="Your Role"
       footer={
         <PrimaryButton
           title="Continue"
@@ -70,7 +70,7 @@ const Industry: React.FC<ExperienceScreenProps> = ({navigation}) => {
       {filteredIndustries.length ? (
         <>
           <Input
-            placeholder="Search for your function"
+            placeholder="Search for your role"
             value={search}
             onChangeText={setSearch}
             style={commonStyles.yourFunctionSearchInput}
