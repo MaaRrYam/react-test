@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -22,17 +22,25 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
     <View style={styles.feedItem}>
       <View style={styles.authorInfo}>
         <TouchableOpacity onPress={handleAuthorPress}>
-          <FastImage
-            resizeMode={FastImage.resizeMode.cover}
-            defaultSource={require('@/assets/images/user.png')}
-            fallback={require('@/assets/images/user.png')}
-            source={{
-              uri: item.author?.photoUrl,
-              priority: FastImage.priority.high,
-              cache: FastImage.cacheControl.immutable,
-            }}
-            style={styles.userImage}
-          />
+          {item.author.photoUrl ? (
+            <FastImage
+              resizeMode={FastImage.resizeMode.cover}
+              defaultSource={require('@/assets/images/user.png')}
+              fallback={require('@/assets/images/user.png')}
+              source={{
+                uri: item.author?.photoUrl,
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
+              style={styles.userImage}
+            />
+          ) : (
+            <Image
+              resizeMode={FastImage.resizeMode.cover}
+              source={require('@/assets/images/user.png')}
+              style={styles.userImage}
+            />
+          )}
         </TouchableOpacity>
         <View
           style={{
@@ -46,7 +54,7 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
           </TouchableOpacity>
           <Text style={styles.postTime}>
             {formatFirebaseTimestamp(
-              item.editedTime || item.timestamp,
+              item.editedTime || item.creationTime || item.timestamp,
               'dateTime',
             )}
           </Text>

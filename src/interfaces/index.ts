@@ -420,7 +420,11 @@ export interface FeedItem {
   text?: string;
   authorId: string;
   author: UserInterface;
-  media?: string;
+  media?:
+    | string
+    | {
+        url: string;
+      };
   mediaType?: string | null;
   editedTime: Timestamp;
   edited: boolean;
