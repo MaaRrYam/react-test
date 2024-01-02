@@ -83,7 +83,6 @@ export default StyleSheet.create({
   },
   tabButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     gap: 8,
   },
   selectedTabButton: {

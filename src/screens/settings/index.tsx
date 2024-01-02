@@ -1,4 +1,4 @@
-import {StyleSheet, View, ScrollView, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {
   AccountPreferences,
@@ -10,6 +10,7 @@ import {
 import {BackArrow} from '@/assets/icons';
 import {COLORS, SETTINGS_TABS} from '@/constants';
 import profileStyles from '@/styles/profile';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface SettingsProps {
   isVisible: boolean;
