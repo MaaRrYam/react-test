@@ -87,7 +87,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
             </View>
           </ScrollView>
           {isNewPostClicked && (
-            <NewPost isVisible={isNewPostClicked} onClose={handleClose} />
+            <NewPost
+              isVisible={isNewPostClicked}
+              onClose={handleClose}
+              isFromFeed={true}
+            />
           )}
         </KeyboardAvoidingView>
       </SafeAreaView>

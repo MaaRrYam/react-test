@@ -149,6 +149,9 @@ export const homeSlice = createSlice({
     addPostToProfileFeed(state, {payload}: {payload: FeedItem}) {
       state.profileFeed = [payload, ...state.profileFeed];
     },
+    addPostToFeed(state, {payload}: {payload: FeedItem}) {
+      state.feed = [payload, ...state.feed];
+    },
   },
   extraReducers: builder => {
     builder.addCase(getFeed.fulfilled, (state, {payload}) => {
@@ -185,6 +188,7 @@ export const {
   removeReportedPostFromFeed,
   setIsRefreshingToFalse,
   addPostToProfileFeed,
+  addPostToFeed,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;
