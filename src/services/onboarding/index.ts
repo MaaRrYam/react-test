@@ -4,13 +4,25 @@ import {
   Asset,
   EducationState,
   ExperienceState,
+  ImageInterface,
   UserInterface,
 } from '@/interfaces';
 import {getUID} from '@/utils/functions';
 import FirebaseService from '@/services/Firebase';
 
 const OnboardingService = {
-  async getStarted(newData: UserInterface, profilePic: Asset) {
+  async getStarted(
+    newData: {
+      country: string;
+      state: string;
+      stateDetails: string;
+      city: string;
+      cityDetails: string;
+      onboardingStep: number;
+      username: string;
+    },
+    profilePic: Asset | ImageInterface | null,
+  ) {
     const UID = (await getUID()) as string;
     if (profilePic) {
       const downloadURL = await FirebaseService.uploadToStorage(profilePic);

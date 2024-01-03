@@ -1,5 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
-import {COLORS, PADDING, FONTS, MARGINS} from '@/constants';
+import {COLORS, PADDING, FONTS} from '@/constants';
 
 export const commonStyles = StyleSheet.create({
   container: {
@@ -49,27 +49,27 @@ export const commonStyles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 10,
   },
+  getStartedWrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
   searchablecontainer: {
-    marginTop: MARGINS.general,
-    select: {
-      flex: 1,
-      container: {
-        height: 60,
-        borderColor: COLORS.border,
-      },
-      text: {
-        fontSize: FONTS.text,
-      },
-    },
-    option: {
-      flex: 1,
-      text: {
-        fontSize: FONTS.text,
-      },
-    },
-    optionsList: {
-      borderColor: COLORS.border,
-    },
+    marginBottom: 12,
+    height: 60,
+    borderColor: COLORS.border,
+    fontSize: FONTS.text,
+  },
+  searchContainerStyles: {
+    borderWidth: 0,
+  },
+  searchInputContainerStyles: {
+    borderWidth: 0,
+    padding: 0,
+  },
+  searchTextInput: {
+    borderColor: COLORS.border,
+    borderWidth: 0,
+    height: 40,
   },
   yourFunctionSearchInput: {
     marginTop: -20,
