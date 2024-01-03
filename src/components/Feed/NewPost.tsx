@@ -24,15 +24,17 @@ import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
 import {hasAndroidPermission} from '@/utils';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
-import {addPostToProfileFeed} from '@/store/features/homeSlice';
+import {addPostToFeed, addPostToProfileFeed} from '@/store/features/homeSlice';
 import {useAppSelector} from '@/hooks/useAppSelector';
 
 const NewPost = ({
   isVisible,
   onClose,
+  isFromFeed,
 }: {
   isVisible: boolean;
   onClose: () => void;
+  isFromFeed?: boolean;
 }) => {
   const {user} = useAppSelector(state => state.auth);
   const [photos, setPhotos] = useState<ImageInterface[]>([
@@ -138,17 +140,31 @@ const NewPost = ({
     if (response) {
       setText('');
       setSelectedImage(null);
-      dispatch(
-        addPostToProfileFeed({
-          ...payload,
-          author: user,
-          _id: postId,
-          feedType: 'post',
-          postLikes: [],
-          postDislikes: [],
-          tags: [],
-        }),
-      );
+      if (isFromFeed) {
+        dispatch(
+          addPostToFeed({
+            ...payload,
+            author: user,
+            _id: postId,
+            feedType: 'post',
+            postLikes: [],
+            postDislikes: [],
+            tags: [],
+          }),
+        );
+      } else {
+        dispatch(
+          addPostToProfileFeed({
+            ...payload,
+            author: user,
+            _id: postId,
+            feedType: 'post',
+            postLikes: [],
+            postDislikes: [],
+            tags: [],
+          }),
+        );
+      }
       ToastService.showSuccess('Post created successfully');
     } else {
       ToastService.showError('Something went wrong');
