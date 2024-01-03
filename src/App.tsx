@@ -10,6 +10,7 @@ import {SelectProvider} from '@mobile-reality/react-native-select-pro';
 import store from '@/store';
 import RootNavigation from '@/navigation';
 import {Platform} from 'react-native';
+import CustomToast from './components/CustomToast';
 
 const App = () => {
   useEffect(() => {
@@ -20,7 +21,12 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <ToastProvider placement="bottom" offsetBottom={50}>
+      <ToastProvider
+        placement="bottom"
+        offsetBottom={50}
+        renderType={{
+          with_close_button: toast => <CustomToast toast={toast} />,
+        }}>
         <Provider store={store}>
           <SelectProvider>
             <RootNavigation />
