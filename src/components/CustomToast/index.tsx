@@ -2,22 +2,24 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {ToastProps} from 'react-native-toast-notifications/lib/typescript/toast';
 
+import {COLORS} from '@/constants';
+
 const CustomToast = ({toast}: {toast: ToastProps}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.message}>{toast.message}</Text>
-      <TouchableOpacity onPress={() => toast.onHide()} style={styles.cross}>
-        <Text style={styles.crossText}>x</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={() => toast.onHide()}>
+      <View style={styles.container}>
+        <Text style={styles.message}>{toast.message}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: '40%',
     maxWidth: '85%',
     paddingVertical: 10,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     marginVertical: 4,
     borderRadius: 8,
     borderLeftColor: '#00C851',
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
   },
-  message: {color: '#a3a3a3', marginRight: 16},
+  message: {color: COLORS.black, marginRight: 16},
   cross: {
     marginLeft: 'auto',
     width: 25,
