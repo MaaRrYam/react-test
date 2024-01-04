@@ -50,6 +50,7 @@ import Feedback from '@/components/Settings/Feedback';
 import {About, ProfileTabs} from '@/components/Profile';
 import {PostsSkeleton} from './Skeleton';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
+import FeedHeader from './Feed/FeedHeader';
 
 export {
   BackButton,
@@ -100,4 +101,5 @@ export {
   PostsSkeleton,
   PostComments,
   KeyboardAvoidingView,
+  FeedHeader,
 };

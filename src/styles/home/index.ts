@@ -10,6 +10,10 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
+  feedHeaderContainer: {
+    backgroundColor: COLORS.lightBlueBackground,
+    paddingBottom: 10,
+  },
   header: {
     backgroundColor: COLORS.white,
     paddingHorizontal: PADDING.general,

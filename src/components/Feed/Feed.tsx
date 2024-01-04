@@ -1,18 +1,29 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Dimensions, View} from 'react-native';
+import {Dimensions, View, RefreshControl} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 
-import {BottomSheet, PostsSkeleton} from '@/components';
+import {BottomSheet, FeedHeader, PostsSkeleton} from '@/components';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {useAppSelector} from '@/hooks/useAppSelector';
-import {getFeed, setIsRefreshingToFalse} from '@/store/features/homeSlice';
+import {
+  getFeed,
+  refreshFeed,
+  setFeedFetchedToFalse,
+  setIsRefreshingToFalse,
+} from '@/store/features/homeSlice';
 import FeedItem from './FeedItem';
 import PostComments from './PostComments';
 import HomeService from '@/services/home';
 import {FeedCommentsResponse} from '@/interfaces';
 
-const Feed = () => {
-  const {feed, isFeedFetched} = useAppSelector(state => state.home);
+const Feed = ({
+  setIsNewPostClicked,
+}: {
+  setIsNewPostClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const {feed, isFeedFetched, isRefreshing} = useAppSelector(
+    state => state.home,
+  );
   const dispatch = useAppDispatch();
 
   const [comments, setComments] = useState({
@@ -38,6 +49,15 @@ const Feed = () => {
     }
   }, [dispatch, isFeedFetched]);
 
+  const handleRefresh = () => {
+    dispatch(refreshFeed());
+    dispatch(setFeedFetchedToFalse());
+  };
+
+  const handleOpen = () => {
+    setIsNewPostClicked(true);
+  };
+
   const fetchPostComments = async (postId: string) => {
     setComments(prev => ({...prev, loading: true, showComments: true, postId}));
     const response = await HomeService.fetchPostComments(postId);
@@ -56,6 +76,13 @@ const Feed = () => {
             keyExtractor={item => item._id || item.id}
             estimatedItemSize={120}
             showsVerticalScrollIndicator={false}
+            ListHeaderComponent={<FeedHeader handleOpen={handleOpen} />}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+              />
+            }
           />
         </View>
       ) : (
