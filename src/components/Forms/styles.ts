@@ -1,11 +1,10 @@
 import {COLORS, FONTS} from '@/constants';
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const editFormStyles = StyleSheet.create({
   flexStyle: {
     flex: 1,
     justifyContent: 'space-between',
-    height: Dimensions.get('window').height * 0.7,
   },
   paddedContainer: {
     paddingHorizontal: 20,
