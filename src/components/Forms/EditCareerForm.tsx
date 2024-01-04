@@ -171,7 +171,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
     <View style={styles.flexStyle}>
       {isEditing ? (
         <>
-          <KeyboardAvoidingView style={styles.paddedContainer}>
+          <KeyboardAvoidingView style={[styles.paddedContainer]}>
             <Text style={styles.sectionHeader}>Job Details</Text>
             <Input
               onChangeText={handleChange('companyName')}
@@ -223,7 +223,7 @@ const EditCareerForm: FC<CareerFormProps> = ({
               </Text>
             </View>
           </KeyboardAvoidingView>
-          <View style={[styles.footer, {marginTop: 10}]}>
+          <View style={[styles.footer]}>
             <PrimaryButton
               title={editingIndex !== null ? 'Update' : 'Save'}
               onPress={handleSubmit}

@@ -1,5 +1,5 @@
 import React, {useEffect, FC, useRef, useCallback, useMemo} from 'react';
-import {KeyboardAvoidingView, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {useFormik} from 'formik';
 import {CareerFormProps, EducationProps} from '@/interfaces';
 import {
@@ -171,7 +171,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
     <View style={styles.flexStyle}>
       {isEditing ? (
         <>
-          <KeyboardAvoidingView style={styles.paddedContainer}>
+          <View style={[styles.paddedContainer]}>
             <Text style={styles.sectionHeader}>Job Details</Text>
             <Input
               onChangeText={handleChange('instituteName')}
@@ -220,7 +220,7 @@ const EditEducationForm: FC<CareerFormProps> = ({
               />
               <Text style={styles.checkboxText}>I currently study here ?</Text>
             </View>
-          </KeyboardAvoidingView>
+          </View>
           <View style={styles.footer}>
             <PrimaryButton
               title={editingIndex ? 'Update' : 'Save'}
