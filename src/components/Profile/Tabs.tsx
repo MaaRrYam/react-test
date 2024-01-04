@@ -3,7 +3,6 @@ import {View, TouchableOpacity} from 'react-native';
 
 import profileStyles from '@/styles/profile';
 import {BottomSheet, PrimaryButton, ProfileFeed} from '@/components';
-import EditProfile from '@/components/EditProfile';
 import {COLORS, PROFILE_TABS} from '@/constants';
 import {NewChatIcon} from '@/assets/icons';
 import {styles} from '@/screens/home/styles';
@@ -23,15 +22,17 @@ const Tabs = ({
   user,
   usersProfileID,
   handleOpen,
+  setSelectedTab,
+  selectedTab,
+  setIsEditProfileVisible,
 }: {
   user: UserInterface;
   usersProfileID: string;
   handleOpen: () => void;
+  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  selectedTab: string;
+  setIsEditProfileVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
-  const [isVisible, setIsVisible] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(0);
-  const [isEditing, setIsEditing] = useState(false);
   const [comments, setComments] = useState({
     postId: '',
     loading: false,
@@ -42,7 +43,7 @@ const Tabs = ({
   const value = useUserManagement();
 
   const openBottomSheet = () => {
-    setIsVisible(true);
+    setIsEditProfileVisible(true);
   };
 
   return (
@@ -122,19 +123,6 @@ const Tabs = ({
             postId={comments.postId}
           />
         </BottomSheet>
-      )}
-
-      {isVisible && (
-        <EditProfile
-          isVisible={isVisible}
-          onClose={() => setIsVisible(false)}
-          tabItem={selectedTab}
-          user={user}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          editingIndex={editingIndex}
-          setEditingIndex={setEditingIndex}
-        />
       )}
     </>
   );

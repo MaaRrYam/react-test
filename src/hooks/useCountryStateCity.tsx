@@ -8,7 +8,6 @@ import {
   ICity,
 } from 'country-state-city';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {useRoute} from '@react-navigation/native';
 
 import {commonStyles} from '@/styles/onboarding';
 import {
@@ -21,9 +20,7 @@ import {COLORS, FONTS} from '@/constants';
 
 const useCountryStateCity = () => {
   const {user} = useUserManagement();
-  const {name} = useRoute();
 
-  console.log({name});
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [isStateDropdownOpen, setIsStateDropdownOpen] = useState(false);
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);

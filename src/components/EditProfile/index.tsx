@@ -82,7 +82,7 @@ const EditProfile = ({
       isVisible={isVisible}
       onClose={onClose}
       indicatorVisible={false}
-      snapPoints={['20%', '100%']}>
+      snapPoints={['20%', '95%']}>
       <View style={styles.header}>
         <View style={styles.closeButtonContainer}>
           <TouchableOpacity style={styles.closeButton} onPress={handleOnClose}>

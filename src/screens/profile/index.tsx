@@ -7,12 +7,18 @@ import {ProfileProps, UserInterface} from '@/interfaces';
 import profileStyles from '@/styles/profile';
 import Settings from '../settings';
 import {useAppSelector} from '@/hooks/useAppSelector';
+import EditProfile from '@/components/EditProfile';
+import {PROFILE_TABS} from '@/constants';
 
 const Profile = ({route}: ProfileProps) => {
   const {uid, user} = route.params;
   const currentLoggedInUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0]);
 
   const [profileUser, setProfileUser] = useState<UserInterface>(
     currentLoggedInUser.id === uid
@@ -76,6 +82,9 @@ const Profile = ({route}: ProfileProps) => {
             user={profileUser}
             usersProfileID={uid}
             handleOpen={handleOpen}
+            setSelectedTab={setSelectedTab}
+            selectedTab={selectedTab}
+            setIsEditProfileVisible={setIsEditProfileVisible}
           />
         </ScrollView>
       </SafeAreaView>
@@ -84,6 +93,19 @@ const Profile = ({route}: ProfileProps) => {
       )}
       {isSettingsClicked && (
         <Settings isVisible={isSettingsClicked} onClose={handleSettingsClose} />
+      )}
+
+      {isEditProfileVisible && (
+        <EditProfile
+          isVisible={isEditProfileVisible}
+          onClose={() => setIsEditProfileVisible(false)}
+          tabItem={selectedTab}
+          user={(user || currentLoggedInUser) as UserInterface}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          editingIndex={editingIndex}
+          setEditingIndex={setEditingIndex}
+        />
       )}
     </>
   );
