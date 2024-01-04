@@ -10,11 +10,19 @@ import ProfileService from '@/services/profile';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {updateUserData} from '@/store/features/authSlice';
-import {ScrollView} from 'react-native-gesture-handler';
+import useCountryStateCity from '@/hooks/useCountryStateCity';
 
 const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
   const {user} = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
+  const {
+    renderUI,
+    selectedCity,
+    selectedCountry,
+    selectedState,
+    allCities,
+    allStates,
+  } = useCountryStateCity();
 
   const {
     values,
@@ -30,13 +38,16 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
       name: user.name || '',
       about: user.description || '',
       tagline: user.tagline || '',
-      country: user.country || '',
-      city: user.city || '',
-      state: user.state || '',
     },
     validationSchema: basicInfoSchema,
     onSubmit: async formValues => {
-      await ProfileService.handleSaveBasicInformation(formValues);
+      const payload = {
+        ...formValues,
+        country: selectedCountry,
+        state: allStates.length && selectedState ? selectedState : '',
+        city: allCities.length && selectedCity ? selectedCity : '',
+      };
+      await ProfileService.handleSaveBasicInformation(payload);
       dispatch(
         updateUserData({
           ...user,
@@ -54,89 +65,61 @@ const EditBasicInfoForm: React.FC<UserInfoProps> = ({onClose}) => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        <Text
-          style={[
-            styles.headerText,
-            styles.sectionHeader,
-            {paddingHorizontal: 20},
-          ]}>
-          Basic Information
+      <Text
+        style={[
+          styles.headerText,
+          styles.sectionHeader,
+          {paddingHorizontal: 20},
+        ]}>
+        Basic Information
+      </Text>
+      <View style={styles.section}>
+        <Input
+          name="Name"
+          placeholder="Name"
+          touched={touched.name}
+          error={errors.name}
+          setFieldTouched={setFieldTouched}
+          onChangeText={handleChange('name')}
+          value={values.name}
+        />
+        <TextArea
+          name="About"
+          placeholder="About"
+          onChangeText={handleChange('about')}
+          value={values.about as string}
+          style={styles.textArea}
+          setFieldTouched={setFieldTouched}
+          touched={touched.about}
+          error={errors.about}
+        />
+
+        <Text style={[styles.headerText, styles.subSectionHeader]}>
+          Current Position
         </Text>
-        <View style={styles.section}>
-          <Input
-            name="Name"
-            placeholder="Name"
-            touched={touched.name}
-            error={errors.name}
-            setFieldTouched={setFieldTouched}
-            onChangeText={handleChange('name')}
-            value={values.name}
-          />
-          <TextArea
-            name="About"
-            placeholder="About"
-            onChangeText={handleChange('about')}
-            value={values.about as string}
-            style={styles.textArea}
-            setFieldTouched={setFieldTouched}
-            touched={touched.about}
-            error={errors.about}
-          />
+        <Dropdown
+          options={employmentOptions || []}
+          style={styles.dropdown}
+          selectedOption={values.tagline}
+          onOptionSelect={handleChange('tagline')}
+          error={errors.tagline}
+        />
+      </View>
 
-          <Text style={[styles.headerText, styles.subSectionHeader]}>
-            Current Position
-          </Text>
-          <Dropdown
-            options={employmentOptions || []}
-            style={styles.dropdown}
-            selectedOption={values.tagline}
-            onOptionSelect={handleChange('tagline')}
-            error={errors.tagline}
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={[styles.headerText, styles.subSectionHeader]}>
-            Location
-          </Text>
-          <Input
-            name="Country"
-            placeholder="Country"
-            onChangeText={handleChange('country')}
-            value={values.country}
-            setFieldTouched={setFieldTouched}
-            touched={touched.country}
-            error={errors.country}
-          />
-          <Input
-            name="State"
-            placeholder="State"
-            onChangeText={handleChange('state')}
-            value={values.state}
-            setFieldTouched={setFieldTouched}
-            touched={touched.state}
-            error={errors.state}
-          />
-          <Input
-            name="City"
-            placeholder="City"
-            onChangeText={handleChange('city')}
-            value={values.city}
-            setFieldTouched={setFieldTouched}
-            touched={touched.city}
-            error={errors.city}
-          />
-        </View>
-        <View style={styles.footer}>
-          <PrimaryButton
-            title="Save"
-            onPress={handleSubmit}
-            isLoading={isSubmitting}
-            style={styles.saveButton}
-          />
-        </View>
-      </ScrollView>
+      <View style={[styles.section]}>
+        <Text style={[styles.headerText, styles.subSectionHeader]}>
+          Location
+        </Text>
+        {renderUI()}
+      </View>
+      <View style={styles.footer}>
+        <PrimaryButton
+          title="Save"
+          onPress={handleSubmit}
+          isLoading={isSubmitting}
+          style={styles.saveButton}
+        />
+      </View>
     </>
   );
 };
@@ -152,6 +135,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
   },
+
   sectionHeader: {
     fontWeight: 'bold',
     fontSize: FONTS.largeLabel,
@@ -176,9 +160,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  saveButton: {
-    marginTop: 10,
-  },
+  saveButton: {},
 });
 
 export default EditBasicInfoForm;

@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
 import {
@@ -10,6 +10,8 @@ import {
   BottomSheet,
 } from '@/components';
 import {COLORS} from '@/constants';
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface EditProfileProps {
   isVisible: boolean;
@@ -82,7 +84,7 @@ const EditProfile = ({
       onClose={onClose}
       indicatorVisible={false}
       snapPoints={['20%', '100%']}>
-      <View style={styles.header}>
+      <SafeAreaView style={styles.header}>
         <View style={styles.closeButtonContainer}>
           <TouchableOpacity style={styles.closeButton} onPress={handleOnClose}>
             <Cross />
@@ -100,8 +102,10 @@ const EditProfile = ({
             }}
           />
         )}
-      </View>
-      <ScrollView style={styles.contentContainer}>{renderForm()}</ScrollView>
+      </SafeAreaView>
+      <BottomSheetScrollView style={styles.contentContainer}>
+        {renderForm()}
+      </BottomSheetScrollView>
     </BottomSheet>
   );
 };
@@ -116,7 +120,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
     paddingHorizontal: 20,
-    paddingBottom: 18,
+    paddingBottom: -10,
+    marginTop: -15,
   },
   closeButtonContainer: {
     backgroundColor: COLORS.lightBackground,

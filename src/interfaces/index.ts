@@ -263,11 +263,11 @@ export interface UserInterface {
   name: string;
   email: string;
   country: string;
-  countryDetails: ICountry;
+  countryDetails: ICountry | string;
   city: string;
-  cityDetails: ICity;
+  cityDetails: ICity | string;
   state: string;
-  stateDetails: IState;
+  stateDetails: IState | string;
   username: string;
   selectedRole: string;
   previousRole?: string;
@@ -749,17 +749,17 @@ export interface SettingBasicInfoUpdateInterface {
 
 export interface GetStartedCountryState {
   label: string;
-  value: ICountry;
+  value: string;
 }
 
 export interface GetStartedState {
   label: string;
-  value: IState;
+  value: string;
 }
 
 export interface GetStartedCity {
   label: string;
-  value: ICity;
+  value: string;
 }
 
 export interface EmptyProps {

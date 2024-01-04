@@ -1,57 +1,39 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 import FastImage from 'react-native-fast-image';
+import useCountryStateCity from '@/hooks/useCountryStateCity';
 
 import Layout from './Layout';
 import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
-import {
-  Asset,
-  GetStartedCity,
-  GetStartedCountryState,
-  GetStartedState,
-  ImageInterface,
-  UserInterface,
-} from '@/interfaces';
+import {Asset, ImageInterface, UserInterface} from '@/interfaces';
 import LoadingScreen from '@/components/Loading';
 import OnboardingService from '@/services/onboarding';
 import useUserManagement from '@/hooks/useUserManagement';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CameraSvg} from '@/assets/icons';
-import {Select} from '@mobile-reality/react-native-select-pro';
-import {
-  Country,
-  State,
-  City,
-  IState,
-  ICountry,
-  ICity,
-} from 'country-state-city';
 import ToastService from '@/services/toast';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
+  const {
+    renderUI,
+    selectedCity,
+    selectedCountry,
+    selectedState,
+    setSelectedCity,
+    setSelectedCountry,
+    setSelectedState,
+    allCities,
+    allStates,
+  } = useCountryStateCity();
 
   const [userData, setUserData] = useState<UserInterface>(
     user ? user : ({} as UserInterface),
-  );
-  const countries: ICountry[] = Country.getAllCountries();
-  const [allCountries, setAllCountries] = useState<GetStartedCountryState[]>(
-    [],
-  );
-  const [selectedCountry, setSelectedCountry] =
-    useState<GetStartedCountryState>({} as GetStartedCountryState);
-  const [allStates, setAllStates] = useState<GetStartedState[]>([]);
-  const [selectedState, setSelectedState] = useState<GetStartedState>(
-    {} as GetStartedState,
-  );
-  const [allCities, setAllCities] = useState<GetStartedCity[]>([]);
-  const [selectedCity, setSelectedCity] = useState<GetStartedCity>(
-    {} as GetStartedCity,
   );
   const [initialValues, setInitialValues] = useState({
     username: user?.username || '',
@@ -74,18 +56,12 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
     } else {
       const newData = {
         ...formValues,
-        country: selectedCountry.label,
-        countryDetails: selectedCountry.value,
-        state:
-          allStates.length && selectedState.label ? selectedState?.label : '',
+        country: selectedCountry,
+        state: allStates.length && selectedState ? selectedState : '',
         stateDetails:
-          allStates.length > 0 && selectedState.value
-            ? selectedState?.value
-            : {},
-        city:
-          allCities.length > 0 && selectedCity.label ? selectedCity?.label : '',
-        cityDetails:
-          allCities.length > 0 && selectedCity.value ? selectedCity?.value : {},
+          allStates.length > 0 && selectedState ? selectedState : '',
+        city: allCities.length > 0 && selectedCity ? selectedCity : '',
+        cityDetails: allCities.length > 0 && selectedCity ? selectedCity : '',
         onboardingStep: 1,
       };
       setUserData(
@@ -138,48 +114,14 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
         OnboardingService.fetchUserData().then(res => {
           if (res) {
             setUserData(res);
+            setSelectedCountry(res.country || '');
+            setSelectedState(res.state || '');
+            setSelectedCity(res.city || '');
           }
         });
       }
     })();
-  }, [user]);
-
-  useEffect(() => {
-    const countriesArr: {
-      label: string;
-      value: ICountry;
-    }[] = [];
-
-    countries?.map(ct => {
-      countriesArr.push({label: ct?.name, value: ct});
-    });
-    setAllCountries(countriesArr);
-  }, [countries]);
-
-  useEffect(() => {
-    const states: IState[] = State.getStatesOfCountry(
-      selectedCountry?.value?.isoCode,
-    );
-    const statesArr: GetStartedState[] = [];
-    states?.map(st => {
-      statesArr.push({label: st?.name, value: st});
-    });
-    setAllStates(statesArr);
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    if (selectedCountry && selectedState) {
-      const cities: ICity[] = City.getCitiesOfState(
-        selectedCountry?.value?.isoCode,
-        selectedState?.value?.isoCode,
-      );
-      const citiesArr: GetStartedCity[] = [];
-      cities?.map(city => {
-        citiesArr.push({label: city?.name, value: city});
-      });
-      setAllCities(citiesArr);
-    }
-  }, [selectedCountry, selectedState]);
+  }, [setSelectedCity, setSelectedCountry, setSelectedState, user]);
 
   useLayoutEffect(() => {
     OnboardingService.setScreen(navigation, setIsLoading, userData);
@@ -195,104 +137,60 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
 
   return (
     <Layout title="Let's get you started">
-      <TouchableOpacity
-        style={commonStyles.imageContainer}
-        onPress={() => openImagePicker()}>
-        {user?.photoUrl ? (
-          <FastImage
-            style={commonStyles.image}
-            source={{
-              uri: user.photoUrl,
-              priority: FastImage.priority.high,
-              cache: FastImage.cacheControl.immutable,
-            }}
-            resizeMode="cover"
+      <View style={commonStyles.getStartedWrapper}>
+        <ScrollView>
+          <TouchableOpacity
+            style={commonStyles.imageContainer}
+            onPress={() => openImagePicker()}>
+            {userData?.photoUrl ? (
+              <FastImage
+                style={commonStyles.image}
+                source={{
+                  uri: userData.photoUrl,
+                  priority: FastImage.priority.high,
+                  cache: FastImage.cacheControl.immutable,
+                }}
+                resizeMode="cover"
+              />
+            ) : selectedImage?.uri ? (
+              <Image
+                style={commonStyles.image}
+                source={{
+                  uri: selectedImage?.uri,
+                }}
+                resizeMode="cover"
+              />
+            ) : selectedImage ? (
+              <Image
+                style={commonStyles.image}
+                source={{
+                  uri: selectedImage?.uri,
+                }}
+                resizeMode="cover"
+              />
+            ) : (
+              <View style={commonStyles.cameraImage}>
+                <CameraSvg />
+              </View>
+            )}
+          </TouchableOpacity>
+          <Text style={commonStyles.imageText}>Add Profile Picture</Text>
+          <Input
+            placeholder="Username"
+            value={values.username}
+            onChangeText={handleChange('username')}
+            touched={touched.username}
+            error={errors.username}
+            name="username"
+            setFieldTouched={setFieldTouched}
           />
-        ) : selectedImage?.uri ? (
-          <Image
-            style={commonStyles.image}
-            source={{
-              uri: selectedImage?.uri,
-            }}
-            resizeMode="cover"
-          />
-        ) : selectedImage ? (
-          <Image
-            style={commonStyles.image}
-            source={{
-              uri: selectedImage?.uri,
-            }}
-            resizeMode="cover"
-          />
-        ) : (
-          <View style={commonStyles.cameraImage}>
-            <CameraSvg />
-          </View>
-        )}
-      </TouchableOpacity>
-      <Text style={commonStyles.imageText}>Add Profile Picture</Text>
-      <Input
-        placeholder="Username"
-        value={values.username}
-        onChangeText={handleChange('username')}
-        touched={touched.username}
-        error={errors.username}
-        name="username"
-        setFieldTouched={setFieldTouched}
-      />
 
-      <Select
-        styles={commonStyles.searchablecontainer}
-        options={allCountries}
-        animation={true}
-        searchable={true}
-        onSelect={option => {
-          setSelectedCountry(option);
-        }}
-        placeholderText={'Select Country'}
-        onRemove={() => {
-          setSelectedCountry({} as GetStartedCountryState);
-        }}
-      />
+          {renderUI()}
+        </ScrollView>
 
-      {!!allStates?.length && (
-        <View style={commonStyles.searchablecontainer}>
-          <Select
-            styles={commonStyles.searchablecontainer}
-            options={allStates}
-            animation={true}
-            searchable={true}
-            onSelect={option => {
-              setSelectedState(option);
-            }}
-            placeholderText={'Select State'}
-            onRemove={() => {
-              setSelectedState({} as GetStartedState);
-            }}
-          />
+        <View style={[commonStyles.footer, {paddingBottom: 0}]}>
+          <PrimaryButton title="Continue" onPress={handleSubmit} />
         </View>
-      )}
-
-      {!!allCities?.length && (
-        <View style={commonStyles.searchablecontainer}>
-          <Select
-            styles={commonStyles.searchablecontainer}
-            options={allCities}
-            animation={true}
-            searchable={true}
-            onSelect={option => {
-              setSelectedCity(option);
-            }}
-            placeholderText={'Select City'}
-            onRemove={() => {
-              setSelectedCity({} as GetStartedCity);
-            }}
-          />
-        </View>
-      )}
-
-      <View style={commonStyles.footer}>
-        <PrimaryButton title="Continue" onPress={handleSubmit} />
       </View>
     </Layout>
   );
