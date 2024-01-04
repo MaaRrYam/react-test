@@ -2,29 +2,14 @@ import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, Image, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 import FastImage from 'react-native-fast-image';
-import {
-  Country,
-  State,
-  City,
-  IState,
-  ICountry,
-  ICity,
-} from 'country-state-city';
-import DropDownPicker from 'react-native-dropdown-picker';
+import useCountryStateCity from '@/hooks/useCountryStateCity';
 
 import Layout from './Layout';
 import {PrimaryButton, Input} from '@/components';
 import {commonStyles} from '@/styles/onboarding';
 import {GetStartedScreenProps} from '@/types';
 import {getStartedSchema} from '@/utils/schemas/onboarding';
-import {
-  Asset,
-  GetStartedCity,
-  GetStartedCountryState,
-  GetStartedState,
-  ImageInterface,
-  UserInterface,
-} from '@/interfaces';
+import {Asset, ImageInterface, UserInterface} from '@/interfaces';
 import LoadingScreen from '@/components/Loading';
 import OnboardingService from '@/services/onboarding';
 import useUserManagement from '@/hooks/useUserManagement';
@@ -32,32 +17,23 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CameraSvg} from '@/assets/icons';
 import ToastService from '@/services/toast';
-import {COLORS, FONTS} from '@/constants';
 
 const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
   const {user} = useUserManagement();
+  const {
+    renderUI,
+    selectedCity,
+    selectedCountry,
+    selectedState,
+    setSelectedCity,
+    setSelectedCountry,
+    setSelectedState,
+    allCities,
+    allStates,
+  } = useCountryStateCity();
 
   const [userData, setUserData] = useState<UserInterface>(
     user ? user : ({} as UserInterface),
-  );
-  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
-  const [isStateDropdownOpen, setIsStateDropdownOpen] = useState(false);
-  const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
-
-  const countries: ICountry[] = Country.getAllCountries();
-  const [allCountries, setAllCountries] = useState<GetStartedCountryState[]>(
-    [],
-  );
-  const [selectedCountry, setSelectedCountry] = useState<string>(
-    userData?.country || '',
-  );
-  const [allStates, setAllStates] = useState<GetStartedState[]>([]);
-  const [selectedState, setSelectedState] = useState<string>(
-    userData?.state || '',
-  );
-  const [allCities, setAllCities] = useState<GetStartedCity[]>([]);
-  const [selectedCity, setSelectedCity] = useState<string>(
-    userData?.city || '',
   );
   const [initialValues, setInitialValues] = useState({
     username: user?.username || '',
@@ -145,42 +121,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
         });
       }
     })();
-  }, [user]);
-
-  useEffect(() => {
-    const countriesArr: {
-      label: string;
-      value: string;
-    }[] = [];
-
-    countries?.map(ct => {
-      countriesArr.push({label: ct?.name, value: ct.isoCode});
-    });
-    setAllCountries(countriesArr);
-  }, [countries]);
-
-  useEffect(() => {
-    const states: IState[] = State.getStatesOfCountry(selectedCountry);
-    const statesArr: GetStartedState[] = [];
-    states?.map(st => {
-      statesArr.push({label: st?.name, value: st.isoCode});
-    });
-    setAllStates(statesArr);
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    if (selectedCountry && selectedState) {
-      const cities: ICity[] = City.getCitiesOfState(
-        selectedCountry,
-        selectedState,
-      );
-      const citiesArr: GetStartedCity[] = [];
-      cities?.map(city => {
-        citiesArr.push({label: city?.name, value: city.name});
-      });
-      setAllCities(citiesArr);
-    }
-  }, [selectedCountry, selectedState]);
+  }, [setSelectedCity, setSelectedCountry, setSelectedState, user]);
 
   useLayoutEffect(() => {
     OnboardingService.setScreen(navigation, setIsLoading, userData);
@@ -201,11 +142,11 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
           <TouchableOpacity
             style={commonStyles.imageContainer}
             onPress={() => openImagePicker()}>
-            {user?.photoUrl ? (
+            {userData?.photoUrl ? (
               <FastImage
                 style={commonStyles.image}
                 source={{
-                  uri: user.photoUrl,
+                  uri: userData.photoUrl,
                   priority: FastImage.priority.high,
                   cache: FastImage.cacheControl.immutable,
                 }}
@@ -244,80 +185,7 @@ const GetStarted: React.FC<GetStartedScreenProps> = ({navigation}) => {
             setFieldTouched={setFieldTouched}
           />
 
-          <DropDownPicker
-            open={isCountryDropdownOpen}
-            value={selectedCountry}
-            items={allCountries}
-            setOpen={setIsCountryDropdownOpen}
-            setValue={setSelectedCountry}
-            searchable={true}
-            placeholder="Select Country"
-            style={commonStyles.searchablecontainer}
-            containerStyle={commonStyles.searchContainerStyles}
-            closeAfterSelecting={true}
-            searchContainerStyle={commonStyles.searchInputContainerStyles}
-            modalAnimationType="fade"
-            dropDownContainerStyle={{
-              borderColor: COLORS.border,
-            }}
-            listItemLabelStyle={{
-              fontSize: FONTS.text,
-              color: COLORS.text,
-            }}
-            searchTextInputStyle={commonStyles.searchTextInput}
-            searchPlaceholder="Search Country"
-            zIndex={10000}
-          />
-
-          <DropDownPicker
-            open={isStateDropdownOpen}
-            value={selectedState}
-            items={allStates}
-            setOpen={setIsStateDropdownOpen}
-            setValue={setSelectedState}
-            searchable={true}
-            placeholder="Select State"
-            style={commonStyles.searchablecontainer}
-            containerStyle={commonStyles.searchContainerStyles}
-            closeAfterSelecting={true}
-            searchContainerStyle={commonStyles.searchInputContainerStyles}
-            modalAnimationType="fade"
-            dropDownContainerStyle={{
-              borderColor: COLORS.border,
-            }}
-            listItemLabelStyle={{
-              fontSize: FONTS.text,
-              color: COLORS.text,
-            }}
-            searchTextInputStyle={commonStyles.searchTextInput}
-            searchPlaceholder="Search State"
-            zIndex={9900}
-          />
-
-          <DropDownPicker
-            open={isCityDropdownOpen}
-            value={selectedCity}
-            items={allCities}
-            setOpen={setIsCityDropdownOpen}
-            setValue={setSelectedCity}
-            searchable={true}
-            placeholder="Select City"
-            style={commonStyles.searchablecontainer}
-            containerStyle={commonStyles.searchContainerStyles}
-            closeAfterSelecting={true}
-            searchContainerStyle={commonStyles.searchInputContainerStyles}
-            modalAnimationType="fade"
-            dropDownContainerStyle={{
-              borderColor: COLORS.border,
-            }}
-            listItemLabelStyle={{
-              fontSize: FONTS.text,
-              color: COLORS.text,
-            }}
-            searchTextInputStyle={commonStyles.searchTextInput}
-            searchPlaceholder="Search City"
-            zIndex={9800}
-          />
+          {renderUI()}
         </ScrollView>
 
         <View style={[commonStyles.footer, {paddingBottom: 0}]}>

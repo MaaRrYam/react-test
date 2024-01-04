@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {EducationProps, EmploymentProps, UserInterface} from '@/interfaces';
 import {Cross} from '@/assets/icons';
 import {
@@ -10,6 +10,7 @@ import {
   BottomSheet,
 } from '@/components';
 import {COLORS} from '@/constants';
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 interface EditProfileProps {
   isVisible: boolean;
@@ -101,7 +102,9 @@ const EditProfile = ({
           />
         )}
       </View>
-      <ScrollView style={styles.contentContainer}>{renderForm()}</ScrollView>
+      <BottomSheetScrollView style={styles.contentContainer}>
+        {renderForm()}
+      </BottomSheetScrollView>
     </BottomSheet>
   );
 };
@@ -116,7 +119,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
     paddingHorizontal: 20,
-    paddingBottom: 18,
+    paddingBottom: 10,
+    marginTop: -5,
   },
   closeButtonContainer: {
     backgroundColor: COLORS.lightBackground,
