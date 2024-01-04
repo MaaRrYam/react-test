@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
   feedContainer: {
     flex: 1,
     backgroundColor: COLORS.lightBlueBackground,
-    paddingTop: PADDING.general,
   },
   feedItem: {
     backgroundColor: COLORS.white,
