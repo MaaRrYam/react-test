@@ -225,10 +225,14 @@ const NetworkService = {
   },
   async connectWithSomeone(userId: string) {
     try {
-      await FirebaseService.setDoc(`users/${userId}/requests`, UID, {
+      const payload = {
         id: UID,
         time: FirebaseService.serverTimestamp(),
-      });
+      };
+      await Promise.all([
+        FirebaseService.setDoc(`users/${userId}/requests`, UID, payload),
+        FirebaseService.setDoc(`users/${UID}/pendingRequests`, userId, payload),
+      ]);
       return true;
     } catch (error) {
       console.log(error);
