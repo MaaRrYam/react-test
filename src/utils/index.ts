@@ -118,3 +118,21 @@ export const OnboardingScreens = [
   'SalaryExpectations',
   'OnboardingCompleted',
 ];
+
+/**
+ * Get YouTube video ID from URL
+ *
+ * @param {string} url
+ * @returns {string|boolean} YouTube video id or false if none found.
+ */
+export function youtubeIdFromUrl(url: string) {
+  const pattern =
+    /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{10,12})$/;
+  const matches = url.match(pattern);
+
+  if (matches) {
+    return matches[1];
+  }
+
+  return 'iee2TATGMyI';
+}

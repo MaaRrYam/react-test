@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Share} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
@@ -22,6 +23,7 @@ import {getUID} from '@/utils/functions';
 import {RootStackParamList} from '@/types';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {youtubeIdFromUrl} from '@/utils';
 
 const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   const dispatch = useAppDispatch();
@@ -209,17 +211,31 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
       }>
       <Text style={styles.feedContent}>{item.text}</Text>
       {isMediaExists && (
-        <FastImage
-          defaultSource={require('@/assets/images/fallback.png')}
-          fallback={require('@/assets/images/fallback.png')}
-          source={{
-            uri: typeof item.media === 'object' ? item.media.url : item.media,
-            priority: FastImage.priority.high,
-            cache: FastImage.cacheControl.immutable,
-          }}
-          style={styles.media}
-          resizeMode={FastImage.resizeMode.cover}
-        />
+        <>
+          {item.mediaType === 'video' ? (
+            <>
+              {typeof item.media === 'string' && (
+                <YoutubePlayer
+                  height={230}
+                  videoId={youtubeIdFromUrl(item.media)}
+                />
+              )}
+            </>
+          ) : (
+            <FastImage
+              defaultSource={require('@/assets/images/fallback.png')}
+              fallback={require('@/assets/images/fallback.png')}
+              source={{
+                uri:
+                  typeof item.media === 'object' ? item.media.url : item.media,
+                priority: FastImage.priority.high,
+                cache: FastImage.cacheControl.immutable,
+              }}
+              style={styles.media}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+          )}
+        </>
       )}
       <View style={styles.postReactions}>
         <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
