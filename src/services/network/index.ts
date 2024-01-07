@@ -231,7 +231,10 @@ const NetworkService = {
       };
       await Promise.all([
         FirebaseService.setDoc(`users/${userId}/requests`, UID, payload),
-        FirebaseService.setDoc(`users/${UID}/pendingRequests`, userId, payload),
+        FirebaseService.setDoc(`users/${UID}/pendingRequests`, userId, {
+          id: userId,
+          time: payload.time,
+        }),
       ]);
       return true;
     } catch (error) {
