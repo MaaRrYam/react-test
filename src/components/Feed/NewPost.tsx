@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  TextInput,
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
@@ -14,7 +13,7 @@ import FastImage from 'react-native-fast-image';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-import {BottomSheet, BottomSheetInput, PrimaryButton} from '@/components';
+import {BottomSheet, MentionInput, PrimaryButton} from '@/components';
 import {styles} from './styles';
 import {Asset, ImageInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
@@ -204,14 +203,7 @@ const NewPost = ({
           </View>
 
           <View style={styles.postContent}>
-            <BottomSheetInput
-              style={styles.input}
-              value={text}
-              onChangeText={setText}
-              placeholder="What do you want to post today?"
-              placeholderTextColor={COLORS.black}
-              returnKeyType="done"
-            />
+            <MentionInput />
 
             {selectedImage && (
               <Image
