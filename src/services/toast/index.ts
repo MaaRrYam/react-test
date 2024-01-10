@@ -1,4 +1,3 @@
-import {BORDER_WIDTH, COLORS, FONTS} from '@/constants';
 import {Toast} from 'react-native-toast-notifications';
 
 const ToastService = {

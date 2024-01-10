@@ -3,7 +3,7 @@ import {View, Text, useWindowDimensions} from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
-import {Header, PrimaryButton, SecondaryButton, Loading} from '@/components';
+import {PrimaryButton, SecondaryButton, Loading} from '@/components';
 import {RootStackParamList} from '@/types';
 import profileStyles from '@/styles/profile';
 import {UserInterface} from '@/interfaces';
@@ -11,13 +11,7 @@ import ChatsService from '@/services/chats';
 import FirebaseService from '@/services/Firebase';
 import useProfile from '@/hooks/useProfile';
 
-const About = ({
-  user,
-  setIsSettingsClicked,
-}: {
-  user: UserInterface;
-  setIsSettingsClicked: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const About = ({user}: {user: UserInterface}) => {
   const {
     loading,
     buttonLoading,
@@ -74,22 +68,11 @@ const About = ({
 
   return (
     <>
-      <Header
-        navigation={navigation}
-        setJobsFilterBottomSheet={() => {}}
-        setIsSettingsClicked={setIsSettingsClicked}
+      <FastImage
+        source={require('@/assets/images/background.jpg')}
+        resizeMode={FastImage.resizeMode.cover}
+        style={profileStyles.headerImage}
       />
-      <View>
-        <FastImage
-          source={{
-            uri: 'https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-            priority: FastImage.priority.high,
-            cache: FastImage.cacheControl.immutable,
-          }}
-          resizeMode={FastImage.resizeMode.cover}
-          style={profileStyles.headerImage}
-        />
-      </View>
 
       <View style={profileStyles.container}>
         <View style={profileStyles.avatarContainer}>

@@ -66,7 +66,7 @@ export interface InputProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
-  style?: StyleProp<ViewStyle>;
+  style?: StyleProp<TextStyle>;
   secureTextEntry?: boolean;
   keyboardType?: 'numeric' | 'default' | 'email-address';
   error?: string;
@@ -82,6 +82,7 @@ export interface InputProps {
   onSubmitEditing?: () => void;
   autoFocus?: boolean;
   forwardedRef?: any;
+  placeholderTextColor?: string;
 }
 
 export interface StorageServiceProps {

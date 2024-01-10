@@ -37,7 +37,7 @@ export const profileTabStyles = StyleSheet.create({
     flexDirection: 'row',
     padding: 0,
     maxHeight: 100,
-    marginTop: 20,
+    marginVertical: 20,
   },
   searchBarText: {
     color: COLORS.text,

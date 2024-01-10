@@ -24,15 +24,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           <View style={styles.feedContainer}>
             <Feed setIsNewPostClicked={setIsNewPostClicked} />
           </View>
-          {isNewPostClicked && (
-            <NewPost
-              isVisible={isNewPostClicked}
-              onClose={handleClose}
-              isFromFeed={true}
-            />
-          )}
         </KeyboardAvoidingView>
       </SafeAreaView>
+      {isNewPostClicked && (
+        <NewPost
+          isVisible={isNewPostClicked}
+          onClose={handleClose}
+          isFromFeed={true}
+        />
+      )}
     </View>
   );
 };

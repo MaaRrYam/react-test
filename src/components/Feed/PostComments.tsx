@@ -23,6 +23,7 @@ import StorageService from '@/services/Storage';
 import HomeService from '@/services/home';
 import {COLORS, MARGINS} from '@/constants';
 import {FlashList} from '@shopify/flash-list';
+import ToastService from '@/services/toast';
 
 const PostComments = ({
   postId,
@@ -32,6 +33,7 @@ const PostComments = ({
   isFromPost,
 }: PostCommentsProps) => {
   const [comment, setComment] = useState('');
+  const [isCommentPosting, setIsCommentPosting] = useState(false);
 
   if (loading && isFromPost) {
     return (
@@ -46,6 +48,7 @@ const PostComments = ({
   }
 
   const handleAddNewComment = async () => {
+    setIsCommentPosting(true);
     const payload = {
       dislikes: [] as ReactionInterface[],
       id: FirebaseService.generateUniqueId(),
@@ -57,14 +60,16 @@ const PostComments = ({
       timestamp: FirebaseService.serverTimestamp(),
     } as FeedCommentsResponse;
 
-    setComment('');
     const response = await HomeService.addComment(postId, payload);
     if (response) {
+      setComment('');
       setComments(prev => ({
         ...prev,
         comments: [...prev.comments, payload],
       }));
     }
+    ToastService.showSuccess('Comment added successfully');
+    setIsCommentPosting(false);
   };
 
   return (
@@ -77,11 +82,13 @@ const PostComments = ({
           style={[styles.input]}
           placeholderTextColor={COLORS.text}
         />
-        {comment && (
+        {isCommentPosting ? (
+          <ActivityIndicator color={COLORS.primary} size="small" />
+        ) : comment ? (
           <TouchableOpacity onPress={handleAddNewComment}>
             <SendIcon />
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
       <View style={styles.commentsContainer}>
         {isFromPost ? (

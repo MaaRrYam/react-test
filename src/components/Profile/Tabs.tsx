@@ -105,7 +105,7 @@ const Tabs = ({
       </View>
 
       {selectedTab === PROFILE_TABS[0] && (
-        <View style={styles.feedContainer}>
+        <View style={[styles.feedContainer, {paddingTop: 20}]}>
           <ProfileFeed setComments={setComments} uid={usersProfileID} />
         </View>
       )}

@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, RefreshControl} from 'react-native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 
-import {Loading, About, ProfileTabs, NewPost} from '@/components';
+import {Loading, About, ProfileTabs, NewPost, Header} from '@/components';
 import ProfileService from '@/services/profile';
 import {ProfileProps, UserInterface} from '@/interfaces';
 import profileStyles from '@/styles/profile';
@@ -9,9 +10,12 @@ import Settings from '../settings';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import EditProfile from '@/components/EditProfile';
 import {PROFILE_TABS} from '@/constants';
+import {RootStackParamList} from '@/types';
 
 const Profile = ({route}: ProfileProps) => {
   const {uid, user} = route.params;
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   const currentLoggedInUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -70,14 +74,16 @@ const Profile = ({route}: ProfileProps) => {
   return (
     <>
       <SafeAreaView style={profileStyles.safeArea}>
+        <Header
+          navigation={navigation}
+          setJobsFilterBottomSheet={() => {}}
+          setIsSettingsClicked={setIsSettingsClicked}
+        />
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }>
-          <About
-            user={profileUser}
-            setIsSettingsClicked={setIsSettingsClicked}
-          />
+          <About user={profileUser} />
           <ProfileTabs
             user={profileUser}
             usersProfileID={uid}

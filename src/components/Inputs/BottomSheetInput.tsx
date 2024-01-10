@@ -22,6 +22,7 @@ const Input: FC<InputProps> = ({
   onSubmitEditing,
   autoFocus,
   forwardedRef,
+  placeholderTextColor,
 }) => {
   const [, setIsFocused] = useState(false);
   const [animatedIsFocused] = useState(new Animated.Value(value ? 1 : 0));
@@ -95,7 +96,7 @@ const Input: FC<InputProps> = ({
           ref={forwardedRef}
           value={value}
           onChangeText={handleTextChange}
-          style={inputStyles.input}
+          style={[inputStyles.input]}
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={secureTextEntry}
@@ -105,6 +106,7 @@ const Input: FC<InputProps> = ({
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           autoFocus={autoFocus}
+          placeholderTextColor={placeholderTextColor}
         />
       </View>
       {touched && error && <Text style={inputStyles.error}>{error}</Text>}

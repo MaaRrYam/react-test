@@ -92,7 +92,7 @@ const Feed = ({
       {comments.showComments && (
         <BottomSheet
           isVisible={comments.showComments}
-          snapPoints={['20%', '150%']}
+          snapPoints={['20%', '80%']}
           onClose={() => setComments(prev => ({...prev, showComments: false}))}>
           <PostComments
             showComments={comments.showComments}

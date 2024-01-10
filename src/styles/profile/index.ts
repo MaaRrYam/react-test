@@ -6,6 +6,7 @@ const {width} = getScreenDimensions();
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   container: {
     backgroundColor: COLORS.white,
