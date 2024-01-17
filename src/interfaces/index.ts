@@ -114,7 +114,11 @@ export interface FirebaseServiceProps {
     docId: string,
     payload: DocumentData,
   ): Promise<void>;
-  getAllDocuments(collectionName: string): Promise<DocumentData[]>;
+  getAllDocuments(
+    collectionName: string,
+    orderByField?: string,
+    orderByDirection?: 'asc' | 'desc',
+  ): Promise<DocumentData[]>;
   getDocumentsByQuery(
     collectionName: string,
     field: string,
@@ -391,6 +395,7 @@ export interface NotificationInterface {
   timestamp: any;
   sender: UserInterface;
   isUnRead?: boolean;
+  mobileLink?: string;
 }
 
 export interface NetworkItemProps {
