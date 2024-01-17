@@ -16,15 +16,16 @@ import {useAppSelector} from '@/hooks/useAppSelector';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {getAllUsers} from '@/store/features/chatsSlice';
 import FastImage from 'react-native-fast-image';
+import useDebounce from '@/hooks/useDebounce';
 
 const RenderSuggestions: FC<MentionSuggestionsProps> = ({
   keyword,
   onSuggestionPress,
 }) => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch();
 
   const {users, isUsersFetched} = useAppSelector(state => state.chats);
+  const dispatch = useAppDispatch();
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -37,6 +38,32 @@ const RenderSuggestions: FC<MentionSuggestionsProps> = ({
       fetchUsers();
     }
   }, [fetchUsers, isUsersFetched]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     console.log({keyword});
+  //     if (!keyword) {
+  //       return;
+  //     }
+
+  //     console.log('HERE');
+  //     setLoading(true);
+  //     try {
+  //       const result = (await FirebaseService.getDocumentsByQuery(
+  //         'users',
+  //         'name',
+  //         '>=',
+  //         keyword,
+  //       )) as UserInterface[];
+
+  //       setUsers(result);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   })();
+  // }, [keyword]);
 
   if (keyword == null) {
     return null;
@@ -116,13 +143,13 @@ const RenderSuggestions: FC<MentionSuggestionsProps> = ({
 };
 
 const MentionInputComponent = () => {
-  const [value, setValue] = useState('');
+  const [query, , setQuery] = useDebounce('', 0);
 
   return (
     <View style={styles.container}>
       <MentionInput
-        value={value}
-        onChange={setValue}
+        value={query}
+        onChange={setQuery}
         placeholder="What do you want to post today?"
         placeholderTextColor={'black'}
         partTypes={[
@@ -146,6 +173,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+    zIndex: 99999,
   },
   suggestionsContainer: {
     position: 'absolute',

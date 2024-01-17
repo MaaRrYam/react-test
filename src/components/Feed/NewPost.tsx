@@ -178,7 +178,7 @@ const NewPost = ({
       snapPoints={['20%', '80%']}
       onClose={onClose}>
       <KeyboardAvoidingView behavior={'padding'} style={styles.container}>
-        <ScrollView>
+        <View>
           <Text style={styles.createPostText}>Create a New Post</Text>
 
           <View style={styles.authorContainer}>
@@ -222,7 +222,7 @@ const NewPost = ({
               </TouchableOpacity>
             )}
           </View>
-        </ScrollView>
+        </View>
 
         <View>
           <View style={styles.imageListContainer}>
