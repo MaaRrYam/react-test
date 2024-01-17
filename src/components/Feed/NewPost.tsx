@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-  ScrollView,
   FlatList,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -21,10 +20,12 @@ import {getUID} from '@/utils/functions';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
-import {hasAndroidPermission} from '@/utils';
+import {extractUserIds, hasAndroidPermission} from '@/utils';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {addPostToFeed, addPostToProfileFeed} from '@/store/features/homeSlice';
 import {useAppSelector} from '@/hooks/useAppSelector';
+import useDebounce from '@/hooks/useDebounce';
+import NotificationService from '@/services/notifications';
 
 const NewPost = ({
   isVisible,
@@ -52,7 +53,7 @@ const NewPost = ({
   const [selectedImage, setSelectedImage] = useState<
     ImageInterface | Asset | null
   >(null);
-  const [text, setText] = useState<string>('');
+  const [text, , setText] = useDebounce('', 0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -111,6 +112,18 @@ const NewPost = ({
   };
 
   const handlePost = async () => {
+    const mentionedUsers = extractUserIds(text);
+
+    const postId = FirebaseService.generateUniqueId();
+
+    mentionedUsers.map(mentionedUser => {
+      NotificationService.sendNotification(
+        mentionedUser.id,
+        `${user.name} mentioned you in your post`,
+        'Mention Alert',
+        `/post/${postId}`,
+      );
+    });
     setIsLoading(true);
     const UID = (await getUID()) as string;
 
@@ -121,7 +134,6 @@ const NewPost = ({
       )) as string;
     }
 
-    const postId = FirebaseService.generateUniqueId();
     const payload = {
       id: postId,
       creationTime: FirebaseService.serverTimestamp(),
@@ -203,7 +215,7 @@ const NewPost = ({
           </View>
 
           <View style={styles.postContent}>
-            <MentionInput />
+            <MentionInput text={text} setText={setText} />
 
             {selectedImage && (
               <Image

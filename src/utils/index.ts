@@ -136,3 +136,40 @@ export function youtubeIdFromUrl(url: string) {
 
   return 'iee2TATGMyI';
 }
+
+export function extractUserIds(text: string) {
+  const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
+  const matches: {
+    name: string;
+    id: string;
+  }[] = [];
+  let match;
+
+  while ((match = userRegex.exec(text)) !== null) {
+    // match[1] contains the username, match[2] contains the user ID
+    matches.push({
+      name: match[1],
+      id: match[2],
+    });
+  }
+
+  return matches;
+}
+
+export function extractMentionText(text: string) {
+  const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
+  let currentIdx = 0;
+  let match;
+  let extractedText = '';
+
+  while ((match = userRegex.exec(text)) !== null) {
+    extractedText += text.slice(currentIdx, match.index); // Text before mention
+    extractedText += match[1]; // Mention name
+    currentIdx = match.index + match[0].length; // Update the current index to the end of the mention
+  }
+
+  // Add the remaining text after the last mention
+  extractedText += text.slice(currentIdx);
+
+  return extractedText;
+}

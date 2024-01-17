@@ -82,7 +82,7 @@ const FirebaseService: FirebaseServiceProps = {
 
       const documents: DocumentData[] = [];
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        documents.push({id: doc.id, ...doc.data()});
+        documents.push({...doc.data(), id: doc.id});
       });
       return documents;
     } catch (error) {

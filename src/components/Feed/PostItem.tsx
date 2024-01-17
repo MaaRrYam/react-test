@@ -25,6 +25,48 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {youtubeIdFromUrl} from '@/utils';
 
+export function extractMentionText(text: string) {
+  const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
+  let currentIdx = 0;
+  let match: any;
+  const components: JSX.Element[] = [];
+
+  while ((match = userRegex.exec(text)) !== null) {
+    // Add the text before the mention
+    components.push(
+      <Text key={`text-first-${currentIdx}`}>
+        {text.slice(currentIdx, match.index)}
+      </Text>,
+    );
+
+    // Add the clickable link
+    components.push(
+      <TouchableOpacity
+        key={`mention-${currentIdx}-${match[1]}`}
+        onPress={() => {
+          // console.log(match);
+          // handlePress(match[2]);
+        }}>
+        <Text style={{color: 'blue'}}>{match[1]}</Text>
+      </TouchableOpacity>,
+    );
+
+    // Update the current index to the end of the mention
+    currentIdx = match.index + match[0].length;
+  }
+
+  // Add the remaining text after the last mention
+  components.push(
+    <Text key={`text-${currentIdx}`}>{text.slice(currentIdx)}</Text>,
+  );
+
+  return (
+    <View style={{flexDirection: 'row'}}>
+      {components.map(component => component)}
+    </View>
+  );
+}
+
 const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -201,6 +243,12 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     isMediaExists = item.media !== '';
   }
 
+  const handlePress = (id: string) => {
+    navigation.navigate('Profile', {
+      uid: id,
+    });
+  };
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -209,7 +257,7 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
           item,
         })
       }>
-      <Text style={styles.feedContent}>{item.text}</Text>
+      {extractMentionText(item.text || '', handlePress)}
       {isMediaExists && (
         <>
           {item.mediaType === 'video' ? (
