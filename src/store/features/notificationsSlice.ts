@@ -11,7 +11,8 @@ const initialState = {
 export const getNotifications = createAsyncThunk(
   'notifications/getNotifications',
   async () => {
-    const result = await NotificationService.getAllNotifications();
+    const result =
+      (await NotificationService.getAllNotifications()) as NotificationInterface[];
     return result;
   },
 );

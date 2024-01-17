@@ -13,6 +13,8 @@ const NotificationService = {
     try {
       const response = await FirebaseService.getAllDocuments(
         `users/${UID}/notifications`,
+        'timestamp',
+        'desc',
       );
 
       const result: NotificationInterface[] = await Promise.all(
@@ -33,7 +35,7 @@ const NotificationService = {
               'users',
               item.senderId,
             )) as UserInterface;
-            await Cache.set(`user_${item.senderId}`, author);
+            Cache.set(`user_${item.senderId}`, author);
           }
 
           return {
