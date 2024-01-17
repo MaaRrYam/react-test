@@ -22,7 +22,7 @@ const FeedItemComponent = ({item, fetchPostComments}: FeedItemProps) => {
     <View style={styles.feedItem}>
       <View style={styles.authorInfo}>
         <TouchableOpacity onPress={handleAuthorPress}>
-          {item.author.photoUrl ? (
+          {item.author?.photoUrl ? (
             <FastImage
               resizeMode={FastImage.resizeMode.cover}
               defaultSource={require('@/assets/images/user.png')}

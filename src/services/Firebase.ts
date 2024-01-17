@@ -17,6 +17,7 @@ import {
   setDoc,
   onSnapshot,
   Unsubscribe,
+  orderBy,
 } from 'firebase/firestore';
 import {firebase} from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
@@ -70,9 +71,15 @@ const FirebaseService: FirebaseServiceProps = {
     }
   },
 
-  async getAllDocuments(collectionName) {
+  async getAllDocuments(collectionName, orderByField, orderByDirection) {
     try {
-      const querySnapshot = await getDocs(collection(db, collectionName));
+      const collectionRef = collection(db, collectionName);
+      const querySnapshot = await getDocs(
+        orderByField
+          ? query(collectionRef, orderBy(orderByField, orderByDirection))
+          : collectionRef,
+      );
+
       const documents: DocumentData[] = [];
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
         documents.push({id: doc.id, ...doc.data()});
