@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  TextInput,
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
@@ -112,8 +111,9 @@ const NewPost = ({
   };
 
   const handlePost = async () => {
-    setIsLoading(true);
     const UID = (await getUID()) as string;
+
+    setIsLoading(true);
 
     let imageUrl = '';
     if (selectedImage?.uri) {
