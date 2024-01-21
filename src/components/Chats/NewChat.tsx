@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {Text} from 'react-native';
-import {FlashList} from '@shopify/flash-list';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
 import {BottomSheet, Empty} from '@/components';
 import {useAppSelector} from '@/hooks/useAppSelector';
@@ -35,12 +35,11 @@ const NewChat = ({
       ) : (
         <>
           {users.length ? (
-            <FlashList
+            <BottomSheetFlatList
               data={users}
               renderItem={({item}) => (
                 <UserCard item={item} onClose={onClose} />
               )}
-              estimatedItemSize={100}
               keyExtractor={item => item.id}
             />
           ) : (

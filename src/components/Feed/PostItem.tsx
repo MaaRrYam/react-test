@@ -1,7 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Share} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import {
+  Part,
+  PartType,
+  parseValue,
+  isMentionPartType,
+} from 'react-native-controlled-mentions';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
@@ -21,17 +27,62 @@ import FirebaseService from '@/services/Firebase';
 import ToastService from '@/services/toast';
 import {getUID} from '@/utils/functions';
 import {RootStackParamList} from '@/types';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {youtubeIdFromUrl} from '@/utils';
+import {Modal} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+
+const renderPart = (
+  part: Part,
+  index: number,
+  handlePress: (id: string) => void,
+) => {
+  if (!part.partType) {
+    return <Text key={index}>{part.text}</Text>;
+  }
+
+  if (isMentionPartType(part.partType)) {
+    return (
+      <Text
+        key={`${index}-${part.data?.trigger}`}
+        style={part.partType.textStyle}
+        onPress={() => handlePress(part.data?.id || '')}>
+        {part.text.slice(1)}
+      </Text>
+    );
+  }
+
+  return (
+    <Text key={`${index}-pattern`} style={part.partType.textStyle}>
+      {part.text}
+    </Text>
+  );
+};
+
+const RenderValue: FC<{
+  value: string;
+  partTypes: PartType[];
+  handlePress: (id: string) => void;
+}> = ({value, partTypes, handlePress}) => {
+  const {parts} = parseValue(value, partTypes);
+
+  return (
+    <Text>
+      {parts.map((part, index) => renderPart(part, index, handlePress))}
+    </Text>
+  );
+};
 
 const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const {name} = useRoute();
   const [reactions, setReactions] = useState({
     like: false,
     dislike: false,
   });
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const isPostLikedByUser = async () => {
     const UID = await getUID();
@@ -201,72 +252,136 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
     isMediaExists = item.media !== '';
   }
 
-  return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('Post', {
-          id: item.id,
-          item,
-        })
-      }>
-      <Text style={styles.feedContent}>{item.text}</Text>
-      {isMediaExists && (
-        <>
-          {item.mediaType === 'video' ? (
-            <>
-              {typeof item.media === 'string' && (
-                <YoutubePlayer
-                  height={230}
-                  videoId={youtubeIdFromUrl(item.media)}
-                />
-              )}
-            </>
-          ) : (
-            <FastImage
-              defaultSource={require('@/assets/images/fallback.png')}
-              fallback={require('@/assets/images/fallback.png')}
-              source={{
-                uri:
-                  typeof item.media === 'object' ? item.media.url : item.media,
-                priority: FastImage.priority.high,
-                cache: FastImage.cacheControl.immutable,
-              }}
-              style={styles.media}
-              resizeMode={FastImage.resizeMode.cover}
-            />
-          )}
-        </>
-      )}
-      <View style={styles.postReactions}>
-        <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
-          <Like isLiked={reactions.like} style={styles.like} />
-        </TouchableOpacity>
-        <Text style={styles.like}>
-          {item?.postLikes &&
-            item?.postDislikes &&
-            item?.postLikes?.length - item?.postDislikes?.length}
-        </Text>
-        <TouchableOpacity style={styles.reactionButton} onPress={disLikeAPost}>
-          <Dislike isLiked={reactions.dislike} style={styles.like} />
-        </TouchableOpacity>
+  const handlePress = (id: string) => {
+    navigation.navigate('Profile', {
+      uid: id,
+    });
+  };
 
-        <View style={styles.iconsContainer}>
-          <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
-            <Comment />
+  const renderImage = useCallback(
+    (isForModal = false) => {
+      return (
+        <FastImage
+          defaultSource={require('@/assets/images/fallback.png')}
+          fallback={require('@/assets/images/fallback.png')}
+          source={{
+            uri: typeof item.media === 'object' ? item.media.url : item.media,
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          style={isForModal ? styles.modalImage : styles.media}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      );
+    },
+    [item.media],
+  );
+
+  const renderContent = () => {
+    return (
+      <>
+        <RenderValue
+          value={item.text!}
+          partTypes={[
+            {
+              textStyle: {color: 'blue'},
+              trigger: '@',
+            },
+          ]}
+          handlePress={handlePress}
+        />
+        {isMediaExists && (
+          <>
+            {item.mediaType === 'video' ? (
+              <>
+                {typeof item.media === 'string' && (
+                  <YoutubePlayer
+                    height={230}
+                    videoId={youtubeIdFromUrl(item.media)}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                {name === 'Post' ? (
+                  <TouchableOpacity onPress={() => setIsImageModalOpen(true)}>
+                    {renderImage()}
+                  </TouchableOpacity>
+                ) : (
+                  renderImage()
+                )}
+              </>
+            )}
+          </>
+        )}
+        {name === 'Post' && isMediaExists && item.media !== 'video' && (
+          <Modal
+            transparent={true}
+            visible={isImageModalOpen}
+            onRequestClose={() => setIsImageModalOpen(false)}
+            animationType="fade">
+            <TouchableOpacity
+              style={styles.centeredView}
+              activeOpacity={1}
+              onPressOut={() => setIsImageModalOpen(false)}>
+              <TouchableWithoutFeedback>
+                <View style={styles.modalView}>{renderImage(true)}</View>
+              </TouchableWithoutFeedback>
+            </TouchableOpacity>
+          </Modal>
+        )}
+
+        <View style={styles.postReactions}>
+          <TouchableOpacity style={styles.reactionButton} onPress={likeAPost}>
+            <Like isLiked={reactions.like} style={styles.like} />
           </TouchableOpacity>
+          <Text style={styles.like}>
+            {item?.postLikes &&
+              item?.postDislikes &&
+              item?.postLikes?.length - item?.postDislikes?.length}
+          </Text>
           <TouchableOpacity
-            style={styles.reactionButtonGap}
-            onPress={sharePost}>
-            <ShareIcon />
+            style={styles.reactionButton}
+            onPress={disLikeAPost}>
+            <Dislike isLiked={reactions.dislike} style={styles.like} />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.reactionButtonGap}
-            onPress={reportPost}>
-            <Report />
-          </TouchableOpacity>
+
+          <View style={styles.iconsContainer}>
+            <TouchableOpacity onPress={() => fetchPostComments(item.id)}>
+              <Comment />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.reactionButtonGap}
+              onPress={sharePost}>
+              <ShareIcon />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.reactionButtonGap}
+              onPress={reportPost}>
+              <Report />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </>
+    );
+  };
+
+  return (
+    <>
+      {name === 'Post' ? (
+        renderContent()
+      ) : (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Post', {
+              id: item.id,
+              item,
+            })
+          }>
+          {renderContent()}
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 

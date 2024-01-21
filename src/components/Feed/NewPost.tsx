@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-  ScrollView,
   FlatList,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-import {BottomSheet, BottomSheetInput, PrimaryButton} from '@/components';
+import {BottomSheet, MentionInput, PrimaryButton} from '@/components';
 import {styles} from './styles';
 import {Asset, ImageInterface} from '@/interfaces';
 import FirebaseService from '@/services/Firebase';
@@ -21,10 +20,13 @@ import {getUID} from '@/utils/functions';
 import HomeService from '@/services/home';
 import ToastService from '@/services/toast';
 import {COLORS} from '@/constants';
-import {hasAndroidPermission} from '@/utils';
+import {extractUserIds, hasAndroidPermission} from '@/utils';
 import {useAppDispatch} from '@/hooks/useAppDispatch';
 import {addPostToFeed, addPostToProfileFeed} from '@/store/features/homeSlice';
 import {useAppSelector} from '@/hooks/useAppSelector';
+import useDebounce from '@/hooks/useDebounce';
+import NotificationService from '@/services/notifications';
+import {getAllUsers} from '@/store/features/chatsSlice';
 
 const NewPost = ({
   isVisible,
@@ -52,9 +54,16 @@ const NewPost = ({
   const [selectedImage, setSelectedImage] = useState<
     ImageInterface | Asset | null
   >(null);
-  const [text, setText] = useState<string>('');
+  const [text, , setText] = useDebounce('', 0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {isUsersFetched} = useAppSelector(state => state.chats);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!isUsersFetched) {
+      dispatch(getAllUsers());
+    }
+  }, [dispatch, isUsersFetched]);
 
   const openImagePicker = useCallback(() => {
     launchImageLibrary(
@@ -111,6 +120,19 @@ const NewPost = ({
   };
 
   const handlePost = async () => {
+    const mentionedUsers = extractUserIds(text);
+
+    const postId = FirebaseService.generateUniqueId();
+
+    mentionedUsers.map(mentionedUser => {
+      NotificationService.sendNotification(
+        mentionedUser.id,
+        `${user.name} mentioned you in your post`,
+        'Mention Alert',
+        `/post/${postId}`,
+      );
+    });
+    setIsLoading(true);
     const UID = (await getUID()) as string;
 
     setIsLoading(true);
@@ -122,7 +144,6 @@ const NewPost = ({
       )) as string;
     }
 
-    const postId = FirebaseService.generateUniqueId();
     const payload = {
       id: postId,
       creationTime: FirebaseService.serverTimestamp(),
@@ -179,7 +200,7 @@ const NewPost = ({
       snapPoints={['20%', '80%']}
       onClose={onClose}>
       <KeyboardAvoidingView behavior={'padding'} style={styles.container}>
-        <ScrollView>
+        <View>
           <Text style={styles.createPostText}>Create a New Post</Text>
 
           <View style={styles.authorContainer}>
@@ -204,14 +225,7 @@ const NewPost = ({
           </View>
 
           <View style={styles.postContent}>
-            <BottomSheetInput
-              style={styles.input}
-              value={text}
-              onChangeText={setText}
-              placeholder="What do you want to post today?"
-              placeholderTextColor={COLORS.black}
-              returnKeyType="done"
-            />
+            <MentionInput text={text} setText={setText} />
 
             {selectedImage && (
               <Image
@@ -230,7 +244,7 @@ const NewPost = ({
               </TouchableOpacity>
             )}
           </View>
-        </ScrollView>
+        </View>
 
         <View>
           <View style={styles.imageListContainer}>

@@ -22,6 +22,7 @@ import {
   TextArea,
   YearDropdown,
   BottomSheetInput,
+  MentionInput,
 } from '@/components/Inputs';
 import {default as EmploymentSelectionField} from '@/components/SelectionFields/EmploymentSelectionField';
 import {default as BottomSheet} from '@/components/BottomSheet';
@@ -102,4 +103,5 @@ export {
   PostComments,
   KeyboardAvoidingView,
   FeedHeader,
+  MentionInput,
 };

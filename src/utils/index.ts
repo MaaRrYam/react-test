@@ -1,4 +1,4 @@
-import {Timestamp} from 'firebase/firestore';
+import {DocumentData, Timestamp} from 'firebase/firestore';
 import {DateFormatOption} from '@/types';
 import {PermissionsAndroid, Platform} from 'react-native';
 
@@ -136,3 +136,44 @@ export function youtubeIdFromUrl(url: string) {
 
   return 'iee2TATGMyI';
 }
+
+export function extractUserIds(text: string) {
+  const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
+  const matches: {
+    name: string;
+    id: string;
+  }[] = [];
+  let match;
+
+  while ((match = userRegex.exec(text)) !== null) {
+    matches.push({
+      name: match[1],
+      id: match[2],
+    });
+  }
+
+  return matches;
+}
+
+/**
+ *
+ * @param payload DocumentData
+ * @returns an object with formatted timestamp instead of object
+ */
+export const makeFirebasePayloadAccessible = (payload: DocumentData) => {
+  const data = payload.data();
+
+  Object.keys(data).forEach(field => {
+    if (
+      data[field] &&
+      typeof data[field] === 'object' &&
+      'seconds' in data[field] &&
+      'nanoseconds' in data[field]
+    ) {
+      data[field] = formatFirebaseTimestamp(data[field], 'dateTime');
+    }
+  });
+
+  const document = {...data, id: payload.id};
+  return document;
+};

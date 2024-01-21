@@ -8,7 +8,7 @@ export const isInDevelopment: boolean = process.env.NODE_ENV !== 'production';
 export const UNAUTHORIZED = 401;
 export const UNAUTHENTICATED = 403;
 
-export const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+export const CACHE_EXPIRATION_TIME = 18 * 60 * 60 * 1000;
 export const getUserCacheKey = (uid: string): string => `user_${uid}`;
 export const getFeedCacheKey = (): string => 'feed';
 

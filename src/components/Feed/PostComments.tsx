@@ -75,6 +75,7 @@ const PostComments = ({
   return (
     <>
       <View style={[styles.commentFieldContainer]}>
+        {/* <MentionInput text={comment} setText={setComment} placeholder={'Add a comment'} /> */}
         <TextInput
           placeholder="Add a comment"
           value={comment}

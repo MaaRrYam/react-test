@@ -66,6 +66,32 @@ const NotificationService = {
       console.log(error);
     }
   },
+
+  async sendNotification(
+    receiverId: string,
+    description: string,
+    title: string,
+    mobileLink?: string,
+    link?: string,
+    senderId = UID,
+  ) {
+    try {
+      if (senderId === receiverId) {
+        return;
+      }
+
+      await FirebaseService.addDocument(`users/${receiverId}/notifications`, {
+        title,
+        description,
+        link: link || null,
+        mobileLink: mobileLink || null,
+        senderId,
+        timestamp: FirebaseService.serverTimestamp(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default NotificationService;

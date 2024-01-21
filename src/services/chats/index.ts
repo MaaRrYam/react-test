@@ -206,7 +206,7 @@ const ChatsService = {
     try {
       const response = await FirebaseService.getAllDocuments('users');
 
-      await Promise.all(
+      Promise.all(
         response.map(async item => {
           await Cache.set(`user_${item.id}`, item);
         }),

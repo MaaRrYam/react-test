@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     borderRadius: 8,
-    marginBottom: 8,
+    marginVertical: 8,
     objectFit: 'cover',
   },
   authorInfo: {
@@ -243,5 +243,23 @@ export const styles = StyleSheet.create({
   },
   imagePostReactions: {
     marginTop: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000070',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'center',
+    width: Dimensions.get('screen').width - 30,
+    height: 500,
+  },
+  modalImage: {
+    width: '100%',
+    height: 500,
   },
 });
