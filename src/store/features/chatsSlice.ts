@@ -2,6 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 import {ChatsInterface, UserInterface} from '@/interfaces';
 import ChatsService from '@/services/chats';
+import Cache from '@/cache';
 
 const initialState = {
   chats: [] as ChatsInterface[],
@@ -12,7 +13,12 @@ const initialState = {
 };
 
 export const getAllUsers = createAsyncThunk('chats/getAllUsers', async () => {
+  const cacheUsers = await Cache.get('allUsers');
+  if (cacheUsers) {
+    return cacheUsers as UserInterface[];
+  }
   const result = (await ChatsService.getAllUsers()) as UserInterface[];
+  Cache.set('allUsers', result);
   return result;
 });
 

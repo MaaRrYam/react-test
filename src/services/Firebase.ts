@@ -81,8 +81,20 @@ const FirebaseService: FirebaseServiceProps = {
       );
 
       const documents: DocumentData[] = [];
-      querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        documents.push({...doc.data(), id: doc.id});
+      querySnapshot.forEach((document: QueryDocumentSnapshot<DocumentData>) => {
+        const data = document.data();
+        Object.keys(data).forEach(field => {
+          if (
+            data[field] &&
+            typeof data[field] === 'object' &&
+            'seconds' in data[field] &&
+            'nanoseconds' in data[field]
+          ) {
+            data[field] = formatFirebaseTimestamp(data[field], 'date');
+          }
+        });
+
+        documents.push({...data, id: document.id});
       });
       return documents;
     } catch (error) {
@@ -109,7 +121,7 @@ const FirebaseService: FirebaseServiceProps = {
           }
         });
 
-        const document = {id: docSnapshot.id, ...data};
+        const document = {...data, id: docSnapshot.id};
         return document;
       } else {
         return null;

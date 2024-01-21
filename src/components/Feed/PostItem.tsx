@@ -1,7 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import {View, Text, TouchableOpacity, Share} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import {
+  Part,
+  PartType,
+  parseValue,
+  isMentionPartType,
+} from 'react-native-controlled-mentions';
 
 import {FeedItemProps} from '@/interfaces';
 import {styles} from '@/screens/home/styles';
@@ -25,7 +31,10 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {youtubeIdFromUrl} from '@/utils';
 
-export function extractMentionText(text: string) {
+export function extractMentionText(
+  text: string,
+  handlePress: (obj: any) => void,
+) {
   const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
   let currentIdx = 0;
   let match: any;
@@ -42,11 +51,14 @@ export function extractMentionText(text: string) {
     // Add the clickable link
     components.push(
       <TouchableOpacity
-        key={`mention-${currentIdx}-${match[1]}`}
-        onPress={() => {
-          // console.log(match);
-          // handlePress(match[2]);
-        }}>
+        key={`mention-${currentIdx}-${match[2]}`}
+        onPress={() =>
+          handlePress({
+            name: match[1],
+            value: match[2],
+            key: `mention-${currentIdx}-${match[2]}`,
+          })
+        }>
         <Text style={{color: 'blue'}}>{match[1]}</Text>
       </TouchableOpacity>,
     );
@@ -66,6 +78,47 @@ export function extractMentionText(text: string) {
     </View>
   );
 }
+
+const renderPart = (
+  part: Part,
+  index: number,
+  handlePress: (id: string) => void,
+) => {
+  if (!part.partType) {
+    return <Text key={index}>{part.text}</Text>;
+  }
+
+  if (isMentionPartType(part.partType)) {
+    return (
+      <Text
+        key={`${index}-${part.data?.trigger}`}
+        style={part.partType.textStyle}
+        onPress={() => handlePress(part.data?.id || '')}>
+        {part.text.slice(1)}
+      </Text>
+    );
+  }
+
+  return (
+    <Text key={`${index}-pattern`} style={part.partType.textStyle}>
+      {part.text}
+    </Text>
+  );
+};
+
+const RenderValue: FC<{
+  value: string;
+  partTypes: PartType[];
+  handlePress: (id: string) => void;
+}> = ({value, partTypes, handlePress}) => {
+  const {parts} = parseValue(value, partTypes);
+
+  return (
+    <Text>
+      {parts.map((part, index) => renderPart(part, index, handlePress))}
+    </Text>
+  );
+};
 
 const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
   const dispatch = useAppDispatch();
@@ -257,7 +310,16 @@ const PostItem = ({item, fetchPostComments}: FeedItemProps) => {
           item,
         })
       }>
-      {extractMentionText(item.text || '', handlePress)}
+      <RenderValue
+        value={item.text!}
+        partTypes={[
+          {
+            textStyle: {color: 'blue'},
+            trigger: '@',
+          },
+        ]}
+        handlePress={handlePress}
+      />
       {isMediaExists && (
         <>
           {item.mediaType === 'video' ? (
