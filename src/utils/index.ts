@@ -1,4 +1,4 @@
-import {Timestamp} from 'firebase/firestore';
+import {DocumentData, Timestamp} from 'firebase/firestore';
 import {DateFormatOption} from '@/types';
 import {PermissionsAndroid, Platform} from 'react-native';
 
@@ -146,7 +146,6 @@ export function extractUserIds(text: string) {
   let match;
 
   while ((match = userRegex.exec(text)) !== null) {
-    // match[1] contains the username, match[2] contains the user ID
     matches.push({
       name: match[1],
       id: match[2],
@@ -156,20 +155,25 @@ export function extractUserIds(text: string) {
   return matches;
 }
 
-export function extractMentionText(text: string) {
-  const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
-  let currentIdx = 0;
-  let match;
-  let extractedText = '';
+/**
+ *
+ * @param payload DocumentData
+ * @returns an object with formatted timestamp instead of object
+ */
+export const makeFirebasePayloadAccessible = (payload: DocumentData) => {
+  const data = payload.data();
 
-  while ((match = userRegex.exec(text)) !== null) {
-    extractedText += text.slice(currentIdx, match.index); // Text before mention
-    extractedText += match[1]; // Mention name
-    currentIdx = match.index + match[0].length; // Update the current index to the end of the mention
-  }
+  Object.keys(data).forEach(field => {
+    if (
+      data[field] &&
+      typeof data[field] === 'object' &&
+      'seconds' in data[field] &&
+      'nanoseconds' in data[field]
+    ) {
+      data[field] = formatFirebaseTimestamp(data[field], 'dateTime');
+    }
+  });
 
-  // Add the remaining text after the last mention
-  extractedText += text.slice(currentIdx);
-
-  return extractedText;
-}
+  const document = {...data, id: payload.id};
+  return document;
+};

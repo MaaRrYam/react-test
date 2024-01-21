@@ -31,54 +31,6 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {youtubeIdFromUrl} from '@/utils';
 
-export function extractMentionText(
-  text: string,
-  handlePress: (obj: any) => void,
-) {
-  const userRegex = /@\[([^\]]+)\]\(([^)]+)\)/g;
-  let currentIdx = 0;
-  let match: any;
-  const components: JSX.Element[] = [];
-
-  while ((match = userRegex.exec(text)) !== null) {
-    // Add the text before the mention
-    components.push(
-      <Text key={`text-first-${currentIdx}`}>
-        {text.slice(currentIdx, match.index)}
-      </Text>,
-    );
-
-    // Add the clickable link
-    components.push(
-      <TouchableOpacity
-        key={`mention-${currentIdx}-${match[2]}`}
-        onPress={() =>
-          handlePress({
-            name: match[1],
-            value: match[2],
-            key: `mention-${currentIdx}-${match[2]}`,
-          })
-        }>
-        <Text style={{color: 'blue'}}>{match[1]}</Text>
-      </TouchableOpacity>,
-    );
-
-    // Update the current index to the end of the mention
-    currentIdx = match.index + match[0].length;
-  }
-
-  // Add the remaining text after the last mention
-  components.push(
-    <Text key={`text-${currentIdx}`}>{text.slice(currentIdx)}</Text>,
-  );
-
-  return (
-    <View style={{flexDirection: 'row'}}>
-      {components.map(component => component)}
-    </View>
-  );
-}
-
 const renderPart = (
   part: Part,
   index: number,

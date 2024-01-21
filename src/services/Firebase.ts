@@ -24,7 +24,7 @@ import storage from '@react-native-firebase/storage';
 import {Image} from 'react-native-compressor';
 
 import {FirebaseServiceProps, Asset} from '@/interfaces';
-import {formatFirebaseTimestamp} from '@/utils';
+import {makeFirebasePayloadAccessible, formatFirebaseTimestamp} from '@/utils';
 
 const db = getFirestore();
 
@@ -83,19 +83,9 @@ const FirebaseService: FirebaseServiceProps = {
 
       const documents: DocumentData[] = [];
       querySnapshot.forEach((document: QueryDocumentSnapshot<DocumentData>) => {
-        const data = document.data();
-        Object.keys(data).forEach(field => {
-          if (
-            data[field] &&
-            typeof data[field] === 'object' &&
-            'seconds' in data[field] &&
-            'nanoseconds' in data[field]
-          ) {
-            data[field] = formatFirebaseTimestamp(data[field], 'date');
-          }
-        });
+        const data = makeFirebasePayloadAccessible(document);
 
-        documents.push({...data, id: document.id});
+        documents.push(data);
       });
       return documents;
     } catch (error) {
@@ -109,21 +99,7 @@ const FirebaseService: FirebaseServiceProps = {
       const docRef = doc(db, collectionName, documentId);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        const data = docSnapshot.data();
-
-        Object.keys(data).forEach(field => {
-          if (
-            data[field] &&
-            typeof data[field] === 'object' &&
-            'seconds' in data[field] &&
-            'nanoseconds' in data[field]
-          ) {
-            data[field] = formatFirebaseTimestamp(data[field], 'date');
-          }
-        });
-
-        const document = {...data, id: docSnapshot.id};
-        return document;
+        return makeFirebasePayloadAccessible(docSnapshot);
       } else {
         return null;
       }
@@ -144,8 +120,9 @@ const FirebaseService: FirebaseServiceProps = {
       );
       const querySnapshot = await getDocs(q);
       const documents: DocumentData[] = [];
-      querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        documents.push({id: doc.id, ...doc.data()});
+      querySnapshot.forEach((document: QueryDocumentSnapshot<DocumentData>) => {
+        const data = makeFirebasePayloadAccessible(document);
+        documents.push(data);
       });
       return documents;
     } catch (error) {
