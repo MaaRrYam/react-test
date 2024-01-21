@@ -127,6 +127,8 @@ const NewPost = ({
     setIsLoading(true);
     const UID = (await getUID()) as string;
 
+    setIsLoading(true);
+
     let imageUrl = '';
     if (selectedImage?.uri) {
       imageUrl = (await FirebaseService.uploadToStorage(

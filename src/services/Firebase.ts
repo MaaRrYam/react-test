@@ -21,6 +21,7 @@ import {
 } from 'firebase/firestore';
 import {firebase} from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
+import {Image} from 'react-native-compressor';
 
 import {FirebaseServiceProps, Asset} from '@/interfaces';
 import {formatFirebaseTimestamp} from '@/utils';
@@ -176,15 +177,23 @@ const FirebaseService: FirebaseServiceProps = {
   async uploadToStorage(file: Asset) {
     try {
       const {uri} = file;
+
       if (uri) {
+        const result = await Image.compress(uri, {
+          compressionMethod: 'manual',
+          maxWidth: 1000,
+          quality: 0.6,
+        });
+
         const filename = this.generateUniqueFilename();
         const uploadUri =
-          Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+          Platform.OS === 'ios' ? result.replace('file://', '') : result;
 
         const task = storage().ref(filename).putFile(uploadUri);
         await task;
 
         const imageURL = await storage().ref(filename).getDownloadURL();
+        console.log({imageURL});
         return imageURL;
       }
       return '';
