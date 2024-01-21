@@ -26,6 +26,7 @@ import {addPostToFeed, addPostToProfileFeed} from '@/store/features/homeSlice';
 import {useAppSelector} from '@/hooks/useAppSelector';
 import useDebounce from '@/hooks/useDebounce';
 import NotificationService from '@/services/notifications';
+import {getAllUsers} from '@/store/features/chatsSlice';
 
 const NewPost = ({
   isVisible,
@@ -55,7 +56,14 @@ const NewPost = ({
   >(null);
   const [text, , setText] = useDebounce('', 0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {isUsersFetched} = useAppSelector(state => state.chats);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!isUsersFetched) {
+      dispatch(getAllUsers());
+    }
+  }, [dispatch, isUsersFetched]);
 
   const openImagePicker = useCallback(() => {
     launchImageLibrary(

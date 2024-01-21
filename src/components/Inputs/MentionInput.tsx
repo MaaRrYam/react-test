@@ -65,16 +65,18 @@ const RenderSuggestions: FC<MentionSuggestionsProps> = ({
 const MentionInputComponent = ({
   text,
   setText,
+  placeholder = 'What do you want to post today?',
 }: {
   text: string;
   setText: React.Dispatch<string>;
+  placeholder?: string;
 }) => {
   return (
     <View style={styles.container}>
       <MentionInput
         value={text}
         onChange={setText}
-        placeholder="What do you want to post today?"
+        placeholder={placeholder}
         placeholderTextColor={'black'}
         partTypes={[
           {
@@ -98,6 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     zIndex: 99999,
+    minHeight: 25,
   },
   containerStyles: {
     flex: 1,

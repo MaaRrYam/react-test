@@ -206,11 +206,11 @@ const ChatsService = {
     try {
       const response = await FirebaseService.getAllDocuments('users');
 
-      // await Promise.all(
-      //   response.map(async item => {
-      //     await Cache.set(`user_${item.id}`, item);
-      //   }),
-      // );
+      Promise.all(
+        response.map(async item => {
+          await Cache.set(`user_${item.id}`, item);
+        }),
+      );
       return response as UserInterface[];
     } catch (error) {
       console.log(error);
