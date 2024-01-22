@@ -43,7 +43,7 @@ jobs:
         run: |
           cd android
           ./gradlew build
-#         ./gradlew assembleRelease
+          # ./gradlew assembleRelease
 
       - name: Generate Signed APK
         if: matrix.os == 'ubuntu-latest'
@@ -113,7 +113,6 @@ test:
         echo "Running iOS tests..."
         npm run configure-mapbox
 
-
 deploy:
   runs-on: ubuntu-latest
   needs: test
@@ -141,19 +140,4 @@ deploy:
           xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -configuration Release clean archive -archivePath YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE="UUID_OF_YOUR_PROVISIONING_PROFILE"
           xcodebuild -exportArchive -archivePath YourApp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath .
           # Additional commands for deploying to the App Store
-
         fi
-
-
-# build-andriod
-# generate  keystore for your application with project name in andriod folder or desire folder then use it in above command to 
-# test and store your key
-# your-app.apk
-# build-ios
-# put change the variable according to your project like 
-# YourApp.xcworkspace xyz.xcworkspace majority time its your project name 
-# -scheme             xyz  majority time its your project name
-# YourApp.xcarchive   xyz its xcarchive your file
-# set this Mapbox key in github enviornment variable 
-# MAPBOX_ACCESS_TOKEN
-# ensure that the key is defined in configure-mapbox.js or package.json with variable for direct .
