@@ -30,7 +30,6 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install -y openjdk-11-jdk
-          sdkmanager "platform-tools" "platforms;android-30"
 
       - name: Install React Native CLI
         run: npm install -g react-native-cli
@@ -42,7 +41,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           cd android
-          ./gradlew build
+          chmod +x ./gradlew build
           # ./gradlew assembleRelease
 
       - name: Generate Signed APK
