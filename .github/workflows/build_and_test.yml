@@ -91,53 +91,53 @@ jobs:
           xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -configuration Release clean archive -archivePath YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE="UUID_OF_YOUR_PROVISIONING_PROFILE"
           xcodebuild -exportArchive -archivePath YourApp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath .
 
-test:
-  runs-on: ubuntu-latest
-  needs: [build-android, build-ios]
-  steps:
-    - name: Set up TestRails integration
-      uses: testributor/testrails-github-action@v1
-      with:
-        api-url: ${{ secrets.TESTRAIL_API_URL }}
-        user-email: ${{ secrets.TESTRAIL_USER_EMAIL }}
-        user-api-key: ${{ secrets.TESTRAIL_USER_API_KEY }}
+  test:
+    runs-on: ubuntu-latest
+    needs: [build-android, build-ios]
+    steps:
+      - name: Set up TestRails integration
+        uses: testributor/testrails-github-action@v1
+        with:
+          api-url: ${{ secrets.TESTRAIL_API_URL }}
+          user-email: ${{ secrets.TESTRAIL_USER_EMAIL }}
+          user-api-key: ${{ secrets.TESTRAIL_USER_API_KEY }}
 
-    - name: Run tests
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        echo "Running Android tests..."
+      - name: Run tests
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "Running Android tests..."
 
-    - name: Run tests
-      if: matrix.os == 'macos-latest'
-      run: |
-        echo "Running iOS tests..."
-        npm run configure-mapbox
+      - name: Run tests
+        if: matrix.os == 'macos-latest'
+        run: |
+          echo "Running iOS tests..."
+          npm run configure-mapbox
 
-deploy:
-  runs-on: ubuntu-latest
-  needs: test
-  steps:
-    - name: Deploy
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-          echo "Deploying for Android..."
-          
-          # Add your Android deployment commands here
-          # For example, you can use Google Play Gradle Plugin or other deployment methods
-          # Replace the following lines with your actual deployment commands:
-          echo "Uploading to Google Play..."
-          ./gradlew assembleRelease
-          # Additional commands for deploying to Google Play
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            echo "Deploying for Android..."
+            
+            # Add your Android deployment commands here
+            # For example, you can use Google Play Gradle Plugin or other deployment methods
+            # Replace the following lines with your actual deployment commands:
+            echo "Uploading to Google Play..."
+            ./gradlew assembleRelease
+            # Additional commands for deploying to Google Play
 
-        elif [ "${{ matrix.os }}" == "macos-latest" ]; then
-          echo "Deploying for iOS..."
-          
-          # Add your iOS deployment commands here
-          # For example, you can use fastlane or other deployment methods
-          # Replace the following lines with your actual deployment commands:
-          echo "Building and signing IPA..."
-          xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -configuration Release clean archive -archivePath YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE="UUID_OF_YOUR_PROVISIONING_PROFILE"
-          xcodebuild -exportArchive -archivePath YourApp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath .
-          # Additional commands for deploying to the App Store
-        fi
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            echo "Deploying for iOS..."
+            
+            # Add your iOS deployment commands here
+            # For example, you can use fastlane or other deployment methods
+            # Replace the following lines with your actual deployment commands:
+            echo "Building and signing IPA..."
+            xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -configuration Release clean archive -archivePath YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE="UUID_OF_YOUR_PROVISIONING_PROFILE"
+            xcodebuild -exportArchive -archivePath YourApp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath .
+            # Additional commands for deploying to the App Store
+          fi
