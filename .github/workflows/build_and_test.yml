@@ -20,7 +20,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '>=16.*'
 
       # - name: Configure Mapbox
       #   if: matrix.os == 'ubuntu-latest'
@@ -31,10 +31,10 @@ jobs:
         run: |
           sudo apt-get install -y openjdk-11-jdk
 
-      - name: Install React Native CLI
+      - name: npm i and npm start
         run: npm install && npm start
 
-      - name: Install React Native CLI
+      - name: run andriod by npm React Native CLI
         run: npm run android
 
       - name: Build for Android
