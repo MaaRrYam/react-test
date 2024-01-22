@@ -1,0 +1,159 @@
+name: CI/CD Pipeline for React Native
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        runner: [3-vCPU, 12-cpu]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js (for Android)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      # - name: Configure Mapbox
+      #   if: matrix.os == 'ubuntu-latest'
+      #   run: npm run configure-mapbox
+
+      - name: Install JDK 11 and Android SDK
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get install -y openjdk-11-jdk
+          sdkmanager "platform-tools" "platforms;android-30"
+
+      - name: Install React Native CLI
+        run: npm install -g react-native-cli
+
+      - name: Install React Native CLI
+        run: npm run android
+
+      - name: Build for Android
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd android
+          ./gradlew build
+#         ./gradlew assembleRelease
+
+      - name: Generate Signed APK
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          # for without key which is only appropriate for testing purpose 
+          cd app/build/outputs/apk/release/
+          mv app-release-unsigned.apk your-app.apk
+          # if you want to generate key and use it 
+          # cd app/build/outputs/apk/release/
+          # jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore your-key.keystore app-release-unsigned.apk your-alias
+          # zipalign -v 4 app-release-unsigned.apk your-app.apk
+
+  build-ios:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [macos-latest]
+        runner: [3-vCPU, 12-cpu]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js (for iOS)
+        if: matrix.os == 'macos-latest'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      # - name: Configure Mapbox
+      #   if: matrix.os == 'macos-latest'
+      #   run: npm run configure-mapbox
+
+      - name: Install Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_12.app/Contents/Developer
+
+      - name: Install Cocoapods
+        run: sudo gem install cocoapods
+
+      - name: Install React Native CLI
+        run: npm run ios
+
+      - name: Build iOS IPA
+        run: |
+          cd ios
+          xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -configuration Release clean archive -archivePath YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE="UUID_OF_YOUR_PROVISIONING_PROFILE"
+          xcodebuild -exportArchive -archivePath YourApp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath .
+
+test:
+  runs-on: ubuntu-latest
+  needs: [build-android, build-ios]
+  steps:
+    - name: Set up TestRails integration
+      uses: testributor/testrails-github-action@v1
+      with:
+        api-url: ${{ secrets.TESTRAIL_API_URL }}
+        user-email: ${{ secrets.TESTRAIL_USER_EMAIL }}
+        user-api-key: ${{ secrets.TESTRAIL_USER_API_KEY }}
+
+    - name: Run tests
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo "Running Android tests..."
+
+    - name: Run tests
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "Running iOS tests..."
+        npm run configure-mapbox
+
+
+deploy:
+  runs-on: ubuntu-latest
+  needs: test
+  steps:
+    - name: Deploy
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          echo "Deploying for Android..."
+          
+          # Add your Android deployment commands here
+          # For example, you can use Google Play Gradle Plugin or other deployment methods
+          # Replace the following lines with your actual deployment commands:
+          echo "Uploading to Google Play..."
+          ./gradlew assembleRelease
+          # Additional commands for deploying to Google Play
+
+        elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+          echo "Deploying for iOS..."
+          
+          # Add your iOS deployment commands here
+          # For example, you can use fastlane or other deployment methods
+          # Replace the following lines with your actual deployment commands:
+          echo "Building and signing IPA..."
+          xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -configuration Release clean archive -archivePath YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE="UUID_OF_YOUR_PROVISIONING_PROFILE"
+          xcodebuild -exportArchive -archivePath YourApp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath .
+          # Additional commands for deploying to the App Store
+
+        fi
+
+
+# build-andriod
+# generate  keystore for your application with project name in andriod folder or desire folder then use it in above command to 
+# test and store your key
+# your-app.apk
+# build-ios
+# put change the variable according to your project like 
+# YourApp.xcworkspace xyz.xcworkspace majority time its your project name 
+# -scheme             xyz  majority time its your project name
+# YourApp.xcarchive   xyz its xcarchive your file
+# set this Mapbox key in github enviornment variable 
+# MAPBOX_ACCESS_TOKEN
+# ensure that the key is defined in configure-mapbox.js or package.json with variable for direct .
